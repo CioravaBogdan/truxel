@@ -4,6 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useFrameworkReady } from '@/hooks/useFrameworkReady';
 import { useAuthStore } from '@/store/authStore';
 import { authService } from '@/services/authService';
+import { notificationsService } from '@/services/notificationsService';
 import '@/lib/i18n';
 import Toast from 'react-native-toast-message';
 
@@ -20,9 +21,14 @@ export default function RootLayout() {
       setUser(session?.user || null);
 
       if (session?.user) {
-        authService.getProfile(session.user.id).then((profile) => {
+        authService.getProfile(session.user.id).then(async (profile) => {
           setProfile(profile);
           setIsLoading(false);
+
+          const token = await notificationsService.registerForPushNotifications();
+          if (token) {
+            await notificationsService.savePushToken(session.user.id, token);
+          }
         });
       } else {
         setIsLoading(false);
@@ -37,6 +43,11 @@ export default function RootLayout() {
         if (session?.user) {
           const profile = await authService.getProfile(session.user.id);
           setProfile(profile);
+
+          const token = await notificationsService.registerForPushNotifications();
+          if (token) {
+            await notificationsService.savePushToken(session.user.id, token);
+          }
         } else {
           setProfile(null);
         }

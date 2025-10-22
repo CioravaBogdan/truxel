@@ -17,7 +17,10 @@ import { useAuthStore } from '@/store/authStore';
 import { useLeadsStore } from '@/store/leadsStore';
 import { leadsService } from '@/services/leadsService';
 import { searchesService } from '@/services/searchesService';
+import { notificationsService } from '@/services/notificationsService';
 import { Briefcase, Clock, CreditCard, MapPin } from 'lucide-react-native';
+import { Search } from '@/types/database.types';
+import Toast from 'react-native-toast-message';
 
 export default function HomeScreen() {
   const { t } = useTranslation();
@@ -45,6 +48,36 @@ export default function HomeScreen() {
 
   useEffect(() => {
     loadData();
+
+    if (!user) return;
+
+    const unsubscribe = searchesService.subscribeToSearchUpdates(
+      user.id,
+      (updatedSearch: Search) => {
+        if (updatedSearch.status === 'completed') {
+          notificationsService.sendSearchCompletedNotification(
+            updatedSearch.results_count
+          );
+          Toast.show({
+            type: 'success',
+            text1: t('common.success'),
+            text2: `Search completed! Found ${updatedSearch.results_count} leads.`,
+          });
+          loadData();
+        } else if (updatedSearch.status === 'failed') {
+          notificationsService.sendSearchFailedNotification();
+          Toast.show({
+            type: 'error',
+            text1: t('common.error'),
+            text2: 'Search failed. Please try again.',
+          });
+        }
+      }
+    );
+
+    return () => {
+      unsubscribe();
+    };
   }, [user, profile]);
 
   const onRefresh = async () => {

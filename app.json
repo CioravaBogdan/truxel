@@ -1,13 +1,20 @@
 {
   "expo": {
-    "name": "LogisticsLead",
-    "slug": "logisticslead",
+    "name": "Truxel",
+    "slug": "truxel",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "logisticslead",
+    "scheme": "truxel",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "extra": {
+      "eas": {
+        "projectId": "ec6e92c9-663d-4a34-a69a-88ce0ddaafab"
+      },
+      "supabaseUrl": "https://upxocyomsfhqoflwibwn.supabase.co",
+      "supabaseAnonKey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVweG9jeW9tc2ZocW9mbHdpYnduIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEwNTEyMzIsImV4cCI6MjA3NjYyNzIzMn0.Nw3vIQRmjltVULYEhe692UyBY4gIziJds5bqmf9_aw0"
+    },
     "splash": {
       "image": "./assets/images/icon.png",
       "resizeMode": "contain",
@@ -15,28 +22,22 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.logisticslead.app",
+      "bundleIdentifier": "com.truxel.app",
       "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "LogisticsLead needs your location to find companies near you.",
-        "NSLocationAlwaysAndWhenInUseUsageDescription": "LogisticsLead needs your location to find companies near you."
-      },
-      "config": {
-        "googleMapsApiKey": ""
+        "NSLocationWhenInUseUsageDescription": "Truxel needs your location to find companies near you.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "Truxel needs your location to find companies near you."
       }
     },
     "android": {
-      "package": "com.logisticslead.app",
+      "package": "com.truxel.app",
       "permissions": [
         "ACCESS_COARSE_LOCATION",
         "ACCESS_FINE_LOCATION",
         "FOREGROUND_SERVICE",
-        "INTERNET"
-      ],
-      "config": {
-        "googleMaps": {
-          "apiKey": ""
-        }
-      }
+        "INTERNET",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION"
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -45,8 +46,6 @@
     },
     "plugins": [
       "expo-router",
-      "expo-font",
-      "expo-web-browser",
       "expo-location",
       "expo-secure-store",
       [
@@ -59,6 +58,7 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "owner": "cioravabogdan"
   }
 }

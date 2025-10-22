@@ -1,4 +1,4 @@
-# n8n Webhook Configuration Guide for LogisticsLead
+# n8n Webhook Configuration Guide for Truxel
 
 ## Webhook Endpoint
 
