@@ -1,4 +1,4 @@
-# Truxel Mobile App - Implementation Summary
+# LogisticsLead Mobile App - Implementation Summary
 
 ## What Has Been Built
 

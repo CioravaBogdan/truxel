@@ -14,7 +14,6 @@ import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
 import { useAuthStore } from '@/store/authStore';
 import { searchesService } from '@/services/searchesService';
-import { notificationsService } from '@/services/notificationsService';
 import Toast from 'react-native-toast-message';
 import { MapPin, Crosshair, Search } from 'lucide-react-native';
 
@@ -128,8 +127,6 @@ export default function SearchScreen() {
                 latitude,
                 longitude,
               });
-
-              await notificationsService.sendSearchStartedNotification(keywords);
 
               const updatedProfile = await searchesService.getSearchesRemaining(profile);
               setSearchesRemaining(await searchesService.getSearchesRemaining(profile));

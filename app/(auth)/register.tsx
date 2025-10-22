@@ -73,7 +73,7 @@ export default function RegisterScreen() {
         <View style={styles.header}>
           <Truck size={48} color="#2563EB" />
           <Text style={styles.title}>{t('auth.sign_up')}</Text>
-          <Text style={styles.subtitle}>Truxel</Text>
+          <Text style={styles.subtitle}>LogisticsLead</Text>
         </View>
 
         <View style={styles.form}>

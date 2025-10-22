@@ -1,4 +1,4 @@
-# Truxel Mobile Application
+# LogisticsLead Mobile Application
 
 A mobile application for truck drivers to discover and manage logistics leads in their area. Built with Expo (React Native) and Supabase.
 
@@ -461,7 +461,7 @@ Pre-filled templates include:
 
 ## Support
 
-For issues or questions, contact: support@truxel.com
+For issues or questions, contact: support@logisticslead.com
 
 ## License
 

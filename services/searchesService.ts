@@ -2,7 +2,7 @@ import { supabase } from '@/lib/supabase';
 import { Search, Profile } from '@/types/database.types';
 import axios from 'axios';
 
-const WEBHOOK_URL = 'https://n8n.byinfant.com/webhook/51f66c9a-0283-4711-b034-337c66e1bedd';
+const WEBHOOK_URL = 'https://n8n.byinfant.com/webhook/logistics-lead-webhook';
 
 interface SearchParams {
   keywords: string;

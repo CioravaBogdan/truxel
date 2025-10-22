@@ -60,7 +60,7 @@ export default function LoginScreen() {
         <View style={styles.header}>
           <Truck size={48} color="#2563EB" />
           <Text style={styles.title}>{t('auth.welcome')}</Text>
-          <Text style={styles.subtitle}>Truxel</Text>
+          <Text style={styles.subtitle}>LogisticsLead</Text>
         </View>
 
         <View style={styles.form}>
