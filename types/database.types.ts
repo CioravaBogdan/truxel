@@ -13,6 +13,9 @@ export interface Profile {
   full_name: string;
   phone_number?: string;
   company_name?: string;
+  truck_type?: string;
+  search_radius_km?: number;
+  preferred_industries?: string[];
   subscription_tier: SubscriptionTier;
   subscription_status: SubscriptionStatus;
   trial_searches_used: number;

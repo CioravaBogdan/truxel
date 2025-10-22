@@ -59,13 +59,18 @@ export const authService = {
   },
 
   async getProfile(userId: string): Promise<Profile | null> {
+    console.log('authService.getProfile called with userId:', userId);
     const { data, error } = await supabase
       .from('profiles')
       .select('*')
       .eq('user_id', userId)
       .maybeSingle();
 
-    if (error) throw error;
+    if (error) {
+      console.error('authService.getProfile error:', error);
+      throw error;
+    }
+    console.log('authService.getProfile success, data:', data);
     return data;
   },
 

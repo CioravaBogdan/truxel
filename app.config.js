@@ -22,7 +22,8 @@ export default {
       },
       config: {
         googleMapsApiKey: ""
-      }
+      },
+      usesAppleSignIn: true
     },
     android: {
       package: "com.truxel.app",
@@ -49,6 +50,7 @@ export default {
       "expo-web-browser",
       "expo-location",
       "expo-secure-store",
+      "expo-apple-authentication",
       [
         "expo-notifications",
         {
