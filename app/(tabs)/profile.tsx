@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -6,11 +6,14 @@ import {
   ScrollView,
   TouchableOpacity,
   Alert,
+  TextInput,
+  ActivityIndicator,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Card } from '@/components/Card';
 import { Button } from '@/components/Button';
+import { Input } from '@/components/Input';
 import { useAuthStore } from '@/store/authStore';
 import { authService } from '@/services/authService';
 import Toast from 'react-native-toast-message';
@@ -22,6 +25,10 @@ import {
   Globe,
   LogOut,
   CreditCard,
+  Truck,
+  MapPin,
+  Factory,
+  Save,
 } from 'lucide-react-native';
 import i18n from '@/lib/i18n';
 
