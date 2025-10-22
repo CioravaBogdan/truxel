@@ -8,7 +8,10 @@ A mobile application for truck drivers to discover and manage logistics leads in
 - **Location-Based Search**: Find companies within 5km radius using GPS or manual location selection
 - **Lead Management**: Save, track, and manage potential business leads
 - **Contact Templates**: Pre-filled email and WhatsApp templates for quick communication
-- **Subscription Plans**: Trial, Standard, and Premium tiers with search limits
+- **Subscription Plans**: Trial, Standard, Pro (€49.99), and Premium tiers with search limits
+- **Stripe Payments**: Secure payment processing for subscriptions and search packs
+- **Additional Search Packs**: One-time purchases of 10, 25, or 50 searches
+- **Credit Management**: Automatic tracking with priority-based consumption
 - **Real-time Updates**: Get notified when search results are ready
 - **CSV Export**: Export all your leads to CSV format
 
@@ -34,11 +37,21 @@ Create or update the `.env` file in the project root:
 ```env
 EXPO_PUBLIC_SUPABASE_URL=your_supabase_url
 EXPO_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
 ```
+
+**Note**: See `.env.example` for reference.
 
 ### 3. Set Up Supabase Database
 
-Run the following SQL migration in your Supabase SQL Editor:
+**IMPORTANT**: For complete Stripe integration setup, see the detailed guides below.
+
+#### Quick Database Setup
+
+Run the complete migration in your Supabase SQL Editor:
+`supabase/migrations/20251022084011_add_pro_tier_and_stripe_integration.sql`
+
+#### Or use the basic setup below (legacy):
 
 ```sql
 -- Enable UUID extension
@@ -425,9 +438,10 @@ types/              # TypeScript type definitions
 
 ### Subscription System
 - **Trial**: 5 total searches, free
-- **Standard**: 15 searches/month, €29.99
-- **Premium**: 100 searches/month, €199.99
-- **Add-on Pack**: 10 searches, €24.99 one-time
+- **Standard**: 15 searches/month, €9.99
+- **Pro**: 30 searches/month, €49.99 (LinkedIn + AI matching)
+- **Premium**: 100 searches/month, €99.99
+- **Search Packs**: 10/25/50 searches, €4.99/€9.99/€17.99 one-time
 
 ### Communication Templates
 Pre-filled templates include:
@@ -458,6 +472,30 @@ Pre-filled templates include:
 - Clear cache: `expo start -c`
 - Reinstall dependencies: `rm -rf node_modules && npm install`
 - Check for TypeScript errors: `npm run typecheck`
+
+## Stripe Integration
+
+This project includes complete Stripe payment integration for subscriptions and search packs. For detailed setup instructions, see:
+
+### 📚 Documentation
+
+- **[STRIPE_README.md](STRIPE_README.md)** - Overview and architecture
+- **[STRIPE_IMPLEMENTATION_GUIDE.md](STRIPE_IMPLEMENTATION_GUIDE.md)** - Complete step-by-step setup
+- **[STRIPE_SETUP_CHECKLIST.md](STRIPE_SETUP_CHECKLIST.md)** - Track your implementation progress
+- **[DEPLOY_EDGE_FUNCTIONS.md](DEPLOY_EDGE_FUNCTIONS.md)** - Deploy Supabase Edge Functions
+- **[verify_database_setup.sql](verify_database_setup.sql)** - Verify database configuration
+- **[update_stripe_price_ids.sql](update_stripe_price_ids.sql)** - Update Stripe Price IDs
+
+### Quick Stripe Setup
+
+1. Create products in Stripe Dashboard (Test mode)
+2. Copy Price IDs and update database
+3. Deploy Edge Functions to Supabase
+4. Configure webhook endpoint
+5. Update `.env` with Stripe publishable key
+6. Test with test card: 4242 4242 4242 4242
+
+For complete instructions, see **STRIPE_IMPLEMENTATION_GUIDE.md**.
 
 ## Support
 
