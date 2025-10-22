@@ -1,6 +1,6 @@
 import { Tabs } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-import { Home, Search, FolderOpen, User } from 'lucide-react-native';
+import { Home, Search, FolderOpen, CreditCard, User } from 'lucide-react-native';
 
 export default function TabsLayout() {
   const { t } = useTranslation();
@@ -45,6 +45,15 @@ export default function TabsLayout() {
           title: t('tabs.leads'),
           tabBarIcon: ({ size, color }) => (
             <FolderOpen size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="pricing"
+        options={{
+          title: t('tabs.pricing'),
+          tabBarIcon: ({ size, color }) => (
+            <CreditCard size={size} color={color} />
           ),
         }}
       />

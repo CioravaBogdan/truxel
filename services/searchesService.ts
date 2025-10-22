@@ -34,32 +34,68 @@ export const searchesService = {
     return data;
   },
 
-  async canUserSearch(profile: Profile): Promise<boolean> {
-    if (profile.subscription_tier === 'trial') {
-      return profile.trial_searches_used < 5;
-    }
+  async canUserSearch(userId: string): Promise<boolean> {
+    const { data, error } = await supabase.rpc('get_total_search_credits', {
+      p_user_id: userId,
+    });
 
-    const tierLimits = {
-      standard: 15,
-      premium: 100,
-    };
+    if (error || !data || data.length === 0) return false;
 
-    const limit = tierLimits[profile.subscription_tier as keyof typeof tierLimits] || 0;
-    return profile.monthly_searches_used < limit;
+    return data[0].total_available > 0;
   },
 
-  async getSearchesRemaining(profile: Profile): Promise<number> {
-    if (profile.subscription_tier === 'trial') {
-      return Math.max(0, 5 - profile.trial_searches_used);
+  async getSearchesRemaining(userId: string): Promise<number> {
+    const { data, error } = await supabase.rpc('get_total_search_credits', {
+      p_user_id: userId,
+    });
+
+    if (error || !data || data.length === 0) return 0;
+
+    return data[0].total_available || 0;
+  },
+
+  async getSearchCreditsBreakdown(userId: string) {
+    const { data, error } = await supabase.rpc('get_total_search_credits', {
+      p_user_id: userId,
+    });
+
+    if (error || !data || data.length === 0) {
+      return {
+        purchasedCredits: 0,
+        subscriptionSearchesRemaining: 0,
+        totalAvailable: 0,
+      };
     }
 
-    const tierLimits = {
-      standard: 15,
-      premium: 100,
+    return {
+      purchasedCredits: data[0].purchased_credits || 0,
+      subscriptionSearchesRemaining: data[0].subscription_searches_remaining || 0,
+      totalAvailable: data[0].total_available || 0,
     };
+  },
 
-    const limit = tierLimits[profile.subscription_tier as keyof typeof tierLimits] || 0;
-    return Math.max(0, limit - profile.monthly_searches_used);
+  async getTierFeatures(tierName: string) {
+    const { data, error } = await supabase
+      .from('subscription_tiers')
+      .select('*')
+      .eq('tier_name', tierName)
+      .maybeSingle();
+
+    if (error || !data) {
+      return {
+        linkedinEnabled: false,
+        aiMatchingEnabled: false,
+        advancedResearchEnabled: false,
+        maxResultsPerSearch: 10,
+      };
+    }
+
+    return {
+      linkedinEnabled: data.linkedin_enabled,
+      aiMatchingEnabled: data.ai_matching_enabled,
+      advancedResearchEnabled: data.advanced_research_enabled,
+      maxResultsPerSearch: data.max_results_per_search,
+    };
   },
 
   async initiateSearch(
@@ -67,10 +103,21 @@ export const searchesService = {
     profile: Profile,
     params: SearchParams
   ): Promise<Search> {
-    const canSearch = await this.canUserSearch(profile);
+    const canSearch = await this.canUserSearch(userId);
     if (!canSearch) {
       throw new Error('Insufficient searches remaining');
     }
+
+    const { data: consumeResult, error: consumeError } = await supabase.rpc(
+      'consume_search_credit',
+      { p_user_id: userId }
+    );
+
+    if (consumeError || !consumeResult || consumeResult.length === 0 || !consumeResult[0].success) {
+      throw new Error('Failed to consume search credit');
+    }
+
+    const creditSource = consumeResult[0].credit_source;
 
     const { data: newSearch, error: searchError } = await supabase
       .from('searches')
@@ -88,17 +135,7 @@ export const searchesService = {
 
     if (searchError) throw searchError;
 
-    if (profile.subscription_tier === 'trial') {
-      await supabase
-        .from('profiles')
-        .update({ trial_searches_used: profile.trial_searches_used + 1 })
-        .eq('user_id', userId);
-    } else {
-      await supabase
-        .from('profiles')
-        .update({ monthly_searches_used: profile.monthly_searches_used + 1 })
-        .eq('user_id', userId);
-    }
+    const tierFeatures = await this.getTierFeatures(profile.subscription_tier);
 
     try {
       await axios.post(WEBHOOK_URL, {
@@ -109,6 +146,9 @@ export const searchesService = {
         latitude: params.latitude,
         longitude: params.longitude,
         radius_km: 5,
+        tier: profile.subscription_tier,
+        features: tierFeatures,
+        credit_source: creditSource,
       });
 
       await supabase
@@ -125,18 +165,6 @@ export const searchesService = {
           error_message: 'Failed to send webhook request',
         })
         .eq('id', newSearch.id);
-
-      if (profile.subscription_tier === 'trial') {
-        await supabase
-          .from('profiles')
-          .update({ trial_searches_used: profile.trial_searches_used })
-          .eq('user_id', userId);
-      } else {
-        await supabase
-          .from('profiles')
-          .update({ monthly_searches_used: profile.monthly_searches_used })
-          .eq('user_id', userId);
-      }
 
       throw new Error('Failed to initiate search');
     }

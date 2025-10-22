@@ -28,10 +28,10 @@ export default function SearchScreen() {
   const [searchesRemaining, setSearchesRemaining] = useState(0);
 
   useEffect(() => {
-    if (profile) {
-      searchesService.getSearchesRemaining(profile).then(setSearchesRemaining);
+    if (user) {
+      searchesService.getSearchesRemaining(user.id).then(setSearchesRemaining);
     }
-  }, [profile]);
+  }, [user]);
 
   const handleUseCurrentLocation = async () => {
     setIsLoading(true);
@@ -98,7 +98,7 @@ export default function SearchScreen() {
 
     if (!user || !profile) return;
 
-    const canSearch = await searchesService.canUserSearch(profile);
+    const canSearch = await searchesService.canUserSearch(user.id);
     if (!canSearch) {
       Toast.show({
         type: 'error',
@@ -128,8 +128,7 @@ export default function SearchScreen() {
                 longitude,
               });
 
-              const updatedProfile = await searchesService.getSearchesRemaining(profile);
-              setSearchesRemaining(await searchesService.getSearchesRemaining(profile));
+              setSearchesRemaining(await searchesService.getSearchesRemaining(user.id));
 
               Toast.show({
                 type: 'success',

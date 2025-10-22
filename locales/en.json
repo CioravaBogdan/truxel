@@ -45,6 +45,7 @@
     "home": "Home",
     "search": "Search",
     "leads": "My Leads",
+    "pricing": "Pricing",
     "profile": "Profile"
   },
   "home": {
@@ -114,13 +115,16 @@
     "current_plan": "Current Plan",
     "trial": "Free Trial",
     "standard": "Standard Plan",
+    "pro": "Pro Plan",
     "premium": "Premium Plan",
     "trial_desc": "5 searches total",
     "standard_desc": "15 searches per month",
+    "pro_desc": "30 searches with LinkedIn & AI",
     "premium_desc": "100 searches per month",
     "price_month": "€{{price}}/month",
     "searches_used": "{{used}} of {{total}} searches used",
     "renews_on": "Renews on {{date}}",
+    "cancelled_until": "Cancelled (Active until {{date}})",
     "upgrade_to": "Upgrade to {{plan}}",
     "buy_search_pack": "Buy Search Pack",
     "search_pack_10": "10 Additional Searches",
@@ -128,7 +132,14 @@
     "purchase_success": "Purchase successful!",
     "purchase_failed": "Purchase failed. Please try again.",
     "manage_subscription": "Manage Subscription",
-    "cancel_subscription": "Cancel Subscription"
+    "cancel_subscription": "Cancel Subscription",
+    "upgrade_now": "Upgrade Now",
+    "manage": "Manage Plan",
+    "buy_more_searches": "Buy More Searches",
+    "credits_breakdown": "Credits Breakdown",
+    "subscription_searches": "Monthly Searches",
+    "purchased_credits": "Purchased Credits",
+    "total_available": "Total Available"
   },
   "profile": {
     "title": "Profile",
@@ -153,6 +164,27 @@
     "search_complete_body": "Found {{count}} companies in {{location}}",
     "permission_required": "Notification permission required",
     "permission_message": "Enable notifications to get alerts when your searches complete"
+  },
+  "pricing": {
+    "title": "Choose Your Plan",
+    "subtitle": "Select the perfect plan for your business",
+    "tier_trial": "Free Trial",
+    "tier_standard": "Standard",
+    "tier_pro": "Pro",
+    "tier_premium": "Premium",
+    "searches_per_month": "searches/month",
+    "max_results": "Up to {{count}} results per search",
+    "linkedin_contacts": "LinkedIn contact profiles",
+    "ai_matching": "AI-powered contact matching",
+    "advanced_research": "Advanced company research",
+    "month": "month",
+    "current_plan": "Current Plan",
+    "subscribe": "Subscribe",
+    "additional_searches": "Need More Searches?",
+    "additional_searches_desc": "Purchase additional search packs anytime",
+    "searches": "Searches",
+    "buy_now": "Buy Now",
+    "footer_note": "All plans include basic company info, contact details, and location. Cancel anytime."
   },
   "errors": {
     "network_error": "Network error. Please check your connection.",

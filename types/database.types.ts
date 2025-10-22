@@ -1,5 +1,5 @@
-export type SubscriptionTier = 'trial' | 'standard' | 'premium';
-export type SubscriptionStatus = 'active' | 'cancelled' | 'expired';
+export type SubscriptionTier = 'trial' | 'standard' | 'pro' | 'premium';
+export type SubscriptionStatus = 'active' | 'cancelled' | 'expired' | 'past_due';
 export type LeadStatus = 'new' | 'contacted' | 'in_progress' | 'won' | 'lost';
 export type SearchStatus = 'pending' | 'completed' | 'failed';
 export type TransactionType = 'subscription' | 'search_pack' | 'renewal';
@@ -17,11 +17,16 @@ export interface Profile {
   subscription_status: SubscriptionStatus;
   trial_searches_used: number;
   monthly_searches_used: number;
+  available_search_credits: number;
   subscription_start_date: string;
   subscription_renewal_date?: string;
   preferred_language: Language;
   expo_push_token?: string;
   stripe_customer_id?: string;
+  stripe_subscription_id?: string;
+  stripe_subscription_status?: string;
+  stripe_current_period_end?: string;
+  pending_tier_change?: string;
   created_at: string;
   updated_at: string;
 }
@@ -36,6 +41,7 @@ export interface Lead {
   phone?: string;
   whatsapp?: string;
   linkedin?: string;
+  linkedin_profile_url?: string;
   facebook?: string;
   instagram?: string;
   website?: string;
@@ -48,6 +54,12 @@ export interface Lead {
   description?: string;
   status: LeadStatus;
   user_notes?: string;
+  ai_match_score?: number;
+  match_reasons?: { reason: string; weight: number }[];
+  employee_count?: number;
+  founded_year?: number;
+  annual_revenue?: string;
+  social_links?: { [key: string]: string };
   created_at: string;
   updated_at: string;
 }
@@ -76,6 +88,10 @@ export interface SubscriptionTierData {
   searches_per_month: number;
   description?: string;
   stripe_price_id?: string;
+  linkedin_enabled: boolean;
+  ai_matching_enabled: boolean;
+  advanced_research_enabled: boolean;
+  max_results_per_search: number;
   created_at: string;
 }
 
