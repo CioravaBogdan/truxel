@@ -1,6 +1,6 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import * as Localization from 'expo-localization';
+import { getLocales } from 'expo-localization';
 
 import en from '@/locales/en.json';
 import ro from '@/locales/ro.json';
@@ -21,7 +21,8 @@ const resources = {
 const supportedLanguages = ['en', 'ro', 'pl', 'tr', 'lt', 'es'];
 
 const getDeviceLanguage = () => {
-  const deviceLanguage = Localization.locale.split('-')[0];
+  const locales = getLocales();
+  const deviceLanguage = locales[0]?.languageCode || 'en';
   return supportedLanguages.includes(deviceLanguage) ? deviceLanguage : 'en';
 };
 

@@ -142,7 +142,7 @@ export default function ProfileScreen() {
               <Text style={styles.subscriptionTier}>
                 {tierInfo.name} {t('subscription.title')}
               </Text>
-              {tierInfo.price && (
+              {'price' in tierInfo && tierInfo.price && (
                 <Text style={styles.subscriptionPrice}>
                   {t('subscription.price_month', { price: tierInfo.price })}
                 </Text>

@@ -19,7 +19,7 @@ import { useAuthStore } from '@/store/authStore';
 import { useLeadsStore } from '@/store/leadsStore';
 import { leadsService } from '@/services/leadsService';
 import * as Sharing from 'expo-sharing';
-import * as FileSystem from 'expo-file-system';
+import { File, Paths } from 'expo-file-system';
 import Toast from 'react-native-toast-message';
 import { Mail, Phone, MessageCircle, MapPin, Share2, Download } from 'lucide-react-native';
 import { Lead } from '@/types/database.types';
@@ -127,13 +127,12 @@ Shared from LogisticsLead
     try {
       const csv = await leadsService.exportLeadsToCSV(leads);
       const fileName = `LogisticsLeads_${new Date().toISOString().split('T')[0]}.csv`;
-      const fileUri = `${FileSystem.documentDirectory}${fileName}`;
+      const file = new File(Paths.document, fileName);
 
-      await FileSystem.writeAsStringAsync(fileUri, csv, {
-        encoding: FileSystem.EncodingType.UTF8,
-      });
+      await file.create();
+      await file.write(csv);
 
-      await Sharing.shareAsync(fileUri);
+      await Sharing.shareAsync(file.uri);
 
       Toast.show({
         type: 'success',
