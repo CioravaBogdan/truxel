@@ -1,0 +1,567 @@
+import React, { useState, useEffect } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  ActivityIndicator,
+  Alert,
+} from 'react-native';
+import { useTranslation } from 'react-i18next';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Card } from '@/components/Card';
+import { Button } from '@/components/Button';
+import { useAuthStore } from '@/store/authStore';
+import { stripeService } from '@/services/stripeService';
+import Toast from 'react-native-toast-message';
+import {
+  CreditCard,
+  TrendingUp,
+  TrendingDown,
+  XCircle,
+  AlertCircle,
+  CheckCircle,
+  RefreshCw,
+} from 'lucide-react-native';
+import { SubscriptionTierData } from '@/types/database.types';
+import * as WebBrowser from 'expo-web-browser';
+
+export default function SubscriptionScreen() {
+  const { t } = useTranslation();
+  const { profile, refreshProfile } = useAuthStore();
+  const [tiers, setTiers] = useState<SubscriptionTierData[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [actionLoading, setActionLoading] = useState<string | null>(null);
+
+  useEffect(() => {
+    loadSubscriptionData();
+  }, []);
+
+  const loadSubscriptionData = async () => {
+    try {
+      setIsLoading(true);
+      const tiersData = await stripeService.getAvailableSubscriptionTiers();
+      setTiers(tiersData);
+      await refreshProfile();
+    } catch (error: any) {
+      Toast.show({
+        type: 'error',
+        text1: t('common.error'),
+        text2: error.message,
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleUpgrade = async (newTier: SubscriptionTierData) => {
+    if (!newTier.stripe_price_id) {
+      Toast.show({
+        type: 'error',
+        text1: t('common.error'),
+        text2: 'Pricing not configured',
+      });
+      return;
+    }
+
+    Alert.alert(
+      t('subscription.upgrade_confirm_title'),
+      t('subscription.upgrade_confirm_message', {
+        tier: newTier.tier_name.toUpperCase(),
+        price: `€${newTier.price}`,
+      }),
+      [
+        {
+          text: t('common.cancel'),
+          style: 'cancel',
+        },
+        {
+          text: t('subscription.upgrade'),
+          onPress: async () => {
+            try {
+              setActionLoading('upgrade');
+              await stripeService.upgradeSubscription(newTier.stripe_price_id!);
+              
+              Toast.show({
+                type: 'success',
+                text1: t('subscription.upgrade_success_title'),
+                text2: t('subscription.upgrade_success_message'),
+              });
+
+              await loadSubscriptionData();
+            } catch (error: any) {
+              Toast.show({
+                type: 'error',
+                text1: t('common.error'),
+                text2: error.message,
+              });
+            } finally {
+              setActionLoading(null);
+            }
+          },
+        },
+      ]
+    );
+  };
+
+  const handleDowngrade = async (newTier: SubscriptionTierData) => {
+    if (!newTier.stripe_price_id) {
+      Toast.show({
+        type: 'error',
+        text1: t('common.error'),
+        text2: 'Pricing not configured',
+      });
+      return;
+    }
+
+    Alert.alert(
+      t('subscription.downgrade_confirm_title'),
+      t('subscription.downgrade_confirm_message', {
+        tier: newTier.tier_name.toUpperCase(),
+        price: `€${newTier.price}`,
+      }),
+      [
+        {
+          text: t('common.cancel'),
+          style: 'cancel',
+        },
+        {
+          text: t('subscription.downgrade'),
+          onPress: async () => {
+            try {
+              setActionLoading('downgrade');
+              await stripeService.downgradeSubscription(newTier.stripe_price_id!);
+              
+              Toast.show({
+                type: 'success',
+                text1: t('subscription.downgrade_success_title'),
+                text2: t('subscription.downgrade_success_message'),
+              });
+
+              await loadSubscriptionData();
+            } catch (error: any) {
+              Toast.show({
+                type: 'error',
+                text1: t('common.error'),
+                text2: error.message,
+              });
+            } finally {
+              setActionLoading(null);
+            }
+          },
+        },
+      ]
+    );
+  };
+
+  const handleCancelSubscription = async () => {
+    Alert.alert(
+      t('subscription.cancel_confirm_title'),
+      t('subscription.cancel_confirm_message'),
+      [
+        {
+          text: t('common.no'),
+          style: 'cancel',
+        },
+        {
+          text: t('subscription.yes_cancel'),
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              setActionLoading('cancel');
+              await stripeService.cancelSubscription();
+              
+              Toast.show({
+                type: 'success',
+                text1: t('subscription.cancel_success_title'),
+                text2: t('subscription.cancel_success_message'),
+              });
+
+              await loadSubscriptionData();
+            } catch (error: any) {
+              Toast.show({
+                type: 'error',
+                text1: t('common.error'),
+                text2: error.message,
+              });
+            } finally {
+              setActionLoading(null);
+            }
+          },
+        },
+      ]
+    );
+  };
+
+  const handleReactivateSubscription = async () => {
+    try {
+      setActionLoading('reactivate');
+      await stripeService.reactivateSubscription();
+      
+      Toast.show({
+        type: 'success',
+        text1: t('subscription.reactivate_success_title'),
+        text2: t('subscription.reactivate_success_message'),
+      });
+
+      await loadSubscriptionData();
+    } catch (error: any) {
+      Toast.show({
+        type: 'error',
+        text1: t('common.error'),
+        text2: error.message,
+      });
+    } finally {
+      setActionLoading(null);
+    }
+  };
+
+  const getCurrentTierPrice = () => {
+    const currentTier = tiers.find(
+      (tier) => tier.tier_name === profile?.subscription_tier
+    );
+    return currentTier?.price || 0;
+  };
+
+  const getAvailableTiers = () => {
+    if (!profile?.subscription_tier) return { upgrades: [], downgrades: [] };
+
+    const currentTierIndex = tiers.findIndex(
+      (t) => t.tier_name === profile.subscription_tier
+    );
+
+    const upgrades = tiers.filter((_, index) => index > currentTierIndex);
+    const downgrades = tiers.filter((_, index) => index < currentTierIndex);
+
+    return { upgrades, downgrades };
+  };
+
+  if (isLoading) {
+    return (
+      <SafeAreaView style={styles.container} edges={['top']}>
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#2563EB" />
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  const { upgrades, downgrades } = getAvailableTiers();
+  const isSubscriptionActive = profile?.subscription_status === 'active';
+  const isSubscriptionCancelled = profile?.subscription_status === 'cancelled';
+
+  return (
+    <SafeAreaView style={styles.container} edges={['top']}>
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        {/* Current Subscription */}
+        <Card style={styles.currentCard}>
+          <View style={styles.currentHeader}>
+            <CreditCard size={32} color="#2563EB" />
+            <View style={styles.currentInfo}>
+              <Text style={styles.currentLabel}>
+                {t('subscription.current_plan')}
+              </Text>
+              <Text style={styles.currentTier}>
+                {profile?.subscription_tier?.toUpperCase() || 'TRIAL'}
+              </Text>
+              <Text style={styles.currentPrice}>
+                €{getCurrentTierPrice()}/
+                {t('pricing.month')}
+              </Text>
+            </View>
+            {isSubscriptionActive && (
+              <CheckCircle size={24} color="#10B981" />
+            )}
+            {isSubscriptionCancelled && (
+              <AlertCircle size={24} color="#F59E0B" />
+            )}
+          </View>
+
+          {profile?.stripe_current_period_end && (
+            <View style={styles.renewalInfo}>
+              <Text style={styles.renewalText}>
+                {isSubscriptionCancelled
+                  ? t('subscription.expires_on')
+                  : t('subscription.renews_on')}{' '}
+                {new Date(profile.stripe_current_period_end).toLocaleDateString()}
+              </Text>
+            </View>
+          )}
+
+          <View style={styles.creditInfo}>
+            <Text style={styles.creditLabel}>
+              {t('subscription.searches_remaining')}
+            </Text>
+            <Text style={styles.creditValue}>
+              {profile?.available_search_credits || 0}
+            </Text>
+          </View>
+        </Card>
+
+        {/* Reactivate if cancelled */}
+        {isSubscriptionCancelled && (
+          <Card style={styles.warningCard}>
+            <AlertCircle size={24} color="#F59E0B" />
+            <Text style={styles.warningText}>
+              {t('subscription.cancellation_pending')}
+            </Text>
+            <Button
+              title={t('subscription.reactivate')}
+              onPress={handleReactivateSubscription}
+              loading={actionLoading === 'reactivate'}
+            />
+          </Card>
+        )}
+
+        {/* Upgrade Options */}
+        {upgrades.length > 0 && isSubscriptionActive && (
+          <>
+            <Text style={styles.sectionTitle}>
+              <TrendingUp size={20} color="#10B981" />
+              {' '}{t('subscription.upgrade_options')}
+            </Text>
+            {upgrades.map((tier) => (
+              <Card key={tier.id} style={styles.tierCard}>
+                <View style={styles.tierHeader}>
+                  <Text style={styles.tierName}>
+                    {tier.tier_name.toUpperCase()}
+                  </Text>
+                  <Text style={styles.tierPrice}>
+                    €{tier.price}/{t('pricing.month')}
+                  </Text>
+                </View>
+                <Text style={styles.tierDescription}>{tier.description}</Text>
+                <View style={styles.tierFeatures}>
+                  <Text style={styles.featureItem}>
+                    • {tier.searches_per_month} {t('pricing.searches_per_month')}
+                  </Text>
+                  {tier.linkedin_enabled && (
+                    <Text style={styles.featureItem}>
+                      • {t('pricing.linkedin_contacts')}
+                    </Text>
+                  )}
+                  {tier.ai_matching_enabled && (
+                    <Text style={styles.featureItem}>
+                      • {t('pricing.ai_matching')}
+                    </Text>
+                  )}
+                </View>
+                <Button
+                  title={t('subscription.upgrade')}
+                  onPress={() => handleUpgrade(tier)}
+                  loading={actionLoading === 'upgrade'}
+                />
+              </Card>
+            ))}
+          </>
+        )}
+
+        {/* Downgrade Options */}
+        {downgrades.length > 0 && isSubscriptionActive && (
+          <>
+            <Text style={styles.sectionTitle}>
+              <TrendingDown size={20} color="#64748B" />
+              {' '}{t('subscription.downgrade_options')}
+            </Text>
+            {downgrades.map((tier) => (
+              <Card key={tier.id} style={styles.tierCard}>
+                <View style={styles.tierHeader}>
+                  <Text style={styles.tierName}>
+                    {tier.tier_name.toUpperCase()}
+                  </Text>
+                  <Text style={styles.tierPrice}>
+                    €{tier.price}/{t('pricing.month')}
+                  </Text>
+                </View>
+                <Text style={styles.tierDescription}>{tier.description}</Text>
+                <View style={styles.tierFeatures}>
+                  <Text style={styles.featureItem}>
+                    • {tier.searches_per_month} {t('pricing.searches_per_month')}
+                  </Text>
+                </View>
+                <Button
+                  title={t('subscription.downgrade')}
+                  onPress={() => handleDowngrade(tier)}
+                  loading={actionLoading === 'downgrade'}
+                  variant="outline"
+                />
+              </Card>
+            ))}
+          </>
+        )}
+
+        {/* Cancel Subscription */}
+        {profile?.subscription_tier !== 'trial' && isSubscriptionActive && (
+          <>
+            <View style={styles.divider} />
+            <Card style={styles.cancelCard}>
+              <XCircle size={24} color="#EF4444" />
+              <Text style={styles.cancelTitle}>
+                {t('subscription.cancel_subscription')}
+              </Text>
+              <Text style={styles.cancelText}>
+                {t('subscription.cancel_warning')}
+              </Text>
+              <Button
+                title={t('subscription.cancel_subscription')}
+                onPress={handleCancelSubscription}
+                loading={actionLoading === 'cancel'}
+                variant="outline"
+                style={styles.cancelButton}
+              />
+            </Card>
+          </>
+        )}
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#F8FAFC',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  scrollContent: {
+    padding: 16,
+  },
+  currentCard: {
+    padding: 24,
+    marginBottom: 24,
+  },
+  currentHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 16,
+    marginBottom: 16,
+  },
+  currentInfo: {
+    flex: 1,
+  },
+  currentLabel: {
+    fontSize: 14,
+    color: '#64748B',
+    marginBottom: 4,
+  },
+  currentTier: {
+    fontSize: 24,
+    fontWeight: '700',
+    color: '#1E293B',
+    marginBottom: 4,
+  },
+  currentPrice: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#2563EB',
+  },
+  renewalInfo: {
+    backgroundColor: '#F1F5F9',
+    padding: 12,
+    borderRadius: 8,
+    marginBottom: 16,
+  },
+  renewalText: {
+    fontSize: 14,
+    color: '#64748B',
+    textAlign: 'center',
+  },
+  creditInfo: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingTop: 16,
+    borderTopWidth: 1,
+    borderTopColor: '#E2E8F0',
+  },
+  creditLabel: {
+    fontSize: 14,
+    color: '#64748B',
+  },
+  creditValue: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#1E293B',
+  },
+  warningCard: {
+    padding: 20,
+    alignItems: 'center',
+    gap: 12,
+    marginBottom: 24,
+    backgroundColor: '#FEF3C7',
+  },
+  warningText: {
+    fontSize: 14,
+    color: '#92400E',
+    textAlign: 'center',
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#1E293B',
+    marginBottom: 16,
+    marginTop: 8,
+  },
+  tierCard: {
+    padding: 20,
+    marginBottom: 16,
+  },
+  tierHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  tierName: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#1E293B',
+  },
+  tierPrice: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#2563EB',
+  },
+  tierDescription: {
+    fontSize: 14,
+    color: '#64748B',
+    marginBottom: 16,
+  },
+  tierFeatures: {
+    marginBottom: 16,
+    gap: 8,
+  },
+  featureItem: {
+    fontSize: 14,
+    color: '#1E293B',
+  },
+  divider: {
+    height: 1,
+    backgroundColor: '#E2E8F0',
+    marginVertical: 24,
+  },
+  cancelCard: {
+    padding: 24,
+    alignItems: 'center',
+    gap: 12,
+  },
+  cancelTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#EF4444',
+  },
+  cancelText: {
+    fontSize: 14,
+    color: '#64748B',
+    textAlign: 'center',
+    marginBottom: 8,
+  },
+  cancelButton: {
+    borderColor: '#EF4444',
+  },
+});

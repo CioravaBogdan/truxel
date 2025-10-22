@@ -22,10 +22,12 @@
     "sort": "Sort",
     "confirm": "Confirm",
     "back": "Back",
-    "close": "Close"
+    "close": "Close",
+    "no": "No",
+    "yes": "Yes"
   },
   "auth": {
-    "welcome": "Welcome to LogisticsLead",
+    "welcome": "Welcome to Truxel",
     "sign_in": "Sign In",
     "sign_up": "Sign Up",
     "forgot_password": "Forgot Password?",
@@ -46,6 +48,7 @@
     "search": "Search",
     "leads": "My Leads",
     "pricing": "Pricing",
+    "subscription": "Subscription",
     "profile": "Profile"
   },
   "home": {
@@ -124,6 +127,7 @@
     "price_month": "€{{price}}/month",
     "searches_used": "{{used}} of {{total}} searches used",
     "renews_on": "Renews on {{date}}",
+    "expires_on": "Expires on {{date}}",
     "cancelled_until": "Cancelled (Active until {{date}})",
     "upgrade_to": "Upgrade to {{plan}}",
     "buy_search_pack": "Buy Search Pack",
@@ -139,7 +143,30 @@
     "credits_breakdown": "Credits Breakdown",
     "subscription_searches": "Monthly Searches",
     "purchased_credits": "Purchased Credits",
-    "total_available": "Total Available"
+    "total_available": "Total Available",
+    "upgrade": "Upgrade",
+    "downgrade": "Downgrade",
+    "reactivate": "Reactivate Subscription",
+    "yes_cancel": "Yes, Cancel",
+    "upgrade_options": "Upgrade Options",
+    "downgrade_options": "Downgrade Options",
+    "searches_remaining": "Searches Remaining",
+    "cancellation_pending": "Your subscription will be cancelled at the end of the billing period. Reactivate to continue.",
+    "cancel_warning": "You'll lose access to premium features at the end of your billing period.",
+    "upgrade_confirm_title": "Upgrade Subscription",
+    "upgrade_confirm_message": "Upgrade to {{tier}} for {{price}}/month?",
+    "upgrade_success_title": "Upgraded Successfully",
+    "upgrade_success_message": "Your subscription has been upgraded!",
+    "downgrade_confirm_title": "Downgrade Subscription",
+    "downgrade_confirm_message": "Downgrade to {{tier}} for {{price}}/month? Changes take effect at next billing cycle.",
+    "downgrade_success_title": "Downgraded Successfully",
+    "downgrade_success_message": "Your subscription will be downgraded at the next billing cycle.",
+    "cancel_confirm_title": "Cancel Subscription",
+    "cancel_confirm_message": "Are you sure you want to cancel? You'll lose access at the end of your billing period.",
+    "cancel_success_title": "Subscription Cancelled",
+    "cancel_success_message": "Your subscription has been cancelled. You can reactivate anytime.",
+    "reactivate_success_title": "Reactivated Successfully",
+    "reactivate_success_message": "Your subscription has been reactivated!"
   },
   "profile": {
     "title": "Profile",

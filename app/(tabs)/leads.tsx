@@ -113,7 +113,7 @@ Facebook: ${lead.facebook || 'N/A'}
 
 Notes: ${lead.user_notes || 'N/A'}
 
-Shared from LogisticsLead
+Shared from Truxel
     `.trim();
 
     try {
@@ -126,7 +126,7 @@ Shared from LogisticsLead
   const handleExportCSV = async () => {
     try {
       const csv = await leadsService.exportLeadsToCSV(leads);
-      const fileName = `LogisticsLeads_${new Date().toISOString().split('T')[0]}.csv`;
+      const fileName = `Truxel_Leads_${new Date().toISOString().split('T')[0]}.csv`;
       const file = new File(Paths.document, fileName);
 
       await file.create();

@@ -67,10 +67,10 @@ BEGIN
   END IF;
 END $$;
 
--- Update subscription_tier check constraint to include 'pro'
+-- Update subscription_tier check constraint for Truxel tiers
 ALTER TABLE profiles DROP CONSTRAINT IF EXISTS profiles_subscription_tier_check;
 ALTER TABLE profiles ADD CONSTRAINT profiles_subscription_tier_check 
-  CHECK (subscription_tier IN ('trial', 'standard', 'pro', 'premium'));
+  CHECK (subscription_tier IN ('trial', 'standard', 'pro'));
 
 -- Add feature flag columns to subscription_tiers table
 DO $$
@@ -96,12 +96,7 @@ BEGIN
     ALTER TABLE subscription_tiers ADD COLUMN advanced_research_enabled boolean DEFAULT false;
   END IF;
 
-  IF NOT EXISTS (
-    SELECT 1 FROM information_schema.columns
-    WHERE table_name = 'subscription_tiers' AND column_name = 'max_results_per_search'
-  ) THEN
-    ALTER TABLE subscription_tiers ADD COLUMN max_results_per_search int DEFAULT 10;
-  END IF;
+  -- Note: No max_results_per_search - Truxel returns ALL results found (unlimited)
 END $$;
 
 -- Add enhanced lead data columns
@@ -209,7 +204,8 @@ CREATE POLICY "Service role can manage webhook events"
   USING (true)
   WITH CHECK (true);
 
--- Update subscription tiers with new Pro tier and feature flags
+-- Update subscription tiers with Truxel pricing and features
+-- Trial: €0, 5 searches (no result limits - returns all results found)
 INSERT INTO subscription_tiers (
   tier_name, 
   price, 
@@ -217,40 +213,54 @@ INSERT INTO subscription_tiers (
   description,
   linkedin_enabled,
   ai_matching_enabled,
-  advanced_research_enabled,
-  max_results_per_search
+  advanced_research_enabled
 ) VALUES
-  ('pro', 49.99, 30, 'LinkedIn contacts, AI matching, and advanced research', true, true, true, 20)
+  ('trial', 0, 5, 'Free trial with basic search', false, false, false)
 ON CONFLICT (tier_name) DO UPDATE SET
   price = EXCLUDED.price,
   searches_per_month = EXCLUDED.searches_per_month,
   description = EXCLUDED.description,
   linkedin_enabled = EXCLUDED.linkedin_enabled,
   ai_matching_enabled = EXCLUDED.ai_matching_enabled,
-  advanced_research_enabled = EXCLUDED.advanced_research_enabled,
-  max_results_per_search = EXCLUDED.max_results_per_search;
+  advanced_research_enabled = EXCLUDED.advanced_research_enabled;
 
--- Update existing tiers with feature flags
-UPDATE subscription_tiers SET
-  linkedin_enabled = false,
-  ai_matching_enabled = false,
-  advanced_research_enabled = false,
-  max_results_per_search = 10
-WHERE tier_name = 'trial';
+-- Standard: €29.99/month, 30 searches (no result limits - returns all results found)
+INSERT INTO subscription_tiers (
+  tier_name, 
+  price, 
+  searches_per_month, 
+  description,
+  linkedin_enabled,
+  ai_matching_enabled,
+  advanced_research_enabled
+) VALUES
+  ('standard', 29.99, 30, 'Basic search for growing businesses', false, false, false)
+ON CONFLICT (tier_name) DO UPDATE SET
+  price = EXCLUDED.price,
+  searches_per_month = EXCLUDED.searches_per_month,
+  description = EXCLUDED.description,
+  linkedin_enabled = EXCLUDED.linkedin_enabled,
+  ai_matching_enabled = EXCLUDED.ai_matching_enabled,
+  advanced_research_enabled = EXCLUDED.advanced_research_enabled;
 
-UPDATE subscription_tiers SET
-  linkedin_enabled = false,
-  ai_matching_enabled = false,
-  advanced_research_enabled = false,
-  max_results_per_search = 15
-WHERE tier_name = 'standard';
-
-UPDATE subscription_tiers SET
-  linkedin_enabled = true,
-  ai_matching_enabled = true,
-  advanced_research_enabled = true,
-  max_results_per_search = 50
-WHERE tier_name = 'premium';
+-- Pro: €49.99/month, 50 searches + LinkedIn + AI matching + Advanced research (no result limits - returns all results found)
+INSERT INTO subscription_tiers (
+  tier_name, 
+  price, 
+  searches_per_month, 
+  description,
+  linkedin_enabled,
+  ai_matching_enabled,
+  advanced_research_enabled
+) VALUES
+  ('pro', 49.99, 50, 'LinkedIn contacts, AI matching, and advanced research', true, true, true)
+ON CONFLICT (tier_name) DO UPDATE SET
+  price = EXCLUDED.price,
+  searches_per_month = EXCLUDED.searches_per_month,
+  description = EXCLUDED.description,
+  linkedin_enabled = EXCLUDED.linkedin_enabled,
+  ai_matching_enabled = EXCLUDED.ai_matching_enabled,
+  advanced_research_enabled = EXCLUDED.advanced_research_enabled;
 
 -- Create indexes for performance
 CREATE INDEX IF NOT EXISTS idx_profiles_stripe_customer_id ON profiles(stripe_customer_id);
@@ -293,15 +303,13 @@ BEGIN
   FROM profiles
   WHERE user_id = p_user_id;
 
-  -- Calculate subscription searches remaining
+  -- Calculate subscription searches remaining (Truxel tiers)
   IF v_profile.subscription_tier = 'trial' THEN
     v_subscription_remaining := GREATEST(0, 5 - v_profile.trial_searches_used);
   ELSIF v_profile.subscription_tier = 'standard' THEN
-    v_subscription_remaining := GREATEST(0, 15 - v_profile.monthly_searches_used);
-  ELSIF v_profile.subscription_tier = 'pro' THEN
     v_subscription_remaining := GREATEST(0, 30 - v_profile.monthly_searches_used);
-  ELSIF v_profile.subscription_tier = 'premium' THEN
-    v_subscription_remaining := GREATEST(0, 100 - v_profile.monthly_searches_used);
+  ELSIF v_profile.subscription_tier = 'pro' THEN
+    v_subscription_remaining := GREATEST(0, 50 - v_profile.monthly_searches_used);
   ELSE
     v_subscription_remaining := 0;
   END IF;
@@ -324,7 +332,7 @@ RETURNS TABLE(
 DECLARE
   v_credit_record user_search_credits%ROWTYPE;
   v_profile profiles%ROWTYPE;
-  v_tier_limits jsonb := '{"trial": 5, "standard": 15, "pro": 30, "premium": 100}'::jsonb;
+  v_tier_limits jsonb := '{"trial": 5, "standard": 30, "pro": 50}'::jsonb;
 BEGIN
   -- Try to consume from purchased credits first (oldest first, FIFO)
   SELECT * INTO v_credit_record

@@ -6,6 +6,12 @@ import Constants from 'expo-constants';
 const supabaseUrl = Constants.expoConfig?.extra?.supabaseUrl || process.env.EXPO_PUBLIC_SUPABASE_URL!;
 const supabaseAnonKey = Constants.expoConfig?.extra?.supabaseAnonKey || process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY!;
 
+console.log('Supabase config:', {
+  url: supabaseUrl,
+  hasKey: !!supabaseAnonKey,
+  keyLength: supabaseAnonKey?.length
+});
+
 const ExpoSecureStoreAdapter = {
   getItem: (key: string) => {
     return SecureStore.getItemAsync(key);

@@ -16,24 +16,67 @@ interface ManageSubscriptionResponse {
 
 export const stripeService = {
   async getAvailableSubscriptionTiers(): Promise<SubscriptionTierData[]> {
-    const { data, error } = await supabase
-      .from('subscription_tiers')
-      .select('*')
-      .neq('tier_name', 'trial')
-      .order('price', { ascending: true });
+    console.log('stripeService: Starting getAvailableSubscriptionTiers...');
+    try {
+      // Use REST API directly as Supabase client query hangs
+      const SUPABASE_URL = process.env.EXPO_PUBLIC_SUPABASE_URL || 'https://upxocyomsfhqoflwibwn.supabase.co';
+      const SUPABASE_KEY = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY;
+      
+      const response = await fetch(
+        `${SUPABASE_URL}/rest/v1/subscription_tiers?tier_name=neq.trial&order=price.asc`,
+        {
+          headers: {
+            'apikey': SUPABASE_KEY!,
+            'Authorization': `Bearer ${SUPABASE_KEY}`,
+          },
+        }
+      );
 
-    if (error) throw error;
-    return data || [];
+      console.log('stripeService: Response status:', response.status);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      console.log('stripeService: Returning', data?.length || 0, 'tiers');
+      return data || [];
+    } catch (err) {
+      console.error('stripeService: Exception in getAvailableSubscriptionTiers:', err);
+      throw err;
+    }
   },
 
   async getAvailableSearchPacks(): Promise<AdditionalSearchPack[]> {
-    const { data, error } = await supabase
-      .from('additional_search_packs')
-      .select('*')
-      .order('price', { ascending: true });
+    console.log('stripeService: Starting getAvailableSearchPacks...');
+    try {
+      // Use REST API directly as Supabase client query hangs
+      const SUPABASE_URL = process.env.EXPO_PUBLIC_SUPABASE_URL || 'https://upxocyomsfhqoflwibwn.supabase.co';
+      const SUPABASE_KEY = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY;
+      
+      const response = await fetch(
+        `${SUPABASE_URL}/rest/v1/additional_search_packs?order=price.asc`,
+        {
+          headers: {
+            'apikey': SUPABASE_KEY!,
+            'Authorization': `Bearer ${SUPABASE_KEY}`,
+          },
+        }
+      );
 
-    if (error) throw error;
-    return data || [];
+      console.log('stripeService: Response status:', response.status);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      console.log('stripeService: Returning', data?.length || 0, 'packs');
+      return data || [];
+    } catch (err) {
+      console.error('stripeService: Exception in getAvailableSearchPacks:', err);
+      throw err;
+    }
   },
 
   async createCheckoutSession(

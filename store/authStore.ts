@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { Session, User } from '@supabase/supabase-js';
 import { Profile } from '@/types/database.types';
+import { supabase } from '@/lib/supabase';
 
 interface AuthState {
   session: Session | null;
@@ -12,10 +13,11 @@ interface AuthState {
   setUser: (user: User | null) => void;
   setProfile: (profile: Profile | null) => void;
   setIsLoading: (isLoading: boolean) => void;
+  refreshProfile: () => Promise<void>;
   reset: () => void;
 }
 
-export const useAuthStore = create<AuthState>((set) => ({
+export const useAuthStore = create<AuthState>((set, get) => ({
   session: null,
   user: null,
   profile: null,
@@ -32,6 +34,21 @@ export const useAuthStore = create<AuthState>((set) => ({
   setProfile: (profile) => set({ profile }),
 
   setIsLoading: (isLoading) => set({ isLoading }),
+
+  refreshProfile: async () => {
+    const { user } = get();
+    if (!user) return;
+
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('user_id', user.id)
+      .maybeSingle();
+
+    if (!error && data) {
+      set({ profile: data });
+    }
+  },
 
   reset: () => set({
     session: null,

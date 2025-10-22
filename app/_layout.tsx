@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useFrameworkReady } from '@/hooks/useFrameworkReady';
@@ -9,6 +9,7 @@ import Toast from 'react-native-toast-message';
 
 export default function RootLayout() {
   useFrameworkReady();
+  const [isNavigationReady, setIsNavigationReady] = useState(false);
 
   const router = useRouter();
   const segments = useSegments();
@@ -49,6 +50,19 @@ export default function RootLayout() {
   }, []);
 
   useEffect(() => {
+    // Wait for Stack to be mounted before attempting navigation
+    const timer = setTimeout(() => {
+      setIsNavigationReady(true);
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    if (!isNavigationReady) {
+      return;
+    }
+
     const inAuthGroup = segments[0] === '(auth)';
 
     if (!isAuthenticated && !inAuthGroup) {
@@ -56,7 +70,7 @@ export default function RootLayout() {
     } else if (isAuthenticated && inAuthGroup) {
       router.replace('/(tabs)');
     }
-  }, [isAuthenticated, segments]);
+  }, [isAuthenticated, segments, isNavigationReady]);
 
   return (
     <>
