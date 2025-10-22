@@ -41,11 +41,39 @@ const LANGUAGES = [
   { code: 'es', name: 'Español', flag: '🇪🇸' },
 ];
 
-const SUBSCRIPTION_TIERS = {
+const SUBSCRIPTION_TIERS: Record<string, any> = {
   trial: { name: 'Trial', searches: 5 },
-  standard: { name: 'Standard', searches: 15, price: 29.99 },
-  premium: { name: 'Premium', searches: 100, price: 199.99 },
+  standard: { name: 'Standard', searches: 30, price: 29.99 },
+  pro: { name: 'Pro', searches: 50, price: 49.99 },
 };
+
+const TRUCK_TYPES = [
+  { value: '3.5T', label: '3.5T Van' },
+  { value: '7.5T', label: '7.5T Truck' },
+  { value: '12T', label: '12T Truck' },
+  { value: '20T', label: '20T Truck' },
+  { value: 'Trailer', label: 'Trailer (13.6m)' },
+  { value: 'MegaTrailer', label: 'Mega Trailer' },
+  { value: 'Frigo', label: 'Refrigerated' },
+  { value: 'Tanker', label: 'Tanker' },
+  { value: 'Flatbed', label: 'Flatbed' },
+  { value: 'Other', label: 'Other' },
+];
+
+const SEARCH_RADIUS_OPTIONS = [
+  { value: 1, label: '1 km' },
+  { value: 5, label: '5 km' },
+  { value: 10, label: '10 km' },
+  { value: 25, label: '25 km' },
+  { value: 50, label: '50 km' },
+];
+
+const INDUSTRIES = [
+  'Automotive', 'Construction', 'Electronics', 'Food & Beverage', 'Furniture',
+  'Metalworking', 'Mining', 'Oil & Gas', 'Paper & Packaging', 'Pharmaceuticals',
+  'Plastics', 'Textiles', 'Timber & Wood', 'Retail', 'Agriculture',
+  'Chemicals', 'Logistics', 'Manufacturing', 'Waste Management', 'Other',
+];
 
 export default function ProfileScreen() {
   const { t } = useTranslation();
