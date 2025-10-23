@@ -96,20 +96,41 @@ export async function signInWithApple() {
 
 /**
  * Sign in with Google using OAuth
- * Note: This requires a custom dev client (not available in Expo Go)
+ * Uses expo-auth-session for browser-based OAuth flow
  */
 export async function signInWithGoogle() {
   try {
-    console.log('Google Sign In not yet implemented');
-    console.log('Requires custom dev client build (npx expo run:ios)');
+    console.log('Starting Google Sign In...');
     
-    // TODO: Implement Google Sign In with expo-auth-session
-    // This will require:
-    // 1. Google Cloud Console project setup
-    // 2. OAuth client ID for iOS
-    // 3. Custom dev client build
+    // Supabase handles the OAuth flow
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        // Redirect back to app after auth
+        redirectTo: 'truxel://',
+        // Request user info scopes
+        queryParams: {
+          access_type: 'offline',
+          prompt: 'consent',
+        },
+      },
+    });
+
+    if (error) {
+      console.error('Supabase Google sign-in error:', error);
+      throw error;
+    }
+
+    console.log('Google OAuth initiated:', {
+      hasUrl: !!data.url,
+      provider: data.provider,
+    });
+
+    // Note: The actual sign-in happens in browser
+    // User will be redirected back to app after authentication
+    // Session will be automatically created by Supabase
     
-    throw new Error('Google Sign In requires a custom development build. Please use Apple Sign In or email/password for now.');
+    return data;
   } catch (error) {
     console.error('Google Sign In error:', error);
     throw error;
@@ -129,4 +150,13 @@ export async function isAppleAuthAvailable(): Promise<boolean> {
   } catch {
     return false;
   }
+}
+
+/**
+ * Check if Google Sign In is available
+ * Google OAuth works on all platforms via browser
+ */
+export function isGoogleAuthAvailable(): boolean {
+  // Google OAuth via browser works on all platforms
+  return true;
 }

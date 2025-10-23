@@ -15,9 +15,10 @@ import * as AppleAuthentication from 'expo-apple-authentication';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
 import { authService } from '@/services/authService';
-import { signInWithApple, isAppleAuthAvailable } from '@/services/oauthService';
+import { signInWithApple, signInWithGoogle, isAppleAuthAvailable, isGoogleAuthAvailable } from '@/services/oauthService';
 import Toast from 'react-native-toast-message';
 import { Truck } from 'lucide-react-native';
+import { Linking } from 'react-native';
 
 interface LoginForm {
   email: string;
@@ -29,6 +30,7 @@ export default function LoginScreen() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [isAppleAvailable, setIsAppleAvailable] = useState(false);
+  const [isGoogleAvailable, setIsGoogleAvailable] = useState(false);
 
   const {
     control,
@@ -37,12 +39,26 @@ export default function LoginScreen() {
   } = useForm<LoginForm>();
 
   useEffect(() => {
-    checkAppleAuth();
+    checkOAuthProviders();
+    
+    // Listen for deep links (OAuth redirect)
+    const subscription = Linking.addEventListener('url', handleDeepLink);
+    
+    return () => {
+      subscription.remove();
+    };
   }, []);
 
-  const checkAppleAuth = async () => {
-    const available = await isAppleAuthAvailable();
-    setIsAppleAvailable(available);
+  const checkOAuthProviders = async () => {
+    const appleAvailable = await isAppleAuthAvailable();
+    const googleAvailable = isGoogleAuthAvailable();
+    setIsAppleAvailable(appleAvailable);
+    setIsGoogleAvailable(googleAvailable);
+  };
+
+  const handleDeepLink = ({ url }: { url: string }) => {
+    console.log('Deep link received:', url);
+    // Supabase will handle the OAuth callback automatically
   };
 
   const onSubmit = async (data: LoginForm) => {
@@ -73,6 +89,32 @@ export default function LoginScreen() {
         Toast.show({
           type: 'success',
           text1: t('auth.login_success'),
+        });
+      }
+    } catch (error: any) {
+      Toast.show({
+        type: 'error',
+        text1: t('common.error'),
+        text2: error.message,
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    try {
+      setIsLoading(true);
+      const result = await signInWithGoogle();
+      
+      if (result?.url) {
+        // Open browser for OAuth
+        await Linking.openURL(result.url);
+        
+        Toast.show({
+          type: 'info',
+          text1: t('auth.redirecting'),
+          text2: t('auth.complete_in_browser'),
         });
       }
     } catch (error: any) {
@@ -174,6 +216,22 @@ export default function LoginScreen() {
             />
           )}
 
+          {/* Google Sign In Button */}
+          {isGoogleAvailable && (
+            <TouchableOpacity
+              style={styles.googleButton}
+              onPress={handleGoogleSignIn}
+              disabled={isLoading}
+            >
+              <View style={styles.googleButtonContent}>
+                <Text style={styles.googleIcon}>G</Text>
+                <Text style={styles.googleButtonText}>
+                  {t('auth.sign_in_with_google')}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          )}
+
           <Button
             title={t('auth.no_account')}
             onPress={() => router.push('/(auth)/register')}
@@ -237,6 +295,32 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 50,
     marginBottom: 16,
+  },
+  googleButton: {
+    width: '100%',
+    height: 50,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 8,
+    borderWidth: 1.5,
+    borderColor: '#E2E8F0',
+    marginBottom: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  googleButtonContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  googleIcon: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#4285F4',
+  },
+  googleButtonText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#1E293B',
   },
   registerButton: {
     marginTop: 8,
