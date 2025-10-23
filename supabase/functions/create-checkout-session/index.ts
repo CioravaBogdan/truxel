@@ -16,6 +16,7 @@ interface CheckoutRequest {
   type: "subscription" | "search_pack";
   successUrl: string;
   cancelUrl: string;
+  couponCode?: string; // Optional coupon code
 }
 
 Deno.serve(async (req: Request) => {
@@ -72,7 +73,9 @@ Deno.serve(async (req: Request) => {
     }
 
     const body: CheckoutRequest = await req.json();
-    const { priceId, type, successUrl, cancelUrl } = body;
+    const { priceId, type, successUrl, cancelUrl, couponCode } = body;
+
+    console.log('create-checkout-session: Request params', { type, priceId, couponCode });
 
     let customerId = profile.stripe_customer_id;
 
@@ -155,6 +158,12 @@ Deno.serve(async (req: Request) => {
       'metadata[profile_id]': profile.id,
       'metadata[type]': type,
     });
+
+    // Apply coupon if provided
+    if (couponCode) {
+      console.log('Applying coupon code:', couponCode);
+      sessionData.append('discounts[0][coupon]', couponCode.toUpperCase());
+    }
 
     if (type === "subscription") {
       sessionData.append('subscription_data[metadata][user_id]', user.id);

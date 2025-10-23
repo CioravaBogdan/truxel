@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Alert,
+  TextInput,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -25,6 +26,7 @@ import {
   TrendingUp,
   TrendingDown,
   XCircle,
+  Tag,
 } from 'lucide-react-native';
 import { SubscriptionTierData, AdditionalSearchPack } from '@/types/database.types';
 import * as WebBrowser from 'expo-web-browser';
@@ -41,6 +43,12 @@ export default function PricingScreen() {
   const [isLoading, setIsLoading] = useState(true);
   const [processingPriceId, setProcessingPriceId] = useState<string | null>(null);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
+  
+  // Coupon state
+  const [couponCode, setCouponCode] = useState('');
+  const [validatingCoupon, setValidatingCoupon] = useState(false);
+  const [validatedCoupon, setValidatedCoupon] = useState<any>(null);
+  const [couponError, setCouponError] = useState<string | null>(null);
 
   useEffect(() => {
     console.log('PricingScreen mounted');
@@ -80,7 +88,73 @@ export default function PricingScreen() {
     }
   };
 
-  const handleSubscribe = async (tier: SubscriptionTierData) => {
+  const handleValidateCoupon = async () => {
+    if (!couponCode.trim()) {
+      Toast.show({
+        type: 'error',
+        text1: t('common.error'),
+        text2: 'Please enter a coupon code',
+      });
+      return;
+    }
+
+    if (!session?.access_token) {
+      Toast.show({
+        type: 'error',
+        text1: t('common.error'),
+        text2: 'Not authenticated',
+      });
+      return;
+    }
+
+    try {
+      setValidatingCoupon(true);
+      setCouponError(null);
+      console.log('Validating coupon:', couponCode);
+
+      const result = await stripeService.validateCoupon(
+        couponCode,
+        session.access_token
+      );
+
+      if (result.valid && result.coupon) {
+        setValidatedCoupon(result.coupon);
+        setCouponError(null);
+        Toast.show({
+          type: 'success',
+          text1: 'Coupon Applied!',
+          text2: result.coupon.discount_text,
+        });
+      } else {
+        setValidatedCoupon(null);
+        setCouponError(result.error || 'Invalid coupon code');
+        Toast.show({
+          type: 'error',
+          text1: 'Invalid Coupon',
+          text2: result.error || 'This coupon code is not valid',
+        });
+      }
+    } catch (error: any) {
+      console.error('Coupon validation error:', error);
+      setValidatedCoupon(null);
+      setCouponError(error.message || 'Failed to validate coupon');
+      Toast.show({
+        type: 'error',
+        text1: t('common.error'),
+        text2: error.message || 'Failed to validate coupon',
+      });
+    } finally {
+      setValidatingCoupon(false);
+    }
+  };
+
+  const handleRemoveCoupon = () => {
+    setCouponCode('');
+    setValidatedCoupon(null);
+    setCouponError(null);
+  };
+
+  const handleSubscribe = async (tier: SubscriptionTierData) {
     if (!tier.stripe_price_id) {
       Toast.show({
         type: 'error',
@@ -108,7 +182,8 @@ export default function PricingScreen() {
         'subscription',
         'truxel://subscription-success',
         'truxel://subscription-cancelled',
-        session.access_token
+        session.access_token,
+        validatedCoupon?.id // Pass coupon code if validated
       );
 
       console.log('handleSubscribe: Opening checkout URL:', url);
@@ -153,7 +228,8 @@ export default function PricingScreen() {
         'search_pack',
         'truxel://purchase-success',
         'truxel://purchase-cancelled',
-        session.access_token
+        session.access_token,
+        validatedCoupon?.id // Pass coupon code if validated
       );
 
       console.log('handleBuySearchPack: Opening checkout URL:', url);
@@ -443,6 +519,53 @@ export default function PricingScreen() {
             </View>
           </Card>
         )}
+
+        {/* Coupon Code Section */}
+        <Card style={styles.couponCard}>
+          <View style={styles.couponHeader}>
+            <Tag size={24} color="#2563EB" />
+            <Text style={styles.couponTitle}>Have a coupon code?</Text>
+          </View>
+          
+          {!validatedCoupon ? (
+            <View style={styles.couponInputContainer}>
+              <TextInput
+                style={styles.couponInput}
+                placeholder="Enter coupon code"
+                value={couponCode}
+                onChangeText={(text) => {
+                  setCouponCode(text.toUpperCase());
+                  setCouponError(null);
+                }}
+                autoCapitalize="characters"
+                editable={!validatingCoupon}
+              />
+              <Button
+                title={validatingCoupon ? 'Validating...' : 'Apply'}
+                onPress={handleValidateCoupon}
+                loading={validatingCoupon}
+                variant="primary"
+                style={styles.couponButton}
+              />
+            </View>
+          ) : (
+            <View style={styles.couponAppliedContainer}>
+              <View style={styles.couponAppliedInfo}>
+                <Check size={20} color="#10B981" />
+                <Text style={styles.couponAppliedText}>
+                  Coupon Applied: {validatedCoupon.discount_text}
+                </Text>
+              </View>
+              <TouchableOpacity onPress={handleRemoveCoupon}>
+                <XCircle size={20} color="#EF4444" />
+              </TouchableOpacity>
+            </View>
+          )}
+          
+          {couponError && (
+            <Text style={styles.couponError}>{couponError}</Text>
+          )}
+        </Card>
 
         <View style={styles.tiersContainer}>
           {tiers.map((tier) => (
@@ -784,5 +907,67 @@ const styles = StyleSheet.create({
     color: '#64748B',
     textAlign: 'center',
     lineHeight: 18,
+  },
+  // Coupon styles
+  couponCard: {
+    padding: 20,
+    marginBottom: 24,
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+  },
+  couponHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    marginBottom: 16,
+  },
+  couponTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#1E293B',
+  },
+  couponInputContainer: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  couponInput: {
+    flex: 1,
+    height: 48,
+    borderWidth: 1,
+    borderColor: '#CBD5E1',
+    borderRadius: 8,
+    paddingHorizontal: 16,
+    fontSize: 16,
+    color: '#1E293B',
+    backgroundColor: '#FFFFFF',
+  },
+  couponButton: {
+    minWidth: 100,
+  },
+  couponAppliedContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 12,
+    backgroundColor: '#ECFDF5',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#10B981',
+  },
+  couponAppliedInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  couponAppliedText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#059669',
+  },
+  couponError: {
+    fontSize: 12,
+    color: '#EF4444',
+    marginTop: 8,
   },
 });

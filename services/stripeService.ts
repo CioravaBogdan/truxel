@@ -79,14 +79,54 @@ export const stripeService = {
     }
   },
 
+  async validateCoupon(
+    couponCode: string,
+    accessToken?: string
+  ): Promise<{ valid: boolean; coupon?: any; error?: string }> {
+    console.log('stripeService: validateCoupon called', { couponCode });
+
+    if (!accessToken) {
+      throw new Error('Not authenticated - access token required');
+    }
+
+    try {
+      const response = await fetch(
+        `${SUPABASE_URL}/functions/v1/validate-coupon`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify({ couponCode }),
+        }
+      );
+
+      console.log('stripeService: Validate coupon response status:', response.status);
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to validate coupon');
+      }
+
+      const data = await response.json();
+      console.log('stripeService: Coupon validation result:', data);
+      return data;
+    } catch (error: any) {
+      console.error('stripeService: Validate coupon error:', error);
+      throw error;
+    }
+  },
+
   async createCheckoutSession(
     priceId: string,
     type: 'subscription' | 'search_pack',
     successUrl: string,
     cancelUrl: string,
-    accessToken?: string
+    accessToken?: string,
+    couponCode?: string
   ): Promise<CheckoutSessionResponse> {
-    console.log('stripeService: createCheckoutSession called', { priceId, type });
+    console.log('stripeService: createCheckoutSession called', { priceId, type, couponCode });
 
     if (!accessToken) {
       throw new Error('Not authenticated - access token required');
@@ -105,6 +145,7 @@ export const stripeService = {
           type,
           successUrl,
           cancelUrl,
+          couponCode, // Include coupon code if provided
         }),
       }
     );
