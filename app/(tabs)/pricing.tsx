@@ -307,18 +307,23 @@ export default function PricingScreen() {
           text: t('subscription.upgrade'),
           onPress: async () => {
             try {
-              setActionLoading('upgrade');
-              console.log('handleUpgrade: Upgrading to', tier.tier_name);
+              setProcessingPriceId(tier.stripe_price_id);
+              console.log('handleUpgrade: Creating Stripe Checkout for upgrade to', tier.tier_name);
               
-              await stripeService.upgradeSubscription(tier.stripe_price_id!, session.access_token);
+              // FIX: Use Stripe Checkout for upgrade (shows payment confirmation, no instant charge)
+              const { url } = await stripeService.createCheckoutSession(
+                tier.stripe_price_id!,
+                'subscription', // This will be an upgrade, Stripe handles proration
+                'truxel://subscription-success',
+                'truxel://subscription-cancelled',
+                session.access_token,
+                validatedCoupon?.id
+              );
+
+              console.log('handleUpgrade: Opening Stripe Checkout:', url);
+              await WebBrowser.openBrowserAsync(url);
               
-              Toast.show({
-                type: 'success',
-                text1: t('subscription.upgrade_success_title'),
-                text2: t('subscription.upgrade_success_message'),
-              });
-              await loadPricingData();
-              await refreshProfile();
+              // Profile will be updated by webhook after successful payment
             } catch (error: any) {
               console.error('handleUpgrade error:', error);
               Toast.show({
@@ -327,7 +332,7 @@ export default function PricingScreen() {
                 text2: error.message,
               });
             } finally {
-              setActionLoading(null);
+              setProcessingPriceId(null);
             }
           },
         },
@@ -705,6 +710,14 @@ export default function PricingScreen() {
                     />
                   )}
                 </View>
+              ) : profile?.subscription_status === 'cancelled' ? (
+                // FIX: If cancelled, show Subscribe button (not Upgrade)
+                <Button
+                  title={t('pricing.subscribe')}
+                  onPress={() => handleSubscribe(tier)}
+                  loading={processingPriceId === tier.stripe_price_id}
+                  variant="primary"
+                />
               ) : (
                 <Button
                   title={

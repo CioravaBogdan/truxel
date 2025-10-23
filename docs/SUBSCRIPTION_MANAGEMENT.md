@@ -1,14 +1,56 @@
 # Subscription Management - Complete Implementation Guide
 
-**Status**: ✅ IMPLEMENTATION COMPLETE (October 22, 2025)
+**Status**: ✅ IMPLEMENTATION COMPLETE + BUG FIX APPLIED (October 23, 2025)
+
+**Latest Update**: Fixed "Invalid array" error in upgrade/downgrade operations (v3 deployed)
 
 ## Overview
 
 Truxel app now supports complete subscription management:
-- **Cancel** subscription (retains access until period end)
-- **Reactivate** cancelled subscription
-- **Upgrade** to higher tier (immediate with proration)
-- **Downgrade** to lower tier (effective at period end)
+- **Cancel** subscription (retains access until period end) - ✅ WORKING
+- **Reactivate** cancelled subscription - ✅ WORKING
+- **Upgrade** to higher tier (immediate with proration) - ✅ FIXED (v3)
+- **Downgrade** to lower tier (effective at period end) - ✅ FIXED (v3)
+
+---
+
+## Recent Bug Fix (October 23, 2025)
+
+### Problem
+Upgrade and downgrade operations were failing with error:
+```
+Error: Invalid array
+Status: 500 (Internal Server Error)
+```
+
+**Root Cause**: The Edge Function was attempting to pass nested objects/arrays to `URLSearchParams`, which only accepts flat key-value pairs.
+
+**Problematic Code**:
+```typescript
+const updateParams: any = {
+  items: [
+    {
+      id: subscriptionItemId,
+      price: newPriceId,
+    },
+  ],
+};
+body: new URLSearchParams(updateParams) // ❌ FAILS - cannot serialize array
+```
+
+### Solution
+Manually serialize nested parameters using Stripe's bracket notation:
+
+```typescript
+const updateParams = new URLSearchParams();
+updateParams.append("items[0][id]", subscriptionItemId);
+updateParams.append("items[0][price]", newPriceId);
+updateParams.append("proration_behavior", action === "upgrade" ? "always_invoice" : "none");
+```
+
+**Deployment**: manage-subscription v3 (ID: `bbf27e2d-cd75-404b-a0e5-d68383d5dc8d`)
+
+**Status**: ✅ ACTIVE - Upgrade and downgrade now functional
 
 ---
 
@@ -18,7 +60,7 @@ Truxel app now supports complete subscription management:
 
 **Location**: `supabase/functions/manage-subscription/index.ts`
 
-**Status**: ✅ Deployed & Active
+**Status**: ✅ v3 Deployed & Active (Bug Fix Applied)
 
 **Actions Supported**:
 ```typescript

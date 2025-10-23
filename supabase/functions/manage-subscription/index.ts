@@ -212,6 +212,7 @@ Deno.serve(async (req: Request) => {
             .update({
               subscription_tier: newTier.tier_name,
               monthly_searches_used: 0,
+              available_search_credits: newTier.searches_per_month, // FIX: Update search credits
             })
             .eq("user_id", user.id);
         }
