@@ -53,7 +53,44 @@ export default function PricingScreen() {
   useEffect(() => {
     console.log('PricingScreen mounted');
     loadPricingData();
+    checkSubscriptionStatus(); // Check if subscription was just activated
   }, []);
+
+  // Check subscription status when returning to screen (e.g., after payment)
+  useEffect(() => {
+    const checkInterval = setInterval(() => {
+      checkSubscriptionStatus();
+    }, 5000); // Check every 5 seconds
+
+    return () => clearInterval(checkInterval);
+  }, [profile?.subscription_tier]);
+
+  const checkSubscriptionStatus = async () => {
+    if (!profile || !session) return;
+
+    try {
+      // Refresh profile to get latest subscription status
+      await refreshProfile?.();
+      
+      // If subscription tier changed from trial to paid, show success message
+      const currentProfile = authStore?.profile;
+      if (currentProfile && currentProfile.subscription_tier !== 'trial' && currentProfile.subscription_tier !== profile.subscription_tier) {
+        console.log('Subscription status changed:', {
+          from: profile.subscription_tier,
+          to: currentProfile.subscription_tier,
+        });
+
+        Toast.show({
+          type: 'success',
+          text1: t('subscription.activated'),
+          text2: `Welcome to ${currentProfile.subscription_tier} tier! 🎉`,
+          visibilityTime: 5000,
+        });
+      }
+    } catch (error) {
+      console.error('Error checking subscription status:', error);
+    }
+  };
 
   const loadPricingData = async () => {
     try {

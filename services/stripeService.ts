@@ -132,6 +132,11 @@ export const stripeService = {
       throw new Error('Not authenticated - access token required');
     }
 
+    // Use HTTPS URLs instead of custom scheme for better compatibility
+    // These will show a simple HTML page with auto-redirect back to app
+    const finalSuccessUrl = 'https://upxocyomsfhqoflwibwn.supabase.co/functions/v1/stripe-redirect?status=success&type=' + type;
+    const finalCancelUrl = 'https://upxocyomsfhqoflwibwn.supabase.co/functions/v1/stripe-redirect?status=cancelled&type=' + type;
+
     const response = await fetch(
       `${SUPABASE_URL}/functions/v1/create-checkout-session`,
       {
@@ -143,8 +148,8 @@ export const stripeService = {
         body: JSON.stringify({
           priceId,
           type,
-          successUrl,
-          cancelUrl,
+          successUrl: finalSuccessUrl,
+          cancelUrl: finalCancelUrl,
           couponCode, // Include coupon code if provided
         }),
       }

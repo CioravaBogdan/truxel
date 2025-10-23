@@ -58,42 +58,96 @@ async function verifyStripeSignature(payload: string, signature: string): Promis
 async function handleInvoicePaid(invoice: any, supabase: any) {
   console.log("Handling invoice.paid", invoice.id);
 
-  const customerId = invoice.customer;
-  const subscriptionId = invoice.subscription;
-  const amountPaid = invoice.amount_paid / 100;
+  try {
+    const customerId = invoice.customer;
+    const subscriptionId = invoice.subscription;
+    const amountPaid = invoice.amount_paid / 100;
 
-  const { data: profile, error: profileError } = await supabase
-    .from("profiles")
-    .select("*")
-    .eq("stripe_customer_id", customerId)
-    .maybeSingle();
+    console.log("handleInvoicePaid: Processing invoice", {
+      invoiceId: invoice.id,
+      customerId,
+      subscriptionId,
+      amountPaid,
+    });
 
-  if (profileError || !profile) {
-    console.error("Profile not found for customer:", customerId);
-    return;
-  }
-
-  if (subscriptionId) {
-    const response = await fetch(
-      `https://api.stripe.com/v1/subscriptions/${subscriptionId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${STRIPE_SECRET_KEY}`,
-        },
-      }
-    );
-
-    const subscription = await response.json();
-    const priceId = subscription.items.data[0]?.price.id;
-
-    const { data: tier } = await supabase
-      .from("subscription_tiers")
+    const { data: profile, error: profileError } = await supabase
+      .from("profiles")
       .select("*")
-      .eq("stripe_price_id", priceId)
+      .eq("stripe_customer_id", customerId)
       .maybeSingle();
 
-    if (tier) {
-      await supabase
+    if (profileError) {
+      console.error("handleInvoicePaid: Profile query error:", profileError);
+      throw profileError;
+    }
+
+    if (!profile) {
+      console.error("handleInvoicePaid: Profile not found for customer:", customerId);
+      throw new Error(`Profile not found for customer: ${customerId}`);
+    }
+
+    console.log("handleInvoicePaid: Found profile:", {
+      userId: profile.user_id,
+      email: profile.email,
+      currentTier: profile.subscription_tier,
+    });
+
+    if (subscriptionId) {
+      console.log("handleInvoicePaid: Fetching subscription from Stripe:", subscriptionId);
+      
+      const response = await fetch(
+        `https://api.stripe.com/v1/subscriptions/${subscriptionId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${STRIPE_SECRET_KEY}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("handleInvoicePaid: Stripe API error:", {
+          status: response.status,
+          statusText: response.statusText,
+          error: errorText,
+        });
+        throw new Error(`Stripe API error: ${response.status} - ${errorText}`);
+      }
+
+      const subscription = await response.json();
+      console.log("handleInvoicePaid: Got subscription:", {
+        id: subscription.id,
+        status: subscription.status,
+        priceId: subscription.items.data[0]?.price.id,
+      });
+
+      const priceId = subscription.items.data[0]?.price.id;
+
+      console.log("handleInvoicePaid: Looking up tier for price:", priceId);
+
+      const { data: tier, error: tierError } = await supabase
+        .from("subscription_tiers")
+        .select("*")
+        .eq("stripe_price_id", priceId)
+        .maybeSingle();
+
+      if (tierError) {
+        console.error("handleInvoicePaid: Tier query error:", tierError);
+        throw tierError;
+      }
+
+      if (!tier) {
+        console.error("handleInvoicePaid: Tier not found for price:", priceId);
+        throw new Error(`Tier not found for price: ${priceId}`);
+      }
+
+      console.log("handleInvoicePaid: Found tier:", {
+        tierName: tier.tier_name,
+        price: tier.price,
+      });
+
+      console.log("handleInvoicePaid: Updating profile...");
+      const { error: updateError } = await supabase
         .from("profiles")
         .update({
           subscription_tier: tier.tier_name,
@@ -106,7 +160,15 @@ async function handleInvoicePaid(invoice: any, supabase: any) {
         })
         .eq("user_id", profile.user_id);
 
-      await supabase.from("transactions").insert({
+      if (updateError) {
+        console.error("handleInvoicePaid: Profile update error:", updateError);
+        throw updateError;
+      }
+
+      console.log("handleInvoicePaid: Profile updated successfully");
+
+      console.log("handleInvoicePaid: Creating transaction...");
+      const { error: transactionError } = await supabase.from("transactions").insert({
         user_id: profile.user_id,
         transaction_type: "subscription",
         tier_or_pack_name: tier.tier_name,
@@ -115,18 +177,43 @@ async function handleInvoicePaid(invoice: any, supabase: any) {
         stripe_subscription_id: subscriptionId,
         status: "completed",
       });
-    }
-  } else {
-    const priceId = invoice.lines.data[0]?.price.id;
 
-    const { data: searchPack } = await supabase
-      .from("additional_search_packs")
-      .select("*")
-      .eq("stripe_price_id", priceId)
-      .maybeSingle();
+      if (transactionError) {
+        console.error("handleInvoicePaid: Transaction insert error:", transactionError);
+        throw transactionError;
+      }
 
-    if (searchPack) {
-      const { data: transaction } = await supabase
+      console.log("handleInvoicePaid: Transaction created successfully");
+    } else {
+      // Search pack purchase (no subscription)
+      console.log("handleInvoicePaid: Processing search pack purchase");
+      
+      const priceId = invoice.lines.data[0]?.price.id;
+      console.log("handleInvoicePaid: Looking up search pack for price:", priceId);
+
+      const { data: searchPack, error: packError } = await supabase
+        .from("additional_search_packs")
+        .select("*")
+        .eq("stripe_price_id", priceId)
+        .maybeSingle();
+
+      if (packError) {
+        console.error("handleInvoicePaid: Search pack query error:", packError);
+        throw packError;
+      }
+
+      if (!searchPack) {
+        console.error("handleInvoicePaid: Search pack not found for price:", priceId);
+        throw new Error(`Search pack not found for price: ${priceId}`);
+      }
+
+      console.log("handleInvoicePaid: Found search pack:", {
+        packName: searchPack.pack_name,
+        searches: searchPack.searches_count,
+      });
+
+      console.log("handleInvoicePaid: Creating transaction for search pack...");
+      const { data: transaction, error: transactionError } = await supabase
         .from("transactions")
         .insert({
           user_id: profile.user_id,
@@ -140,23 +227,56 @@ async function handleInvoicePaid(invoice: any, supabase: any) {
         .select()
         .single();
 
-      if (transaction) {
-        await supabase.from("user_search_credits").insert({
-          user_id: profile.user_id,
-          credits_purchased: searchPack.searches_count,
-          credits_remaining: searchPack.searches_count,
-          purchase_transaction_id: transaction.id,
-          expires_at: null,
-        });
-
-        await supabase
-          .from("profiles")
-          .update({
-            available_search_credits: profile.available_search_credits + searchPack.searches_count,
-          })
-          .eq("user_id", profile.user_id);
+      if (transactionError) {
+        console.error("handleInvoicePaid: Transaction insert error:", transactionError);
+        throw transactionError;
       }
+
+      if (!transaction) {
+        console.error("handleInvoicePaid: Transaction not returned after insert");
+        throw new Error("Transaction not returned after insert");
+      }
+
+      console.log("handleInvoicePaid: Transaction created, adding search credits...");
+
+      const { error: creditsError } = await supabase.from("user_search_credits").insert({
+        user_id: profile.user_id,
+        credits_purchased: searchPack.searches_count,
+        credits_remaining: searchPack.searches_count,
+        purchase_transaction_id: transaction.id,
+        expires_at: null,
+      });
+
+      if (creditsError) {
+        console.error("handleInvoicePaid: Credits insert error:", creditsError);
+        throw creditsError;
+      }
+
+      console.log("handleInvoicePaid: Updating profile with new credits...");
+      const { error: profileUpdateError } = await supabase
+        .from("profiles")
+        .update({
+          available_search_credits: profile.available_search_credits + searchPack.searches_count,
+        })
+        .eq("user_id", profile.user_id);
+
+      if (profileUpdateError) {
+        console.error("handleInvoicePaid: Profile update error:", profileUpdateError);
+        throw profileUpdateError;
+      }
+
+      console.log("handleInvoicePaid: Search pack processed successfully");
     }
+
+    console.log("handleInvoicePaid: Completed successfully for invoice:", invoice.id);
+  } catch (error) {
+    console.error("handleInvoicePaid: FATAL ERROR:", error);
+    console.error("handleInvoicePaid: Error details:", {
+      message: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+      invoiceId: invoice.id,
+    });
+    throw error; // Re-throw to mark webhook as failed
   }
 }
 
@@ -348,8 +468,19 @@ Deno.serve(async (req: Request) => {
     );
   } catch (error) {
     console.error("Webhook error:", error);
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
+    const errorStack = error instanceof Error ? error.stack : undefined;
+    
+    console.error("Webhook error details:", {
+      message: errorMessage,
+      stack: errorStack,
+    });
+
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ 
+        error: errorMessage,
+        details: errorStack,
+      }),
       {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
