@@ -60,18 +60,37 @@ export const authService = {
 
   async getProfile(userId: string): Promise<Profile | null> {
     console.log('authService.getProfile called with userId:', userId);
-    const { data, error } = await supabase
-      .from('profiles')
-      .select('*')
-      .eq('user_id', userId)
-      .maybeSingle();
+    
+    try {
+      // Use REST API directly instead of Supabase client (fixes mobile timeout issue)
+      const SUPABASE_URL = process.env.EXPO_PUBLIC_SUPABASE_URL;
+      const SUPABASE_KEY = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY;
 
-    if (error) {
+      const response = await fetch(
+        `${SUPABASE_URL}/rest/v1/profiles?user_id=eq.${userId}&select=*`,
+        {
+          headers: {
+            'apikey': SUPABASE_KEY!,
+            'Authorization': `Bearer ${SUPABASE_KEY}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      if (!response.ok) {
+        console.error('authService.getProfile HTTP error:', response.status);
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log('authService.getProfile success, data:', data);
+      
+      // REST API returns array, we need first item
+      return data && data.length > 0 ? data[0] : null;
+    } catch (error) {
       console.error('authService.getProfile error:', error);
       throw error;
     }
-    console.log('authService.getProfile success, data:', data);
-    return data;
   },
 
   async updateProfile(userId: string, updates: Partial<Profile>) {
