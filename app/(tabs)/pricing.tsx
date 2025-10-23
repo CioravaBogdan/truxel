@@ -481,6 +481,18 @@ export default function PricingScreen() {
     return profile?.subscription_tier === tierName;
   };
 
+  const calculateDiscountedPrice = (originalPrice: number) => {
+    if (!validatedCoupon) return originalPrice;
+
+    if (validatedCoupon.percent_off) {
+      return originalPrice * (1 - validatedCoupon.percent_off / 100);
+    } else if (validatedCoupon.amount_off) {
+      const discountAmount = validatedCoupon.amount_off / 100; // Stripe stores in cents
+      return Math.max(0, originalPrice - discountAmount);
+    }
+    return originalPrice;
+  };
+
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
@@ -590,12 +602,33 @@ export default function PricingScreen() {
                 <Text style={styles.tierName}>
                   {t(`pricing.tier_${tier.tier_name}`)}
                 </Text>
-                <Text style={styles.tierPrice}>
-                  €{tier.price.toFixed(2)}
-                  <Text style={styles.tierPriceUnit}>
-                    /{t('pricing.month')}
+                
+                {validatedCoupon ? (
+                  <View style={styles.priceWithDiscountContainer}>
+                    <Text style={styles.originalPrice}>
+                      €{tier.price.toFixed(2)}
+                    </Text>
+                    <Text style={styles.tierPrice}>
+                      €{calculateDiscountedPrice(tier.price).toFixed(2)}
+                      <Text style={styles.tierPriceUnit}>
+                        /{t('pricing.month')}
+                      </Text>
+                    </Text>
+                    <View style={styles.discountBadge}>
+                      <Text style={styles.discountBadgeText}>
+                        {validatedCoupon.discount_text}
+                      </Text>
+                    </View>
+                  </View>
+                ) : (
+                  <Text style={styles.tierPrice}>
+                    €{tier.price.toFixed(2)}
+                    <Text style={styles.tierPriceUnit}>
+                      /{t('pricing.month')}
+                    </Text>
                   </Text>
-                </Text>
+                )}
+                
                 {tier.description && (
                   <Text style={styles.tierDescription}>{tier.description}</Text>
                 )}
@@ -688,7 +721,19 @@ export default function PricingScreen() {
                     <Text style={styles.packName}>
                       {pack.searches_count} {t('pricing.searches')}
                     </Text>
-                    <Text style={styles.packPrice}>€{pack.price.toFixed(2)}</Text>
+                    
+                    {validatedCoupon ? (
+                      <View style={styles.packPriceContainer}>
+                        <Text style={styles.packOriginalPrice}>
+                          €{pack.price.toFixed(2)}
+                        </Text>
+                        <Text style={styles.packPrice}>
+                          €{calculateDiscountedPrice(typeof pack.price === 'string' ? parseFloat(pack.price) : pack.price).toFixed(2)}
+                        </Text>
+                      </View>
+                    ) : (
+                      <Text style={styles.packPrice}>€{pack.price.toFixed(2)}</Text>
+                    )}
                   </View>
 
                   <Button
@@ -969,5 +1014,40 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#EF4444',
     marginTop: 8,
+  },
+  // Price with discount styles
+  priceWithDiscountContainer: {
+    alignItems: 'center',
+    marginTop: 8,
+  },
+  originalPrice: {
+    fontSize: 18,
+    fontWeight: '400',
+    color: '#94A3B8',
+    textDecorationLine: 'line-through',
+    marginBottom: 4,
+  },
+  discountBadge: {
+    backgroundColor: '#10B981',
+    paddingHorizontal: 12,
+    paddingVertical: 4,
+    borderRadius: 12,
+    marginTop: 8,
+  },
+  discountBadgeText: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: '#FFFFFF',
+  },
+  // Search pack discount styles
+  packPriceContainer: {
+    alignItems: 'flex-end',
+  },
+  packOriginalPrice: {
+    fontSize: 16,
+    fontWeight: '400',
+    color: '#94A3B8',
+    textDecorationLine: 'line-through',
+    marginBottom: 2,
   },
 });
