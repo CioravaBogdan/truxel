@@ -171,19 +171,15 @@ Deno.serve(async (req: Request) => {
         const subscription = await subscriptionResponse.json();
         const subscriptionItemId = subscription.items.data[0].id;
 
-        const updateParams: any = {
-          items: [
-            {
-              id: subscriptionItemId,
-              price: newPriceId,
-            },
-          ],
-        };
+        // Stripe requires specific format for nested parameters
+        const updateParams = new URLSearchParams();
+        updateParams.append("items[0][id]", subscriptionItemId);
+        updateParams.append("items[0][price]", newPriceId);
 
         if (action === "upgrade") {
-          updateParams.proration_behavior = "always_invoice";
+          updateParams.append("proration_behavior", "always_invoice");
         } else {
-          updateParams.proration_behavior = "none";
+          updateParams.append("proration_behavior", "none");
         }
 
         const updateResponse = await fetch(
@@ -194,7 +190,7 @@ Deno.serve(async (req: Request) => {
               Authorization: `Bearer ${STRIPE_SECRET_KEY}`,
               "Content-Type": "application/x-www-form-urlencoded",
             },
-            body: new URLSearchParams(updateParams),
+            body: updateParams,
           }
         );
 
