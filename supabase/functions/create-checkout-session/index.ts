@@ -77,29 +77,41 @@ Deno.serve(async (req: Request) => {
     let customerId = profile.stripe_customer_id;
 
     if (!customerId) {
+      console.log('Creating new Stripe customer for user:', user.id);
+      
+      const customerData = new URLSearchParams({
+        email: profile.email,
+        name: profile.full_name || profile.email,
+        'metadata[user_id]': user.id,
+        'metadata[profile_id]': profile.id,
+      });
+
       const customerResponse = await fetch("https://api.stripe.com/v1/customers", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${STRIPE_SECRET_KEY}`,
           "Content-Type": "application/x-www-form-urlencoded",
         },
-        body: new URLSearchParams({
-          email: profile.email,
-          name: profile.full_name,
-          metadata: JSON.stringify({
-            user_id: user.id,
-            profile_id: profile.id,
-          }),
-        }),
+        body: customerData,
       });
+
+      if (!customerResponse.ok) {
+        const error = await customerResponse.json();
+        console.error('Stripe customer creation failed:', error);
+        throw new Error(error.error?.message || 'Failed to create customer');
+      }
 
       const customer = await customerResponse.json();
       customerId = customer.id;
+
+      console.log('Stripe customer created:', customerId);
 
       await supabase
         .from("profiles")
         .update({ stripe_customer_id: customerId })
         .eq("user_id", user.id);
+    } else {
+      console.log('Using existing Stripe customer:', customerId);
     }
 
     const sessionParams: any = {
@@ -129,6 +141,26 @@ Deno.serve(async (req: Request) => {
       };
     }
 
+    console.log('Creating Stripe checkout session for customer:', customerId);
+
+    // Build URLSearchParams for Stripe API
+    const sessionData = new URLSearchParams({
+      customer: customerId,
+      'line_items[0][price]': priceId,
+      'line_items[0][quantity]': '1',
+      mode: type === "subscription" ? "subscription" : "payment",
+      success_url: successUrl,
+      cancel_url: cancelUrl,
+      'metadata[user_id]': user.id,
+      'metadata[profile_id]': profile.id,
+      'metadata[type]': type,
+    });
+
+    if (type === "subscription") {
+      sessionData.append('subscription_data[metadata][user_id]', user.id);
+      sessionData.append('subscription_data[metadata][profile_id]', profile.id);
+    }
+
     const sessionResponse = await fetch(
       "https://api.stripe.com/v1/checkout/sessions",
       {
@@ -137,11 +169,19 @@ Deno.serve(async (req: Request) => {
           Authorization: `Bearer ${STRIPE_SECRET_KEY}`,
           "Content-Type": "application/x-www-form-urlencoded",
         },
-        body: new URLSearchParams(sessionParams),
+        body: sessionData,
       }
     );
 
+    if (!sessionResponse.ok) {
+      const error = await sessionResponse.json();
+      console.error('Stripe session creation failed:', error);
+      throw new Error(error.error?.message || 'Failed to create checkout session');
+    }
+
     const session = await sessionResponse.json();
+
+    console.log('Checkout session created:', session.id);
 
     if (session.error) {
       throw new Error(session.error.message);
@@ -159,8 +199,9 @@ Deno.serve(async (req: Request) => {
     );
   } catch (error) {
     console.error("Checkout session error:", error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: errorMessage }),
       {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
