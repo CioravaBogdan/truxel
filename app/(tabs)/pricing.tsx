@@ -154,7 +154,7 @@ export default function PricingScreen() {
     setCouponError(null);
   };
 
-  const handleSubscribe = async (tier: SubscriptionTierData) {
+  const handleSubscribe = async (tier: any) => {
     if (!tier.stripe_price_id) {
       Toast.show({
         type: 'error',
