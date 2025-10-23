@@ -9,6 +9,15 @@
 - ✅ Auto-fill user name from Apple ID
 - ✅ Nonce security implementation
 - ✅ Translations (en, ro)
+- ⚠️ Requires custom dev build (not in Expo Go)
+
+### Google Sign In
+- ✅ Browser-based OAuth with Supabase
+- ✅ Google Sign In button (white with G logo)
+- ✅ Deep link handling for redirects
+- ✅ Auto-fill user name from Google account
+- ✅ Translations (en, ro)
+- ✅ Works in Expo Go! (no build needed)
 
 ## 📋 Configuration Steps
 
@@ -203,21 +212,25 @@ eas build --platform ios --profile production
    - Verify profile creation
    - Test with multiple Apple IDs
 
-### Google Sign In (Future)
+### Google Sign In (Implemented!)
 
-**Status:** Prepared but not active
+**Status:** ✅ Ready to configure
 
-**Why not implemented yet?**
-- Requires Google Cloud Console project
-- Needs OAuth client ID for iOS
-- Requires custom dev build (like Apple)
+**Implementation:**
+- ✅ Browser-based OAuth using Supabase
+- ✅ Google Sign In button on login screen
+- ✅ Deep link handling for OAuth callback
+- ✅ Works in Expo Go (no custom build needed!)
+- ✅ Auto-creates profile from Google account
 
-**To implement:**
-1. Create Google Cloud project
+**Setup Required:**
+1. Create Google Cloud Console project
 2. Configure OAuth consent screen
-3. Get iOS client ID
-4. Update oauthService.ts
-5. Add Google button to login.tsx
+3. Create Web OAuth Client ID
+4. Add credentials to Supabase Dashboard
+5. Test sign-in flow
+
+**Full Setup Guide:** See `GOOGLE_OAUTH_SETUP.md`
 
 ## 📊 Analytics to Track
 
