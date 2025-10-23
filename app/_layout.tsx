@@ -16,30 +16,7 @@ export default function RootLayout() {
   const { setSession, setUser, setProfile, setIsLoading, isAuthenticated } = useAuthStore();
 
   useEffect(() => {
-    console.log('RootLayout: Fetching initial session...');
-    authService.getSession().then((session) => {
-      console.log('RootLayout: Session received:', { hasSession: !!session, userId: session?.user?.id });
-      setSession(session);
-      setUser(session?.user || null);
-
-      if (session?.user) {
-        console.log('RootLayout: Fetching profile for user:', session.user.id);
-        authService.getProfile(session.user.id).then((profile) => {
-          console.log('RootLayout: Profile received:', profile);
-          setProfile(profile);
-          setIsLoading(false);
-        }).catch((error) => {
-          console.error('RootLayout: Error fetching profile:', error);
-          setIsLoading(false);
-        });
-      } else {
-        console.log('RootLayout: No session, skipping profile fetch');
-        setIsLoading(false);
-      }
-    }).catch((error) => {
-      console.error('RootLayout: Error fetching session:', error);
-      setIsLoading(false);
-    });
+    console.log('RootLayout: Setting up auth listener (no manual getSession call)...');
 
     const { data: authListener } = authService.onAuthStateChange(
       async (event, session) => {
@@ -49,12 +26,20 @@ export default function RootLayout() {
 
         if (session?.user) {
           console.log('RootLayout: Auth changed - fetching profile for user:', session.user.id);
-          const profile = await authService.getProfile(session.user.id);
-          console.log('RootLayout: Auth changed - profile received:', profile);
-          setProfile(profile);
+          try {
+            const profile = await authService.getProfile(session.user.id, session.access_token);
+            console.log('RootLayout: Auth changed - profile received:', profile);
+            setProfile(profile);
+            setIsLoading(false);
+          } catch (error) {
+            console.error('RootLayout: Error fetching profile:', error);
+            setProfile(null);
+            setIsLoading(false);
+          }
         } else {
           console.log('RootLayout: Auth changed - no session, clearing profile');
           setProfile(null);
+          setIsLoading(false);
         }
       }
     );

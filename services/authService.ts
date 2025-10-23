@@ -58,7 +58,7 @@ export const authService = {
     if (error) throw error;
   },
 
-  async getProfile(userId: string): Promise<Profile | null> {
+  async getProfile(userId: string, accessToken?: string): Promise<Profile | null> {
     console.log('authService.getProfile called with userId:', userId);
     
     try {
@@ -66,24 +66,33 @@ export const authService = {
       const SUPABASE_URL = process.env.EXPO_PUBLIC_SUPABASE_URL;
       const SUPABASE_KEY = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY;
 
-      const response = await fetch(
-        `${SUPABASE_URL}/rest/v1/profiles?user_id=eq.${userId}&select=*`,
-        {
-          headers: {
-            'apikey': SUPABASE_KEY!,
-            'Authorization': `Bearer ${SUPABASE_KEY}`,
-            'Content-Type': 'application/json',
-          },
-        }
-      );
+      // Use provided access token or fallback to anon key
+      const token = accessToken || SUPABASE_KEY;
+
+      console.log('authService.getProfile: Using token type:', accessToken ? 'USER_JWT' : 'ANON_KEY');
+
+      const url = `${SUPABASE_URL}/rest/v1/profiles?user_id=eq.${userId}&select=*`;
+      console.log('authService.getProfile: Fetching URL:', url);
+
+      const response = await fetch(url, {
+        headers: {
+          'apikey': SUPABASE_KEY!,
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      console.log('authService.getProfile: Response status:', response.status);
 
       if (!response.ok) {
-        console.error('authService.getProfile HTTP error:', response.status);
+        const errorText = await response.text();
+        console.error('authService.getProfile HTTP error:', response.status, errorText);
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const data = await response.json();
       console.log('authService.getProfile success, data:', data);
+      console.log('authService.getProfile: Data type:', typeof data, 'Is array:', Array.isArray(data), 'Length:', data?.length);
       
       // REST API returns array, we need first item
       return data && data.length > 0 ? data[0] : null;
