@@ -33,6 +33,7 @@ export default function PricingScreen() {
   const { t } = useTranslation();
   const authStore = useAuthStore();
   const profile = authStore?.profile;
+  const session = authStore?.session;
   const refreshProfile = authStore?.refreshProfile;
   
   const [tiers, setTiers] = useState<SubscriptionTierData[]>([]);
@@ -89,18 +90,31 @@ export default function PricingScreen() {
       return;
     }
 
+    if (!session?.access_token) {
+      Toast.show({
+        type: 'error',
+        text1: t('common.error'),
+        text2: 'Not authenticated',
+      });
+      return;
+    }
+
     try {
       setProcessingPriceId(tier.stripe_price_id);
+      console.log('handleSubscribe: Creating checkout session for', tier.tier_name);
 
       const { url } = await stripeService.createCheckoutSession(
         tier.stripe_price_id,
         'subscription',
-        'myapp://subscription-success',
-        'myapp://subscription-cancelled'
+        'truxel://subscription-success',
+        'truxel://subscription-cancelled',
+        session.access_token
       );
 
+      console.log('handleSubscribe: Opening checkout URL:', url);
       await WebBrowser.openBrowserAsync(url);
     } catch (error: any) {
+      console.error('handleSubscribe error:', error);
       Toast.show({
         type: 'error',
         text1: t('common.error'),
@@ -121,18 +135,31 @@ export default function PricingScreen() {
       return;
     }
 
+    if (!session?.access_token) {
+      Toast.show({
+        type: 'error',
+        text1: t('common.error'),
+        text2: 'Not authenticated',
+      });
+      return;
+    }
+
     try {
       setProcessingPriceId(pack.stripe_price_id);
+      console.log('handleBuySearchPack: Creating checkout session for', pack.pack_name);
 
       const { url } = await stripeService.createCheckoutSession(
         pack.stripe_price_id,
         'search_pack',
-        'myapp://purchase-success',
-        'myapp://purchase-cancelled'
+        'truxel://purchase-success',
+        'truxel://purchase-cancelled',
+        session.access_token
       );
 
+      console.log('handleBuySearchPack: Opening checkout URL:', url);
       await WebBrowser.openBrowserAsync(url);
     } catch (error: any) {
+      console.error('handleBuySearchPack error:', error);
       Toast.show({
         type: 'error',
         text1: t('common.error'),
@@ -145,6 +172,15 @@ export default function PricingScreen() {
 
   const handleUpgrade = async (tier: SubscriptionTierData) => {
     if (!tier.stripe_price_id) return;
+
+    if (!session?.access_token) {
+      Toast.show({
+        type: 'error',
+        text1: t('common.error'),
+        text2: 'Not authenticated',
+      });
+      return;
+    }
 
     Alert.alert(
       t('subscription.upgrade_confirm_title'),
@@ -159,7 +195,10 @@ export default function PricingScreen() {
           onPress: async () => {
             try {
               setActionLoading('upgrade');
-              await stripeService.upgradeSubscription(tier.stripe_price_id!);
+              console.log('handleUpgrade: Upgrading to', tier.tier_name);
+              
+              await stripeService.upgradeSubscription(tier.stripe_price_id!, session.access_token);
+              
               Toast.show({
                 type: 'success',
                 text1: t('subscription.upgrade_success_title'),
@@ -168,6 +207,7 @@ export default function PricingScreen() {
               await loadPricingData();
               await refreshProfile();
             } catch (error: any) {
+              console.error('handleUpgrade error:', error);
               Toast.show({
                 type: 'error',
                 text1: t('common.error'),
@@ -185,6 +225,15 @@ export default function PricingScreen() {
   const handleDowngrade = async (tier: SubscriptionTierData) => {
     if (!tier.stripe_price_id) return;
 
+    if (!session?.access_token) {
+      Toast.show({
+        type: 'error',
+        text1: t('common.error'),
+        text2: 'Not authenticated',
+      });
+      return;
+    }
+
     Alert.alert(
       t('subscription.downgrade_confirm_title'),
       t('subscription.downgrade_confirm_message', {
@@ -198,7 +247,10 @@ export default function PricingScreen() {
           onPress: async () => {
             try {
               setActionLoading('downgrade');
-              await stripeService.downgradeSubscription(tier.stripe_price_id!);
+              console.log('handleDowngrade: Downgrading to', tier.tier_name);
+              
+              await stripeService.downgradeSubscription(tier.stripe_price_id!, session.access_token);
+              
               Toast.show({
                 type: 'success',
                 text1: t('subscription.downgrade_success_title'),
@@ -207,6 +259,7 @@ export default function PricingScreen() {
               await loadPricingData();
               await refreshProfile();
             } catch (error: any) {
+              console.error('handleDowngrade error:', error);
               Toast.show({
                 type: 'error',
                 text1: t('common.error'),
@@ -222,6 +275,15 @@ export default function PricingScreen() {
   };
 
   const handleCancelSubscription = async () => {
+    if (!session?.access_token) {
+      Toast.show({
+        type: 'error',
+        text1: t('common.error'),
+        text2: 'Not authenticated',
+      });
+      return;
+    }
+
     Alert.alert(
       t('subscription.cancel_confirm_title'),
       t('subscription.cancel_confirm_message'),
@@ -233,7 +295,10 @@ export default function PricingScreen() {
           onPress: async () => {
             try {
               setActionLoading('cancel');
-              await stripeService.cancelSubscription();
+              console.log('handleCancelSubscription: Canceling subscription');
+              
+              await stripeService.cancelSubscription(session.access_token);
+              
               Toast.show({
                 type: 'success',
                 text1: t('subscription.cancel_success_title'),
@@ -242,6 +307,7 @@ export default function PricingScreen() {
               await loadPricingData();
               await refreshProfile();
             } catch (error: any) {
+              console.error('handleCancelSubscription error:', error);
               Toast.show({
                 type: 'error',
                 text1: t('common.error'),
@@ -257,9 +323,21 @@ export default function PricingScreen() {
   };
 
   const handleReactivateSubscription = async () => {
+    if (!session?.access_token) {
+      Toast.show({
+        type: 'error',
+        text1: t('common.error'),
+        text2: 'Not authenticated',
+      });
+      return;
+    }
+
     try {
       setActionLoading('reactivate');
-      await stripeService.reactivateSubscription();
+      console.log('handleReactivateSubscription: Reactivating subscription');
+      
+      await stripeService.reactivateSubscription(session.access_token);
+      
       Toast.show({
         type: 'success',
         text1: t('subscription.reactivate_success_title'),
@@ -268,6 +346,7 @@ export default function PricingScreen() {
       await loadPricingData();
       await refreshProfile();
     } catch (error: any) {
+      console.error('handleReactivateSubscription error:', error);
       Toast.show({
         type: 'error',
         text1: t('common.error'),

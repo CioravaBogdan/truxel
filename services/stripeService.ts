@@ -83,12 +83,13 @@ export const stripeService = {
     priceId: string,
     type: 'subscription' | 'search_pack',
     successUrl: string,
-    cancelUrl: string
+    cancelUrl: string,
+    accessToken?: string
   ): Promise<CheckoutSessionResponse> {
-    const { data: { session } } = await supabase.auth.getSession();
+    console.log('stripeService: createCheckoutSession called', { priceId, type });
 
-    if (!session?.access_token) {
-      throw new Error('Not authenticated');
+    if (!accessToken) {
+      throw new Error('Not authenticated - access token required');
     }
 
     const response = await fetch(
@@ -97,7 +98,7 @@ export const stripeService = {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${session.access_token}`,
+          'Authorization': `Bearer ${accessToken}`,
         },
         body: JSON.stringify({
           priceId,
@@ -108,19 +109,24 @@ export const stripeService = {
       }
     );
 
+    console.log('stripeService: Checkout session response status:', response.status);
+
     if (!response.ok) {
       const error = await response.json();
+      console.error('stripeService: Checkout session error:', error);
       throw new Error(error.error || 'Failed to create checkout session');
     }
 
-    return await response.json();
+    const result = await response.json();
+    console.log('stripeService: Checkout session created:', result.sessionId);
+    return result;
   },
 
-  async cancelSubscription(): Promise<ManageSubscriptionResponse> {
-    const { data: { session } } = await supabase.auth.getSession();
+  async cancelSubscription(accessToken?: string): Promise<ManageSubscriptionResponse> {
+    console.log('stripeService: cancelSubscription called');
 
-    if (!session?.access_token) {
-      throw new Error('Not authenticated');
+    if (!accessToken) {
+      throw new Error('Not authenticated - access token required');
     }
 
     const response = await fetch(
@@ -129,7 +135,7 @@ export const stripeService = {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${session.access_token}`,
+          'Authorization': `Bearer ${accessToken}`,
         },
         body: JSON.stringify({
           action: 'cancel',
@@ -145,11 +151,11 @@ export const stripeService = {
     return await response.json();
   },
 
-  async reactivateSubscription(): Promise<ManageSubscriptionResponse> {
-    const { data: { session } } = await supabase.auth.getSession();
+  async reactivateSubscription(accessToken?: string): Promise<ManageSubscriptionResponse> {
+    console.log('stripeService: reactivateSubscription called');
 
-    if (!session?.access_token) {
-      throw new Error('Not authenticated');
+    if (!accessToken) {
+      throw new Error('Not authenticated - access token required');
     }
 
     const response = await fetch(
@@ -158,7 +164,7 @@ export const stripeService = {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${session.access_token}`,
+          'Authorization': `Bearer ${accessToken}`,
         },
         body: JSON.stringify({
           action: 'reactivate',
@@ -174,11 +180,11 @@ export const stripeService = {
     return await response.json();
   },
 
-  async upgradeSubscription(newPriceId: string): Promise<ManageSubscriptionResponse> {
-    const { data: { session } } = await supabase.auth.getSession();
+  async upgradeSubscription(newPriceId: string, accessToken?: string): Promise<ManageSubscriptionResponse> {
+    console.log('stripeService: upgradeSubscription called', { newPriceId });
 
-    if (!session?.access_token) {
-      throw new Error('Not authenticated');
+    if (!accessToken) {
+      throw new Error('Not authenticated - access token required');
     }
 
     const response = await fetch(
@@ -187,7 +193,7 @@ export const stripeService = {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${session.access_token}`,
+          'Authorization': `Bearer ${accessToken}`,
         },
         body: JSON.stringify({
           action: 'upgrade',
@@ -196,19 +202,24 @@ export const stripeService = {
       }
     );
 
+    console.log('stripeService: Upgrade response status:', response.status);
+
     if (!response.ok) {
       const error = await response.json();
+      console.error('stripeService: Upgrade error:', error);
       throw new Error(error.error || 'Failed to upgrade subscription');
     }
 
-    return await response.json();
+    const result = await response.json();
+    console.log('stripeService: Upgrade success:', result);
+    return result;
   },
 
-  async downgradeSubscription(newPriceId: string): Promise<ManageSubscriptionResponse> {
-    const { data: { session } } = await supabase.auth.getSession();
+  async downgradeSubscription(newPriceId: string, accessToken?: string): Promise<ManageSubscriptionResponse> {
+    console.log('stripeService: downgradeSubscription called', { newPriceId });
 
-    if (!session?.access_token) {
-      throw new Error('Not authenticated');
+    if (!accessToken) {
+      throw new Error('Not authenticated - access token required');
     }
 
     const response = await fetch(
@@ -217,7 +228,7 @@ export const stripeService = {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${session.access_token}`,
+          'Authorization': `Bearer ${accessToken}`,
         },
         body: JSON.stringify({
           action: 'downgrade',
@@ -226,12 +237,17 @@ export const stripeService = {
       }
     );
 
+    console.log('stripeService: Downgrade response status:', response.status);
+
     if (!response.ok) {
       const error = await response.json();
+      console.error('stripeService: Downgrade error:', error);
       throw new Error(error.error || 'Failed to downgrade subscription');
     }
 
-    return await response.json();
+    const result = await response.json();
+    console.log('stripeService: Downgrade success:', result);
+    return result;
   },
 
   async getSearchCreditsBreakdown(userId: string) {
