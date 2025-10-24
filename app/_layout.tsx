@@ -60,15 +60,26 @@ export default function RootLayout() {
 
   useEffect(() => {
     if (!isNavigationReady) {
+      console.log('RootLayout: Navigation not ready yet, skipping...');
       return;
     }
 
     const inAuthGroup = segments[0] === '(auth)';
+    console.log('RootLayout: Navigation check:', {
+      isAuthenticated,
+      inAuthGroup,
+      segments,
+      currentPath: segments.join('/'),
+    });
 
     if (!isAuthenticated && !inAuthGroup) {
+      console.log('RootLayout: Not authenticated, redirecting to login');
       router.replace('/(auth)/login');
     } else if (isAuthenticated && inAuthGroup) {
+      console.log('RootLayout: Authenticated in auth group, redirecting to tabs');
       router.replace('/(tabs)');
+    } else {
+      console.log('RootLayout: No navigation needed, staying on current screen');
     }
   }, [isAuthenticated, segments, isNavigationReady]);
 
