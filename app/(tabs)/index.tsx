@@ -33,7 +33,7 @@ export default function HomeScreen() {
     try {
       const [leadsData, remaining] = await Promise.all([
         leadsService.getLeads(user.id),
-        searchesService.getSearchesRemaining(profile),
+        searchesService.getSearchesRemaining(user.id), // FIX: Use user.id instead of profile
       ]);
 
       setLeads(leadsData);
