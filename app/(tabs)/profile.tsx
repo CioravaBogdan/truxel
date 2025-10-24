@@ -81,6 +81,7 @@ export default function ProfileScreen() {
   const { profile, reset, refreshProfile } = useAuthStore();
   const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   
   console.log('ProfileScreen MOUNTED');
   console.log('Profile from store:', profile);
@@ -95,7 +96,8 @@ export default function ProfileScreen() {
   // Load profile data into form
   useEffect(() => {
     console.log('useEffect triggered, profile:', profile);
-    if (profile) {
+    // Only load from profile if we don't have unsaved changes
+    if (profile && !hasUnsavedChanges) {
       console.log('Loading profile data into form:', {
         full_name: profile.full_name,
         company_name: profile.company_name,
@@ -109,12 +111,13 @@ export default function ProfileScreen() {
       setSearchRadius(profile.search_radius_km || 10);
       setSelectedIndustries(profile.preferred_industries || []);
     } else {
-      console.log('No profile in useEffect');
+      console.log('Skipping profile load - has unsaved changes or no profile');
     }
-  }, [profile]);
+  }, [profile]); // Don't include hasUnsavedChanges in deps to avoid loops
 
   // Toggle industry selection (max 5)
   const toggleIndustry = (industry: string) => {
+    setHasUnsavedChanges(true);
     setSelectedIndustries(prev => {
       if (prev.includes(industry)) {
         return prev.filter(i => i !== industry);
@@ -145,6 +148,7 @@ export default function ProfileScreen() {
 
     try {
       setIsSaving(true);
+      console.log('Saving profile with industries:', selectedIndustries);
       await authService.updateProfile(profile.user_id, {
         full_name: fullName,
         company_name: companyName || undefined,
@@ -152,6 +156,9 @@ export default function ProfileScreen() {
         search_radius_km: searchRadius,
         preferred_industries: selectedIndustries,
       });
+      
+      // Clear unsaved changes flag BEFORE refreshing
+      setHasUnsavedChanges(false);
       
       // Refresh profile from backend
       await refreshProfile();
@@ -304,7 +311,10 @@ export default function ProfileScreen() {
                   styles.chip,
                   truckType === truck.value && styles.chipSelected,
                 ]}
-                onPress={() => setTruckType(truck.value)}
+                onPress={() => {
+                  setHasUnsavedChanges(true);
+                  setTruckType(truck.value);
+                }}
               >
                 <Text
                   style={[
@@ -337,7 +347,10 @@ export default function ProfileScreen() {
                   styles.radiusButton,
                   searchRadius === option.value && styles.radiusButtonSelected,
                 ]}
-                onPress={() => setSearchRadius(option.value)}
+                onPress={() => {
+                  setHasUnsavedChanges(true);
+                  setSearchRadius(option.value);
+                }}
               >
                 <Text
                   style={[
