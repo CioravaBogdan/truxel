@@ -2,7 +2,8 @@ import { supabase } from '@/lib/supabase';
 import { Search, Profile } from '@/types/database.types';
 import axios from 'axios';
 
-const WEBHOOK_URL = 'https://n8n.byinfant.com/webhook/logistics-lead-webhook';
+// FIX: Updated to correct n8n webhook URL
+const WEBHOOK_URL = 'https://n8n.byinfant.com/webhook/51f66c9a-0283-4711-b034-337c66e1bedd';
 
 interface SearchParams {
   keywords: string;
@@ -137,36 +138,55 @@ export const searchesService = {
 
     const tierFeatures = await this.getTierFeatures(profile.subscription_tier);
 
+    const webhookPayload = {
+      search_id: newSearch.id,
+      user_id: userId,
+      keywords: params.keywords,
+      address: params.address,
+      latitude: params.latitude,
+      longitude: params.longitude,
+      radius_km: 5,
+      tier: profile.subscription_tier,
+      features: tierFeatures,
+      credit_source: creditSource,
+    };
+
     try {
-      await axios.post(WEBHOOK_URL, {
-        search_id: newSearch.id,
-        user_id: userId,
-        keywords: params.keywords,
-        address: params.address,
-        latitude: params.latitude,
-        longitude: params.longitude,
-        radius_km: 5,
-        tier: profile.subscription_tier,
-        features: tierFeatures,
-        credit_source: creditSource,
+      console.log('🚀 Sending webhook to n8n:', WEBHOOK_URL);
+      console.log('📦 Webhook payload:', JSON.stringify(webhookPayload, null, 2));
+
+      const response = await axios.post(WEBHOOK_URL, webhookPayload, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        timeout: 10000, // 10 second timeout
       });
+
+      console.log('✅ Webhook response status:', response.status);
+      console.log('📥 Webhook response data:', response.data);
 
       await supabase
         .from('searches')
         .update({ webhook_sent_at: new Date().toISOString() })
         .eq('id', newSearch.id);
-    } catch (webhookError) {
-      console.error('Webhook error:', webhookError);
+    } catch (webhookError: any) {
+      console.error('❌ Webhook error:', webhookError);
+      console.error('📋 Error details:', {
+        message: webhookError.message,
+        code: webhookError.code,
+        response: webhookError.response?.data,
+        status: webhookError.response?.status,
+      });
 
       await supabase
         .from('searches')
         .update({
           status: 'failed',
-          error_message: 'Failed to send webhook request',
+          error_message: `Failed to send webhook request: ${webhookError.message}`,
         })
         .eq('id', newSearch.id);
 
-      throw new Error('Failed to initiate search');
+      throw new Error(`Failed to initiate search: ${webhookError.message}`);
     }
 
     return newSearch;
