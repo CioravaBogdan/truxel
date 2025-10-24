@@ -155,7 +155,8 @@ export const searchesService = {
       console.log('🚀 Sending webhook to n8n:', WEBHOOK_URL);
       console.log('📦 Webhook payload:', JSON.stringify(webhookPayload, null, 2));
 
-      const response = await axios.post(WEBHOOK_URL, webhookPayload, {
+      // FIX: n8n webhook is configured for PATCH, not POST
+      const response = await axios.patch(WEBHOOK_URL, webhookPayload, {
         headers: {
           'Content-Type': 'application/json',
         },
