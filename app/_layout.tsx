@@ -65,9 +65,11 @@ export default function RootLayout() {
     }
 
     const inAuthGroup = segments[0] === '(auth)';
+    const isRootScreen = segments.length === 0;
     console.log('RootLayout: Navigation check:', {
       isAuthenticated,
       inAuthGroup,
+      isRootScreen,
       segments,
       currentPath: segments.join('/'),
     });
@@ -75,8 +77,9 @@ export default function RootLayout() {
     if (!isAuthenticated && !inAuthGroup) {
       console.log('RootLayout: Not authenticated, redirecting to login');
       router.replace('/(auth)/login');
-    } else if (isAuthenticated && inAuthGroup) {
-      console.log('RootLayout: Authenticated in auth group, redirecting to tabs');
+    } else if (isAuthenticated && (inAuthGroup || isRootScreen)) {
+      // Navigate to tabs if authenticated and either in auth group OR on root screen
+      console.log('RootLayout: Authenticated, redirecting to tabs');
       router.replace('/(tabs)');
     } else {
       console.log('RootLayout: No navigation needed, staying on current screen');
