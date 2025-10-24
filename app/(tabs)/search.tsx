@@ -184,49 +184,98 @@ export default function SearchScreen() {
       return;
     }
 
-    Alert.alert(
-      t('common.confirm'),
-      t('search.search_cost', { remaining: searchesRemaining }),
-      [
-        {
-          text: t('common.cancel'),
-          style: 'cancel',
-        },
-        {
-          text: t('common.confirm'),
-          onPress: async () => {
-            setIsLoading(true);
-            try {
-              const newSearch = await searchesService.initiateSearch(user.id, profile, {
-                keywords,
-                address,
-                latitude,
-                longitude,
-              });
+    // Direct search without confirmation popup
+    setIsLoading(true);
+    try {
+      const newSearch = await searchesService.initiateSearch(user.id, profile, {
+        keywords,
+        address,
+        latitude,
+        longitude,
+      });
 
-              setActiveSearch(newSearch);
-              setSearchesRemaining(await searchesService.getSearchesRemaining(user.id));
+      setActiveSearch(newSearch);
+      setSearchesRemaining(await searchesService.getSearchesRemaining(user.id));
 
-              Toast.show({
-                type: 'success',
-                text1: t('common.success'),
-                text2: t('search.search_started'),
-              });
+      Toast.show({
+        type: 'success',
+        text1: t('common.success'),
+        text2: t('search.search_started'),
+      });
 
-              setKeywords('');
-            } catch (error: any) {
-              Toast.show({
-                type: 'error',
-                text1: t('common.error'),
-                text2: error.message,
-              });
-            } finally {
-              setIsLoading(false);
-            }
-          },
-        },
-      ]
-    );
+      setKeywords('');
+    } catch (error: any) {
+      Toast.show({
+        type: 'error',
+        text1: t('common.error'),
+        text2: error.message,
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleQuickSearch = async () => {
+    if (!user || !profile) return;
+
+    // Check if user has saved preferred industries
+    if (!profile.preferred_industries || profile.preferred_industries.length === 0) {
+      Toast.show({
+        type: 'error',
+        text1: t('search.no_saved_domains'),
+        text2: t('search.please_set_domains_in_profile'),
+      });
+      return;
+    }
+
+    if (!latitude || !longitude) {
+      Toast.show({
+        type: 'error',
+        text1: t('common.error'),
+        text2: 'Please select a location first',
+      });
+      return;
+    }
+
+    const canSearch = await searchesService.canUserSearch(user.id);
+    if (!canSearch) {
+      Toast.show({
+        type: 'error',
+        text1: t('search.insufficient_searches'),
+        text2: t('search.buy_more'),
+      });
+      return;
+    }
+
+    // Direct search without confirmation popup
+    setIsLoading(true);
+    try {
+      const quickKeywords = profile.preferred_industries.join(', ');
+      
+      const newSearch = await searchesService.initiateSearch(user.id, profile, {
+        keywords: quickKeywords,
+        address,
+        latitude,
+        longitude,
+      });
+
+      setActiveSearch(newSearch);
+      setSearchesRemaining(await searchesService.getSearchesRemaining(user.id));
+
+      Toast.show({
+        type: 'success',
+        text1: t('common.success'),
+        text2: t('search.quick_search_started'),
+      });
+    } catch (error: any) {
+      Toast.show({
+        type: 'error',
+        text1: t('common.error'),
+        text2: error.message,
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const formatTime = (seconds: number): string => {
@@ -358,6 +407,36 @@ export default function SearchScreen() {
             {t('search.search_cost', { remaining: searchesRemaining })}
           </Text>
         </View>
+
+        {/* Quick Search Section */}
+        {profile?.preferred_industries && profile.preferred_industries.length > 0 && (
+          <Card style={styles.quickSearchCard}>
+            <View style={styles.quickSearchHeader}>
+              <Text style={styles.quickSearchTitle}>{t('search.quick_search')}</Text>
+              <Text style={styles.quickSearchSubtitle}>{t('search.quick_search_description')}</Text>
+            </View>
+            
+            <View style={styles.savedDomainsContainer}>
+              <Text style={styles.savedDomainsLabel}>{t('search.your_saved_domains')}:</Text>
+              <View style={styles.domainsList}>
+                {profile.preferred_industries.map((domain, index) => (
+                  <View key={index} style={styles.domainTag}>
+                    <Text style={styles.domainTagText}>{domain}</Text>
+                  </View>
+                ))}
+              </View>
+            </View>
+
+            <Button
+              title={t('search.start_quick_search')}
+              onPress={handleQuickSearch}
+              loading={isLoading}
+              disabled={!latitude || !longitude || searchesRemaining === 0}
+              variant="primary"
+              style={styles.quickSearchButton}
+            />
+          </Card>
+        )}
 
         <Button
           title={t('search.start_search')}
@@ -508,5 +587,55 @@ const styles = StyleSheet.create({
     color: '#991B1B',
     marginLeft: 8,
     flex: 1,
+  },
+  quickSearchCard: {
+    marginBottom: 16,
+    backgroundColor: '#EFF6FF',
+    borderWidth: 1,
+    borderColor: '#3B82F6',
+  },
+  quickSearchHeader: {
+    marginBottom: 12,
+  },
+  quickSearchTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#1E40AF',
+    marginBottom: 4,
+  },
+  quickSearchSubtitle: {
+    fontSize: 14,
+    color: '#64748B',
+    lineHeight: 20,
+  },
+  savedDomainsContainer: {
+    marginBottom: 16,
+  },
+  savedDomainsLabel: {
+    fontSize: 14,
+    fontWeight: '500',
+    color: '#475569',
+    marginBottom: 8,
+  },
+  domainsList: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+  },
+  domainTag: {
+    backgroundColor: '#DBEAFE',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: '#93C5FD',
+  },
+  domainTagText: {
+    fontSize: 13,
+    color: '#1E40AF',
+    fontWeight: '500',
+  },
+  quickSearchButton: {
+    backgroundColor: '#3B82F6',
   },
 });

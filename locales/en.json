@@ -90,7 +90,14 @@
     "check_leads_tab": "Check Leads tab for results",
     "please_try_again": "Please try again",
     "search_complete": "Search Complete!",
-    "results_ready": "Your search results are ready"
+    "results_ready": "Your search results are ready",
+    "quick_search": "Quick Search",
+    "quick_search_description": "Perfect for when you're driving! Start a search instantly using your saved domains without typing.",
+    "your_saved_domains": "Your saved domains",
+    "start_quick_search": "🚀 Quick Search",
+    "quick_search_started": "Quick search started with your saved domains!",
+    "no_saved_domains": "No saved domains",
+    "please_set_domains_in_profile": "Please set your preferred industries in Profile settings"
   },
   "leads": {
     "title": "My Leads",
