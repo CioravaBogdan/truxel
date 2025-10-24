@@ -81,7 +81,16 @@
     "location_permission": "We need your location to find companies near you",
     "location_denied": "Location permission denied",
     "search_started": "Search started! We'll notify you when results are ready.",
-    "search_failed": "Search failed. Please try again."
+    "search_failed": "Search failed. Please try again.",
+    "processing": "Processing...",
+    "completed": "Completed",
+    "failed": "Failed",
+    "location": "Location",
+    "estimated": "estimated",
+    "check_leads_tab": "Check Leads tab for results",
+    "please_try_again": "Please try again",
+    "search_complete": "Search Complete!",
+    "results_ready": "Your search results are ready"
   },
   "leads": {
     "title": "My Leads",

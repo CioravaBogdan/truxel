@@ -5,17 +5,31 @@ import {
   StyleSheet,
   ScrollView,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as Location from 'expo-location';
+import * as Notifications from 'expo-notifications';
 import { Card } from '@/components/Card';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
 import { useAuthStore } from '@/store/authStore';
 import { searchesService } from '@/services/searchesService';
+import { Search as SearchType } from '@/types/database.types';
 import Toast from 'react-native-toast-message';
-import { MapPin, Crosshair, Search } from 'lucide-react-native';
+import { MapPin, Crosshair, Search, Clock, CheckCircle, AlertCircle } from 'lucide-react-native';
+
+// Configure notifications
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+    shouldShowBanner: true,
+    shouldShowList: true,
+  }),
+});
 
 export default function SearchScreen() {
   const { t } = useTranslation();
@@ -26,12 +40,74 @@ export default function SearchScreen() {
   const [longitude, setLongitude] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [searchesRemaining, setSearchesRemaining] = useState(0);
+  const [activeSearch, setActiveSearch] = useState<SearchType | null>(null);
+  const [elapsedTime, setElapsedTime] = useState(0);
 
   useEffect(() => {
     if (user) {
       searchesService.getSearchesRemaining(user.id).then(setSearchesRemaining);
     }
   }, [user]);
+
+  // Request notification permissions on mount
+  useEffect(() => {
+    (async () => {
+      const { status } = await Notifications.requestPermissionsAsync();
+      if (status !== 'granted') {
+        console.warn('Notification permissions not granted');
+      }
+    })();
+  }, []);
+
+  // Subscribe to search updates
+  useEffect(() => {
+    if (!user || !activeSearch) return;
+
+    const unsubscribe = searchesService.subscribeToSearchUpdates(user.id, (updatedSearch) => {
+      if (updatedSearch.id === activeSearch.id) {
+        setActiveSearch(updatedSearch);
+
+        // Send notification when search completes
+        if (updatedSearch.status === 'completed') {
+          Notifications.scheduleNotificationAsync({
+            content: {
+              title: t('search.search_complete'),
+              body: t('search.results_ready'),
+              sound: true,
+            },
+            trigger: null, // Immediate
+          });
+        } else if (updatedSearch.status === 'failed') {
+          Notifications.scheduleNotificationAsync({
+            content: {
+              title: t('search.search_failed'),
+              body: t('search.please_try_again'),
+              sound: true,
+            },
+            trigger: null,
+          });
+        }
+      }
+    });
+
+    return unsubscribe;
+  }, [user, activeSearch, t]);
+
+  // Timer for elapsed time
+  useEffect(() => {
+    if (!activeSearch || activeSearch.status !== 'pending') {
+      setElapsedTime(0);
+      return;
+    }
+
+    const startTime = new Date(activeSearch.created_at).getTime();
+    const interval = setInterval(() => {
+      const elapsed = Math.floor((Date.now() - startTime) / 1000);
+      setElapsedTime(elapsed);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [activeSearch]);
 
   const handleUseCurrentLocation = async () => {
     setIsLoading(true);
@@ -121,13 +197,14 @@ export default function SearchScreen() {
           onPress: async () => {
             setIsLoading(true);
             try {
-              await searchesService.initiateSearch(user.id, profile, {
+              const newSearch = await searchesService.initiateSearch(user.id, profile, {
                 keywords,
                 address,
                 latitude,
                 longitude,
               });
 
+              setActiveSearch(newSearch);
               setSearchesRemaining(await searchesService.getSearchesRemaining(user.id));
 
               Toast.show({
@@ -152,6 +229,38 @@ export default function SearchScreen() {
     );
   };
 
+  const formatTime = (seconds: number): string => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'pending':
+        return '#F59E0B';
+      case 'completed':
+        return '#10B981';
+      case 'failed':
+        return '#EF4444';
+      default:
+        return '#64748B';
+    }
+  };
+
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case 'pending':
+        return <Clock size={20} color="#F59E0B" />;
+      case 'completed':
+        return <CheckCircle size={20} color="#10B981" />;
+      case 'failed':
+        return <AlertCircle size={20} color="#EF4444" />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
@@ -162,6 +271,57 @@ export default function SearchScreen() {
             {t('home.searches_remaining', { count: searchesRemaining })}
           </Text>
         </View>
+
+        {/* Active Search Status Card */}
+        {activeSearch && (
+          <Card style={StyleSheet.flatten([styles.statusCard, { borderColor: getStatusColor(activeSearch.status) }])}>
+            <View style={styles.statusHeader}>
+              {getStatusIcon(activeSearch.status)}
+              <Text style={StyleSheet.flatten([styles.statusTitle, { color: getStatusColor(activeSearch.status) }])}>
+                {activeSearch.status === 'pending' && t('search.processing')}
+                {activeSearch.status === 'completed' && t('search.completed')}
+                {activeSearch.status === 'failed' && t('search.failed')}
+              </Text>
+            </View>
+
+            <View style={styles.statusDetails}>
+              <Text style={styles.statusLabel}>{t('search.keywords')}:</Text>
+              <Text style={styles.statusValue}>{activeSearch.search_keywords}</Text>
+            </View>
+
+            <View style={styles.statusDetails}>
+              <Text style={styles.statusLabel}>{t('search.location')}:</Text>
+              <Text style={styles.statusValue}>{activeSearch.search_address}</Text>
+            </View>
+
+            {activeSearch.status === 'pending' && (
+              <View style={styles.processingInfo}>
+                <ActivityIndicator size="small" color="#F59E0B" />
+                <View style={styles.timerContainer}>
+                  <Clock size={16} color="#64748B" />
+                  <Text style={styles.timerText}>{formatTime(elapsedTime)}</Text>
+                  <Text style={styles.estimateText}>/ ~5:00 {t('search.estimated')}</Text>
+                </View>
+              </View>
+            )}
+
+            {activeSearch.status === 'completed' && (
+              <View style={styles.completedInfo}>
+                <CheckCircle size={16} color="#10B981" />
+                <Text style={styles.completedText}>
+                  {t('search.check_leads_tab')}
+                </Text>
+              </View>
+            )}
+
+            {activeSearch.status === 'failed' && activeSearch.error_message && (
+              <View style={styles.errorInfo}>
+                <AlertCircle size={16} color="#EF4444" />
+                <Text style={styles.errorText}>{activeSearch.error_message}</Text>
+              </View>
+            )}
+          </Card>
+        )}
 
         <Card style={styles.section}>
           <Text style={styles.sectionTitle}>{t('search.location_method')}</Text>
@@ -269,5 +429,84 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#64748B',
     marginLeft: 8,
+  },
+  statusCard: {
+    marginBottom: 16,
+    borderWidth: 2,
+  },
+  statusHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  statusTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    marginLeft: 8,
+  },
+  statusDetails: {
+    flexDirection: 'row',
+    marginBottom: 8,
+  },
+  statusLabel: {
+    fontSize: 14,
+    fontWeight: '500',
+    color: '#64748B',
+    width: 80,
+  },
+  statusValue: {
+    fontSize: 14,
+    color: '#1E293B',
+    flex: 1,
+  },
+  processingInfo: {
+    marginTop: 12,
+    padding: 12,
+    backgroundColor: '#FEF3C7',
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  timerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 8,
+  },
+  timerText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#92400E',
+    marginHorizontal: 8,
+  },
+  estimateText: {
+    fontSize: 12,
+    color: '#78350F',
+  },
+  completedInfo: {
+    marginTop: 12,
+    padding: 12,
+    backgroundColor: '#D1FAE5',
+    borderRadius: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  completedText: {
+    fontSize: 14,
+    color: '#065F46',
+    marginLeft: 8,
+    flex: 1,
+  },
+  errorInfo: {
+    marginTop: 12,
+    padding: 12,
+    backgroundColor: '#FEE2E2',
+    borderRadius: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  errorText: {
+    fontSize: 14,
+    color: '#991B1B',
+    marginLeft: 8,
+    flex: 1,
   },
 });
