@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import {
   View,
   Text,
@@ -7,6 +7,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   ActivityIndicator,
+  ViewToken,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { Filter, MapPin, Package, Truck } from 'lucide-react-native';
@@ -36,12 +37,13 @@ export default function CommunityFeed({ customHeader }: CommunityFeedProps = {})
     refreshPosts,
     setSelectedTab,
     clearError,
+    recordView,
   } = useCommunityStore();
 
   // Load posts on mount and tab change
   useEffect(() => {
-    loadPosts(true);
-  }, [selectedTab]);
+    void loadPosts(true);
+  }, [loadPosts, selectedTab]);
 
   // Load user stats when user is available
   useEffect(() => {
@@ -58,6 +60,29 @@ export default function CommunityFeed({ customHeader }: CommunityFeedProps = {})
         // Navigate to post details if needed
       }}
     />
+  );
+
+  const viewabilityConfig = useRef({ itemVisiblePercentThreshold: 60 });
+
+  const handleViewableItemsChanged = useCallback(
+    ({ viewableItems }: { viewableItems: ViewToken[] }) => {
+      if (!user?.id) {
+        return;
+      }
+
+      viewableItems.forEach((viewToken) => {
+        if (!viewToken.isViewable) {
+          return;
+        }
+
+        const item = viewToken.item as CommunityPost | undefined;
+
+        if (item && item.user_id !== user.id) {
+          recordView(item.id, user.id);
+        }
+      });
+    },
+    [recordView, user?.id]
   );
 
   const renderEmpty = () => {
@@ -206,6 +231,8 @@ export default function CommunityFeed({ customHeader }: CommunityFeedProps = {})
       onEndReached={loadMorePosts}
       onEndReachedThreshold={0.5}
       contentContainerStyle={styles.listContent}
+      onViewableItemsChanged={handleViewableItemsChanged}
+      viewabilityConfig={viewabilityConfig.current}
     />
   );
 }

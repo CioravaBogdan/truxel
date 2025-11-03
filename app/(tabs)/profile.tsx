@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   View,
   Text,
@@ -22,17 +22,11 @@ import Toast from 'react-native-toast-message';
 import * as ImagePicker from 'expo-image-picker';
 import { supabase } from '@/lib/supabase';
 import {
-  User,
   Mail,
-  Phone,
-  Building2,
-  Globe,
-  LogOut,
   CreditCard,
   Truck,
   MapPin,
   Factory,
-  Save,
   Camera,
 } from 'lucide-react-native';
 import i18n from '@/lib/i18n';
@@ -80,6 +74,36 @@ const INDUSTRIES = [
   'Chemicals', 'Logistics', 'Manufacturing', 'Waste Management', 'Other',
 ];
 
+const PHONE_COUNTRIES = [
+  { iso: 'US', name: 'United States', dialCode: '1', flag: '🇺🇸' },
+  { iso: 'MX', name: 'Mexico', dialCode: '52', flag: '🇲🇽' },
+  { iso: 'RO', name: 'Romania', dialCode: '40', flag: '🇷🇴' },
+  { iso: 'PL', name: 'Poland', dialCode: '48', flag: '🇵🇱' },
+  { iso: 'DE', name: 'Germany', dialCode: '49', flag: '🇩🇪' },
+  { iso: 'AT', name: 'Austria', dialCode: '43', flag: '🇦🇹' },
+  { iso: 'ES', name: 'Spain', dialCode: '34', flag: '🇪🇸' },
+  { iso: 'IT', name: 'Italy', dialCode: '39', flag: '🇮🇹' },
+  { iso: 'FR', name: 'France', dialCode: '33', flag: '🇫🇷' },
+  { iso: 'NL', name: 'Netherlands', dialCode: '31', flag: '🇳🇱' },
+  { iso: 'BE', name: 'Belgium', dialCode: '32', flag: '🇧🇪' },
+  { iso: 'HU', name: 'Hungary', dialCode: '36', flag: '🇭🇺' },
+  { iso: 'CZ', name: 'Czechia', dialCode: '420', flag: '🇨🇿' },
+  { iso: 'SK', name: 'Slovakia', dialCode: '421', flag: '🇸🇰' },
+  { iso: 'BG', name: 'Bulgaria', dialCode: '359', flag: '🇧🇬' },
+  { iso: 'GR', name: 'Greece', dialCode: '30', flag: '🇬🇷' },
+  { iso: 'PT', name: 'Portugal', dialCode: '351', flag: '🇵🇹' },
+  { iso: 'SE', name: 'Sweden', dialCode: '46', flag: '🇸🇪' },
+  { iso: 'DK', name: 'Denmark', dialCode: '45', flag: '🇩🇰' },
+  { iso: 'FI', name: 'Finland', dialCode: '358', flag: '🇫🇮' },
+  { iso: 'IE', name: 'Ireland', dialCode: '353', flag: '🇮🇪' },
+  { iso: 'HR', name: 'Croatia', dialCode: '385', flag: '🇭🇷' },
+  { iso: 'SI', name: 'Slovenia', dialCode: '386', flag: '🇸🇮' },
+  { iso: 'LT', name: 'Lithuania', dialCode: '370', flag: '🇱🇹' },
+  { iso: 'LV', name: 'Latvia', dialCode: '371', flag: '🇱🇻' },
+  { iso: 'EE', name: 'Estonia', dialCode: '372', flag: '🇪🇪' },
+  { iso: 'TR', name: 'Turkey', dialCode: '90', flag: '🇹🇷' },
+];
+
 export default function ProfileScreen() {
   const { t } = useTranslation();
   const { profile, reset, refreshProfile } = useAuthStore();
@@ -87,6 +111,9 @@ export default function ProfileScreen() {
   const [isSaving, setIsSaving] = useState(false);
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const [selectedPhoneCountry, setSelectedPhoneCountry] = useState<string>(PHONE_COUNTRIES[0].iso);
+  const [phoneNumberLocal, setPhoneNumberLocal] = useState('');
+  const [phoneError, setPhoneError] = useState<string | null>(null);
   
   console.log('ProfileScreen MOUNTED');
   console.log('Profile from store:', profile);
@@ -97,6 +124,12 @@ export default function ProfileScreen() {
   const [truckType, setTruckType] = useState<string | null>(null);
   const [searchRadius, setSearchRadius] = useState(10);
   const [selectedIndustries, setSelectedIndustries] = useState<string[]>([]);
+
+  const sortedDialCodes = useMemo(() => [...PHONE_COUNTRIES].sort((a, b) => b.dialCode.length - a.dialCode.length), []);
+  const selectedCountry = useMemo(
+    () => PHONE_COUNTRIES.find((country) => country.iso === selectedPhoneCountry) || PHONE_COUNTRIES[0],
+    [selectedPhoneCountry]
+  );
 
   // Upload avatar function
   const handleUploadAvatar = async () => {
@@ -204,10 +237,28 @@ export default function ProfileScreen() {
       setTruckType(profile.truck_type || null);
       setSearchRadius(profile.search_radius_km || 10);
       setSelectedIndustries(profile.preferred_industries || []);
+
+      const currentPhone = profile.phone_number || '';
+      const digitsOnly = currentPhone.replace(/[^0-9]/g, '');
+
+      if (digitsOnly) {
+        const matchedCountry = sortedDialCodes.find((country) => digitsOnly.startsWith(country.dialCode));
+        if (matchedCountry) {
+          setSelectedPhoneCountry(matchedCountry.iso);
+          setPhoneNumberLocal(digitsOnly.slice(matchedCountry.dialCode.length));
+        } else {
+          setSelectedPhoneCountry(PHONE_COUNTRIES[0].iso);
+          setPhoneNumberLocal(digitsOnly);
+        }
+      } else {
+        setSelectedPhoneCountry(PHONE_COUNTRIES[0].iso);
+        setPhoneNumberLocal('');
+      }
+      setPhoneError(null);
     } else {
       console.log('Skipping profile load - has unsaved changes or no profile');
     }
-  }, [profile]); // Don't include hasUnsavedChanges in deps to avoid loops
+  }, [profile, hasUnsavedChanges, sortedDialCodes]);
 
   // Toggle industry selection (max 5)
   const toggleIndustry = (industry: string) => {
@@ -240,6 +291,20 @@ export default function ProfileScreen() {
       return;
     }
 
+    const sanitizedLocal = phoneNumberLocal.replace(/[^0-9]/g, '');
+    let formattedPhone: string | null = null;
+
+    if (sanitizedLocal) {
+      if (sanitizedLocal.length < 6) {
+        setPhoneError(t('profile.phone_number_invalid'));
+        return;
+      }
+      formattedPhone = `+${selectedCountry.dialCode}${sanitizedLocal}`;
+    }
+    setPhoneError(null);
+
+    const phoneUpdate = sanitizedLocal ? formattedPhone || undefined : undefined;
+
     try {
       setIsSaving(true);
       console.log('Saving profile with industries:', selectedIndustries);
@@ -249,6 +314,7 @@ export default function ProfileScreen() {
         truck_type: truckType || undefined,
         search_radius_km: searchRadius,
         preferred_industries: selectedIndustries,
+        phone_number: phoneUpdate,
       });
       
       // Clear unsaved changes flag BEFORE refreshing
@@ -417,6 +483,55 @@ export default function ProfileScreen() {
               <Mail size={20} color="#64748B" />
               <Text style={styles.infoText}>{profile.email}</Text>
             </View>
+          </View>
+
+          <View style={styles.formGroup}>
+            <Text style={styles.label}>{t('profile.phone_number')}</Text>
+            <Text style={styles.helperText}>{t('profile.phone_number_helper')}</Text>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.phoneCountryList}
+            >
+              {PHONE_COUNTRIES.map((country) => {
+                const isActive = selectedPhoneCountry === country.iso;
+                return (
+                  <TouchableOpacity
+                    key={country.iso}
+                    style={[
+                      styles.phoneCountryChip,
+                      isActive && styles.phoneCountryChipActive,
+                    ]}
+                    onPress={() => {
+                      setHasUnsavedChanges(true);
+                      setSelectedPhoneCountry(country.iso);
+                    }}
+                  >
+                    <Text style={[styles.phoneCountryText, isActive && styles.phoneCountryTextActive]}>
+                      {country.flag} +{country.dialCode}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
+            </ScrollView>
+            <View style={styles.phoneInputRow}>
+              <View style={styles.phoneDialCode}>
+                <Text style={styles.phoneDialCodeText}>+{selectedCountry.dialCode}</Text>
+              </View>
+              <TextInput
+                style={styles.phoneNumberInput}
+                keyboardType="phone-pad"
+                value={phoneNumberLocal}
+                onChangeText={(value) => {
+                  setHasUnsavedChanges(true);
+                  setPhoneError(null);
+                  setPhoneNumberLocal(value.replace(/[^0-9]/g, ''));
+                }}
+                placeholder={t('profile.phone_number_placeholder')}
+                maxLength={15}
+              />
+            </View>
+            {phoneError && <Text style={styles.errorText}>{phoneError}</Text>}
           </View>
         </Card>
 
@@ -664,6 +779,11 @@ const styles = StyleSheet.create({
     color: '#1E293B',
     marginLeft: 12,
   },
+  helperText: {
+    fontSize: 13,
+    color: '#64748B',
+    marginBottom: 12,
+  },
   subscriptionHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -815,6 +935,67 @@ const styles = StyleSheet.create({
   saveButton: {
     marginTop: 8,
     marginBottom: 24,
+  },
+  phoneCountryList: {
+    paddingVertical: 4,
+    paddingRight: 16,
+  },
+  phoneCountryChip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    backgroundColor: '#FFFFFF',
+    marginRight: 8,
+  },
+  phoneCountryChipActive: {
+    borderColor: '#2563EB',
+    backgroundColor: '#EFF6FF',
+  },
+  phoneCountryText: {
+    fontSize: 14,
+    color: '#475569',
+    fontWeight: '500',
+  },
+  phoneCountryTextActive: {
+    color: '#1D4ED8',
+  },
+  phoneInputRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 12,
+    borderWidth: 1.5,
+    borderColor: '#CBD5E1',
+    borderRadius: 10,
+    overflow: 'hidden',
+    backgroundColor: '#FFFFFF',
+  },
+  phoneDialCode: {
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    backgroundColor: '#F8FAFC',
+    borderRightWidth: 1,
+    borderRightColor: '#E2E8F0',
+  },
+  phoneDialCodeText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#1E293B',
+  },
+  phoneNumberInput: {
+    flex: 1,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    fontSize: 16,
+    color: '#1E293B',
+  },
+  errorText: {
+    fontSize: 12,
+    color: '#EF4444',
+    marginTop: 8,
   },
   // Avatar styles
   avatarSection: {

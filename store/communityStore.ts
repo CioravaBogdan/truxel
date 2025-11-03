@@ -7,7 +7,6 @@ import {
   City
 } from '../types/community.types';
 import { communityService } from '../services/communityService';
-import { cityService } from '../services/cityService';
 
 interface CommunityState {
   // Posts data
@@ -47,6 +46,8 @@ interface CommunityState {
     contacts: number;
   } | null;
 
+  viewedPostIds: Record<string, boolean>;
+
   // Actions
   loadPosts: (reset?: boolean) => Promise<void>;
   loadMorePosts: () => Promise<void>;
@@ -63,6 +64,7 @@ interface CommunityState {
   savePost: (postId: string, userId: string) => Promise<void>;
   unsavePost: (postId: string, userId: string) => Promise<void>;
   recordContact: (postId: string, userId: string) => Promise<void>;
+  recordView: (postId: string, userId: string) => Promise<void>;
 
   // Filter actions
   setSelectedTab: (tab: 'availability' | 'routes') => void;
@@ -100,6 +102,7 @@ const initialState = {
   showCityModal: false,
   selectedPostType: null,
   selectedTemplate: null,
+  viewedPostIds: {},
 };
 
 export const useCommunityStore = create<CommunityState>((set, get) => ({
@@ -264,7 +267,11 @@ export const useCommunityStore = create<CommunityState>((set, get) => ({
   // Save a post
   savePost: async (postId: string, userId: string) => {
     try {
-      await communityService.recordInteraction(postId, userId, 'saved');
+      const { inserted } = await communityService.recordInteraction(postId, userId, 'saved');
+
+      if (!inserted) {
+        return;
+      }
 
       const post = get().posts.find(p => p.id === postId);
       if (post) {
@@ -292,18 +299,55 @@ export const useCommunityStore = create<CommunityState>((set, get) => ({
   // Record contact action
   recordContact: async (postId: string, userId: string) => {
     try {
-      await communityService.recordInteraction(postId, userId, 'contacted');
+      const { inserted } = await communityService.recordInteraction(postId, userId, 'contacted');
 
-      // Update contact count in local state
-      set(state => ({
-        posts: state.posts.map(p =>
-          p.id === postId
-            ? { ...p, contact_count: (p.contact_count || 0) + 1 }
-            : p
-        ),
-      }));
+      if (inserted) {
+        // Update contact count in local state
+        set(state => ({
+          posts: state.posts.map(p =>
+            p.id === postId
+              ? { ...p, contact_count: (p.contact_count || 0) + 1 }
+              : p
+          ),
+        }));
+      }
     } catch (error) {
       console.error('Error recording contact:', error);
+    }
+  },
+
+  recordView: async (postId: string, userId: string) => {
+    const { viewedPostIds } = get();
+
+    if (viewedPostIds[postId]) {
+      return;
+    }
+
+    try {
+      const inserted = await communityService.recordView(postId, userId);
+
+      if (inserted) {
+        set(state => ({
+          posts: state.posts.map(p =>
+            p.id === postId ? { ...p, view_count: (p.view_count || 0) + 1 } : p
+          ),
+          userActivePosts: state.userActivePosts.map(p =>
+            p.id === postId ? { ...p, view_count: (p.view_count || 0) + 1 } : p
+          ),
+          savedPosts: state.savedPosts.map(p =>
+            p.id === postId ? { ...p, view_count: (p.view_count || 0) + 1 } : p
+          ),
+        }));
+      }
+    } catch (error) {
+      console.error('Error recording view:', error);
+    } finally {
+      set(state => ({
+        viewedPostIds: {
+          ...state.viewedPostIds,
+          [postId]: true,
+        },
+      }));
     }
   },
 

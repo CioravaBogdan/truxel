@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -7,8 +7,14 @@ import {
   Linking,
   Alert,
   Image,
+  Modal,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import * as WebBrowser from 'expo-web-browser';
+import { useRouter } from 'expo-router';
+import Toast from 'react-native-toast-message';
+import * as SecureStore from 'expo-secure-store';
 import {
   MapPin,
   Truck,
@@ -27,6 +33,55 @@ import { useAuthStore } from '../../store/authStore';
 import { useCommunityStore } from '../../store/communityStore';
 import { formatDistanceToNow } from 'date-fns';
 import { enUS, ro, pl, tr, lt, es } from 'date-fns/locale';
+import { UpgradePromptModal } from './UpgradePromptModal';
+import { stripeService } from '../../services/stripeService';
+
+const WHATSAPP_PREF_KEY = 'community_whatsapp_preferred_scheme_v2';
+
+type WhatsAppOptionConfig = {
+  id: 'whatsapp' | 'whatsapp-business';
+  scheme: string;
+  labelKey: string;
+};
+
+type WhatsAppPayload = {
+  schemePhone: string;
+  waPhone: string;
+  message: string;
+};
+
+const WHATSAPP_SCHEMES: WhatsAppOptionConfig[] = [
+  {
+    id: 'whatsapp',
+    scheme: 'whatsapp://send',
+    labelKey: 'community.whatsapp_app_regular',
+  },
+  {
+    id: 'whatsapp-business',
+    scheme: 'whatsapp-business://send',
+    labelKey: 'community.whatsapp_app_business',
+  },
+];
+
+const buildWhatsAppUrl = (schemePrefix: string, phone: string, message: string) =>
+  `${schemePrefix}?phone=${phone}&text=${encodeURIComponent(message)}`;
+
+const storeWhatsAppPreference = async (value: string | null) => {
+  try {
+    if (value) {
+      await SecureStore.setItemAsync(WHATSAPP_PREF_KEY, value);
+    } else {
+      await SecureStore.deleteItemAsync(WHATSAPP_PREF_KEY);
+    }
+  } catch {
+    // Ignore persistence errors; preference is optional
+  }
+};
+
+type WhatsAppOption = {
+  id: 'whatsapp' | 'whatsapp-business';
+  label: string;
+};
 
 interface PostCardProps {
   post: CommunityPost;
@@ -35,8 +90,15 @@ interface PostCardProps {
 
 export default function PostCard({ post, onPress }: PostCardProps) {
   const { t, i18n } = useTranslation();
-  const { user, profile } = useAuthStore();
-  const { savePost, recordContact } = useCommunityStore();
+  const router = useRouter();
+  const { user, profile, session, refreshProfile } = useAuthStore();
+  const { savePost, recordContact, postLimits } = useCommunityStore();
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [isProcessingUpgrade, setIsProcessingUpgrade] = useState(false);
+  const [whatsAppPreference, setWhatsAppPreference] = useState<string | null>(null);
+  const [isWhatsAppModalVisible, setIsWhatsAppModalVisible] = useState(false);
+  const [availableWhatsAppOptions, setAvailableWhatsAppOptions] = useState<WhatsAppOption[]>([]);
+  const pendingWhatsAppPayload = useRef<WhatsAppPayload | null>(null);
 
   const isOwnPost = user?.id === post.user_id;
   const isDriverAvailable = post.post_type === 'DRIVER_AVAILABLE';
@@ -51,6 +113,148 @@ export default function PostCard({ post, onPress }: PostCardProps) {
   const whatsappDisabled = isOwnPost || !targetPhone;
   const callDisabled = isOwnPost || !targetPhone;
   const emailDisabled = isOwnPost || !targetEmail;
+
+  useEffect(() => {
+    SecureStore.getItemAsync(WHATSAPP_PREF_KEY)
+      .then((stored) => {
+        if (stored) {
+          setWhatsAppPreference(stored);
+        }
+      })
+      .catch(() => {
+        // Ignore storage read errors; we'll prompt for selection if needed
+      });
+  }, []);
+
+  const recordWhatsAppContact = async () => {
+    if (user) {
+      await recordContact(post.id, user.id);
+    }
+    pendingWhatsAppPayload.current = null;
+  };
+
+  const openWhatsAppWithScheme = async (optionId: string, payload: WhatsAppPayload): Promise<boolean> => {
+    const config = WHATSAPP_SCHEMES.find((item) => item.id === optionId);
+    if (!config) {
+      return false;
+    }
+
+    const url = buildWhatsAppUrl(config.scheme, payload.schemePhone, payload.message);
+
+    try {
+      const canOpen = await Linking.canOpenURL(url);
+      if (!canOpen) {
+        return false;
+      }
+
+      await Linking.openURL(url);
+      return true;
+    } catch (error) {
+      console.error('WhatsApp scheme open error:', error);
+      return false;
+    }
+  };
+
+  const openWhatsAppFallback = async (payload: WhatsAppPayload): Promise<boolean> => {
+    if (!payload.waPhone) {
+      return false;
+    }
+
+    const fallbackUrl = `https://wa.me/${payload.waPhone}?text=${encodeURIComponent(payload.message)}`;
+
+    try {
+      const canOpenFallback = await Linking.canOpenURL(fallbackUrl);
+      if (!canOpenFallback) {
+        return false;
+      }
+
+      await Linking.openURL(fallbackUrl);
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
+  const showWhatsAppChoice = () => {
+    setAvailableWhatsAppOptions(
+      WHATSAPP_SCHEMES.map((option) => ({
+        id: option.id,
+        label: t(option.labelKey),
+      }))
+    );
+    setIsWhatsAppModalVisible(true);
+  };
+
+  const resetPreferenceAndOptionallyPrompt = (payload?: WhatsAppPayload) => {
+    setWhatsAppPreference(null);
+    storeWhatsAppPreference(null).catch(() => {
+      // Preference reset failures are non-blocking
+    });
+
+    if (payload) {
+      pendingWhatsAppPayload.current = payload;
+      showWhatsAppChoice();
+    }
+  };
+
+  const showWhatsAppUnavailableAlert = (payload: WhatsAppPayload) => {
+    Alert.alert(
+      t('community.whatsapp_unavailable_title'),
+      t('community.whatsapp_unavailable_message'),
+      [
+        {
+          text: t('community.whatsapp_change_preference'),
+          onPress: () => resetPreferenceAndOptionallyPrompt(payload),
+        },
+        {
+          text: t('common.cancel'),
+          style: 'cancel',
+        },
+      ]
+    );
+  };
+
+  const handleWhatsAppModalClose = () => {
+    setIsWhatsAppModalVisible(false);
+    if (!whatsAppPreference) {
+      pendingWhatsAppPayload.current = null;
+    }
+  };
+
+  const handleWhatsAppOptionSelect = async (optionId: string) => {
+    setIsWhatsAppModalVisible(false);
+    const payload = pendingWhatsAppPayload.current;
+
+    if (!payload) {
+      return;
+    }
+
+    await storeWhatsAppPreference(optionId);
+    setWhatsAppPreference(optionId);
+
+    if (optionId === 'whatsapp-business') {
+      Alert.alert(
+        t('community.whatsapp_business_ios_title'),
+        t('community.whatsapp_business_ios_message')
+      );
+    }
+
+    const success = await openWhatsAppWithScheme(optionId, payload);
+
+    if (success) {
+      await recordWhatsAppContact();
+      return;
+    }
+
+    const fallbackSuccess = await openWhatsAppFallback(payload);
+
+    if (fallbackSuccess) {
+      await recordWhatsAppContact();
+      return;
+    }
+
+    showWhatsAppUnavailableAlert(payload);
+  };
 
   // Get locale based on current language
   const getDateFnsLocale = () => {
@@ -87,14 +291,7 @@ export default function PostCard({ post, onPress }: PostCardProps) {
     }
 
     if (profile?.subscription_tier === 'trial') {
-      Alert.alert(
-        t('community.upgrade_required'),
-        t('community.upgrade_required_message'),
-        [
-          { text: t('common.cancel'), style: 'cancel' },
-          { text: t('common.upgrade'), onPress: () => {/* Navigate to pricing screen */} }
-        ]
-      );
+      setShowUpgradeModal(true);
       return false;
     }
 
@@ -110,11 +307,6 @@ export default function PostCard({ post, onPress }: PostCardProps) {
 
     if (!ensureCanContact()) {
       return;
-    }
-
-    // Record interaction
-    if (user) {
-      await recordContact(post.id, user.id);
     }
 
     const templateKey = isDriverAvailable
@@ -134,20 +326,54 @@ export default function PostCard({ post, onPress }: PostCardProps) {
           : `Salut ${contactName}! Sunt ${viewerFullName} de la ${viewerCompany}. Te contactez pentru cursa ${routeLabel}.`
     });
 
-  const phoneNumber = targetPhone.replace(/[^0-9+]/g, '');
-    const url = `whatsapp://send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
+    const rawPhone = targetPhone.replace(/\s+/g, '');
+    const hasCountryCode = rawPhone.startsWith('+');
+    const numericPhone = rawPhone.replace(/[^0-9]/g, '');
 
-    try {
-      const supported = await Linking.canOpenURL(url);
-      if (!supported) {
-        Alert.alert(t('community.whatsapp_not_installed'), t('community.install_whatsapp'));
-        return;
-      }
-
-      await Linking.openURL(url);
-    } catch {
-      Alert.alert(t('community.error'), t('community.cannot_open_whatsapp'));
+    if (!hasCountryCode || numericPhone.length < 8) {
+      Alert.alert(
+        t('community.whatsapp_invalid_number_title'),
+        t('community.whatsapp_invalid_number_message')
+      );
+      return;
     }
+
+    const phoneForScheme = `+${numericPhone}`;
+    const phoneForWa = numericPhone;
+
+    if (!phoneForScheme || !phoneForWa) {
+      Alert.alert(t('community.contact_unavailable'), t('community.phone_not_available'));
+      return;
+    }
+
+    const payload: WhatsAppPayload = {
+      schemePhone: phoneForScheme,
+      waPhone: phoneForWa,
+      message,
+    };
+
+    pendingWhatsAppPayload.current = payload;
+
+    if (!whatsAppPreference) {
+      showWhatsAppChoice();
+      return;
+    }
+
+    const success = await openWhatsAppWithScheme(whatsAppPreference, payload);
+
+    if (success) {
+      await recordWhatsAppContact();
+      return;
+    }
+
+    const fallbackSuccess = await openWhatsAppFallback(payload);
+
+    if (fallbackSuccess) {
+      await recordWhatsAppContact();
+      return;
+    }
+
+    showWhatsAppUnavailableAlert(payload);
   };
 
   const handleEmail = async () => {
@@ -405,6 +631,91 @@ export default function PostCard({ post, onPress }: PostCardProps) {
           <Text style={styles.contactButtonText}>{t('community.contact_email')}</Text>
         </TouchableOpacity>
       </View>
+
+      <UpgradePromptModal
+        visible={showUpgradeModal}
+        onClose={() => setShowUpgradeModal(false)}
+        onViewPlans={() => {
+          setShowUpgradeModal(false);
+          router.push('/(tabs)/pricing');
+        }}
+        onUpgradeNow={async () => {
+          if (!session?.access_token) {
+            setShowUpgradeModal(false);
+            Alert.alert(t('common.error'), t('community.upgrade_modal.auth_error'));
+            return;
+          }
+
+          setIsProcessingUpgrade(true);
+
+          try {
+            const tiers = await stripeService.getAvailableSubscriptionTiers();
+            const lowestTier = tiers.sort((a, b) => a.price - b.price)[0];
+
+            if (!lowestTier?.stripe_price_id) {
+              throw new Error(t('community.upgrade_modal.no_price'));
+            }
+
+            const { url } = await stripeService.createCheckoutSession(
+              lowestTier.stripe_price_id,
+              'subscription',
+              'truxel://subscription-success',
+              'truxel://subscription-cancelled',
+              session.access_token
+            );
+
+            setShowUpgradeModal(false);
+            await WebBrowser.openBrowserAsync(url);
+            await refreshProfile();
+          } catch (error: any) {
+            console.error('Upgrade flow error:', error);
+            Toast.show({
+              type: 'error',
+              text1: t('common.error'),
+              text2: error?.message || t('community.upgrade_modal.generic_error'),
+            });
+          } finally {
+            setIsProcessingUpgrade(false);
+          }
+        }}
+        isProcessing={isProcessingUpgrade}
+        trialPostsRemaining={postLimits?.posts_remaining_today}
+      />
+
+      <Modal
+        visible={isWhatsAppModalVisible}
+        transparent
+        animationType="fade"
+        onRequestClose={handleWhatsAppModalClose}
+      >
+        <TouchableWithoutFeedback onPress={handleWhatsAppModalClose}>
+          <View style={styles.whatsAppModalOverlay}>
+            <TouchableWithoutFeedback onPress={() => {}}>
+              <View style={styles.whatsAppModalContent}>
+                <Text style={styles.whatsAppModalTitle}>{t('community.whatsapp_choose_title')}</Text>
+                <Text style={styles.whatsAppModalDescription}>
+                  {t('community.whatsapp_choose_message')}
+                </Text>
+                {availableWhatsAppOptions.map((option) => (
+                  <TouchableOpacity
+                    key={option.id}
+                    style={styles.whatsAppModalOption}
+                    onPress={() => handleWhatsAppOptionSelect(option.id)}
+                  >
+                    <Text style={styles.whatsAppModalOptionText}>{option.label}</Text>
+                  </TouchableOpacity>
+                ))}
+                <TouchableOpacity
+                  style={styles.whatsAppModalCancel}
+                  onPress={handleWhatsAppModalClose}
+                >
+                  <Text style={styles.whatsAppModalCancelText}>{t('common.cancel')}</Text>
+                </TouchableOpacity>
+              </View>
+            </TouchableWithoutFeedback>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
     </TouchableOpacity>
   );
 }
@@ -599,5 +910,48 @@ const styles = StyleSheet.create({
   },
   emailButton: {
     backgroundColor: '#6366F1',
+  },
+  whatsAppModalOverlay: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    backgroundColor: 'rgba(17, 24, 39, 0.5)',
+  },
+  whatsAppModalContent: {
+    backgroundColor: '#FFFFFF',
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    paddingVertical: 20,
+    paddingHorizontal: 24,
+    gap: 12,
+  },
+  whatsAppModalTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#111827',
+  },
+  whatsAppModalDescription: {
+    fontSize: 14,
+    color: '#4B5563',
+  },
+  whatsAppModalOption: {
+    backgroundColor: '#F3F4F6',
+    borderRadius: 12,
+    paddingVertical: 14,
+    paddingHorizontal: 16,
+  },
+  whatsAppModalOptionText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#111827',
+    textAlign: 'center',
+  },
+  whatsAppModalCancel: {
+    paddingVertical: 12,
+  },
+  whatsAppModalCancelText: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: '#2563EB',
+    textAlign: 'center',
   },
 });

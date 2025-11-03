@@ -31,6 +31,33 @@ import {
 import { SubscriptionTierData, AdditionalSearchPack } from '@/types/database.types';
 import * as WebBrowser from 'expo-web-browser';
 
+type TierCommunityMeta = {
+  daily?: number;
+  monthly?: number;
+  unlimited?: boolean;
+  priority?: boolean;
+  supportKey: string;
+};
+
+const TIER_COMMUNITY_META: Record<string, TierCommunityMeta> = {
+  standard: {
+    daily: 5,
+    monthly: 30,
+    supportKey: 'pricing.support_standard',
+  },
+  pro: {
+    daily: 10,
+    monthly: 100,
+    priority: true,
+    supportKey: 'pricing.support_priority',
+  },
+  premium: {
+    unlimited: true,
+    priority: true,
+    supportKey: 'pricing.support_priority',
+  },
+};
+
 export default function PricingScreen() {
   const { t } = useTranslation();
   const authStore = useAuthStore();
@@ -494,10 +521,15 @@ export default function PricingScreen() {
   };
 
   const getTierFeatures = (tier: SubscriptionTierData) => {
-    const features = [
-      `${tier.searches_per_month} ${t('pricing.searches_per_month')}`,
-      `${t('pricing.max_results', { count: tier.max_results_per_search })}`,
-    ];
+    const features: string[] = [];
+
+    if (tier.searches_per_month) {
+      features.push(`${tier.searches_per_month} ${t('pricing.searches_per_month')}`);
+    }
+
+    if (tier.max_results_per_search) {
+      features.push(t('pricing.max_results', { count: tier.max_results_per_search }));
+    }
 
     if (tier.linkedin_enabled) {
       features.push(t('pricing.linkedin_contacts'));
@@ -509,6 +541,29 @@ export default function PricingScreen() {
 
     if (tier.advanced_research_enabled) {
       features.push(t('pricing.advanced_research'));
+    }
+
+    const communityMeta = TIER_COMMUNITY_META[tier.tier_name];
+
+    if (communityMeta) {
+      features.push(t('pricing.community_contacts'));
+
+      if (communityMeta.unlimited) {
+        features.push(t('pricing.community_unlimited_posts'));
+      } else if (communityMeta.daily && communityMeta.monthly) {
+        features.push(
+          t('pricing.community_posts_limit', {
+            daily: communityMeta.daily,
+            monthly: communityMeta.monthly,
+          })
+        );
+      }
+
+      if (communityMeta.priority) {
+        features.push(t('pricing.community_priority'));
+      }
+
+      features.push(t(communityMeta.supportKey));
     }
 
     return features;

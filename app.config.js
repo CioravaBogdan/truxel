@@ -18,7 +18,12 @@ export default {
       bundleIdentifier: "com.truxel.app",
       infoPlist: {
         NSLocationWhenInUseUsageDescription: "Truxel needs your location to find companies near you.",
-        NSLocationAlwaysAndWhenInUseUsageDescription: "Truxel needs your location to find companies near you."
+        NSLocationAlwaysAndWhenInUseUsageDescription: "Truxel needs your location to find companies near you.",
+        LSApplicationQueriesSchemes: [
+          "whatsapp",
+          "whatsapp-business",
+          "whatsapp-messenger"
+        ]
       },
       config: {
         googleMapsApiKey: ""

@@ -281,27 +281,57 @@ class CommunityService {
     userId: string,
     interactionType: InteractionType,
     metadata?: Record<string, any>
-  ): Promise<void> {
-    // Insert interaction (upsert to avoid duplicates)
-    const { error } = await supabase
-      .from('community_interactions')
-      .upsert({
-        post_id: postId,
-        user_id: userId,
-        interaction_type: interactionType,
-        metadata: metadata || {}
-      }, {
-        onConflict: 'post_id,user_id,interaction_type'
-      });
+  ): Promise<{ inserted: boolean }> {
+    const { data, error } = await supabase.rpc('record_community_interaction', {
+      p_post_id: postId,
+      p_user_id: userId,
+      p_interaction_type: interactionType,
+      p_metadata: metadata ?? null,
+    });
 
     if (error) {
       console.error('Error recording interaction:', error);
       throw error;
     }
 
-    // Update contact count if needed
-    if (interactionType === 'contacted') {
-      await this.incrementContactCount(postId);
+    const inserted = Boolean((data as { inserted?: boolean } | null)?.inserted);
+
+    return { inserted };
+  }
+
+  /**
+   * Record a view interaction and increment counters once per user
+   */
+  async recordView(postId: string, userId: string): Promise<boolean> {
+    try {
+      const { data, error } = await supabase.rpc('record_community_interaction', {
+        p_post_id: postId,
+        p_user_id: userId,
+        p_interaction_type: 'view',
+        p_metadata: null,
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      const inserted = Boolean((data as { inserted?: boolean } | null)?.inserted);
+
+      if (inserted) {
+        await this.incrementViewCount(postId);
+      }
+
+      return inserted;
+    } catch (error) {
+      console.error('Error recording view interaction:', error);
+
+      try {
+        await this.incrementViewCount(postId);
+      } catch (incrementError) {
+        console.error('Fallback view counter increment failed:', incrementError);
+      }
+
+      return false;
     }
   }
 
@@ -449,21 +479,6 @@ class CommunityService {
       });
     } catch (error) {
       console.error('Error incrementing view count:', error);
-    }
-  }
-
-  /**
-   * Private: Increment contact count
-   */
-  private async incrementContactCount(postId: string): Promise<void> {
-    try {
-      await supabase.rpc('increment', {
-        table_name: 'community_posts',
-        column_name: 'contact_count',
-        row_id: postId
-      });
-    } catch (error) {
-      console.error('Error incrementing contact count:', error);
     }
   }
 
