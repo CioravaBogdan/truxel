@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   View,
   Text,
   StyleSheet,
-  ScrollView,
-  RefreshControl,
   TouchableOpacity,
 } from 'react-native';
 import { useRouter } from 'expo-router';
@@ -17,7 +15,8 @@ import { useAuthStore } from '@/store/authStore';
 import { useLeadsStore } from '@/store/leadsStore';
 import { leadsService } from '@/services/leadsService';
 import { searchesService } from '@/services/searchesService';
-import { Briefcase, Clock, CreditCard, MapPin } from 'lucide-react-native';
+import { Briefcase, Clock, CreditCard, MapPin, Users } from 'lucide-react-native';
+import CommunityFeed from '@/components/community/CommunityFeed';
 
 export default function HomeScreen() {
   const { t } = useTranslation();
@@ -25,9 +24,8 @@ export default function HomeScreen() {
   const { profile, user } = useAuthStore();
   const { leads, setLeads } = useLeadsStore();
   const [searchesRemaining, setSearchesRemaining] = useState(0);
-  const [isRefreshing, setIsRefreshing] = useState(false);
 
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     if (!user || !profile) return;
 
     try {
@@ -41,98 +39,104 @@ export default function HomeScreen() {
     } catch (error) {
       console.error('Error loading home data:', error);
     }
-  };
+  }, [profile, setLeads, user]);
 
   useEffect(() => {
     loadData();
-  }, [user, profile]);
-
-  const onRefresh = async () => {
-    setIsRefreshing(true);
-    await loadData();
-    setIsRefreshing(false);
-  };
+  }, [loadData]);
 
   const recentLeads = leads.slice(0, 5);
   const contactedCount = leads.filter((l) => l.status === 'contacted').length;
 
+  // Render stats header for CommunityFeed
+  const renderStatsHeader = () => (
+    <View style={styles.headerContent}>
+      <View style={styles.header}>
+        <Text style={styles.greeting}>
+          {t('home.welcome', { name: profile?.full_name?.split(' ')[0] || '' })}
+        </Text>
+        <Text style={styles.subtitle}>
+          {t('home.searches_remaining', { count: searchesRemaining })}
+        </Text>
+      </View>
+
+      <Card style={styles.statsCard}>
+        <View style={styles.statsRow}>
+          <View style={styles.stat}>
+            <Briefcase size={24} color="#2563EB" />
+            <Text style={styles.statValue}>{leads.length}</Text>
+            <Text style={styles.statLabel}>{t('home.total_leads')}</Text>
+          </View>
+          <View style={styles.divider} />
+          <View style={styles.stat}>
+            <Clock size={24} color="#10B981" />
+            <Text style={styles.statValue}>{contactedCount}</Text>
+            <Text style={styles.statLabel}>{t('home.leads_contacted')}</Text>
+          </View>
+          <View style={styles.divider} />
+          <View style={styles.stat}>
+            <CreditCard size={24} color="#F59E0B" />
+            <Text style={styles.statValue}>{searchesRemaining}</Text>
+            <Text style={styles.statLabel}>{t('tabs.search')}</Text>
+          </View>
+        </View>
+      </Card>
+
+      <Button
+        title={t('home.start_search')}
+        onPress={() => router.push('/(tabs)/search')}
+        style={styles.searchButton}
+      />
+
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>{t('home.recent_leads')}</Text>
+
+        {recentLeads.length === 0 ? (
+          <Card style={styles.emptyCard}>
+            <Text style={styles.emptyText}>
+              {t('leads.no_leads')}
+            </Text>
+          </Card>
+        ) : (
+          recentLeads.map((lead) => (
+            <TouchableOpacity
+              key={lead.id}
+              onPress={() => router.push(`/lead/${lead.id}` as any)}
+            >
+              <Card style={styles.leadCard}>
+                <View style={styles.leadHeader}>
+                  <Text style={styles.leadName}>{lead.company_name}</Text>
+                  <StatusBadge status={lead.status} />
+                </View>
+                {lead.city && (
+                  <View style={styles.leadLocation}>
+                    <MapPin size={14} color="#64748B" />
+                    <Text style={styles.leadCity}>{lead.city}</Text>
+                  </View>
+                )}
+              </Card>
+            </TouchableOpacity>
+          ))
+        )}
+      </View>
+
+      <View style={styles.communityHeader}>
+        <View style={styles.sectionHeaderRow}>
+          <Users size={24} color="#2563EB" />
+          <Text style={styles.sectionTitle}>{t('home.community_title', 'Comunitatea Truxel')}</Text>
+        </View>
+        <Text style={styles.communitySubtitle}>
+          {t('home.community_subtitle', 'Găsește curse și șoferi în timp real')}
+        </Text>
+      </View>
+    </View>
+  );
+
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
-      <ScrollView
-        contentContainerStyle={styles.scrollContent}
-        refreshControl={
-          <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
-        }
-      >
-        <View style={styles.header}>
-          <Text style={styles.greeting}>
-            {t('home.welcome', { name: profile?.full_name?.split(' ')[0] || '' })}
-          </Text>
-          <Text style={styles.subtitle}>
-            {t('home.searches_remaining', { count: searchesRemaining })}
-          </Text>
-        </View>
-
-        <Card style={styles.statsCard}>
-          <View style={styles.statsRow}>
-            <View style={styles.stat}>
-              <Briefcase size={24} color="#2563EB" />
-              <Text style={styles.statValue}>{leads.length}</Text>
-              <Text style={styles.statLabel}>{t('home.total_leads')}</Text>
-            </View>
-            <View style={styles.divider} />
-            <View style={styles.stat}>
-              <Clock size={24} color="#10B981" />
-              <Text style={styles.statValue}>{contactedCount}</Text>
-              <Text style={styles.statLabel}>{t('home.leads_contacted')}</Text>
-            </View>
-            <View style={styles.divider} />
-            <View style={styles.stat}>
-              <CreditCard size={24} color="#F59E0B" />
-              <Text style={styles.statValue}>{searchesRemaining}</Text>
-              <Text style={styles.statLabel}>{t('tabs.search')}</Text>
-            </View>
-          </View>
-        </Card>
-
-        <Button
-          title={t('home.start_search')}
-          onPress={() => router.push('/(tabs)/search')}
-          style={styles.searchButton}
-        />
-
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>{t('home.recent_leads')}</Text>
-
-          {recentLeads.length === 0 ? (
-            <Card style={styles.emptyCard}>
-              <Text style={styles.emptyText}>
-                {t('leads.no_leads')}
-              </Text>
-            </Card>
-          ) : (
-            recentLeads.map((lead) => (
-              <TouchableOpacity
-                key={lead.id}
-                onPress={() => router.push(`/lead/${lead.id}`)}
-              >
-                <Card style={styles.leadCard}>
-                  <View style={styles.leadHeader}>
-                    <Text style={styles.leadName}>{lead.company_name}</Text>
-                    <StatusBadge status={lead.status} />
-                  </View>
-                  {lead.city && (
-                    <View style={styles.leadLocation}>
-                      <MapPin size={14} color="#64748B" />
-                      <Text style={styles.leadCity}>{lead.city}</Text>
-                    </View>
-                  )}
-                </Card>
-              </TouchableOpacity>
-            ))
-          )}
-        </View>
-      </ScrollView>
+      <CommunityFeed 
+        customHeader={renderStatsHeader()}
+      />
     </SafeAreaView>
   );
 }
@@ -142,7 +146,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F8FAFC',
   },
-  scrollContent: {
+  headerContent: {
     padding: 16,
   },
   header: {
@@ -231,5 +235,19 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#64748B',
     marginLeft: 4,
+  },
+  communityHeader: {
+    marginTop: 24,
+    marginBottom: 0,
+  },
+  sectionHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  communitySubtitle: {
+    fontSize: 14,
+    color: '#64748B',
+    marginBottom: 16,
   },
 });

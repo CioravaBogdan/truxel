@@ -7,6 +7,7 @@ import {
   Platform,
   ScrollView,
   TouchableOpacity,
+  Linking,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
@@ -18,7 +19,6 @@ import { authService } from '@/services/authService';
 import { signInWithApple, signInWithGoogle, isAppleAuthAvailable, isGoogleAuthAvailable } from '@/services/oauthService';
 import Toast from 'react-native-toast-message';
 import { Truck } from 'lucide-react-native';
-import { Linking } from 'react-native';
 
 interface LoginForm {
   email: string;
@@ -36,7 +36,12 @@ export default function LoginScreen() {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginForm>();
+  } = useForm<LoginForm>({
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
 
   useEffect(() => {
     checkOAuthProviders();

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import {
   View,
   Text,
@@ -50,61 +50,53 @@ export default function PricingScreen() {
   const [validatedCoupon, setValidatedCoupon] = useState<any>(null);
   const [couponError, setCouponError] = useState<string | null>(null);
 
-  useEffect(() => {
-    console.log('PricingScreen mounted');
-    loadPricingData();
-    checkSubscriptionStatus(); // Check if subscription was just activated
-  }, []);
+  const checkSubscriptionStatus = useCallback(async () => {
+    const state = useAuthStore.getState();
+    if (!state.profile || !state.session) {
+      return;
+    }
 
-  // Check subscription status when returning to screen (e.g., after payment)
-  useEffect(() => {
-    const checkInterval = setInterval(() => {
-      checkSubscriptionStatus();
-    }, 5000); // Check every 5 seconds
-
-    return () => clearInterval(checkInterval);
-  }, [profile?.subscription_tier]);
-
-  const checkSubscriptionStatus = async () => {
-    if (!profile || !session) return;
+    const previousTier = state.profile.subscription_tier;
 
     try {
-      // Refresh profile to get latest subscription status
       await refreshProfile?.();
-      
-      // If subscription tier changed from trial to paid, show success message
-      const currentProfile = authStore?.profile;
-      if (currentProfile && currentProfile.subscription_tier !== 'trial' && currentProfile.subscription_tier !== profile.subscription_tier) {
+      const updatedProfile = useAuthStore.getState().profile;
+
+      if (
+        updatedProfile &&
+        updatedProfile.subscription_tier !== 'trial' &&
+        updatedProfile.subscription_tier !== previousTier
+      ) {
         console.log('Subscription status changed:', {
-          from: profile.subscription_tier,
-          to: currentProfile.subscription_tier,
+          from: previousTier,
+          to: updatedProfile.subscription_tier,
         });
 
         Toast.show({
           type: 'success',
           text1: t('subscription.activated'),
-          text2: `Welcome to ${currentProfile.subscription_tier} tier! 🎉`,
+          text2: `Welcome to ${updatedProfile.subscription_tier} tier! 🎉`,
           visibilityTime: 5000,
         });
       }
     } catch (error) {
       console.error('Error checking subscription status:', error);
     }
-  };
+  }, [refreshProfile, t]);
 
-  const loadPricingData = async () => {
+  const loadPricingData = useCallback(async () => {
     try {
       setIsLoading(true);
       console.log('Loading pricing data...');
       console.log('Calling getAvailableSubscriptionTiers...');
-      
+
       const tiersData = await stripeService.getAvailableSubscriptionTiers();
       console.log('Tiers received:', JSON.stringify(tiersData));
-      
+
       console.log('Calling getAvailableSearchPacks...');
       const packsData = await stripeService.getAvailableSearchPacks();
       console.log('Packs received:', JSON.stringify(packsData));
-      
+
       setTiers(tiersData || []);
       setSearchPacks(packsData || []);
     } catch (error: any) {
@@ -116,14 +108,27 @@ export default function PricingScreen() {
         text1: t('common.error'),
         text2: error.message || 'Failed to load pricing',
       });
-      // Set empty arrays so UI doesn't break
       setTiers([]);
       setSearchPacks([]);
     } finally {
       console.log('Loading complete - setting isLoading to false');
       setIsLoading(false);
     }
-  };
+  }, [t]);
+
+  useEffect(() => {
+    console.log('PricingScreen mounted');
+    loadPricingData();
+    checkSubscriptionStatus();
+  }, [loadPricingData, checkSubscriptionStatus]);
+
+  useEffect(() => {
+    const checkInterval = setInterval(() => {
+      checkSubscriptionStatus();
+    }, 5000);
+
+    return () => clearInterval(checkInterval);
+  }, [checkSubscriptionStatus]);
 
   const handleValidateCoupon = async () => {
     if (!couponCode.trim()) {
@@ -307,7 +312,7 @@ export default function PricingScreen() {
           text: t('subscription.upgrade'),
           onPress: async () => {
             try {
-              setProcessingPriceId(tier.stripe_price_id);
+              setProcessingPriceId(tier.stripe_price_id || null);
               console.log('handleUpgrade: Creating Stripe Checkout for upgrade to', tier.tier_name);
               
               // FIX: Use Stripe Checkout for upgrade (shows payment confirmation, no instant charge)
@@ -509,6 +514,45 @@ export default function PricingScreen() {
     return features;
   };
 
+  const activeTier = useMemo(() => {
+    if (!profile?.subscription_tier) {
+      return undefined;
+    }
+
+    return tiers.find((tier) => tier.tier_name === profile.subscription_tier);
+  }, [tiers, profile?.subscription_tier]);
+
+  const usageStats = useMemo(() => {
+    if (!activeTier || !profile) {
+      return null;
+    }
+
+    const used = profile.monthly_searches_used ?? 0;
+    const limit = activeTier.searches_per_month;
+    const percent = limit ? Math.min(100, Math.round((used / limit) * 100)) : 0;
+    const remaining = Math.max(0, limit - used);
+
+    return { used, limit, percent, remaining };
+  }, [activeTier, profile]);
+
+  const usageInsight = useMemo(() => {
+    if (!usageStats) {
+      return null;
+    }
+
+    if (usageStats.percent >= 80) {
+      return {
+        icon: <TrendingUp size={20} color="#DC2626" />,
+        text: `You've used ${usageStats.percent}% of your monthly searches. Consider upgrading for more capacity.`,
+      };
+    }
+
+    return {
+      icon: <TrendingDown size={20} color="#10B981" />,
+      text: `Keep going! ${usageStats.remaining} searches left this month.`,
+    };
+  }, [usageStats]);
+
   if (isLoading) {
     return (
       <SafeAreaView style={styles.container} edges={['top']}>
@@ -571,6 +615,12 @@ export default function PricingScreen() {
                 {profile.available_search_credits || 0}
               </Text>
             </View>
+            {usageInsight && (
+              <View style={styles.usageInsight}>
+                {usageInsight.icon}
+                <Text style={styles.usageInsightText}>{usageInsight.text}</Text>
+              </View>
+            )}
           </Card>
         )}
 
@@ -981,6 +1031,20 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: '#E2E8F0',
     marginTop: 12,
+  },
+  usageInsight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    backgroundColor: '#E0F2FE',
+    borderRadius: 12,
+    padding: 12,
+    marginTop: 16,
+  },
+  usageInsightText: {
+    flex: 1,
+    color: '#1E293B',
+    fontSize: 14,
   },
   creditLabel: {
     fontSize: 14,

@@ -141,7 +141,11 @@
     "privacy": "Polityka prywatności",
     "support": "Kontakt z pomocą",
     "version": "Wersja",
-    "profile_updated": "Profil zaktualizowany pomyślnie"
+    "profile_updated": "Profil zaktualizowany pomyślnie",
+    "permission_required": "Wymagane uprawnienie",
+    "photo_permission_message": "Potrzebujemy dostępu do galerii zdjęć, aby przesłać zdjęcie profilowe",
+    "avatar_updated": "Zdjęcie profilowe zaktualizowane pomyślnie",
+    "avatar_upload_failed": "Nie udało się przesłać zdjęcia profilowego"
   },
   "templates": {
     "email_subject": "Możliwość partnerstwa logistycznego - {{company}}",
@@ -159,5 +163,37 @@
     "something_went_wrong": "Coś poszło nie tak. Spróbuj ponownie.",
     "session_expired": "Sesja wygasła. Zaloguj się ponownie.",
     "insufficient_permissions": "Niewystarczające uprawnienia"
+  },
+  "directions": {
+    "north": "Północ",
+    "northeast": "Północny wschód",
+    "east": "Wschód",
+    "southeast": "Południowy wschód",
+    "south": "Południe",
+    "southwest": "Południowy zachód",
+    "west": "Zachód",
+    "northwest": "Północny zachód",
+    "of": "od"
+  },
+  "community": {
+    "select_city": "Wybierz miasto",
+    "search_city": "Szukaj miasta...",
+    "recent_cities": "Ostatnie",
+    "popular_cities": "Popularne miasta",
+    "popular": "Popularne",
+    "no_results": "Nie znaleziono miast",
+    "try_different_name": "Spróbuj innej nazwy lub sprawdź pisownię",
+    "searching": "Wyszukiwanie...",
+    "user": "Użytkownik",
+    "contact_whatsapp": "WhatsApp",
+    "contact_call": "Zadzwoń",
+    "contact_email": "Email",
+    "email_contact_line": "Możesz się ze mną skontaktować pod numerem {{phone}}.",
+    "whatsapp_driver_available": "Cześć {{theirName}}, tu {{myName}} z {{myCompany}}. Kontaktuję się w sprawie Twojej dostępności w okolicy {{origin}}.",
+    "whatsapp_load_available": "Cześć {{theirName}}, tu {{myName}} z {{myCompany}}. Interesuje mnie trasa {{route}}.",
+    "email_subject_driver": "Dostępność w okolicy {{origin}}",
+    "email_subject_load": "Trasa {{route}}",
+    "email_body_driver": "Cześć {{theirName}},\n\nNazywam się {{myName}} i reprezentuję {{myCompany}}. Kontaktuję się w sprawie Twojej dostępności w okolicy {{origin}}.\n\n{{contactLine}}\nPozdrawiam,\n{{myName}}",
+    "email_body_load": "Cześć {{theirName}},\n\nNazywam się {{myName}} i reprezentuję {{myCompany}}. Interesuje mnie trasa {{route}}.\n\n{{contactLine}}\nPozdrawiam,\n{{myName}}"
   }
 }

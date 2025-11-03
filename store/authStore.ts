@@ -35,9 +35,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
   setProfile: (profile) => set({ 
     profile,
-    // Update isAuthenticated when profile is loaded
-    // User is fully authenticated when they have both session AND profile
-    isAuthenticated: !!get().session && !!profile
+    // Consider the user authenticated as long as we still have a valid session.
+    // Profile can be null for freshly registered users until onboarding completes.
+    isAuthenticated: !!get().session
   }),
 
   setIsLoading: (isLoading) => set({ isLoading }),

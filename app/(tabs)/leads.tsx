@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -7,12 +7,10 @@ import {
   TouchableOpacity,
   RefreshControl,
   Linking,
-  Alert,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Card } from '@/components/Card';
-import { Button } from '@/components/Button';
 import { StatusBadge } from '@/components/StatusBadge';
 import { Input } from '@/components/Input';
 import { useAuthStore } from '@/store/authStore';
@@ -29,9 +27,8 @@ export default function LeadsScreen() {
   const { user, profile } = useAuthStore();
   const { leads, setLeads, searchQuery, setSearchQuery } = useLeadsStore();
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
 
-  const loadLeads = async () => {
+  const loadLeads = useCallback(async () => {
     if (!user) return;
     try {
       const leadsData = await leadsService.getLeads(user.id);
@@ -39,11 +36,11 @@ export default function LeadsScreen() {
     } catch (error) {
       console.error('Error loading leads:', error);
     }
-  };
+  }, [setLeads, user]);
 
   useEffect(() => {
     loadLeads();
-  }, [user]);
+  }, [loadLeads]);
 
   const onRefresh = async () => {
     setIsRefreshing(true);
@@ -140,6 +137,7 @@ Shared from Truxel
         text2: t('leads.export_csv'),
       });
     } catch (error) {
+      console.error('Error exporting leads CSV:', error);
       Toast.show({
         type: 'error',
         text1: t('common.error'),

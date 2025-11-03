@@ -35,7 +35,16 @@ export default function RegisterScreen() {
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<RegisterForm>();
+  } = useForm<RegisterForm>({
+    defaultValues: {
+      email: '',
+      password: '',
+      confirmPassword: '',
+      fullName: '',
+      phoneNumber: '',
+      companyName: '',
+    },
+  });
 
   const password = watch('password');
 

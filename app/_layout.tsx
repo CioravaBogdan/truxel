@@ -4,7 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useFrameworkReady } from '@/hooks/useFrameworkReady';
 import { useAuthStore } from '@/store/authStore';
 import { authService } from '@/services/authService';
-import '@/lib/i18n';
+import i18n from '@/lib/i18n';
 import Toast from 'react-native-toast-message';
 
 export default function RootLayout() {
@@ -27,9 +27,21 @@ export default function RootLayout() {
         if (session?.user) {
           console.log('RootLayout: Auth changed - fetching profile for user:', session.user.id);
           try {
-            const profile = await authService.getProfile(session.user.id, session.access_token);
+            const profile = await authService.getProfile(
+              session.user.id,
+              session.access_token,
+              session.user
+            );
             console.log('RootLayout: Auth changed - profile received:', profile);
             setProfile(profile);
+            
+            // Set language from user profile (default to 'en' if not set)
+            const userLanguage = profile?.preferred_language || 'en';
+            if (i18n.language !== userLanguage) {
+              console.log('RootLayout: Changing language to:', userLanguage);
+              i18n.changeLanguage(userLanguage);
+            }
+            
             setIsLoading(false);
           } catch (error) {
             console.error('RootLayout: Error fetching profile:', error);
@@ -39,6 +51,10 @@ export default function RootLayout() {
         } else {
           console.log('RootLayout: Auth changed - no session, clearing profile');
           setProfile(null);
+          // Reset to English when logged out
+          if (i18n.language !== 'en') {
+            i18n.changeLanguage('en');
+          }
           setIsLoading(false);
         }
       }
@@ -64,8 +80,8 @@ export default function RootLayout() {
       return;
     }
 
-    const inAuthGroup = segments[0] === '(auth)';
-    const isRootScreen = segments.length === 0;
+  const inAuthGroup = segments[0] === '(auth)';
+  const isRootScreen = !segments[0];
     console.log('RootLayout: Navigation check:', {
       isAuthenticated,
       inAuthGroup,

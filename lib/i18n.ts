@@ -1,6 +1,5 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import { getLocales } from 'expo-localization';
 
 import en from '@/locales/en.json';
 import ro from '@/locales/ro.json';
@@ -18,18 +17,18 @@ const resources = {
   es: { translation: es },
 };
 
-const supportedLanguages = ['en', 'ro', 'pl', 'tr', 'lt', 'es'];
+export const supportedLanguages = ['en', 'ro', 'pl', 'tr', 'lt', 'es'];
 
-const getDeviceLanguage = () => {
-  const locales = getLocales();
-  const deviceLanguage = locales[0]?.languageCode || 'en';
-  return supportedLanguages.includes(deviceLanguage) ? deviceLanguage : 'en';
+// Don't auto-detect device language - use 'en' as default
+// Language will be set from user profile preference
+const getDefaultLanguage = () => {
+  return 'en'; // Always start with English
 };
 
 i18n.use(initReactI18next).init({
   compatibilityJSON: 'v3',
   resources,
-  lng: getDeviceLanguage(),
+  lng: getDefaultLanguage(),
   fallbackLng: 'en',
   interpolation: {
     escapeValue: false,

@@ -141,7 +141,11 @@
     "privacy": "Gizlilik Politikası",
     "support": "Destek İletişim",
     "version": "Sürüm",
-    "profile_updated": "Profil başarıyla güncellendi"
+    "profile_updated": "Profil başarıyla güncellendi",
+    "permission_required": "İzin Gerekli",
+    "photo_permission_message": "Profil fotoğrafınızı yüklemek için fotoğraf galerisine erişime ihtiyacımız var",
+    "avatar_updated": "Profil fotoğrafı başarıyla güncellendi",
+    "avatar_upload_failed": "Profil fotoğrafı yüklenemedi"
   },
   "templates": {
     "email_subject": "Lojistik Ortaklık Fırsatı - {{company}}",
@@ -159,5 +163,37 @@
     "something_went_wrong": "Bir şeyler yanlış gitti. Lütfen tekrar deneyin.",
     "session_expired": "Oturum süresi doldu. Lütfen tekrar giriş yapın.",
     "insufficient_permissions": "Yetersiz izinler"
+  },
+  "directions": {
+    "north": "Kuzey",
+    "northeast": "Kuzeydoğu",
+    "east": "Doğu",
+    "southeast": "Güneydoğu",
+    "south": "Güney",
+    "southwest": "Güneybatı",
+    "west": "Batı",
+    "northwest": "Kuzeybatı",
+    "of": "den"
+  },
+  "community": {
+    "select_city": "Şehir Seç",
+    "search_city": "Şehir ara...",
+    "recent_cities": "Son Aramalar",
+    "popular_cities": "Popüler Şehirler",
+    "popular": "Popüler",
+    "no_results": "Şehir bulunamadı",
+    "try_different_name": "Farklı bir isim deneyin veya yazımı kontrol edin",
+    "searching": "Aranıyor...",
+    "user": "Kullanıcı",
+    "contact_whatsapp": "WhatsApp",
+    "contact_call": "Ara",
+    "contact_email": "E-posta",
+    "email_contact_line": "Bana {{phone}} numarasından ulaşabilirsiniz.",
+    "whatsapp_driver_available": "Merhaba {{theirName}}, ben {{myCompany}} firmasından {{myName}}. {{origin}} bölgesindeki uygunluğunuz hakkında yazıyorum.",
+    "whatsapp_load_available": "Merhaba {{theirName}}, ben {{myCompany}} firmasından {{myName}}. {{route}} hattınızla ilgileniyorum.",
+    "email_subject_driver": "{{origin}} bölgesindeki uygunluk",
+    "email_subject_load": "{{route}} hattı fırsatı",
+    "email_body_driver": "Merhaba {{theirName}},\n\nBen {{myCompany}} firmasından {{myName}}. {{origin}} bölgesindeki uygunluğunuz için iletişime geçiyorum.\n\n{{contactLine}}\nSaygılarımla,\n{{myName}}",
+    "email_body_load": "Merhaba {{theirName}},\n\nBen {{myCompany}} firmasından {{myName}}. {{route}} hattınızla ilgileniyorum.\n\n{{contactLine}}\nSaygılarımla,\n{{myName}}"
   }
 }

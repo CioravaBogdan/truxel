@@ -1,6 +1,6 @@
 import { Tabs } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-import { Home, Search, FolderOpen, CreditCard, User } from 'lucide-react-native';
+import { Home, Search, FolderOpen, User } from 'lucide-react-native';
 
 export default function TabsLayout() {
   const { t } = useTranslation();
@@ -48,15 +48,16 @@ export default function TabsLayout() {
           ),
         }}
       />
-      <Tabs.Screen
-        name="pricing"
+      {/* TEMPORARY: Community tab disabled for debugging */}
+      {/* <Tabs.Screen
+        name="community"
         options={{
-          title: t('tabs.pricing'),
+          title: t('tabs.community'),
           tabBarIcon: ({ size, color }) => (
-            <CreditCard size={size} color={color} />
+            <Users size={size} color={color} />
           ),
         }}
-      />
+      /> */}
       <Tabs.Screen
         name="profile"
         options={{

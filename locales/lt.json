@@ -6,8 +6,40 @@
   "search": {"title": "Rasti įmones", "location_method": "Pasirinkite vietos metodą", "use_current_location": "Ieškoti aplink mane", "enter_address": "Įveskite adresą", "select_on_map": "Pasirinkite žemėlapyje", "keywords": "Raktiniai žodžiai", "keywords_placeholder": "pvz., logistika, sandėlis, platinimas", "radius": "Paieškos spindulys", "search_cost": "Ši paieška naudos 1 iš jūsų {{remaining}} paieškų", "start_search": "Pradėti paiešką", "insufficient_searches": "Neturite pakankamai paieškų", "buy_more": "Pirkti daugiau paieškų", "location_permission": "Mums reikia jūsų vietos, kad rastume įmones šalia jūsų", "location_denied": "Vietos leidimas atmestas", "search_started": "Paieška pradėta! Pranešime, kai rezultatai bus paruošti.", "search_failed": "Paieška nepavyko. Bandykite dar kartą."},
   "leads": {"title": "Mano potencialūs klientai", "no_leads": "Potencialių klientų nerasta", "filter_all": "Visi", "filter_email": "Turi el. paštą", "filter_phone": "Turi telefoną", "filter_whatsapp": "Turi WhatsApp", "filter_linkedin": "Turi LinkedIn", "status_new": "Naujas", "status_contacted": "Susisiekta", "status_in_progress": "Vykdoma", "status_won": "Laimėta", "status_lost": "Prarasta", "sort_distance": "Pagal atstumą", "sort_name": "Abėcėlės tvarka", "sort_date": "Naujausi", "export_csv": "Eksportuoti į CSV", "lead_details": "Potencialaus kliento informacija", "contact_info": "Kontaktinė informacija", "location": "Vieta", "status": "Būsena", "notes": "Pastabos", "add_note": "Pridėti pastabą...", "send_email": "Siųsti el. laišką", "send_whatsapp": "Siųsti WhatsApp", "call": "Skambinti", "view_linkedin": "Žiūrėti LinkedIn", "view_facebook": "Žiūrėti Facebook", "view_website": "Aplankyti svetainę", "get_directions": "Gauti nurodymus", "lead_saved": "Potencialus klientas sėkmingai išsaugotas", "lead_updated": "Potencialus klientas sėkmingai atnaujintas", "lead_deleted": "Potencialus klientas sėkmingai ištrintas"},
   "subscription": {"title": "Prenumerata", "current_plan": "Dabartinis planas", "trial": "Nemokamas bandomasis", "standard": "Standartinis planas", "premium": "Premium planas", "trial_desc": "5 paieškos iš viso", "standard_desc": "15 paieškų per mėnesį", "premium_desc": "100 paieškų per mėnesį", "price_month": "€{{price}}/mėn.", "searches_used": "Panaudota {{used}} iš {{total}} paieškų", "renews_on": "Atnaujinama {{date}}", "upgrade_to": "Atnaujinti į {{plan}}", "buy_search_pack": "Pirkti paieškų paketą", "search_pack_10": "10 papildomų paieškų", "search_pack_price": "€24.99", "purchase_success": "Pirkimas sėkmingas!", "purchase_failed": "Pirkimas nepavyko. Bandykite dar kartą.", "manage_subscription": "Valdyti prenumeratą", "cancel_subscription": "Atšaukti prenumeratą"},
-  "profile": {"title": "Profilis", "account_info": "Paskyros informacija", "edit_profile": "Redaguoti profilį", "language": "Kalba", "notifications": "Pranešimai", "enable_notifications": "Įjungti paieškos pranešimus", "terms": "Paslaugų sąlygos", "privacy": "Privatumo politika", "support": "Susisiekti su palaikymu", "version": "Versija", "profile_updated": "Profilis sėkmingai atnaujintas"},
+  "profile": {"title": "Profilis", "account_info": "Paskyros informacija", "edit_profile": "Redaguoti profilį", "language": "Kalba", "notifications": "Pranešimai", "enable_notifications": "Įjungti paieškos pranešimus", "terms": "Paslaugų sąlygos", "privacy": "Privatumo politika", "support": "Susisiekti su palaikymu", "version": "Versija", "profile_updated": "Profilis sėkmingai atnaujintas", "permission_required": "Reikalingas leidimas", "photo_permission_message": "Mums reikia prieigos prie nuotraukų galerijos, kad įkeltume jūsų profilio nuotrauką", "avatar_updated": "Profilio nuotrauka sėkmingai atnaujinta", "avatar_upload_failed": "Nepavyko įkelti profilio nuotraukos"},
   "templates": {"email_subject": "Logistikos partnerystės galimybė - {{company}}", "email_body": "Sveiki {{contactName}},\n\nAš esu {{userName}} iš {{userCompany}}. Esu sunkvežimio vairuotojas, šiuo metu esantis {{location}} ir ieškau krovinių galimybių.\n\nTikiu, kad galėtume bendradarbiauti logistikos sprendimuose. Prašau susisiekti:\n\nTelefonas: {{userPhone}}\nEl. paštas: {{userEmail}}\n\nPagarbiai,\n{{userName}}", "whatsapp_message": "Sveiki {{contactName}}, aš esu {{userName}} iš {{userCompany}}. Esu sunkvežimio vairuotojas {{location}} ieškantis krovinių. Ar galime aptarti logistikos galimybes? Kontaktai: {{userPhone}}"},
   "notifications": {"search_complete": "Paieška baigta", "search_complete_body": "Rasta {{count}} įmonių {{location}}", "permission_required": "Reikalingas pranešimų leidimas", "permission_message": "Įjunkite pranešimus, kad gautumėte įspėjimus, kai paieškos bus baigtos"},
-  "errors": {"network_error": "Tinklo klaida. Patikrinkite savo ryšį.", "something_went_wrong": "Kažkas nutiko. Bandykite dar kartą.", "session_expired": "Sesija baigėsi. Prisijunkite iš naujo.", "insufficient_permissions": "Nepakanka leidimų"}
+  "errors": {"network_error": "Tinklo klaida. Patikrinkite savo ryšį.", "something_went_wrong": "Kažkas nutiko. Bandykite dar kartą.", "session_expired": "Sesija baigėsi. Prisijunkite iš naujo.", "insufficient_permissions": "Nepakanka leidimų"},
+  "directions": {
+    "north": "Šiaurė",
+    "northeast": "Šiaurės rytai",
+    "east": "Rytai",
+    "southeast": "Pietryčiai",
+    "south": "Pietūs",
+    "southwest": "Pietvakariai",
+    "west": "Vakarai",
+    "northwest": "Šiaurės vakarai",
+    "of": "nuo"
+  },
+  "community": {
+    "select_city": "Pasirinkite miestą",
+    "search_city": "Ieškoti miesto...",
+    "recent_cities": "Naujausi",
+    "popular_cities": "Populiarūs miestai",
+    "popular": "Populiarus",
+    "no_results": "Miestų nerasta",
+    "try_different_name": "Bandykite kitą pavadinimą arba patikrinkite rašybą",
+    "searching": "Ieškoma...",
+    "user": "Vartotojas",
+    "contact_whatsapp": "WhatsApp",
+    "contact_call": "Skambinti",
+    "contact_email": "El. paštas",
+    "email_contact_line": "Su manimi galite susisiekti telefonu {{phone}}.",
+    "whatsapp_driver_available": "Sveiki, {{theirName}}, čia {{myName}} iš {{myCompany}}. Rašau dėl jūsų prieinamumo {{origin}} regione.",
+    "whatsapp_load_available": "Sveiki, {{theirName}}, čia {{myName}} iš {{myCompany}}. Mane domina jūsų maršrutas {{route}}.",
+    "email_subject_driver": "Prieinamumas ties {{origin}}",
+    "email_subject_load": "Maršrutas {{route}}",
+    "email_body_driver": "Sveiki, {{theirName}},\n\nAš {{myName}} iš {{myCompany}}. Susisiekiu dėl jūsų prieinamumo {{origin}} regione.\n\n{{contactLine}}\nPagarbiai,\n{{myName}}",
+    "email_body_load": "Sveiki, {{theirName}},\n\nAš {{myName}} iš {{myCompany}}. Mane domina jūsų maršrutas {{route}}.\n\n{{contactLine}}\nPagarbiai,\n{{myName}}"
+  }
 }

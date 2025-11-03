@@ -8,6 +8,7 @@ import {
   Alert,
   TextInput,
   ActivityIndicator,
+  Image,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -18,6 +19,8 @@ import { Input } from '@/components/Input';
 import { useAuthStore } from '@/store/authStore';
 import { authService } from '@/services/authService';
 import Toast from 'react-native-toast-message';
+import * as ImagePicker from 'expo-image-picker';
+import { supabase } from '@/lib/supabase';
 import {
   User,
   Mail,
@@ -30,6 +33,7 @@ import {
   MapPin,
   Factory,
   Save,
+  Camera,
 } from 'lucide-react-native';
 import i18n from '@/lib/i18n';
 
@@ -81,6 +85,7 @@ export default function ProfileScreen() {
   const { profile, reset, refreshProfile } = useAuthStore();
   const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   
   console.log('ProfileScreen MOUNTED');
@@ -92,6 +97,95 @@ export default function ProfileScreen() {
   const [truckType, setTruckType] = useState<string | null>(null);
   const [searchRadius, setSearchRadius] = useState(10);
   const [selectedIndustries, setSelectedIndustries] = useState<string[]>([]);
+
+  // Upload avatar function
+  const handleUploadAvatar = async () => {
+    if (!profile) return;
+
+    try {
+      // Request permissions
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert(
+          t('profile.permission_required'),
+          t('profile.photo_permission_message')
+        );
+        return;
+      }
+
+      // Launch image picker
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 0.8, // Compress to 80% quality
+      });
+
+      if (result.canceled) return;
+
+      setIsUploadingAvatar(true);
+
+      const imageUri = result.assets[0].uri;
+      const fileExt = imageUri.split('.').pop() || 'jpg';
+      const fileName = `${profile.user_id}/avatar.${fileExt}`;
+
+      // React Native: fetch returns blob without arrayBuffer method
+      // Solution: Read as base64 using FileReader or XMLHttpRequest
+      const response = await fetch(imageUri);
+      const blob = await response.blob();
+      
+      // Convert blob to ArrayBuffer using FileReader (React Native compatible)
+      const arrayBuffer = await new Promise<ArrayBuffer>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          if (reader.result instanceof ArrayBuffer) {
+            resolve(reader.result);
+          } else {
+            reject(new Error('Failed to read as ArrayBuffer'));
+          }
+        };
+        reader.onerror = reject;
+        reader.readAsArrayBuffer(blob);
+      });
+
+      // Upload to Supabase Storage
+      const { error: uploadError } = await supabase.storage
+        .from('profiles-avatars')
+        .upload(fileName, arrayBuffer, {
+          contentType: `image/${fileExt}`,
+          upsert: true, // Replace if exists
+        });
+
+      if (uploadError) throw uploadError;
+
+      // Get public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('profiles-avatars')
+        .getPublicUrl(fileName);
+
+      // Update profile with avatar URL
+      await authService.updateProfile(profile.user_id, {
+        avatar_url: publicUrl,
+      });
+
+      // Refresh profile
+      await refreshProfile();
+
+      Toast.show({
+        type: 'success',
+        text1: t('profile.avatar_updated'),
+      });
+    } catch (error: any) {
+      console.error('Upload avatar error:', error);
+      Toast.show({
+        type: 'error',
+        text1: t('common.error'),
+        text2: error.message || t('profile.avatar_upload_failed'),
+      });
+    } finally {
+      setIsUploadingAvatar(false);
+    }
+  };
 
   // Load profile data into form
   useEffect(() => {
@@ -259,6 +353,39 @@ export default function ProfileScreen() {
         <View style={styles.header}>
           <Text style={styles.title}>{t('profile.title')}</Text>
         </View>
+
+        {/* Avatar Section */}
+        <Card style={styles.avatarSection}>
+          <View style={styles.avatarContainer}>
+            {profile.avatar_url ? (
+              <Image source={{ uri: profile.avatar_url }} style={styles.avatarImage} />
+            ) : (
+              <View style={styles.avatarPlaceholder}>
+                <Text style={styles.avatarPlaceholderText}>
+                  {profile.company_name?.charAt(0).toUpperCase() || 
+                   profile.full_name?.charAt(0).toUpperCase() || 'U'}
+                </Text>
+              </View>
+            )}
+            <TouchableOpacity 
+              style={styles.cameraButton} 
+              onPress={handleUploadAvatar}
+              disabled={isUploadingAvatar}
+            >
+              {isUploadingAvatar ? (
+                <ActivityIndicator size="small" color="#FFFFFF" />
+              ) : (
+                <Camera size={20} color="#FFFFFF" />
+              )}
+            </TouchableOpacity>
+          </View>
+          <View style={styles.avatarInfo}>
+            <Text style={styles.avatarName}>
+              {profile.company_name || profile.full_name}
+            </Text>
+            <Text style={styles.avatarEmail}>{profile.email}</Text>
+          </View>
+        </Card>
 
         {/* Profile Form */}
         <Card style={styles.section}>
@@ -688,5 +815,65 @@ const styles = StyleSheet.create({
   saveButton: {
     marginTop: 8,
     marginBottom: 24,
+  },
+  // Avatar styles
+  avatarSection: {
+    marginBottom: 24,
+    alignItems: 'center',
+    paddingVertical: 24,
+  },
+  avatarContainer: {
+    position: 'relative',
+    marginBottom: 16,
+  },
+  avatarImage: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    backgroundColor: '#E5E7EB',
+  },
+  avatarPlaceholder: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    backgroundColor: '#E5E7EB',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  avatarPlaceholderText: {
+    fontSize: 48,
+    fontWeight: '700',
+    color: '#6B7280',
+  },
+  cameraButton: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: '#2563EB',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 3,
+    borderColor: '#FFFFFF',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  avatarInfo: {
+    alignItems: 'center',
+  },
+  avatarName: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#1E293B',
+    marginBottom: 4,
+  },
+  avatarEmail: {
+    fontSize: 14,
+    color: '#64748B',
   },
 });

@@ -13,6 +13,7 @@ export interface Profile {
   full_name: string;
   phone_number?: string;
   company_name?: string;
+  avatar_url?: string;
   truck_type?: string;
   search_radius_km?: number;
   preferred_industries?: string[];

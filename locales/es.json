@@ -6,8 +6,40 @@
   "search": {"title": "Encontrar empresas", "location_method": "Elegir método de ubicación", "use_current_location": "Buscar cerca de mí", "enter_address": "Introducir dirección", "select_on_map": "Seleccionar en mapa", "keywords": "Palabras clave", "keywords_placeholder": "ej. logística, almacén, distribución", "radius": "Radio de búsqueda", "search_cost": "Esta búsqueda usará 1 de tus {{remaining}} búsquedas", "start_search": "Iniciar búsqueda", "insufficient_searches": "No tienes suficientes búsquedas", "buy_more": "Comprar más búsquedas", "location_permission": "Necesitamos tu ubicación para encontrar empresas cerca de ti", "location_denied": "Permiso de ubicación denegado", "search_started": "Búsqueda iniciada. Te notificaremos cuando los resultados estén listos.", "search_failed": "La búsqueda falló. Por favor, inténtalo de nuevo."},
   "leads": {"title": "Mis clientes potenciales", "no_leads": "No se encontraron clientes potenciales", "filter_all": "Todos", "filter_email": "Tiene correo", "filter_phone": "Tiene teléfono", "filter_whatsapp": "Tiene WhatsApp", "filter_linkedin": "Tiene LinkedIn", "status_new": "Nuevo", "status_contacted": "Contactado", "status_in_progress": "En progreso", "status_won": "Ganado", "status_lost": "Perdido", "sort_distance": "Por distancia", "sort_name": "Alfabético", "sort_date": "Más reciente", "export_csv": "Exportar a CSV", "lead_details": "Detalles del cliente potencial", "contact_info": "Información de contacto", "location": "Ubicación", "status": "Estado", "notes": "Notas", "add_note": "Añadir una nota...", "send_email": "Enviar correo", "send_whatsapp": "Enviar WhatsApp", "call": "Llamar", "view_linkedin": "Ver LinkedIn", "view_facebook": "Ver Facebook", "view_website": "Visitar sitio web", "get_directions": "Obtener indicaciones", "lead_saved": "Cliente potencial guardado exitosamente", "lead_updated": "Cliente potencial actualizado exitosamente", "lead_deleted": "Cliente potencial eliminado exitosamente"},
   "subscription": {"title": "Suscripción", "current_plan": "Plan actual", "trial": "Prueba gratuita", "standard": "Plan estándar", "premium": "Plan premium", "trial_desc": "5 búsquedas en total", "standard_desc": "15 búsquedas por mes", "premium_desc": "100 búsquedas por mes", "price_month": "€{{price}}/mes", "searches_used": "{{used}} de {{total}} búsquedas usadas", "renews_on": "Se renueva el {{date}}", "upgrade_to": "Actualizar a {{plan}}", "buy_search_pack": "Comprar paquete de búsquedas", "search_pack_10": "10 búsquedas adicionales", "search_pack_price": "€24.99", "purchase_success": "Compra exitosa!", "purchase_failed": "La compra falló. Por favor, inténtalo de nuevo.", "manage_subscription": "Gestionar suscripción", "cancel_subscription": "Cancelar suscripción"},
-  "profile": {"title": "Perfil", "account_info": "Información de cuenta", "edit_profile": "Editar perfil", "language": "Idioma", "notifications": "Notificaciones", "enable_notifications": "Habilitar notificaciones de búsqueda", "terms": "Términos de servicio", "privacy": "Política de privacidad", "support": "Contactar soporte", "version": "Versión", "profile_updated": "Perfil actualizado exitosamente"},
+  "profile": {"title": "Perfil", "account_info": "Información de cuenta", "edit_profile": "Editar perfil", "language": "Idioma", "notifications": "Notificaciones", "enable_notifications": "Habilitar notificaciones de búsqueda", "terms": "Términos de servicio", "privacy": "Política de privacidad", "support": "Contactar soporte", "version": "Versión", "profile_updated": "Perfil actualizado exitosamente", "permission_required": "Permiso requerido", "photo_permission_message": "Necesitamos acceso a la galería de fotos para subir tu foto de perfil", "avatar_updated": "Foto de perfil actualizada exitosamente", "avatar_upload_failed": "Error al subir la foto de perfil"},
   "templates": {"email_subject": "Oportunidad de asociación logística - {{company}}", "email_body": "Hola {{contactName}},\n\nSoy {{userName}} de {{userCompany}}. Soy conductor de camión actualmente en {{location}} y estoy buscando oportunidades de carga.\n\nCreo que podríamos trabajar juntos en soluciones logísticas. Por favor, contáctame:\n\nTeléfono: {{userPhone}}\nCorreo: {{userEmail}}\n\nSaludos cordiales,\n{{userName}}", "whatsapp_message": "Hola {{contactName}}, soy {{userName}} de {{userCompany}}. Soy conductor de camión en {{location}} buscando carga. ¿Podemos hablar sobre oportunidades logísticas? Contacto: {{userPhone}}"},
   "notifications": {"search_complete": "Búsqueda completada", "search_complete_body": "Se encontraron {{count}} empresas en {{location}}", "permission_required": "Se requiere permiso de notificación", "permission_message": "Habilita las notificaciones para recibir alertas cuando se completen tus búsquedas"},
-  "errors": {"network_error": "Error de red. Por favor, verifica tu conexión.", "something_went_wrong": "Algo salió mal. Por favor, inténtalo de nuevo.", "session_expired": "Sesión expirada. Por favor, inicia sesión de nuevo.", "insufficient_permissions": "Permisos insuficientes"}
+  "errors": {"network_error": "Error de red. Por favor, verifica tu conexión.", "something_went_wrong": "Algo salió mal. Por favor, inténtalo de nuevo.", "session_expired": "Sesión expirada. Por favor, inicia sesión de nuevo.", "insufficient_permissions": "Permisos insuficientes"},
+  "directions": {
+    "north": "Norte",
+    "northeast": "Noreste",
+    "east": "Este",
+    "southeast": "Sureste",
+    "south": "Sur",
+    "southwest": "Suroeste",
+    "west": "Oeste",
+    "northwest": "Noroeste",
+    "of": "de"
+  },
+  "community": {
+    "select_city": "Seleccionar ciudad",
+    "search_city": "Buscar ciudad...",
+    "recent_cities": "Recientes",
+    "popular_cities": "Ciudades populares",
+    "popular": "Popular",
+    "no_results": "No se encontraron ciudades",
+    "try_different_name": "Prueba con otro nombre o verifica la ortografía",
+    "searching": "Buscando...",
+    "user": "Usuario",
+    "contact_whatsapp": "WhatsApp",
+    "contact_call": "Llamar",
+    "contact_email": "Correo",
+    "email_contact_line": "Puedes contactarme al {{phone}}.",
+    "whatsapp_driver_available": "Hola {{theirName}}, soy {{myName}} de {{myCompany}}. Te escribo por tu disponibilidad en la zona de {{origin}}.",
+    "whatsapp_load_available": "Hola {{theirName}}, soy {{myName}} de {{myCompany}}. Estoy interesado en tu ruta {{route}}.",
+    "email_subject_driver": "Disponibilidad en {{origin}}",
+    "email_subject_load": "Ruta {{route}}",
+    "email_body_driver": "Hola {{theirName}},\n\nSoy {{myName}} de {{myCompany}}. Te contacto por tu disponibilidad en la zona de {{origin}}.\n\n{{contactLine}}\nSaludos,\n{{myName}}",
+    "email_body_load": "Hola {{theirName}},\n\nSoy {{myName}} de {{myCompany}}. Estoy interesado en tu ruta {{route}}.\n\n{{contactLine}}\nSaludos,\n{{myName}}"
+  }
 }

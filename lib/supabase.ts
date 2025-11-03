@@ -1,6 +1,7 @@
 import 'react-native-url-polyfill/auto';
 import { createClient } from '@supabase/supabase-js';
 import * as SecureStore from 'expo-secure-store';
+import { Platform } from 'react-native';
 import Constants from 'expo-constants';
 
 const supabaseUrl = Constants.expoConfig?.extra?.supabaseUrl || process.env.EXPO_PUBLIC_SUPABASE_URL!;
@@ -12,23 +13,58 @@ console.log('Supabase config:', {
   keyLength: supabaseAnonKey?.length
 });
 
-const ExpoSecureStoreAdapter = {
+// Check if we're on web platform
+const isWeb = Platform.OS === 'web';
+
+// For web, use localStorage
+const getLocalStorage = () => {
+  if (typeof window !== 'undefined' && window.localStorage) {
+    return window.localStorage;
+  }
+  // Fallback for SSR or non-browser environments
+  return {
+    getItem: () => null,
+    setItem: () => {},
+    removeItem: () => {},
+  };
+};
+
+// Web storage adapter
+const WebStorageAdapter = {
   getItem: (key: string) => {
-    return SecureStore.getItemAsync(key);
+    const storage = getLocalStorage();
+    return Promise.resolve(storage.getItem(key));
   },
   setItem: (key: string, value: string) => {
-    SecureStore.setItemAsync(key, value);
+    const storage = getLocalStorage();
+    storage.setItem(key, value);
+    return Promise.resolve();
   },
   removeItem: (key: string) => {
-    SecureStore.deleteItemAsync(key);
+    const storage = getLocalStorage();
+    storage.removeItem(key);
+    return Promise.resolve();
   },
 };
 
+// Native storage adapter using SecureStore
+const ExpoSecureStoreAdapter = {
+  getItem: async (key: string) => SecureStore.getItemAsync(key),
+  setItem: async (key: string, value: string) => SecureStore.setItemAsync(key, value),
+  removeItem: async (key: string) => SecureStore.deleteItemAsync(key),
+};
+
+// Check if we can use SecureStore (native platforms only)
+const canUseSecureStore = !isWeb && SecureStore;
+
+// Use appropriate storage adapter based on platform
+const storageAdapter = canUseSecureStore ? ExpoSecureStoreAdapter : WebStorageAdapter;
+
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
-    storage: ExpoSecureStoreAdapter as any,
+    storage: storageAdapter as any,
     autoRefreshToken: true,
     persistSession: true,
-    detectSessionInUrl: false,
+    detectSessionInUrl: isWeb,
   },
 });
