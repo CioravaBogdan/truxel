@@ -86,14 +86,15 @@ class CommunityService {
       throw new Error(canPost.reason || 'Cannot create post at this time');
     }
 
-    // Check for duplicate posts (anti-spam)
+    // Check for duplicate posts (anti-spam) - Include post_type to avoid false positives
     const { data: duplicateCheck } = await supabase.rpc('check_duplicate_post', {
       p_user_id: userId,
-      p_origin_city: postData.origin_city
+      p_origin_city: postData.origin_city,
+      p_post_type: postData.post_type
     });
 
     if (!duplicateCheck) {
-      throw new Error('Ai o postare similară activă. Așteaptă 15 minute.');
+      throw new Error('Ai o postare similară activă din același tip. Așteaptă 15 minute.');
     }
 
     // Create the post

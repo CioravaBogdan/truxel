@@ -105,11 +105,11 @@ function QuickPostBar() {
     setSelectedTemplate(template);
     setShowTemplateModal(false);
 
-    // If template needs city selection (for routes or return template)
-    if (template.key === 'return' || selectedPostType === 'route') {
+    // For LOAD_AVAILABLE posts, ALWAYS ask for destination city (shippers/factories need TO location)
+    if (template.type === 'LOAD_AVAILABLE' || selectedPostType === 'route') {
       setShowCityModal(true);
     } else {
-      // Post directly with current location
+      // For DRIVER_AVAILABLE, post directly with current location
       await createPostWithLocation(template);
     }
   };
@@ -274,7 +274,7 @@ function QuickPostBar() {
         >
           <Truck color="white" size={32} />
           <Text style={styles.buttonTitle}>{t('community.i_have').toUpperCase()}</Text>
-          <Text style={styles.buttonTitle}>{t('community.route').toUpperCase()}</Text>
+          <Text style={styles.buttonTitle}>{t('community.load').toUpperCase()}</Text>
         </TouchableOpacity>
       </View>
 

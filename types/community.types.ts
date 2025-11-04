@@ -138,9 +138,9 @@ export const AVAILABILITY_TEMPLATES: PostTemplate[] = [
 ];
 
 export const ROUTE_TEMPLATES: PostTemplate[] = [
-  { key: 'loaded', type: 'LOAD_AVAILABLE', textKey: 'community.templates.route.loaded', icon: '🚛' },
-  { key: 'empty', type: 'LOAD_AVAILABLE', textKey: 'community.templates.route.empty', icon: '📅' },
-  { key: 'return', type: 'LOAD_AVAILABLE', textKey: 'community.templates.route.return', icon: '🔄' }
+  { key: 'loaded', type: 'LOAD_AVAILABLE', textKey: 'community.templates.load.loaded', icon: '🚛' },
+  { key: 'empty', type: 'LOAD_AVAILABLE', textKey: 'community.templates.load.empty', icon: '📅' },
+  { key: 'return', type: 'LOAD_AVAILABLE', textKey: 'community.templates.load.return', icon: '🔄' }
 ];
 
 // API Response types
