@@ -13,6 +13,7 @@ import {
   Alert,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { useFocusEffect } from '@react-navigation/native';
 import { Globe, MapPin, Package, Truck } from 'lucide-react-native';
 import { useCommunityStore } from '../../store/communityStore';
 import { useAuthStore } from '../../store/authStore';
@@ -97,6 +98,14 @@ export default function CommunityFeed({ customHeader }: CommunityFeedProps = {})
   useEffect(() => {
     void loadPosts(true);
   }, [loadPosts, selectedTab, selectedCity, selectedCountry]);
+
+  // Refresh posts when tab becomes focused (e.g., after deleting a post)
+  useFocusEffect(
+    useCallback(() => {
+      // Silent refresh to update feed after actions like delete
+      void refreshPosts();
+    }, [refreshPosts])
+  );
 
   // Load user stats when user is available
   useEffect(() => {

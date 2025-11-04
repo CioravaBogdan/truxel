@@ -331,6 +331,8 @@
     "filters": "Filtre",
     "no_drivers_available": "Nu sunt șoferi disponibili",
     "no_loads_available": "Nu sunt mărfuri disponibile",
+    "no_routes_available": "Nu sunt mărfuri disponibile",
+    "post_route_to_find_drivers": "Postează o marfă disponibilă pentru a găsi șoferi.",
     "be_first_to_post": "Fii primul care postează disponibilitatea în zona ta!",
     "post_load_to_find_drivers": "Postează o marfă disponibilă pentru a găsi șoferi.",
     "user": "Utilizator",

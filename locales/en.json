@@ -347,6 +347,8 @@
     "filters": "Filters",
     "no_drivers_available": "No drivers available",
     "no_loads_available": "No loads available",
+    "no_routes_available": "No loads available",
+    "post_route_to_find_drivers": "Post an available load to find drivers.",
     "be_first_to_post": "Be the first to post your availability in your area!",
     "post_load_to_find_drivers": "Post an available load to find drivers.",
     "user": "User",
