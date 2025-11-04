@@ -247,20 +247,36 @@ export default function CommunityFeed({ customHeader }: CommunityFeedProps = {})
       {/* Tabs */}
       <View style={styles.tabs}>
         <TouchableOpacity
-          style={[styles.tab, selectedTab === 'availability' && styles.activeTab]}
+          style={[
+            styles.tab, 
+            { backgroundColor: selectedTab === 'availability' ? '#10B981' : '#D1FAE5' },
+            selectedTab === 'availability' && styles.activeTab
+          ]}
           onPress={() => setSelectedTab('availability')}
         >
-          <Truck size={20} color={selectedTab === 'availability' ? '#10B981' : '#6B7280'} />
-          <Text style={[styles.tabText, selectedTab === 'availability' && styles.activeTabText]}>
+          <Truck size={20} color={selectedTab === 'availability' ? 'white' : '#059669'} />
+          <Text style={[
+            styles.tabText,
+            { color: selectedTab === 'availability' ? 'white' : '#059669' },
+            selectedTab === 'availability' && styles.activeTabText
+          ]}>
             {t('community.available_drivers').toUpperCase()}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.tab, selectedTab === 'routes' && styles.activeTab]}
+          style={[
+            styles.tab, 
+            { backgroundColor: selectedTab === 'routes' ? '#3B82F6' : '#DBEAFE' },
+            selectedTab === 'routes' && styles.activeTab
+          ]}
           onPress={() => setSelectedTab('routes')}
         >
-          <Package size={20} color={selectedTab === 'routes' ? '#3B82F6' : '#6B7280'} />
-          <Text style={[styles.tabText, selectedTab === 'routes' && styles.activeTabText]}>
+          <Package size={20} color={selectedTab === 'routes' ? 'white' : '#2563EB'} />
+          <Text style={[
+            styles.tabText,
+            { color: selectedTab === 'routes' ? 'white' : '#2563EB' },
+            selectedTab === 'routes' && styles.activeTabText
+          ]}>
             {t('community.available_routes').toUpperCase()}
           </Text>
         </TouchableOpacity>
@@ -277,7 +293,7 @@ export default function CommunityFeed({ customHeader }: CommunityFeedProps = {})
               style={styles.filterControl}
               onPress={handleCountryPress}
             >
-              <Globe size={16} color="#6B7280" />
+              <Globe size={14} color="#6B7280" />
               <View style={styles.filterLabelContainer}>
                 <Text style={styles.filterLabel}>{t('community.country')}</Text>
                 <Text 
@@ -305,7 +321,7 @@ export default function CommunityFeed({ customHeader }: CommunityFeedProps = {})
               onPress={handleCityPress}
               disabled={!selectedCountry}
             >
-              <MapPin size={16} color={selectedCountry ? "#6B7280" : "#D1D5DB"} />
+              <MapPin size={14} color={selectedCountry ? "#6B7280" : "#D1D5DB"} />
               <View style={styles.filterLabelContainer}>
                 <Text style={[styles.filterLabel, !selectedCountry && styles.filterLabelDisabled]}>
                   {t('community.city')}
@@ -464,7 +480,6 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   activeTab: {
-    backgroundColor: '#F3F4F6',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.08,
@@ -474,19 +489,19 @@ const styles = StyleSheet.create({
   tabText: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#6B7280',
+    color: 'white',
   },
   activeTabText: {
-    color: '#111827',
+    color: 'white',
     fontWeight: '700',
   },
   filterBar: {
     flexDirection: 'row', // Horizontal layout like tabs
     backgroundColor: 'white',
     paddingHorizontal: 16,
-    paddingVertical: 14,
+    paddingVertical: 10,
     marginBottom: 12,
-    gap: 10, // Space between controls
+    gap: 8, // Space between controls
     borderTopWidth: 1,
     borderBottomWidth: 1,
     borderColor: '#E5E7EB',
@@ -496,9 +511,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#F9FAFB',
-    borderRadius: 10,
-    padding: 12,
-    gap: 10,
+    borderRadius: 8,
+    padding: 8,
+    gap: 8,
     borderWidth: 1,
     borderColor: '#E5E7EB',
   },
@@ -510,21 +525,21 @@ const styles = StyleSheet.create({
     minWidth: 0, // Allow text truncation
   },
   filterLabel: {
-    fontSize: 11,
+    fontSize: 10,
     color: '#6B7280',
-    fontWeight: '600',
-    marginBottom: 3,
+    fontWeight: '500',
+    marginBottom: 2,
   },
   filterLabelDisabled: {
     color: '#D1D5DB',
   },
   filterValueSelected: {
-    fontSize: 14,
+    fontSize: 12,
     color: '#111827',
     fontWeight: '600',
   },
   filterValuePlaceholder: {
-    fontSize: 14,
+    fontSize: 12,
     color: '#9CA3AF',
   },
   clearButton: {
