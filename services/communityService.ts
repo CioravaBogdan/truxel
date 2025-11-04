@@ -150,8 +150,16 @@ class CommunityService {
       query = query.eq('post_type', filters.post_type);
     }
 
+    // Country filter - match either ISO code or full name (for legacy posts)
+    if (filters.origin_country || filters.origin_country_name) {
+      const countryValues = [filters.origin_country, filters.origin_country_name].filter(Boolean) as string[];
+      if (countryValues.length > 0) {
+        query = query.in('origin_country', countryValues);
+      }
+    }
+
     if (filters.origin_city) {
-      query = query.eq('origin_city', filters.origin_city);
+      query = query.ilike('origin_city', `%${filters.origin_city}%`);
     }
 
     if (filters.dest_city) {

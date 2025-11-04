@@ -206,7 +206,18 @@
     "of": "od"
   },
   "community": {
+    "tab_badge_available": "Dostępni",
+    "tab_title_drivers": "Kierowcy",
+    "tab_title_routes": "Trasy",
+    "country": "Kraj",
+    "city": "Miasto",
+    "select_country": "Wybierz kraj",
     "select_city": "Wybierz miasto",
+    "search_country": "Szukaj kraju...",
+    "clear_filter": "Wyczyść filtr",
+    "no_countries_found": "Nie znaleziono krajów",
+    "all_cities": "Wszystkie miasta",
+    "select_country_first": "Najpierw wybierz kraj",
     "search_city": "Szukaj miasta...",
     "recent_cities": "Ostatnie",
     "popular_cities": "Popularne miasta",

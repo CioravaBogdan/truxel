@@ -4,7 +4,8 @@ import {
   PostType,
   PostFilters,
   CanPostResponse,
-  City
+  City,
+  Country,
 } from '../types/community.types';
 import { communityService } from '../services/communityService';
 
@@ -34,6 +35,7 @@ interface CommunityState {
   // Filters
   filters: PostFilters;
   selectedCity: City | null;
+  selectedCountry: Country | null;
 
   // User limits
   postLimits: CanPostResponse | null;
@@ -71,6 +73,8 @@ interface CommunityState {
   setFilters: (filters: Partial<PostFilters>) => void;
   clearFilters: () => void;
   setSelectedCity: (city: City | null) => void;
+  setSelectedCountry: (country: Country | null) => void;
+  initializeFilters: (filters: { country?: Country | null; city?: City | null }) => void;
 
   // QuickPostBar modal actions
   setShowTemplateModal: (show: boolean) => void;
@@ -96,6 +100,7 @@ const initialState = {
   nextCursor: undefined,
   filters: {},
   selectedCity: null,
+  selectedCountry: null,
   postLimits: null,
   communityStats: null,
   showTemplateModal: false,
@@ -383,6 +388,65 @@ export const useCommunityStore = create<CommunityState>((set, get) => ({
       set({ filters: restFilters });
       get().loadPosts(true);
     }
+  },
+
+  // Set selected country and refresh posts
+  setSelectedCountry: (country: Country | null) => {
+    set((state) => {
+      const nextFilters = { ...state.filters };
+
+      if (country) {
+        nextFilters.origin_country = country.code;
+        nextFilters.origin_country_name = country.name;
+      } else {
+        delete nextFilters.origin_country;
+        delete nextFilters.origin_country_name;
+      }
+
+      const cityMatchesCountry =
+        country && state.selectedCity?.country_code === country.code;
+
+      if (!cityMatchesCountry) {
+        delete nextFilters.origin_city;
+      }
+
+      return {
+        filters: nextFilters,
+        selectedCountry: country,
+        selectedCity: cityMatchesCountry ? state.selectedCity : null,
+      };
+    });
+
+    get().loadPosts(true);
+  },
+
+  // Initialize filters in one shot (used on first load with user location)
+  initializeFilters: ({ country = null, city = null }) => {
+    set((state) => {
+      const nextFilters = { ...state.filters };
+
+      if (country) {
+        nextFilters.origin_country = country.code;
+        nextFilters.origin_country_name = country.name;
+      } else {
+        delete nextFilters.origin_country;
+        delete nextFilters.origin_country_name;
+      }
+
+      if (city) {
+        nextFilters.origin_city = city.name;
+      } else {
+        delete nextFilters.origin_city;
+      }
+
+      return {
+        filters: nextFilters,
+        selectedCountry: country,
+        selectedCity: city,
+      };
+    });
+
+    get().loadPosts(true);
   },
 
   // QuickPostBar modal actions

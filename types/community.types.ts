@@ -63,6 +63,11 @@ export interface City {
   importance?: number;
 }
 
+export interface Country {
+  code: string;
+  name: string;
+}
+
 export interface SubscriptionLimits {
   tier: string;
   posts_per_month: number;
@@ -181,6 +186,8 @@ export interface UpdatePostData {
 export interface PostFilters {
   post_type?: PostType;
   origin_city?: string;
+  origin_country?: string; // ISO code (e.g., "RO")
+  origin_country_name?: string; // Full name (e.g., "Romania") for legacy posts
   dest_city?: string;
   radius_km?: number;
   user_id?: string;

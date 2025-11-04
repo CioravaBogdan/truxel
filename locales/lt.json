@@ -68,7 +68,18 @@
     "of": "nuo"
   },
   "community": {
+    "tab_badge_available": "Prieinami",
+    "tab_title_drivers": "Vairuotojai",
+    "tab_title_routes": "Maršrutai",
+    "country": "Šalis",
+    "city": "Miestas",
+    "select_country": "Pasirinkite šalį",
     "select_city": "Pasirinkite miestą",
+    "search_country": "Ieškoti šalies...",
+    "clear_filter": "Išvalyti filtrą",
+    "no_countries_found": "Šalių nerasta",
+    "all_cities": "Visi miestai",
+    "select_country_first": "Pirmiausia pasirinkite šalį",
     "search_city": "Ieškoti miesto...",
     "recent_cities": "Naujausi",
     "popular_cities": "Populiarūs miestai",

@@ -68,7 +68,18 @@
     "of": "de"
   },
   "community": {
+    "tab_badge_available": "Disponibles",
+    "tab_title_drivers": "Conductores",
+    "tab_title_routes": "Rutas",
+    "country": "País",
+    "city": "Ciudad",
+    "select_country": "Seleccionar país",
     "select_city": "Seleccionar ciudad",
+    "search_country": "Buscar país...",
+    "clear_filter": "Limpiar filtro",
+    "no_countries_found": "No se encontraron países",
+    "all_cities": "Todas las ciudades",
+    "select_country_first": "Primero selecciona el país",
     "search_city": "Buscar ciudad...",
     "recent_cities": "Recientes",
     "popular_cities": "Ciudades populares",

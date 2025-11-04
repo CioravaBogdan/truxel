@@ -206,7 +206,18 @@
     "of": "den"
   },
   "community": {
+    "tab_badge_available": "Müsait",
+    "tab_title_drivers": "Sürücüler",
+    "tab_title_routes": "Rotalar",
+    "country": "Ülke",
+    "city": "Şehir",
+    "select_country": "Ülke Seç",
     "select_city": "Şehir Seç",
+    "search_country": "Ülke ara...",
+    "clear_filter": "Filtreyi Temizle",
+    "no_countries_found": "Ülke bulunamadı",
+    "all_cities": "Tüm şehirler",
+    "select_country_first": "Önce ülke seçin",
     "search_city": "Şehir ara...",
     "recent_cities": "Son Aramalar",
     "popular_cities": "Popüler Şehirler",
