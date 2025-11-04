@@ -292,6 +292,8 @@
     "city": "City",
     "select_country": "Select Country",
     "select_city": "Select City",
+    "select_origin_city": "Select Pickup City",
+    "select_origin_hint": "Where should the cargo be picked up from?",
     "search_country": "Search for a country...",
     "clear_filter": "Clear Filter",
     "no_countries_found": "No countries found",
@@ -329,6 +331,9 @@
     "upgrade_for_more": "Upgrade for more",
     "getting_location": "Getting location...",
     "posting": "Posting...",
+    "load_timing_warning_title": "⏰ Active Shipments Only",
+    "load_timing_warning_message": "Post ONLY if cargo is available TODAY or TOMORROW MAX.\n\nThis app is for ACTIVE drivers on the road, not office planning.\n\nContinue?",
+    "continue_posting": "Yes, Continue",
     "error_title": "Error",
     "auth_required": "You must be logged in to post.",
     "creating_post": "Creating post...",
@@ -414,9 +419,9 @@
         "west": "Going West"
       },
       "load": {
-        "loaded": "Need transport today",
-        "empty": "Need pickup tomorrow",
-        "return": "Urgent delivery"
+        "loaded": "Cargo ready TODAY",
+        "empty": "Need PICKUP FROM...",
+        "return": "Custom route"
       }
     },
     "template_descriptions": {
@@ -425,9 +430,9 @@
       "south": "Heading south from current location",
       "east": "Heading east from current location",
       "west": "Heading west from current location",
-      "loaded": "Cargo ready, departing today",
-      "empty": "Pickup scheduled for tomorrow",
-      "return": "Time-sensitive shipment"
+      "loaded": "From my location → Select destination",
+      "empty": "Select pickup city → To my location",
+      "return": "Full control: Select FROM → TO cities"
     },
     "post_descriptions": {
       "local": "Available for local loads in the {{origin}} area",

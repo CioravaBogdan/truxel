@@ -31,9 +31,15 @@ interface CitySearchModalProps {
   onSelect: (city: City) => void;
   onClose: () => void;
   countryCode?: string;
+  selectionContext?: 'origin' | 'destination'; // NEW: context for header text
 }
 
-export default function CitySearchModal({ onSelect, onClose, countryCode }: CitySearchModalProps) {
+export default function CitySearchModal({ 
+  onSelect, 
+  onClose, 
+  countryCode,
+  selectionContext = 'destination' // Default to destination for backward compatibility
+}: CitySearchModalProps) {
   const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<City[]>([]);
@@ -104,7 +110,7 @@ export default function CitySearchModal({ onSelect, onClose, countryCode }: City
         </View>
         {item.population && item.population > 100000 && (
           <View style={styles.badge}>
-            <Text style={styles.badgeText}>{t('community.popular')}</Text>
+            <Text style={styles.badgeText}>{t('community.popular') || 'Popular'}</Text>
           </View>
         )}
       </TouchableOpacity>
@@ -187,8 +193,16 @@ export default function CitySearchModal({ onSelect, onClose, countryCode }: City
       >
         <View style={styles.header}>
           <View style={styles.headerContent}>
-            <Text style={styles.title}>{t('community.select_city')}</Text>
-            <Text style={styles.subtitle}>{t('community.select_destination_hint')}</Text>
+            <Text style={styles.title}>
+              {selectionContext === 'origin' 
+                ? t('community.select_origin_city') 
+                : t('community.select_city')}
+            </Text>
+            <Text style={styles.subtitle}>
+              {selectionContext === 'origin'
+                ? t('community.select_origin_hint')
+                : t('community.select_destination_hint')}
+            </Text>
           </View>
           <TouchableOpacity onPress={onClose} style={styles.closeButton}>
             <X size={24} color="#6B7280" />

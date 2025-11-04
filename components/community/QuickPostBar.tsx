@@ -42,6 +42,8 @@ function QuickPostBar() {
   } = useCommunityStore();
 
   const [isGettingLocation, setIsGettingLocation] = useState(false);
+  const [isSelectingOrigin, setIsSelectingOrigin] = useState(false); // For Template 2 & 3
+  const [originCity, setOriginCity] = useState<any>(null); // Store selected FROM city for Template 2 & 3
 
   // Check if user can post
   const handlePostTypeSelect = async (type: 'availability' | 'route') => {
@@ -81,6 +83,30 @@ function QuickPostBar() {
         return;
       }
 
+      // TIMING WARNING for I HAVE LOAD - Only for active shipments
+      if (type === 'route') {
+        Alert.alert(
+          t('community.load_timing_warning_title'),
+          t('community.load_timing_warning_message'),
+          [
+            { 
+              text: t('common.cancel'), 
+              style: 'cancel',
+              onPress: () => console.log('❌ User cancelled - not posting load')
+            },
+            { 
+              text: t('community.continue_posting'), 
+              onPress: () => {
+                console.log('✅ User confirmed - opening template modal');
+                setSelectedPostType(type);
+                setShowTemplateModal(true);
+              }
+            }
+          ]
+        );
+        return;
+      }
+
       console.log('✅ Can post - opening template modal');
       setSelectedPostType(type);
       setShowTemplateModal(true);
@@ -101,16 +127,29 @@ function QuickPostBar() {
   };
 
   // Handle template selection
-  const handleTemplateSelect = async (template: PostTemplate) => {
+  const handleTemplateSelect = (template: PostTemplate) => {
     setSelectedTemplate(template);
     setShowTemplateModal(false);
 
-    // For LOAD_AVAILABLE posts, ALWAYS ask for destination city (shippers/factories need TO location)
-    if (template.type === 'LOAD_AVAILABLE' || selectedPostType === 'route') {
+    // Template flow logic:
+    // 1. Template "loaded" (cargo ready today): GPS → TO city (shipper has cargo at their location)
+    // 2. Template "empty" (need pickup from): FROM city → GPS (shipper needs pickup from another city)
+    // 3. Template "return" (custom route): FROM city → TO city (full flexibility, no GPS)
+
+    if (template.key === 'loaded') {
+      // Template 1: GPS → Select TO city (current flow works)
+      setShowCityModal(true);
+    } else if (template.key === 'empty') {
+      // Template 2: Select FROM city first → then GPS becomes TO
+      setIsSelectingOrigin(true);
+      setShowCityModal(true);
+    } else if (template.key === 'return') {
+      // Template 3: Select FROM city → then TO city (2-step)
+      setIsSelectingOrigin(true);
       setShowCityModal(true);
     } else {
-      // For DRIVER_AVAILABLE, post directly with current location
-      await createPostWithLocation(template);
+      // Fallback for DRIVER_AVAILABLE - post directly with GPS
+      createPostWithLocation(template);
     }
   };
 
@@ -224,13 +263,189 @@ function QuickPostBar() {
     }
   };
 
+  // Template 2 "empty": Create post with origin city → GPS destination
+  const createPostWithOriginCity = async (template: PostTemplate, fromCity: any) => {
+    setIsGettingLocation(true);
+
+    try {
+      // Get current GPS location for destination
+      const location = await cityService.getCurrentLocationCity();
+
+      if (!location) {
+        Alert.alert(
+          t('community.location_required'),
+          t('community.location_required_message'),
+          [
+            { text: t('common.cancel'), style: 'cancel' }
+          ]
+        );
+        setIsGettingLocation(false);
+        return;
+      }
+
+      const majorCityName = location.nearestMajorCityName || location.nearestMajorCity?.name || location.city;
+      const baseCity = location.locality || location.city || majorCityName || 'Unknown';
+
+      let distanceDescriptor = '';
+      if (location.distanceToMajor && location.distanceToMajor >= 5 && majorCityName) {
+        const distance = Math.round(location.distanceToMajor);
+        if (location.directionFromMajor && distance >= 30) {
+          const directionText = t(location.directionFromMajor);
+          distanceDescriptor = `${distance}km ${directionText} ${t('directions.of')} ${majorCityName}`;
+        } else {
+          distanceDescriptor = `${distance}km ${t('directions.of')} ${majorCityName}`;
+        }
+      }
+
+      const formattedCity = distanceDescriptor ? `${baseCity} - ${distanceDescriptor}` : baseCity;
+
+      // Send location to N8N
+      cityService.sendLocationToWebhook({
+        latitude: location.latitude,
+        longitude: location.longitude,
+        nearestCityId: location.nearestMajorCityId || location.nearestMajorCity?.id,
+        nearestCityName: majorCityName,
+        distance: location.distanceToMajor,
+        userId: user?.id,
+        timestamp: new Date().toISOString(),
+        resolvedCity: baseCity,
+        resolvedCountry: location.country,
+        region: location.region,
+        formattedLocation: formattedCity,
+      });
+
+      // Prepare post data: origin = selected city, destination = GPS
+      const postData: CreatePostData = {
+        post_type: template.type,
+        template_key: template.key,
+        origin_lat: fromCity.lat,
+        origin_lng: fromCity.lng,
+        origin_city: fromCity.name,
+        origin_country: fromCity.country_name,
+        dest_lat: location.latitude,
+        dest_lng: location.longitude,
+        dest_city: formattedCity,
+        dest_country: location.country || location.nearestMajorCity?.country_name || 'RO',
+        contact_phone: profile?.phone_number,
+        contact_whatsapp: true,
+        metadata: {
+          departure: template.key as any,
+          truck_type_required: profile?.truck_type,
+        },
+      };
+
+      // Create the post
+      await createPost(user!.id, postData);
+
+      Toast.show({
+        type: 'success',
+        text1: t('community.post_created_success'),
+        text2: t('community.post_visible_in_feed'),
+      });
+
+      // Reset state
+      setSelectedPostType(null);
+      setSelectedTemplate(null);
+      setOriginCity(null);
+    } catch (error: any) {
+      Toast.show({
+        type: 'error',
+        text1: t('community.post_error'),
+        text2: error.message || t('community.post_error_message'),
+      });
+    } finally {
+      setIsGettingLocation(false);
+    }
+  };
+
+  // Template 3 "return": Create post with FROM city → TO city (no GPS)
+  const createPostWithBothCities = async (template: PostTemplate, fromCity: any, toCity: any) => {
+    setIsGettingLocation(true);
+
+    try {
+      // Prepare post data: origin + destination both user-selected
+      const postData: CreatePostData = {
+        post_type: template.type,
+        template_key: template.key,
+        origin_lat: fromCity.lat,
+        origin_lng: fromCity.lng,
+        origin_city: fromCity.name,
+        origin_country: fromCity.country_name,
+        dest_lat: toCity.lat,
+        dest_lng: toCity.lng,
+        dest_city: toCity.name,
+        dest_country: toCity.country_name,
+        contact_phone: profile?.phone_number,
+        contact_whatsapp: true,
+        metadata: {
+          departure: template.key as any,
+          truck_type_required: profile?.truck_type,
+        },
+      };
+
+      // Create the post
+      await createPost(user!.id, postData);
+
+      Toast.show({
+        type: 'success',
+        text1: t('community.post_created_success'),
+        text2: t('community.post_visible_in_feed'),
+      });
+
+      // Reset state
+      setSelectedPostType(null);
+      setSelectedTemplate(null);
+      setOriginCity(null);
+    } catch (error: any) {
+      Toast.show({
+        type: 'error',
+        text1: t('community.post_error'),
+        text2: error.message || t('community.post_error_message'),
+      });
+    } finally {
+      setIsGettingLocation(false);
+    }
+  };
+
   // Handle city selection for destinations
   const handleCitySelect = async (city: any) => {
     setShowCityModal(false);
 
-    if (selectedTemplate) {
+    if (!selectedTemplate) return;
+
+    // Template 1 "loaded": GPS → TO city (current location is origin, selected city is destination)
+    if (selectedTemplate.key === 'loaded') {
       await createPostWithLocation(selectedTemplate, city);
+      return;
     }
+
+    // Template 2 "empty": FROM city → GPS (selected city is origin, current location is destination)
+    if (selectedTemplate.key === 'empty') {
+      if (isSelectingOrigin) {
+        // Store origin and create post with GPS as destination
+        setOriginCity(city);
+        setIsSelectingOrigin(false);
+        await createPostWithOriginCity(selectedTemplate, city);
+      }
+      return;
+    }
+
+    // Template 3 "return": FROM city → TO city (2-step selection)
+    if (selectedTemplate.key === 'return') {
+      if (isSelectingOrigin) {
+        // Store origin and ask for destination
+        setOriginCity(city);
+        setIsSelectingOrigin(false);
+        setShowCityModal(true); // Open modal again for TO city
+      } else {
+        // Already have origin, now we have destination - create post
+        await createPostWithBothCities(selectedTemplate, originCity, city);
+      }
+      return;
+    }
+
+    // Fallback for DRIVER_AVAILABLE
+    await createPostWithLocation(selectedTemplate, city);
   };
 
   if (isCreatingPost || isGettingLocation) {
@@ -316,6 +531,7 @@ function QuickPostBar() {
         <CitySearchModal
           onSelect={handleCitySelect}
           onClose={() => setShowCityModal(false)}
+          selectionContext={isSelectingOrigin ? 'origin' : 'destination'}
         />
       </Modal>
     </View>

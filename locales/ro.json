@@ -275,6 +275,8 @@
     "city": "Oraș",
     "select_country": "Selectează Țara",
     "select_city": "Selectează Orașul",
+    "select_origin_city": "Selectează Orașul de Ridicare",
+    "select_origin_hint": "De unde trebuie ridicată marfa?",
     "search_country": "Caută o țară...",
     "clear_filter": "Șterge Filtrul",
     "no_countries_found": "Nu s-au găsit țări",
@@ -313,6 +315,9 @@
     "upgrade_for_more": "Actualizează pentru mai multe",
     "getting_location": "Se obține locația...",
     "posting": "Se postează...",
+    "load_timing_warning_title": "⏰ Doar Transport Activ",
+    "load_timing_warning_message": "Postează DOAR dacă marfa e disponibilă AZI sau MÂINE MAX.\n\nAceastă aplicație e pentru ȘOFERI ACTIVI pe drum, nu pentru planificare la birou.\n\nContinui?",
+    "continue_posting": "Da, Continuă",
     "error_title": "Eroare",
     "auth_required": "Trebuie să fii autentificat pentru a posta.",
     "creating_post": "Se creează postarea...",
@@ -398,9 +403,9 @@
         "west": "Merg spre Vest"
       },
       "load": {
-        "loaded": "Am nevoie de transport azi",
-        "empty": "Preluare marfă mâine",
-        "return": "Livrare urgentă"
+        "loaded": "Marfă gata AZI",
+        "empty": "RIDICĂ din...",
+        "return": "Rută personalizată"
       }
     },
     "template_descriptions": {
@@ -409,9 +414,9 @@
       "south": "Direcție sud de la locația curentă",
       "east": "Direcție est de la locația curentă",
       "west": "Direcție vest de la locația curentă",
-      "loaded": "Marfă pregătită, plecare azi",
-      "empty": "Preluare programată pentru mâine",
-      "return": "Expediere urgentă"
+      "loaded": "Din locația mea → Alege destinația",
+      "empty": "Alege oraș de ridicare → La locația mea",
+      "return": "Control total: Alege DIN → ÎN orașe"
     },
     "post_descriptions": {
       "local": "Disponibil pentru mărfuri locale în zona {{origin}}",
