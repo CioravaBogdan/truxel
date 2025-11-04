@@ -1,65 +1,89 @@
 # 📚 Documentație Truxel - Index
 
-## 🚨 **ÎNCEPE AICI** dacă ai probleme!
+## � Structură Documentație
 
-### Eroare: `ConfigError: package.json does not exist`?
-👉 **[Citește QUICK_START.md](./QUICK_START.md)** - Rezolvare în 4 pași simpli!
+- **Root (`/docs`)**: Start rapid, summary-uri, changelog
+- **[How It Works](./how_it_works/)**: Ghiduri tehnice active (implementare, integrări)
+- **[Archive](./archive/)**: Documente istorice, planuri completate, migrații
 
 ---
 
-## 📖 Documentație Disponibilă
+## � Quick Start - Citește Primele
 
 ### Pentru Începători:
-1. **[QUICK_START.md](./QUICK_START.md)** - Start rapid, rezolvă problema în 5 minute
-   - Rezolvare eroare ConfigError
-   - Pași simpli pentru prima rulare
-   - Checklist de verificare
+1. **[START_HERE.md](./START_HERE.md)** ⭐ Prima dată cu Truxel?
+   - Overview aplicație
+   - Setup rapid
+   - First steps
 
-### Pentru Utilizatori Windows:
-2. **[WINDOWS_SETUP.md](./WINDOWS_SETUP.md)** - Ghid complet Windows
-   - Setup complet pentru Windows
-   - Troubleshooting Windows-specific
-   - Android Studio configuration
-   - PowerShell commands
+2. **[QUICKSTART.md](./QUICKSTART.md)** - Development setup
+   - Prerequisites
+   - Installation
+   - Configuration
+   - Running the app
 
-### Pentru Dezvoltatori:
-3. **[README.md](./README.md)** - Documentație completă
-   - Features aplicație
-   - Prerequisites și instalare
-   - Configurare Supabase
-   - App structure
-   - API documentation
-
-4. **[UPDATE_RECOMMENDATIONS.md](./UPDATE_RECOMMENDATIONS.md)** - Recomandări tehnice
-   - Node.js version strategy
-   - Package updates roadmap
-   - Compatibility matrix
-   - Maintenance guide
-
-### Pentru Management:
-5. **[AUDIT_REPORT.md](./AUDIT_REPORT.md)** - Raport audit complet
-   - Analiza detaliată a proiectului
-   - Probleme identificate și soluții
-   - Metrici de calitate cod
-   - Next steps și roadmap
-
-### Alte Documente:
-6. **[PROJECT_SUMMARY.md](./PROJECT_SUMMARY.md)** - Sumar proiect
-7. **[QUICKSTART.md](./QUICKSTART.md)** - Quick start original
-8. **[N8N_WEBHOOK_GUIDE.md](./N8N_WEBHOOK_GUIDE.md)** - n8n integration guide
+3. **[QUICK_START.md](./QUICK_START.md)** - Troubleshooting rapid
+   - Rezolvare erori comune
+   - 5 minute quick fix
+   - Checklist verificare
 
 ---
 
-## 🎯 Alege Documentul Potrivit:
+## 📖 Documentation Hub
+
+### 🔧 Technical Guides (Active)
+👉 **[How It Works Folder](./how_it_works/README.md)**
+
+**Core Documentation:**
+- **[COMMUNITY_FEED_TECHNICAL_GUIDE.md](./how_it_works/COMMUNITY_FEED_TECHNICAL_GUIDE.md)** ⭐ MASTER GUIDE
+  - Complete Community Feed reference
+  - Architecture (UI → Store → Service → DB)
+  - Database schema + RLS policies
+  - All data flows and interactions
+
+**Feature Guides:**
+- [FIRE_AND_FORGET_PATTERN.md](./how_it_works/FIRE_AND_FORGET_PATTERN.md) - N8N webhooks
+- [I18N_IMPLEMENTATION.md](./how_it_works/I18N_IMPLEMENTATION.md) - Translations (6 languages)
+- [N8N_WEBHOOK_GUIDE.md](./how_it_works/N8N_WEBHOOK_GUIDE.md) - N8N automations
+- [OAUTH_IMPLEMENTATION.md](./how_it_works/OAUTH_IMPLEMENTATION.md) - Google OAuth
+
+**Infrastructure:**
+- [DEPLOY_EDGE_FUNCTIONS.md](./how_it_works/DEPLOY_EDGE_FUNCTIONS.md) - Supabase functions
+- [GOOGLE_OAUTH_SETUP.md](./how_it_works/GOOGLE_OAUTH_SETUP.md) - OAuth console setup
+- [STRIPE_IMPLEMENTATION_GUIDE.md](./how_it_works/STRIPE_IMPLEMENTATION_GUIDE.md) - Payments
+- [STRIPE_README.md](./how_it_works/STRIPE_README.md) - Stripe quick reference
+- [SUBSCRIPTION_MANAGEMENT.md](./how_it_works/SUBSCRIPTION_MANAGEMENT.md) - Subscription tiers
+- [TRUXEL_COMMUNITY_MASTER_PLAN.md](./how_it_works/TRUXEL_COMMUNITY_MASTER_PLAN.md) - Roadmap
+- [WINDOWS_SETUP.md](./how_it_works/WINDOWS_SETUP.md) - Windows dev environment
+
+### 📊 Project Overview
+- **[PROJECT_SUMMARY.md](./PROJECT_SUMMARY.md)** - High-level overview
+- **[SUMMARY.md](./SUMMARY.md)** - Current status
+- **[CHANGELOG.md](./CHANGELOG.md)** - Version history
+- **[DOCUMENTATION_PACKAGE.md](./DOCUMENTATION_PACKAGE.md)** - Docs structure
+
+### 📦 Archive (Historical)
+👉 **[Archive Folder](./archive/README.md)**
+
+Completed plans, old checklists, implemented features (historical reference only)
+
+---
+
+## 🎯 Găsește Documentul Potrivit:
 
 | Situație | Document Recomandat |
 |----------|---------------------|
+| 🆕 **Prima dată cu Truxel** | [START_HERE.md](./START_HERE.md) |
+| 🪟 **Setup pe Windows** | [how_it_works/WINDOWS_SETUP.md](./how_it_works/WINDOWS_SETUP.md) |
 | ❌ **Eroare la pornire** | [QUICK_START.md](./QUICK_START.md) |
-| 🪟 **Folosești Windows** | [WINDOWS_SETUP.md](./WINDOWS_SETUP.md) |
-| 🆕 **Prima dată cu proiectul** | [README.md](./README.md) |
-| ⚠️ **Node.js warnings** | [UPDATE_RECOMMENDATIONS.md](./UPDATE_RECOMMENDATIONS.md) |
-| 📊 **Înțelege starea proiectului** | [AUDIT_REPORT.md](./AUDIT_REPORT.md) |
-| 🔌 **Configurare webhook** | [N8N_WEBHOOK_GUIDE.md](./N8N_WEBHOOK_GUIDE.md) |
+| 🔍 **Înțeleg Community Feed** | [how_it_works/COMMUNITY_FEED_TECHNICAL_GUIDE.md](./how_it_works/COMMUNITY_FEED_TECHNICAL_GUIDE.md) |
+| 💳 **Stripe integration** | [how_it_works/STRIPE_IMPLEMENTATION_GUIDE.md](./how_it_works/STRIPE_IMPLEMENTATION_GUIDE.md) |
+| 🌐 **Translations** | [how_it_works/I18N_IMPLEMENTATION.md](./how_it_works/I18N_IMPLEMENTATION.md) |
+| � **OAuth setup** | [how_it_works/GOOGLE_OAUTH_SETUP.md](./how_it_works/GOOGLE_OAUTH_SETUP.md) |
+| 🔌 **N8N webhooks** | [how_it_works/N8N_WEBHOOK_GUIDE.md](./how_it_works/N8N_WEBHOOK_GUIDE.md) |
+| ☁️ **Deploy functions** | [how_it_works/DEPLOY_EDGE_FUNCTIONS.md](./how_it_works/DEPLOY_EDGE_FUNCTIONS.md) |
+| 📊 **Project status** | [PROJECT_SUMMARY.md](./PROJECT_SUMMARY.md) |
+| 📝 **Version history** | [CHANGELOG.md](./CHANGELOG.md) |
 
 ---
 
@@ -67,15 +91,16 @@
 
 ```powershell
 # 1. Navighează în proiect
-cd C:\Users\ciora\Documents\GitHub\truxel
+cd e:\truxel
 
-# 2. Instalează
+# 2. Instalează dependencies
 npm install
 
 # 3. Configurează .env cu credențiale Supabase
+# (Vezi QUICKSTART.md pentru detalii)
 
-# 4. Pornește
-npm run dev
+# 4. Pornește aplicația
+npx expo start
 ```
 
 **Nu funcționează?** 👉 [QUICK_START.md](./QUICK_START.md)
@@ -86,42 +111,46 @@ npm run dev
 
 ### "package.json does not exist"
 ➡️ **Cauză:** Ești în directorul greșit  
-➡️ **Soluție:** [QUICK_START.md](./QUICK_START.md) - Secțiunea "Navigate to Correct Directory"
-
-### "npm warn EBADENGINE"
-➡️ **Cauză:** Node.js v20.15.0 vs cerință >= 20.19.4  
-➡️ **Soluție:** [UPDATE_RECOMMENDATIONS.md](./UPDATE_RECOMMENDATIONS.md) - Secțiunea "Update Node.js"
+➡️ **Soluție:** [QUICK_START.md](./QUICK_START.md) - Verifică path-ul
 
 ### "Supabase connection error"
 ➡️ **Cauză:** Lipsesc credențiale în .env  
-➡️ **Soluție:** [README.md](./README.md) - Secțiunea "Configure Environment Variables"
+➡️ **Soluție:** [QUICKSTART.md](./QUICKSTART.md) - Configurare environment
 
 ### "Metro bundler errors"
-➡️ **Cauză:** Cache corupt sau dependencies vechi  
-➡️ **Soluție:** [WINDOWS_SETUP.md](./WINDOWS_SETUP.md) - Secțiunea "Clear Cache"
+➡️ **Cauză:** Cache corupt  
+➡️ **Soluție:** `npx expo start --clear` sau vezi [how_it_works/WINDOWS_SETUP.md](./how_it_works/WINDOWS_SETUP.md)
+
+### "How does Community Feed work?"
+➡️ **Soluție:** [how_it_works/COMMUNITY_FEED_TECHNICAL_GUIDE.md](./how_it_works/COMMUNITY_FEED_TECHNICAL_GUIDE.md) - Complete guide
+
+### "Need to deploy Edge Functions?"
+➡️ **Soluție:** [how_it_works/DEPLOY_EDGE_FUNCTIONS.md](./how_it_works/DEPLOY_EDGE_FUNCTIONS.md)
 
 ---
 
 ## 📞 Suport
 
-**Documentație completă:** Citește fișierele de mai sus în ordine  
-**Issues GitHub:** [Raportează probleme aici](https://github.com/CioravaBogdan/truxel/issues)  
-**Email Support:** support@truxel.com
+**Documentație completă:** Citește documentele din [how_it_works/](./how_it_works/)  
+**Issues GitHub:** [Raportează probleme](https://github.com/CioravaBogdan/truxel/issues)  
+**Email:** office@infant.ro
 
 ---
 
 ## ✅ Checklist Prima Rulare:
 
-- [ ] Am citit [QUICK_START.md](./QUICK_START.md)
+- [ ] Am citit [START_HERE.md](./START_HERE.md) sau [QUICKSTART.md](./QUICKSTART.md)
 - [ ] Sunt în directorul corect (văd package.json)
 - [ ] Am rulat `npm install`
-- [ ] Am configurat `.env` cu credențiale Supabase
-- [ ] Am Node.js >= 20.15.0
-- [ ] Am rulat `npm run dev`
+- [ ] Am configurat `.env` cu credențiale Supabase (URL + Anon Key)
+- [ ] Am Node.js instalat
+- [ ] Am rulat `npx expo start`
 
 **Totul bifat?** Aplicația ar trebui să pornească! 🚀
 
+Pentru detalii tehnice despre cum funcționează sistemul, vezi [how_it_works/](./how_it_works/)
+
 ---
 
-**Ultima Actualizare:** 22 Ianuarie 2025  
-**Versiune:** 1.0.0
+**Ultima Actualizare:** 4 Noiembrie 2025  
+**Versiune:** 2.0 - Reorganized with how_it_works & archive structure
