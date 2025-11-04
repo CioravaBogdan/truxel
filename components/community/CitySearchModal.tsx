@@ -86,7 +86,7 @@ export default function CitySearchModal({ onSelect, onClose, countryCode }: City
 
   const renderCity = ({ item }: { item: City }) => {
     // Safety check - ensure item has required fields
-    if (!item || !item.id || !item.name || !item.country_name) {
+    if (!item || !item.id || !item.name) {
       return null;
     }
 
@@ -98,7 +98,9 @@ export default function CitySearchModal({ onSelect, onClose, countryCode }: City
         <MapPin size={20} color="#6B7280" />
         <View style={styles.cityInfo}>
           <Text style={styles.cityName}>{item.name}</Text>
-          <Text style={styles.cityCountry}>{item.country_name}</Text>
+          {item.country_name && (
+            <Text style={styles.cityCountry}>{item.country_name}</Text>
+          )}
         </View>
         {item.population && item.population > 100000 && (
           <View style={styles.badge}>
@@ -141,10 +143,15 @@ export default function CitySearchModal({ onSelect, onClose, countryCode }: City
     }
 
     // Show recent and popular when not searching
-    const safeRecentCities = recentCities.filter(city => city && city.id && city.name && city.country_name);
+    // Filter by selected country if provided
+    const safeRecentCities = recentCities
+      .filter(city => city && city.id && city.name && city.country_name)
+      .filter(city => !countryCode || city.country_code === countryCode); // Only show cities from selected country
+    
     const recentCityIds = new Set(safeRecentCities.map(c => c.id));
     const safePopularCities = popularCities
       .filter(city => city && city.id && city.name && city.country_name)
+      .filter(city => !countryCode || city.country_code === countryCode) // Only show cities from selected country
       .filter(city => !recentCityIds.has(city.id)); // Exclude duplicates from recent
     
     return (
