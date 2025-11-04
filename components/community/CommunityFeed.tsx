@@ -250,7 +250,7 @@ export default function CommunityFeed({ customHeader }: CommunityFeedProps = {})
           style={[styles.tab, selectedTab === 'availability' && styles.activeTab]}
           onPress={() => setSelectedTab('availability')}
         >
-          <Truck size={18} color={selectedTab === 'availability' ? '#10B981' : '#6B7280'} />
+          <Truck size={20} color={selectedTab === 'availability' ? '#10B981' : '#6B7280'} />
           <Text style={[styles.tabText, selectedTab === 'availability' && styles.activeTabText]}>
             {t('community.available_drivers').toUpperCase()}
           </Text>
@@ -259,7 +259,7 @@ export default function CommunityFeed({ customHeader }: CommunityFeedProps = {})
           style={[styles.tab, selectedTab === 'routes' && styles.activeTab]}
           onPress={() => setSelectedTab('routes')}
         >
-          <Package size={18} color={selectedTab === 'routes' ? '#3B82F6' : '#6B7280'} />
+          <Package size={20} color={selectedTab === 'routes' ? '#3B82F6' : '#6B7280'} />
           <Text style={[styles.tabText, selectedTab === 'routes' && styles.activeTabText]}>
             {t('community.available_routes').toUpperCase()}
           </Text>
@@ -277,7 +277,7 @@ export default function CommunityFeed({ customHeader }: CommunityFeedProps = {})
               style={styles.filterControl}
               onPress={handleCountryPress}
             >
-              <Globe size={14} color="#6B7280" />
+              <Globe size={16} color="#6B7280" />
               <View style={styles.filterLabelContainer}>
                 <Text style={styles.filterLabel}>{t('community.country')}</Text>
                 <Text 
@@ -305,7 +305,7 @@ export default function CommunityFeed({ customHeader }: CommunityFeedProps = {})
               onPress={handleCityPress}
               disabled={!selectedCountry}
             >
-              <MapPin size={14} color={selectedCountry ? "#6B7280" : "#D1D5DB"} />
+              <MapPin size={16} color={selectedCountry ? "#6B7280" : "#D1D5DB"} />
               <View style={styles.filterLabelContainer}>
                 <Text style={[styles.filterLabel, !selectedCountry && styles.filterLabelDisabled]}>
                   {t('community.city')}
@@ -446,20 +446,30 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     marginHorizontal: 16,
     borderRadius: 12,
-    padding: 4,
+    padding: 6,
     marginBottom: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   tab: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 12,
-    borderRadius: 8,
-    gap: 6,
+    paddingVertical: 14,
+    borderRadius: 10,
+    gap: 8,
   },
   activeTab: {
     backgroundColor: '#F3F4F6',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.08,
+    shadowRadius: 2,
+    elevation: 2,
   },
   tabText: {
     fontSize: 14,
@@ -468,23 +478,29 @@ const styles = StyleSheet.create({
   },
   activeTabText: {
     color: '#111827',
+    fontWeight: '700',
   },
   filterBar: {
     flexDirection: 'row', // Horizontal layout like tabs
     backgroundColor: 'white',
     paddingHorizontal: 16,
-    paddingVertical: 12,
+    paddingVertical: 14,
     marginBottom: 12,
-    gap: 8, // Space between controls
+    gap: 10, // Space between controls
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: '#E5E7EB',
   },
   filterControl: {
     flex: 1, // Equal width for both controls
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#F9FAFB',
-    borderRadius: 8,
-    padding: 10,
-    gap: 8,
+    borderRadius: 10,
+    padding: 12,
+    gap: 10,
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
   },
   filterControlDisabled: {
     opacity: 0.5,
@@ -494,21 +510,21 @@ const styles = StyleSheet.create({
     minWidth: 0, // Allow text truncation
   },
   filterLabel: {
-    fontSize: 10,
+    fontSize: 11,
     color: '#6B7280',
-    fontWeight: '500',
-    marginBottom: 2,
+    fontWeight: '600',
+    marginBottom: 3,
   },
   filterLabelDisabled: {
     color: '#D1D5DB',
   },
   filterValueSelected: {
-    fontSize: 13,
+    fontSize: 14,
     color: '#111827',
     fontWeight: '600',
   },
   filterValuePlaceholder: {
-    fontSize: 13,
+    fontSize: 14,
     color: '#9CA3AF',
   },
   clearButton: {
