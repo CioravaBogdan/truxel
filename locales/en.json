@@ -306,6 +306,7 @@
     "load": "Load",
     "select_template": "Select Template",
     "search_city": "Search for a city...",
+    "select_destination_hint": "Where do you need to deliver the load?",
     "recent_cities": "Recent",
     "popular_cities": "Popular Cities",
     "no_results": "No cities found",
@@ -413,9 +414,9 @@
         "west": "Going West"
       },
       "load": {
-        "loaded": "Have loaded truck",
-        "empty": "Empty truck available",
-        "return": "Return load needed"
+        "loaded": "Need transport today",
+        "empty": "Need pickup tomorrow",
+        "return": "Urgent delivery"
       }
     },
     "template_descriptions": {
@@ -424,9 +425,9 @@
       "south": "Heading south from current location",
       "east": "Heading east from current location",
       "west": "Heading west from current location",
-      "loaded": "Departing today",
-      "empty": "Departing tomorrow",
-      "return": "Empty truck, looking for cargo"
+      "loaded": "Cargo ready, departing today",
+      "empty": "Pickup scheduled for tomorrow",
+      "return": "Time-sensitive shipment"
     },
     "post_descriptions": {
       "local": "Available for local loads in the {{origin}} area",

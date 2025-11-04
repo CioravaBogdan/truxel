@@ -277,7 +277,7 @@ export default function CommunityFeed({ customHeader }: CommunityFeedProps = {})
             { color: selectedTab === 'routes' ? 'white' : '#2563EB' },
             selectedTab === 'routes' && styles.activeTabText
           ]}>
-            {t('community.available_routes').toUpperCase()}
+            {t('community.available_loads').toUpperCase()}
           </Text>
         </TouchableOpacity>
       </View>

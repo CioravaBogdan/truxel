@@ -180,13 +180,16 @@ export default function CitySearchModal({ onSelect, onClose, countryCode }: City
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top']}>
       <KeyboardAvoidingView
         style={styles.container}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
         <View style={styles.header}>
-          <Text style={styles.title}>{t('community.select_city')}</Text>
+          <View style={styles.headerContent}>
+            <Text style={styles.title}>{t('community.select_city')}</Text>
+            <Text style={styles.subtitle}>{t('community.select_destination_hint')}</Text>
+          </View>
           <TouchableOpacity onPress={onClose} style={styles.closeButton}>
             <X size={24} color="#6B7280" />
           </TouchableOpacity>
@@ -234,10 +237,19 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#E5E7EB',
   },
+  headerContent: {
+    flex: 1,
+  },
   title: {
     fontSize: 18,
     fontWeight: '600',
     color: '#111827',
+    marginBottom: 4,
+  },
+  subtitle: {
+    fontSize: 14,
+    color: '#6B7280',
+    fontStyle: 'italic',
   },
   closeButton: {
     padding: 4,

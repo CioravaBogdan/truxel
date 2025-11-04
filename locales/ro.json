@@ -289,6 +289,7 @@
     "load": "Marfă",
     "select_template": "Selectează Șablon",
     "search_city": "Caută un oraș...",
+    "select_destination_hint": "Unde trebuie livrat\u0103 marfa?",
     "recent_cities": "Recente",
     "popular_cities": "Orașe Populare",
     "popular": "Popular",
@@ -397,9 +398,9 @@
         "west": "Merg spre Vest"
       },
       "load": {
-        "loaded": "Am camion încărcat",
-        "empty": "Camion gol disponibil",
-        "return": "Necesar marfă de întoarcere"
+        "loaded": "Am nevoie de transport azi",
+        "empty": "Preluare marfă mâine",
+        "return": "Livrare urgentă"
       }
     },
     "template_descriptions": {
@@ -408,9 +409,9 @@
       "south": "Direcție sud de la locația curentă",
       "east": "Direcție est de la locația curentă",
       "west": "Direcție vest de la locația curentă",
-      "loaded": "Plecare astăzi",
-      "empty": "Plecare mâine",
-      "return": "Camion gol, caut marfă"
+      "loaded": "Marfă pregătită, plecare azi",
+      "empty": "Preluare programată pentru mâine",
+      "return": "Expediere urgentă"
     },
     "post_descriptions": {
       "local": "Disponibil pentru mărfuri locale în zona {{origin}}",
