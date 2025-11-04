@@ -92,7 +92,7 @@ export default function PostCard({ post, onPress }: PostCardProps) {
   const { t, i18n } = useTranslation();
   const router = useRouter();
   const { user, profile, session, refreshProfile } = useAuthStore();
-  const { savePost, recordContact, postLimits } = useCommunityStore();
+  const { savePost, recordContact, deletePost, postLimits } = useCommunityStore();
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const [isProcessingUpgrade, setIsProcessingUpgrade] = useState(false);
   const [whatsAppPreference, setWhatsAppPreference] = useState<string | null>(null);
@@ -473,6 +473,40 @@ export default function PostCard({ post, onPress }: PostCardProps) {
     }
   };
 
+  const handleDelete = async () => {
+    if (!user) return;
+
+    Alert.alert(
+      t('community.delete_post_title'),
+      t('community.delete_post_message'),
+      [
+        {
+          text: t('common.cancel'),
+          style: 'cancel'
+        },
+        {
+          text: t('common.delete'),
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              await deletePost(post.id, user.id);
+              Toast.show({
+                type: 'success',
+                text1: t('community.post_deleted_success'),
+              });
+            } catch (error: any) {
+              Toast.show({
+                type: 'error',
+                text1: t('community.delete_error'),
+                text2: error.message,
+              });
+            }
+          }
+        }
+      ]
+    );
+  };
+
   const handleSave = async () => {
     if (!user) {
       Alert.alert(t('community.authentication_required'), t('community.must_be_logged_in'));
@@ -533,8 +567,17 @@ export default function PostCard({ post, onPress }: PostCardProps) {
           </View>
         </View>
         {isOwnPost ? (
-          <View style={styles.ownBadge}>
-            <Text style={styles.ownBadgeText}>{t('community.your_post')}</Text>
+          <View style={styles.ownPostActions}>
+            <View style={styles.ownBadge}>
+              <Text style={styles.ownBadgeText}>{t('community.your_post')}</Text>
+            </View>
+            <TouchableOpacity 
+              style={styles.deleteButton} 
+              onPress={handleDelete}
+              accessibilityLabel={t('common.delete')}
+            >
+              <Text style={styles.deleteButtonText}>🗑️</Text>
+            </TouchableOpacity>
           </View>
         ) : (
           <TouchableOpacity style={styles.saveIconButton} onPress={handleSave} accessibilityLabel={t('common.save')}>
@@ -801,6 +844,11 @@ const styles = StyleSheet.create({
     color: '#6B7280',
     marginLeft: 4,
   },
+  ownPostActions: {
+    flexDirection: 'column',
+    alignItems: 'flex-end',
+    gap: 6,
+  },
   ownBadge: {
     backgroundColor: '#F3F4F6',
     paddingHorizontal: 8,
@@ -810,6 +858,17 @@ const styles = StyleSheet.create({
   ownBadgeText: {
     fontSize: 12,
     color: '#6B7280',
+  },
+  deleteButton: {
+    backgroundColor: '#FEE2E2',
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: '#FECACA',
+  },
+  deleteButtonText: {
+    fontSize: 16,
   },
   content: {
     marginBottom: 12,

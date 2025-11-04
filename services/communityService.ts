@@ -239,15 +239,19 @@ class CommunityService {
    * Delete/Cancel a post
    */
   async deletePost(postId: string, userId: string): Promise<void> {
-    const { error } = await supabase
-      .from('community_posts')
-      .update({ status: 'cancelled' })
-      .eq('id', postId)
-      .eq('user_id', userId);
+    const { data, error } = await supabase.rpc('delete_user_post', {
+      p_post_id: postId,
+      p_user_id: userId
+    });
 
     if (error) {
       console.error('Error deleting post:', error);
       throw error;
+    }
+
+    const result = data as { success: boolean; error?: string };
+    if (!result.success) {
+      throw new Error(result.error || 'Failed to delete post');
     }
   }
 
