@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -8,14 +8,20 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   ViewToken,
+  Modal,
+  Platform,
+  Alert,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { Filter, MapPin, Package, Truck } from 'lucide-react-native';
+import { Globe, MapPin, Package, Truck } from 'lucide-react-native';
 import { useCommunityStore } from '../../store/communityStore';
 import { useAuthStore } from '../../store/authStore';
 import PostCard from './PostCard';
 import QuickPostBar from './QuickPostBar';
-import { CommunityPost } from '../../types/community.types';
+import CitySearchModal from './CitySearchModal';
+import CountryPickerModal from './CommunityFiltersModal';
+import { CommunityPost, City, Country } from '../../types/community.types';
+import { cityService } from '../../services/cityService';
 
 interface CommunityFeedProps {
   customHeader?: React.ReactNode;
@@ -32,18 +38,65 @@ export default function CommunityFeed({ customHeader }: CommunityFeedProps = {})
     hasMore,
     error,
     selectedCity,
+    selectedCountry,
     loadPosts,
     loadMorePosts,
     refreshPosts,
     setSelectedTab,
+    setSelectedCountry,
+    setSelectedCity,
+    initializeFilters,
     clearError,
     recordView,
   } = useCommunityStore();
 
-  // Load posts on mount and tab change
+  // Local state for modals and initialization
+  const [isCountryPickerVisible, setCountryPickerVisible] = useState(false);
+  const [isCityPickerVisible, setCityPickerVisible] = useState(false);
+  const [isInitializingFilters, setIsInitializingFilters] = useState(false);
+
+  // Initialize filters with user location on mount (ONE-SHOT)
+  useEffect(() => {
+    if (!user?.id) return;
+    
+    let isMounted = true;
+
+    async function initFilters() {
+      try {
+        setIsInitializingFilters(true);
+        
+        const locationInfo = await cityService.getCurrentLocationCity();
+        
+        if (!isMounted) return;
+
+        if (locationInfo?.nearestMajorCity) {
+          const { country_code, country_name } = locationInfo.nearestMajorCity;
+          
+          await initializeFilters({
+            country: { code: country_code, name: country_name },
+            city: locationInfo.nearestMajorCity // Pass full City object
+          });
+        }
+      } catch (err) {
+        console.log('[CommunityFeed] Location init failed (non-critical):', err);
+      } finally {
+        if (isMounted) {
+          setIsInitializingFilters(false);
+        }
+      }
+    }
+
+    void initFilters();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [user?.id, initializeFilters]);
+
+  // Load posts on mount and tab/filter change
   useEffect(() => {
     void loadPosts(true);
-  }, [loadPosts, selectedTab]);
+  }, [loadPosts, selectedTab, selectedCity, selectedCountry]);
 
   // Load user stats when user is available
   useEffect(() => {
@@ -52,6 +105,41 @@ export default function CommunityFeed({ customHeader }: CommunityFeedProps = {})
       useCommunityStore.getState().checkPostLimits(user.id);
     }
   }, [user]);
+
+  // Filter handlers
+  const handleCountryPress = useCallback(() => {
+    setCountryPickerVisible(true);
+  }, []);
+
+  const handleCityPress = useCallback(() => {
+    if (!selectedCountry) {
+      Alert.alert(
+        t('community.select_country_first'),
+        t('community.select_country_before_city')
+      );
+      return;
+    }
+    setCityPickerVisible(true);
+  }, [selectedCountry, t]);
+
+  const handleCountrySelect = useCallback((country: Country) => {
+    setSelectedCountry(country);
+    setCountryPickerVisible(false);
+  }, [setSelectedCountry]);
+
+  const handleCitySelect = useCallback((city: City) => {
+    setSelectedCity(city);
+    setCityPickerVisible(false);
+  }, [setSelectedCity]);
+
+  const handleClearCountry = useCallback(() => {
+    setSelectedCountry(null);
+    setSelectedCity(null); // Clear city when country is cleared
+  }, [setSelectedCountry, setSelectedCity]);
+
+  const handleClearCity = useCallback(() => {
+    setSelectedCity(null);
+  }, [setSelectedCity]);
 
   const renderPost = ({ item }: { item: CommunityPost }) => (
     <PostCard
@@ -180,25 +268,60 @@ export default function CommunityFeed({ customHeader }: CommunityFeedProps = {})
 
       {/* Filter Bar */}
       <View style={styles.filterBar}>
-        <View style={styles.activeFilters}>
-          {selectedCity ? (
-            <View style={styles.filterChip}>
-              <MapPin size={14} color="#3B82F6" />
-              <Text style={styles.filterChipText}>{selectedCity.name}</Text>
-              <TouchableOpacity
-                onPress={() => useCommunityStore.getState().setSelectedCity(null)}
-              >
-                <Text style={styles.filterChipClear}>✕</Text>
-              </TouchableOpacity>
-            </View>
-          ) : (
-            <Text style={styles.filterHint}>{t('community.all_cities')}</Text>
-          )}
-        </View>
-        <TouchableOpacity style={styles.filterButton}>
-          <Filter size={18} color="#6B7280" />
-          <Text style={styles.filterButtonText}>{t('community.filters')}</Text>
-        </TouchableOpacity>
+        {isInitializingFilters ? (
+          <ActivityIndicator size="small" color="#10B981" />
+        ) : (
+          <>
+            {/* Country Filter */}
+            <TouchableOpacity
+              style={styles.filterControl}
+              onPress={handleCountryPress}
+            >
+              <Globe size={16} color="#6B7280" />
+              <View style={styles.filterLabelContainer}>
+                <Text style={styles.filterLabel}>{t('community.country')}</Text>
+                <Text style={selectedCountry ? styles.filterValueSelected : styles.filterValuePlaceholder}>
+                  {selectedCountry?.name || t('community.select_country')}
+                </Text>
+              </View>
+              {selectedCountry && (
+                <TouchableOpacity
+                  style={styles.clearButton}
+                  onPress={handleClearCountry}
+                  hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                >
+                  <Text style={styles.clearButtonText}>✕</Text>
+                </TouchableOpacity>
+              )}
+            </TouchableOpacity>
+
+            {/* City Filter */}
+            <TouchableOpacity
+              style={[styles.filterControl, !selectedCountry && styles.filterControlDisabled]}
+              onPress={handleCityPress}
+              disabled={!selectedCountry}
+            >
+              <MapPin size={16} color={selectedCountry ? "#6B7280" : "#D1D5DB"} />
+              <View style={styles.filterLabelContainer}>
+                <Text style={[styles.filterLabel, !selectedCountry && styles.filterLabelDisabled]}>
+                  {t('community.city')}
+                </Text>
+                <Text style={selectedCity ? styles.filterValueSelected : styles.filterValuePlaceholder}>
+                  {selectedCity?.name || t('community.all_cities')}
+                </Text>
+              </View>
+              {selectedCity && selectedCountry && (
+                <TouchableOpacity
+                  style={styles.clearButton}
+                  onPress={handleClearCity}
+                  hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                >
+                  <Text style={styles.clearButtonText}>✕</Text>
+                </TouchableOpacity>
+              )}
+            </TouchableOpacity>
+          </>
+        )}
       </View>
 
       {/* Error Message */}
@@ -211,29 +334,68 @@ export default function CommunityFeed({ customHeader }: CommunityFeedProps = {})
         </View>
       )}
     </View>
-  ), [customHeader, selectedTab, error, selectedCity, clearError, setSelectedTab, t]);
+  ), [
+    customHeader,
+    selectedTab,
+    error,
+    selectedCity,
+    selectedCountry,
+    isInitializingFilters,
+    handleCountryPress,
+    handleCityPress,
+    handleClearCountry,
+    handleClearCity,
+    clearError,
+    setSelectedTab,
+    t,
+  ]);
 
   return (
-    <FlatList
-      data={posts}
-      renderItem={renderPost}
-      keyExtractor={(item) => item.id}
-      ListHeaderComponent={renderHeader}
-      ListEmptyComponent={renderEmpty}
-      ListFooterComponent={renderFooter}
-      refreshControl={
-        <RefreshControl
-          refreshing={isRefreshing}
-          onRefresh={refreshPosts}
-          colors={['#3B82F6']}
+    <>
+      <FlatList
+        data={posts}
+        renderItem={renderPost}
+        keyExtractor={(item) => item.id}
+        ListHeaderComponent={renderHeader}
+        ListEmptyComponent={renderEmpty}
+        ListFooterComponent={renderFooter}
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefreshing}
+            onRefresh={refreshPosts}
+            colors={['#3B82F6']}
+          />
+        }
+        onEndReached={loadMorePosts}
+        onEndReachedThreshold={0.5}
+        contentContainerStyle={styles.listContent}
+        onViewableItemsChanged={handleViewableItemsChanged}
+        viewabilityConfig={viewabilityConfig.current}
+      />
+
+      {/* Country Picker Modal */}
+      <CountryPickerModal
+        visible={isCountryPickerVisible}
+        onClose={() => setCountryPickerVisible(false)}
+        onSelect={handleCountrySelect}
+        onClear={handleClearCountry}
+        selectedCountryCode={selectedCountry?.code}
+      />
+
+      {/* City Search Modal */}
+      <Modal
+        visible={isCityPickerVisible}
+        animationType="slide"
+        presentationStyle={Platform.OS === 'ios' ? 'pageSheet' : 'fullScreen'}
+        onRequestClose={() => setCityPickerVisible(false)}
+      >
+        <CitySearchModal
+          countryCode={selectedCountry?.code || ''}
+          onSelect={handleCitySelect}
+          onClose={() => setCityPickerVisible(false)}
         />
-      }
-      onEndReached={loadMorePosts}
-      onEndReachedThreshold={0.5}
-      contentContainerStyle={styles.listContent}
-      onViewableItemsChanged={handleViewableItemsChanged}
-      viewabilityConfig={viewabilityConfig.current}
-    />
+      </Modal>
+    </>
   );
 }
 
@@ -300,55 +462,51 @@ const styles = StyleSheet.create({
     color: '#111827',
   },
   filterBar: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    backgroundColor: 'white',
     paddingHorizontal: 16,
     paddingVertical: 12,
-    backgroundColor: 'white',
     marginBottom: 12,
+    gap: 12,
   },
-  activeFilters: {
+  filterControl: {
     flexDirection: 'row',
     alignItems: 'center',
+    backgroundColor: '#F9FAFB',
+    borderRadius: 8,
+    padding: 12,
+    gap: 10,
+  },
+  filterControlDisabled: {
+    opacity: 0.5,
+  },
+  filterLabelContainer: {
     flex: 1,
   },
-  filterHint: {
+  filterLabel: {
+    fontSize: 11,
+    color: '#6B7280',
+    fontWeight: '500',
+    marginBottom: 2,
+  },
+  filterLabelDisabled: {
+    color: '#D1D5DB',
+  },
+  filterValueSelected: {
+    fontSize: 14,
+    color: '#111827',
+    fontWeight: '600',
+  },
+  filterValuePlaceholder: {
     fontSize: 14,
     color: '#9CA3AF',
   },
-  filterChip: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#EFF6FF',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 16,
-    gap: 6,
+  clearButton: {
+    padding: 4,
   },
-  filterChipText: {
-    fontSize: 14,
-    color: '#3B82F6',
-    fontWeight: '500',
-  },
-  filterChipClear: {
-    marginLeft: 4,
-    fontSize: 16,
-    color: '#3B82F6',
-  },
-  filterButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    backgroundColor: '#F3F4F6',
-    borderRadius: 8,
-  },
-  filterButtonText: {
-    fontSize: 14,
+  clearButtonText: {
+    fontSize: 18,
     color: '#6B7280',
-    fontWeight: '500',
+    fontWeight: '600',
   },
   emptyContainer: {
     alignItems: 'center',
