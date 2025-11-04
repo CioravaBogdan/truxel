@@ -21,7 +21,14 @@ interface CountryPickerModalProps {
   selectedCountryCode?: string;
 }
 
-// 28 European countries with logistics relevance
+// North American countries (priority markets)
+const NORTH_AMERICAN_COUNTRIES: Country[] = [
+  { code: 'US', name: 'United States' },
+  { code: 'CA', name: 'Canada' },
+  { code: 'MX', name: 'Mexico' },
+];
+
+// European countries with logistics relevance
 const EUROPEAN_COUNTRIES: Country[] = [
   { code: 'AT', name: 'Austria' },
   { code: 'BE', name: 'Belgium' },
@@ -53,6 +60,12 @@ const EUROPEAN_COUNTRIES: Country[] = [
   { code: 'GB', name: 'United Kingdom' },
 ];
 
+// Combined list: North America first (priority), then Europe alphabetically
+const ALL_COUNTRIES: Country[] = [
+  ...NORTH_AMERICAN_COUNTRIES,
+  ...EUROPEAN_COUNTRIES,
+];
+
 export default function CountryPickerModal({
   visible,
   onClose,
@@ -65,10 +78,10 @@ export default function CountryPickerModal({
 
   // Filter countries based on search
   const filteredCountries = useMemo(() => {
-    if (!searchQuery.trim()) return EUROPEAN_COUNTRIES;
+    if (!searchQuery.trim()) return ALL_COUNTRIES;
     
     const query = searchQuery.toLowerCase();
-    return EUROPEAN_COUNTRIES.filter(
+    return ALL_COUNTRIES.filter(
       (country) =>
         country.name.toLowerCase().includes(query) ||
         country.code.toLowerCase().includes(query)

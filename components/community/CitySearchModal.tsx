@@ -142,7 +142,10 @@ export default function CitySearchModal({ onSelect, onClose, countryCode }: City
 
     // Show recent and popular when not searching
     const safeRecentCities = recentCities.filter(city => city && city.id && city.name && city.country_name);
-    const safePopularCities = popularCities.filter(city => city && city.id && city.name && city.country_name);
+    const recentCityIds = new Set(safeRecentCities.map(c => c.id));
+    const safePopularCities = popularCities
+      .filter(city => city && city.id && city.name && city.country_name)
+      .filter(city => !recentCityIds.has(city.id)); // Exclude duplicates from recent
     
     return (
       <FlatList

@@ -277,10 +277,14 @@ export default function CommunityFeed({ customHeader }: CommunityFeedProps = {})
               style={styles.filterControl}
               onPress={handleCountryPress}
             >
-              <Globe size={16} color="#6B7280" />
+              <Globe size={14} color="#6B7280" />
               <View style={styles.filterLabelContainer}>
                 <Text style={styles.filterLabel}>{t('community.country')}</Text>
-                <Text style={selectedCountry ? styles.filterValueSelected : styles.filterValuePlaceholder}>
+                <Text 
+                  style={selectedCountry ? styles.filterValueSelected : styles.filterValuePlaceholder}
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                >
                   {selectedCountry?.name || t('community.select_country')}
                 </Text>
               </View>
@@ -301,12 +305,16 @@ export default function CommunityFeed({ customHeader }: CommunityFeedProps = {})
               onPress={handleCityPress}
               disabled={!selectedCountry}
             >
-              <MapPin size={16} color={selectedCountry ? "#6B7280" : "#D1D5DB"} />
+              <MapPin size={14} color={selectedCountry ? "#6B7280" : "#D1D5DB"} />
               <View style={styles.filterLabelContainer}>
                 <Text style={[styles.filterLabel, !selectedCountry && styles.filterLabelDisabled]}>
                   {t('community.city')}
                 </Text>
-                <Text style={selectedCity ? styles.filterValueSelected : styles.filterValuePlaceholder}>
+                <Text 
+                  style={selectedCity ? styles.filterValueSelected : styles.filterValuePlaceholder}
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                >
                   {selectedCity?.name || t('community.all_cities')}
                 </Text>
               </View>
@@ -462,28 +470,31 @@ const styles = StyleSheet.create({
     color: '#111827',
   },
   filterBar: {
+    flexDirection: 'row', // Horizontal layout like tabs
     backgroundColor: 'white',
     paddingHorizontal: 16,
     paddingVertical: 12,
     marginBottom: 12,
-    gap: 12,
+    gap: 8, // Space between controls
   },
   filterControl: {
+    flex: 1, // Equal width for both controls
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#F9FAFB',
     borderRadius: 8,
-    padding: 12,
-    gap: 10,
+    padding: 10,
+    gap: 8,
   },
   filterControlDisabled: {
     opacity: 0.5,
   },
   filterLabelContainer: {
     flex: 1,
+    minWidth: 0, // Allow text truncation
   },
   filterLabel: {
-    fontSize: 11,
+    fontSize: 10,
     color: '#6B7280',
     fontWeight: '500',
     marginBottom: 2,
@@ -492,12 +503,12 @@ const styles = StyleSheet.create({
     color: '#D1D5DB',
   },
   filterValueSelected: {
-    fontSize: 14,
+    fontSize: 13,
     color: '#111827',
     fontWeight: '600',
   },
   filterValuePlaceholder: {
-    fontSize: 14,
+    fontSize: 13,
     color: '#9CA3AF',
   },
   clearButton: {
