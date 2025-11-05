@@ -94,8 +94,7 @@ export default function PostCard({ post, onPress }: PostCardProps) {
   const { user, profile, session, refreshProfile } = useAuthStore();
   const { savePost, unsavePost, recordContact, deletePost, postLimits } = useCommunityStore();
   
-  // CRITICAL: Use selector to re-render when savedPosts changes
-  // This subscribes PostCard specifically to savedPosts array changes
+  // Use selector - Zustand will re-render when THIS SPECIFIC result changes
   const isSaved = useCommunityStore((state) => 
     state.savedPosts.some(p => p.id === post.id)
   );

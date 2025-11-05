@@ -275,14 +275,26 @@ export const useCommunityStore = create<CommunityState>((set, get) => ({
       const { inserted } = await communityService.recordInteraction(postId, userId, 'saved');
 
       if (!inserted) {
+        console.log('[savePost] Already saved, skipping');
         return;
       }
 
-      const post = get().posts.find(p => p.id === postId);
+      // Find post in current tab
+      let post = get().posts.find(p => p.id === postId);
+      
+      // If not in current posts, try savedPosts (edge case)
+      if (!post) {
+        post = get().savedPosts.find(p => p.id === postId);
+      }
+
       if (post) {
+        console.log('[savePost] Adding to savedPosts:', postId);
         set(state => ({
           savedPosts: [post, ...state.savedPosts],
         }));
+        console.log('[savePost] New savedPosts length:', get().savedPosts.length);
+      } else {
+        console.warn('[savePost] Post not found:', postId);
       }
     } catch (error) {
       console.error('Error saving post:', error);
@@ -292,11 +304,14 @@ export const useCommunityStore = create<CommunityState>((set, get) => ({
   // Unsave a post
   unsavePost: async (postId: string, userId: string) => {
     try {
+      console.log('[unsavePost] Removing from database:', postId);
       await communityService.deleteInteraction(postId, userId, 'saved');
       
+      console.log('[unsavePost] Removing from savedPosts');
       set(state => ({
         savedPosts: state.savedPosts.filter(p => p.id !== postId),
       }));
+      console.log('[unsavePost] New savedPosts length:', get().savedPosts.length);
     } catch (error) {
       console.error('Error unsaving post:', error);
     }
