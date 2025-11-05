@@ -622,6 +622,21 @@ export default function PostCard({ post, onPress }: PostCardProps) {
               </View>
             </>
           )}
+          {/* Direction badge for north/south/east/west templates */}
+          {!post.dest_city && post.template_key && ['north', 'south', 'east', 'west'].includes(post.template_key) && (
+            <>
+              <Text style={styles.routeArrow}>→</Text>
+              <View style={styles.directionBadge}>
+                <Navigation size={16} color="#3B82F6" />
+                <Text style={styles.directionText}>
+                  {post.template_key === 'north' ? '⬆️ ' + t('directions.north') :
+                   post.template_key === 'south' ? '⬇️ ' + t('directions.south') :
+                   post.template_key === 'east' ? '➡️ ' + t('directions.east') :
+                   '⬅️ ' + t('directions.west')}
+                </Text>
+              </View>
+            </>
+          )}
         </View>
 
         <Text style={styles.description}>{getPostDescription(post)}</Text>
@@ -951,6 +966,22 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderWidth: 1,
     borderColor: '#FECACA',
+  },
+  directionBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    paddingVertical: 6,
+    paddingHorizontal: 10,
+    backgroundColor: '#DBEAFE',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#BFDBFE',
+  },
+  directionText: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#1E40AF',
   },
   cityText: {
     fontSize: 16,

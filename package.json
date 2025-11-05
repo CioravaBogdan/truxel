@@ -74,6 +74,7 @@
     "@babel/core": "^7.25.2",
     "@types/lodash": "^4.17.20",
     "@types/react": "~19.1.10",
+    "@vitalets/google-translate-api": "^9.2.1",
     "cross-env": "^7.0.3",
     "eslint": "^9.0.0",
     "eslint-config-expo": "~10.0.0",
