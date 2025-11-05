@@ -380,7 +380,17 @@
       "flatbed_available": "Pianale disponibile",
       "urgent_delivery": "Consegna urgente",
       "scheduled_delivery": "Consegna programmata",
-      "flexible_schedule": "Orario flessibile"
+      "flexible_schedule": "Orario flessibile",
+      "availability": {
+        "custom": "Percorso Personalizzato"
+      },
+      "load": {}
+    },
+    "template_descriptions": {
+      "custom": "Scegli il tuo percorso: Seleziona DA → A città"
+    },
+    "post_descriptions": {
+      "custom": "Disponibile per il percorso {{origin}} → {{dest}}"
     },
     "whatsapp_driver_available": "Ciao! Sono {{myName}}. Ho visto che sei disponibile a {{city}}. Forse potremmo lavorare insieme!",
     "whatsapp_load_offer": "Ciao! Sono {{myName}}. Ho visto che hai un percorso {{origin}} → {{destination}}. Forse potremmo collaborare!",

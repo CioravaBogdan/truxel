@@ -380,7 +380,17 @@
       "flatbed_available": "Pritsche verfügbar",
       "urgent_delivery": "Dringende Lieferung",
       "scheduled_delivery": "Geplante Lieferung",
-      "flexible_schedule": "Flexibler Zeitplan"
+      "flexible_schedule": "Flexibler Zeitplan",
+      "availability": {
+        "custom": "Benutzerdefinierte Route"
+      },
+      "load": {}
+    },
+    "template_descriptions": {
+      "custom": "Wählen Sie Ihre eigene Route: Wählen Sie VON → NACH Städte"
+    },
+    "post_descriptions": {
+      "custom": "Verfügbar für Route {{origin}} → {{dest}}"
     },
     "whatsapp_driver_available": "Hallo! Ich bin {{myName}}. Ich sehe, Sie sind in {{city}} verfügbar. Vielleicht können wir zusammenarbeiten!",
     "whatsapp_load_offer": "Hallo! Ich bin {{myName}}. Ich sehe, Sie haben eine Route {{origin}} → {{destination}}. Vielleicht können wir zusammenarbeiten!",

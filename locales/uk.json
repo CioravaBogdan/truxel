@@ -382,7 +382,17 @@
       "flatbed_available": "Доступна відкрита платформа",
       "urgent_delivery": "Терміновае доставка",
       "scheduled_delivery": "Заплановане доставка",
-      "flexible_schedule": "Гнучкий графік"
+      "flexible_schedule": "Гнучкий графік",
+      "availability": {
+        "custom": "Власний Маршрут"
+      },
+      "load": {}
+    },
+    "template_descriptions": {
+      "custom": "Виберіть власний маршрут: Виберіть З → ДО міста"
+    },
+    "post_descriptions": {
+      "custom": "Доступний для маршруту {{origin}} → {{dest}}"
     },
     "whatsapp_driver_available": "Привіт! Я {{myName}}. Бачу, ви доступні в {{city}}. Можливо нам буде цікаво попрацювати разом!",
     "whatsapp_load_offer": "Привіт! Я {{myName}}. Бачу, у вас є маршрут {{origin}} → {{destination}}. Можливо зможемо співпрацювати!",

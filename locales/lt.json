@@ -132,6 +132,17 @@
       "auth_error": "Norėdami atnaujinti planą, turite būti prisijungę.",
       "no_price": "Atnaujinimas dar nepasiekiamas. Susisiekite su mumis.",
       "generic_error": "Nepavyko pradėti atnaujinimo. Bandykite dar kartą."
+    },
+    "templates": {
+      "availability": {
+        "custom": "Pasirinktinis Maršrutas"
+      }
+    },
+    "template_descriptions": {
+      "custom": "Pasirinkite savo maršrutą: Pasirinkite IŠ → Į miestus"
+    },
+    "post_descriptions": {
+      "custom": "Prieinamas maršrutui {{origin}} → {{dest}}"
     }
   }
 }

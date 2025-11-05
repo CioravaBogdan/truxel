@@ -132,6 +132,17 @@
       "auth_error": "Debes iniciar sesión para actualizar.",
       "no_price": "La actualización aún no está disponible. Contacta con soporte.",
       "generic_error": "No pudimos iniciar la actualización. Inténtalo de nuevo."
+    },
+    "templates": {
+      "availability": {
+        "custom": "Ruta Personalizada"
+      }
+    },
+    "template_descriptions": {
+      "custom": "Elige tu propia ruta: Selecciona ciudades DESDE → HASTA"
+    },
+    "post_descriptions": {
+      "custom": "Disponible para ruta {{origin}} → {{dest}}"
     }
   }
 }

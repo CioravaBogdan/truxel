@@ -270,6 +270,17 @@
       "auth_error": "Musisz być zalogowany, aby ulepszyć plan.",
       "no_price": "Ulepszenie jeszcze niedostępne. Skontaktuj się z nami.",
       "generic_error": "Nie udało się rozpocząć ulepszenia. Spróbuj ponownie."
+    },
+    "templates": {
+      "availability": {
+        "custom": "Trasa niestandardowa"
+      }
+    },
+    "template_descriptions": {
+      "custom": "Wybierz własną trasę: Wybierz miasto Z → DO"
+    },
+    "post_descriptions": {
+      "custom": "Dostępny na trasie {{origin}} → {{dest}}"
     }
   }
 }

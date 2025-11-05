@@ -270,6 +270,17 @@
       "auth_error": "Planı yükseltmek için giriş yapmalısınız.",
       "no_price": "Yükseltme henüz hazır değil. Destekle iletişime geçin.",
       "generic_error": "Yükseltme başlatılamadı. Lütfen tekrar deneyin."
+    },
+    "templates": {
+      "availability": {
+        "custom": "Özel Rota"
+      }
+    },
+    "template_descriptions": {
+      "custom": "Kendi rotanızı seçin: NEREDEN → NEREYE şehirleri seçin"
+    },
+    "post_descriptions": {
+      "custom": "{{origin}} → {{dest}} rotası için uygun"
     }
   }
 }

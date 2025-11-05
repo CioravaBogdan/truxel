@@ -380,7 +380,17 @@
       "flatbed_available": "Plateau disponible",
       "urgent_delivery": "Livraison urgente",
       "scheduled_delivery": "Livraison planifiée",
-      "flexible_schedule": "Horaire flexible"
+      "flexible_schedule": "Horaire flexible",
+      "availability": {
+        "custom": "Itinéraire Personnalisé"
+      },
+      "load": {}
+    },
+    "template_descriptions": {
+      "custom": "Choisissez votre propre itinéraire: Sélectionnez DE → À villes"
+    },
+    "post_descriptions": {
+      "custom": "Disponible pour l'itinéraire {{origin}} → {{dest}}"
     },
     "whatsapp_driver_available": "Bonjour ! Je suis {{myName}}. J'ai vu que vous êtes disponible à {{city}}. Peut-être pourrions-nous travailler ensemble !",
     "whatsapp_load_offer": "Bonjour ! Je suis {{myName}}. J'ai vu que vous avez un trajet {{origin}} → {{destination}}. Peut-être pourrions-nous collaborer !",
