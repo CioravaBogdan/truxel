@@ -64,7 +64,9 @@
     "upgrade": "Actualizează Planul",
     "total_leads": "Total Lead-uri",
     "leads_contacted": "Contactate",
-    "active_searches": "Căutări Active"
+    "active_searches": "Căutări Active",
+    "community_title": "Comunitatea Truxel",
+    "community_subtitle": "Găsește curse și șoferi în timp real"
   },
   "search": {
     "title": "Găsește Companii",
@@ -277,6 +279,7 @@
     "select_city": "Selectează Orașul",
     "select_origin_city": "Selectează Orașul de Ridicare",
     "select_origin_hint": "De unde trebuie ridicată marfa?",
+    "select_country_before_city": "Te rugăm să selectezi mai întâi țara înainte de a alege orașul",
     "search_country": "Caută o țară...",
     "clear_filter": "Șterge Filtrul",
     "no_countries_found": "Nu s-au găsit țări",

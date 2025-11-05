@@ -76,7 +76,9 @@
     "upgrade": "Upgrade Plan",
     "total_leads": "Total Leads",
     "leads_contacted": "Contacted",
-    "active_searches": "Active Searches"
+    "active_searches": "Active Searches",
+    "community_title": "Truxel Community",
+    "community_subtitle": "Find trips and drivers in real-time"
   },
   "search": {
     "title": "Find Companies",
@@ -294,6 +296,7 @@
     "select_city": "Select City",
     "select_origin_city": "Select Pickup City",
     "select_origin_hint": "Where should the cargo be picked up from?",
+    "select_country_before_city": "Please select a country first before choosing a city",
     "search_country": "Search for a country...",
     "clear_filter": "Clear Filter",
     "no_countries_found": "No countries found",

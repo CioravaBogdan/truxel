@@ -213,6 +213,7 @@
     "city": "Miasto",
     "select_country": "Wybierz kraj",
     "select_city": "Wybierz miasto",
+    "select_country_before_city": "Najpierw wybierz kraj, zanim wybierzesz miasto",
     "search_country": "Szukaj kraju...",
     "clear_filter": "Wyczyść filtr",
     "no_countries_found": "Nie znaleziono krajów",

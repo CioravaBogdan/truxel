@@ -75,6 +75,7 @@
     "city": "Miestas",
     "select_country": "Pasirinkite šalį",
     "select_city": "Pasirinkite miestą",
+    "select_country_before_city": "Pirmiausia pasirinkite šalį prieš pasirinkdami miestą",
     "search_country": "Ieškoti šalies...",
     "clear_filter": "Išvalyti filtrą",
     "no_countries_found": "Šalių nerasta",

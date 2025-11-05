@@ -213,6 +213,7 @@
     "city": "Şehir",
     "select_country": "Ülke Seç",
     "select_city": "Şehir Seç",
+    "select_country_before_city": "Şehir seçmeden önce lütfen önce ülkeyi seçin",
     "search_country": "Ülke ara...",
     "clear_filter": "Filtreyi Temizle",
     "no_countries_found": "Ülke bulunamadı",
