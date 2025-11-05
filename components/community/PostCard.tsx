@@ -99,6 +99,11 @@ export default function PostCard({ post, onPress }: PostCardProps) {
     state.savedPosts.some(p => p.id === post.id)
   );
   
+  // Debug: Log when isSaved changes
+  useEffect(() => {
+    console.log(`[PostCard ${post.id.substring(0, 8)}] isSaved changed to:`, isSaved);
+  }, [isSaved, post.id]);
+  
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const [isProcessingUpgrade, setIsProcessingUpgrade] = useState(false);
   const [whatsAppPreference, setWhatsAppPreference] = useState<string | null>(null);

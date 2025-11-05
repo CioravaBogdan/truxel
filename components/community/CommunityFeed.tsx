@@ -42,7 +42,6 @@ export default function CommunityFeed({ customHeader }: CommunityFeedProps = {})
     selectedCity,
     selectedCountry,
     loadPosts,
-    loadSavedPosts,
     loadMorePosts,
     refreshPosts,
     setSelectedTab,
@@ -96,18 +95,24 @@ export default function CommunityFeed({ customHeader }: CommunityFeedProps = {})
     };
   }, [user?.id, initializeFilters]);
 
+  // Load saved posts ONCE on mount (for bookmark status)
+  useEffect(() => {
+    if (user?.id) {
+      console.log('[CommunityFeed] Loading saved posts for bookmark status');
+      void useCommunityStore.getState().loadSavedPosts(user.id);
+    }
+  }, [user?.id]);
+
   // Load posts on mount and tab/filter change
   useEffect(() => {
     if (selectedTab === 'saved') {
-      // Load saved posts for user
-      if (user?.id) {
-        void loadSavedPosts(user.id);
-      }
+      // Saved tab - posts already loaded by effect above
+      return;
     } else {
       // Load regular feed posts
       void loadPosts(true);
     }
-  }, [loadPosts, loadSavedPosts, selectedTab, selectedCity, selectedCountry, user?.id]);
+  }, [loadPosts, selectedTab, selectedCity, selectedCountry, user?.id]);
 
   // Refresh posts when tab becomes focused (e.g., after deleting a post)
   useFocusEffect(
