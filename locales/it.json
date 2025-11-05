@@ -356,6 +356,8 @@
     "post_unsaved": "Post rimosso",
     "upgrade_required": "Aggiornamento richiesto",
     "upgrade_required_message": "Il piano di prova non consente di creare post. Aggiorna il tuo abbonamento per accedere alla community.",
+    "load_timing_warning_title": "📦 Migliori Risultati con Carichi Attivi",
+    "load_timing_warning_message": "Per ottenere i migliori risultati, consigliamo di pubblicare carichi disponibili OGGI o DOMANI.\n\nLe spedizioni attive ricevono più risposte dai conducenti in viaggio.\n\nContinuare con la pubblicazione?",
     "posts_limit_reached": "Limite post raggiunto",
     "posts_limit_message": "Hai raggiunto il limite di {{limit}} post al mese. Aggiorna il tuo piano per più post.",
     "daily_limit_reached": "Limite giornaliero raggiunto",

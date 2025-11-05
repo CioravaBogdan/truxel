@@ -251,6 +251,8 @@
   "whatsapp_invalid_number_message": "Dodaj numer kierunkowy kraju (np. +48...) przed kontaktem przez WhatsApp.",
     "upgrade_required": "Wymagane uaktualnienie",
     "upgrade_required_message": "Potrzebujesz aktywnej subskrypcji, aby zobaczyć kontakty.",
+    "load_timing_warning_title": "📦 Lepsze Wyniki z Aktywnym Transportem",
+    "load_timing_warning_message": "Dla najlepszych rezultatów zalecamy publikowanie ładunków dostępnych DZISIAJ lub JUTRO.\n\nAktywne przesyłki otrzymują więcej odpowiedzi od kierowców w trasie.\n\nKontynuować publikację?",
     "upgrade_modal": {
       "badge": "Zwiększ zasięg",
       "title": "Odblokuj pełen dostęp do społeczności",

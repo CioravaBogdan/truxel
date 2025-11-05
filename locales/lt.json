@@ -113,6 +113,8 @@
   "whatsapp_invalid_number_message": "Pridėkite šalies kodą (pvz., +370...) prie telefono numerio prieš susisiekdami per WhatsApp.",
     "upgrade_required": "Reikia atnaujinti",
     "upgrade_required_message": "Norėdami matyti kontaktus, turite turėti aktyvią prenumeratą.",
+    "load_timing_warning_title": "📦 Geriausi Rezultatai su Aktyvia Kroviniais",
+    "load_timing_warning_message": "Geriausių rezultatų pasieksite skelbdami krovinius, kurie prieinami ŠIANDIEN arba RYTOJ.\n\nAktyvūs siuntimai gauna daugiau atsakymų iš vairuotojų kelyje.\n\nTęsti skelbimą?",
     "upgrade_modal": {
       "badge": "Padidinkite pasiekiamumą",
       "title": "Atrakinkite pilną bendruomenės prieigą",

@@ -356,6 +356,8 @@
     "post_unsaved": "Beitrag entfernt",
     "upgrade_required": "Upgrade erforderlich",
     "upgrade_required_message": "Der Test-Plan erlaubt nicht das Erstellen von Beiträgen. Upgraden Sie Ihr Abonnement für Zugang zur Community.",
+    "load_timing_warning_title": "📦 Bessere Ergebnisse mit Aktiven Ladungen",
+    "load_timing_warning_message": "Für beste Ergebnisse empfehlen wir, Ladungen zu veröffentlichen, die HEUTE oder MORGEN verfügbar sind.\n\nAktive Sendungen erhalten mehr Antworten von Fahrern unterwegs.\n\nVeröffentlichung fortsetzen?",
     "posts_limit_reached": "Beitragslimit erreicht",
     "posts_limit_message": "Sie haben das Limit von {{limit}} Beiträgen pro Monat erreicht. Upgraden Sie Ihren Plan für mehr Beiträge.",
     "daily_limit_reached": "Tageslimit erreicht",

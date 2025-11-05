@@ -113,6 +113,8 @@
   "whatsapp_invalid_number_message": "Agrega el código de país (por ejemplo, +34...) al número antes de contactar por WhatsApp.",
     "upgrade_required": "Actualización necesaria",
     "upgrade_required_message": "Necesitas una suscripción activa para ver los contactos.",
+    "load_timing_warning_title": "📦 Mejores Resultados con Cargas Activas",
+    "load_timing_warning_message": "Para obtener los mejores resultados, recomendamos publicar cargas disponibles HOY o MAÑANA.\n\nLos envíos activos reciben más respuestas de conductores en ruta.\n\n¿Continuar con la publicación?",
     "upgrade_modal": {
       "badge": "Impulsa tu alcance",
       "title": "Desbloquea el acceso completo a la comunidad",

@@ -356,6 +356,8 @@
     "post_unsaved": "Publication retirée",
     "upgrade_required": "Amélioration requise",
     "upgrade_required_message": "Le forfait d'essai ne permet pas de créer des publications. Améliorez votre abonnement pour accéder à la communauté.",
+    "load_timing_warning_title": "📦 Meilleurs Résultats avec Chargements Actifs",
+    "load_timing_warning_message": "Pour de meilleurs résultats, nous recommandons de publier des chargements disponibles AUJOURD'HUI ou DEMAIN.\n\nLes expéditions actives reçoivent plus de réponses des chauffeurs sur la route.\n\nContinuer la publication ?",
     "posts_limit_reached": "Limite de publications atteinte",
     "posts_limit_message": "Vous avez atteint la limite de {{limit}} publications par mois. Améliorez votre forfait pour plus de publications.",
     "daily_limit_reached": "Limite quotidienne atteinte",

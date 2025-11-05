@@ -251,6 +251,8 @@
   "whatsapp_invalid_number_message": "WhatsApp üzerinden iletişim kurmadan önce telefon numarasına ülke kodunu ekleyin (ör. +90...).",
     "upgrade_required": "Yükseltme gerekli",
     "upgrade_required_message": "İletişim bilgilerini görmek için aktif bir aboneliğe ihtiyacınız var.",
+    "load_timing_warning_title": "📦 Aktif Yüklerle Daha İyi Sonuçlar",
+    "load_timing_warning_message": "En iyi sonuçlar için BUGÜN veya YARIN müsait olan yükleri göndermenizi öneririz.\n\nAktif gönderiler yoldaki sürücülerden daha fazla yanıt alır.\n\nGönderiye devam edilsin mi?",
     "upgrade_modal": {
       "badge": "Erişimini artır",
       "title": "Topluluğa tam erişim kazanın",
