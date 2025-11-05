@@ -628,14 +628,17 @@ export default function PostCard({ post, onPress }: PostCardProps) {
           
           {/* Directional route: Show direction badge BELOW origin (vertical) */}
           {!post.dest_city && post.template_key && ['north', 'south', 'east', 'west'].includes(post.template_key) && (
-            <View style={styles.directionBadge}>
-              <Navigation size={14} color="#3B82F6" />
-              <Text style={styles.directionText}>
-                {post.template_key === 'north' ? '⬆️ ' + t('directions.north') :
-                 post.template_key === 'south' ? '⬇️ ' + t('directions.south') :
-                 post.template_key === 'east' ? '➡️ ' + t('directions.east') :
-                 '⬅️ ' + t('directions.west')}
-              </Text>
+            <View style={styles.directionContainer}>
+              <Text style={styles.directionLabel}>{t('community.desired_direction')}</Text>
+              <View style={styles.directionBadge}>
+                <Navigation size={14} color="#3B82F6" />
+                <Text style={styles.directionText}>
+                  {post.template_key === 'north' ? '⬆️ ' + t('directions.north') :
+                   post.template_key === 'south' ? '⬇️ ' + t('directions.south') :
+                   post.template_key === 'east' ? '➡️ ' + t('directions.east') :
+                   '⬅️ ' + t('directions.west')}
+                </Text>
+              </View>
             </View>
           )}
         </View>
@@ -812,6 +815,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.08,
     shadowRadius: 4,
     elevation: 3,
+    borderWidth: 1,
+    borderColor: '#10B981',
   },
   header: {
     flexDirection: 'row',
@@ -982,6 +987,16 @@ const styles = StyleSheet.create({
     borderColor: '#BFDBFE',
     marginTop: 4,
     alignSelf: 'stretch',
+  },
+  directionContainer: {
+    width: '100%',
+    marginTop: 4,
+  },
+  directionLabel: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: '#6B7280',
+    marginBottom: 6,
   },
   directionText: {
     fontSize: 15,

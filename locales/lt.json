@@ -78,6 +78,7 @@
     "select_origin_city": "🚀 PASIRINKITE PRADŽIOS MIESTĄ",
     "select_origin_hint": "Pasirinkite kur PRADĖTI / PAKRAUTI",
     "select_destination_hint": "🎯 Pasirinkite kur PRISTATYTI / IŠKRAUTI",
+    "desired_direction": "Norima kryptis:",
     "select_country_before_city": "Pirmiausia pasirinkite šalį prieš pasirinkdami miestą",
     "search_country": "Ieškoti šalies...",
     "clear_filter": "Išvalyti filtrą",

@@ -78,6 +78,7 @@
     "select_origin_city": "🚀 SELECCIONA CIUDAD DE ORIGEN",
     "select_origin_hint": "Elige dónde COMENZAR / CARGAR",
     "select_destination_hint": "🎯 Elige dónde ENTREGAR / DESCARGAR",
+    "desired_direction": "Dirección deseada:",
     "select_country_before_city": "Por favor selecciona primero el país antes de elegir la ciudad",
     "search_country": "Buscar país...",
     "clear_filter": "Limpiar filtro",

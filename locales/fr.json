@@ -59,6 +59,7 @@
     "select_origin_city": "🚀 SÉLECTIONNEZ LA VILLE D'ORIGINE",
     "select_origin_hint": "Choisissez où COMMENCER / CHARGER",
     "select_destination_hint": "🎯 Choisissez où LIVRER / DÉCHARGER",
+    "desired_direction": "Direction souhaitée:",
     "loading_cities": "Chargement des villes...",
     "no_cities_found": "Aucune ville trouvée"
   },

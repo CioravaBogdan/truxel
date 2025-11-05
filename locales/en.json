@@ -312,6 +312,7 @@
     "select_template": "Select Template",
     "search_city": "Search for a city...",
     "select_destination_hint": "🎯 Choose where to DELIVER / UNLOAD",
+    "desired_direction": "Desired direction:",
     "recent_cities": "Recent",
     "popular_cities": "Popular Cities",
     "popular": "Popular",
