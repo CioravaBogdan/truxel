@@ -280,8 +280,11 @@ export const useCommunityStore = create<CommunityState>((set, get) => ({
 
       const post = get().posts.find(p => p.id === postId);
       if (post) {
+        // Update savedPosts AND trigger re-render by touching the posts array
         set(state => ({
           savedPosts: [post, ...state.savedPosts],
+          // Force re-render of posts list (even though content unchanged)
+          posts: [...state.posts],
         }));
       }
     } catch (error) {
@@ -296,6 +299,8 @@ export const useCommunityStore = create<CommunityState>((set, get) => ({
       
       set(state => ({
         savedPosts: state.savedPosts.filter(p => p.id !== postId),
+        // Force re-render of posts list
+        posts: [...state.posts],
       }));
     } catch (error) {
       console.error('Error unsaving post:', error);
