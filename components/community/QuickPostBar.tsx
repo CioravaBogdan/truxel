@@ -135,6 +135,7 @@ function QuickPostBar() {
     // 1. Template "loaded" (cargo ready today): GPS → TO city (shipper has cargo at their location)
     // 2. Template "empty" (need pickup from): FROM city → GPS (shipper needs pickup from another city)
     // 3. Template "return" (custom route): FROM city → TO city (full flexibility, no GPS)
+    // 4. Template "custom" (driver custom route): FROM city → TO city (same as return but for DRIVER_AVAILABLE)
 
     if (template.key === 'loaded') {
       // Template 1: GPS → Select TO city (current flow works)
@@ -143,8 +144,8 @@ function QuickPostBar() {
       // Template 2: Select FROM city first → then GPS becomes TO
       setIsSelectingOrigin(true);
       setShowCityModal(true);
-    } else if (template.key === 'return') {
-      // Template 3: Select FROM city → then TO city (2-step)
+    } else if (template.key === 'return' || template.key === 'custom') {
+      // Template 3 & 4: Select FROM city → then TO city (2-step)
       setIsSelectingOrigin(true);
       setShowCityModal(true);
     } else {
@@ -430,8 +431,8 @@ function QuickPostBar() {
       return;
     }
 
-    // Template 3 "return": FROM city → TO city (2-step selection)
-    if (selectedTemplate.key === 'return') {
+    // Template 3 "return" & Template 4 "custom": FROM city → TO city (2-step selection)
+    if (selectedTemplate.key === 'return' || selectedTemplate.key === 'custom') {
       if (isSelectingOrigin) {
         // Store origin and ask for destination
         setOriginCity(city);
