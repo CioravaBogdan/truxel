@@ -562,21 +562,13 @@ export default function PostCard({ post, onPress }: PostCardProps) {
               {post.profile?.full_name || t('community.user')}
             </Text>
             
-            {/* Location and truck type */}
-            <View style={styles.locationRow}>
-              <MapPin size={14} color="#6B7280" />
-              <Text style={styles.location}>
-                {post.origin_city}
-                {post.dest_city && ` → ${post.dest_city}`}
-              </Text>
-              {post.profile?.truck_type && (
-                <>
-                  <Text style={styles.separator}>•</Text>
-                  <Truck size={14} color="#6B7280" />
-                  <Text style={styles.truckType}>{post.profile.truck_type}</Text>
-                </>
-              )}
-            </View>
+            {/* Truck type only (location moved to content section) */}
+            {post.profile?.truck_type && (
+              <View style={styles.truckRow}>
+                <Truck size={14} color="#6B7280" />
+                <Text style={styles.truckType}>{post.profile.truck_type}</Text>
+              </View>
+            )}
           </View>
         </View>
         {isOwnPost ? (
@@ -611,6 +603,23 @@ export default function PostCard({ post, onPress }: PostCardProps) {
             <>
               <Package size={16} color="#3B82F6" />
               <Text style={[styles.typeText, styles.routeText]}>{t('community.route_available')}</Text>
+            </>
+          )}
+        </View>
+
+        {/* LARGE Route Display - Origin → Destination */}
+        <View style={styles.routeDisplay}>
+          <View style={styles.originBadge}>
+            <MapPin size={16} color="#10B981" fill="#10B981" />
+            <Text style={styles.cityText}>{post.origin_city}</Text>
+          </View>
+          {post.dest_city && (
+            <>
+              <Text style={styles.routeArrow}>→</Text>
+              <View style={styles.destBadge}>
+                <MapPin size={16} color="#EF4444" fill="#EF4444" />
+                <Text style={styles.cityText}>{post.dest_city}</Text>
+              </View>
             </>
           )}
         </View>
@@ -852,6 +861,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 6,
     color: '#D1D5DB',
   },
+  truckRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    marginTop: 2,
+  },
   truckType: {
     fontSize: 13,
     color: '#6B7280',
@@ -901,6 +916,51 @@ const styles = StyleSheet.create({
   },
   routeText: {
     color: '#3B82F6',
+  },
+  routeDisplay: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    gap: 8,
+    marginBottom: 12,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    backgroundColor: '#F9FAFB',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+  },
+  originBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    paddingVertical: 6,
+    paddingHorizontal: 10,
+    backgroundColor: '#ECFDF5',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#A7F3D0',
+  },
+  destBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    paddingVertical: 6,
+    paddingHorizontal: 10,
+    backgroundColor: '#FEE2E2',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#FECACA',
+  },
+  cityText: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#111827',
+  },
+  routeArrow: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#9CA3AF',
   },
   description: {
     fontSize: 15,
