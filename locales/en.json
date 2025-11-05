@@ -311,6 +311,8 @@
     "select_destination_hint": "Where do you need to deliver the load?",
     "recent_cities": "Recent",
     "popular_cities": "Popular Cities",
+    "popular": "Popular",
+    "route_available": "Route Available",
     "no_results": "No cities found",
     "try_different_name": "Try a different name or check the spelling",
     "searching": "Searching...",

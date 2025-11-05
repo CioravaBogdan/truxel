@@ -110,7 +110,7 @@ export default function CitySearchModal({
         </View>
         {item.population && item.population > 100000 && (
           <View style={styles.badge}>
-            <Text style={styles.badgeText}>{t('community.popular') || 'Popular'}</Text>
+            <Text style={styles.badgeText}>{t('community.popular')}</Text>
           </View>
         )}
       </TouchableOpacity>
