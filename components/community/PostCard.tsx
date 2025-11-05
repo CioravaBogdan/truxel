@@ -92,16 +92,20 @@ export default function PostCard({ post, onPress }: PostCardProps) {
   const { t, i18n } = useTranslation();
   const router = useRouter();
   const { user, profile, session, refreshProfile } = useAuthStore();
-  const { savePost, unsavePost, recordContact, deletePost, postLimits, savedPosts } = useCommunityStore();
+  const { savePost, unsavePost, recordContact, deletePost, postLimits } = useCommunityStore();
+  
+  // CRITICAL: Use selector to re-render when savedPosts changes
+  // This subscribes PostCard specifically to savedPosts array changes
+  const isSaved = useCommunityStore((state) => 
+    state.savedPosts.some(p => p.id === post.id)
+  );
+  
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const [isProcessingUpgrade, setIsProcessingUpgrade] = useState(false);
   const [whatsAppPreference, setWhatsAppPreference] = useState<string | null>(null);
   const [isWhatsAppModalVisible, setIsWhatsAppModalVisible] = useState(false);
   const [availableWhatsAppOptions, setAvailableWhatsAppOptions] = useState<WhatsAppOption[]>([]);
   const pendingWhatsAppPayload = useRef<WhatsAppPayload | null>(null);
-
-  // Check if current post is saved
-  const isSaved = savedPosts.some(p => p.id === post.id);
   
   // Cache buster for avatar images - generated once per component mount
   const [imageCacheBuster] = useState(() => Date.now());
