@@ -427,7 +427,8 @@
         "north": "Going North",
         "south": "Going South",
         "east": "Going East",
-        "west": "Going West"
+        "west": "Going West",
+        "custom": "Custom Route"
       },
       "load": {
         "loaded": "Cargo ready TODAY",
@@ -441,6 +442,7 @@
       "south": "Heading south from current location",
       "east": "Heading east from current location",
       "west": "Heading west from current location",
+      "custom": "Choose your own route: Select FROM → TO cities",
       "loaded": "From my location → Select destination",
       "empty": "Select pickup city → To my location",
       "return": "Full control: Select FROM → TO cities"
@@ -451,6 +453,7 @@
       "south": "Available for loads heading south from {{origin}}",
       "east": "Available for loads heading east from {{origin}}",
       "west": "Available for loads heading west from {{origin}}",
+      "custom": "Available for route {{origin}} → {{dest}}",
       "loaded": "Load available from {{origin}} {{dest}}, departing today",
       "empty": "Load available from {{origin}} {{dest}}, departing tomorrow",
       "return": "Empty return from {{origin}} {{dest}}"

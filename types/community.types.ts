@@ -134,7 +134,8 @@ export const AVAILABILITY_TEMPLATES: PostTemplate[] = [
   { key: 'north', type: 'DRIVER_AVAILABLE', textKey: 'community.templates.availability.north', icon: '⬆️' },
   { key: 'south', type: 'DRIVER_AVAILABLE', textKey: 'community.templates.availability.south', icon: '⬇️' },
   { key: 'east', type: 'DRIVER_AVAILABLE', textKey: 'community.templates.availability.east', icon: '➡️' },
-  { key: 'west', type: 'DRIVER_AVAILABLE', textKey: 'community.templates.availability.west', icon: '⬅️' }
+  { key: 'west', type: 'DRIVER_AVAILABLE', textKey: 'community.templates.availability.west', icon: '⬅️' },
+  { key: 'custom', type: 'DRIVER_AVAILABLE', textKey: 'community.templates.availability.custom', icon: '🎯' }
 ];
 
 export const ROUTE_TEMPLATES: PostTemplate[] = [

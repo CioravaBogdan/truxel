@@ -410,7 +410,8 @@
         "north": "Merg spre Nord",
         "south": "Merg spre Sud",
         "east": "Merg spre Est",
-        "west": "Merg spre Vest"
+        "west": "Merg spre Vest",
+        "custom": "Rută Personalizată"
       },
       "load": {
         "loaded": "Marfă gata AZI",
@@ -424,6 +425,7 @@
       "south": "Direcție sud de la locația curentă",
       "east": "Direcție est de la locația curentă",
       "west": "Direcție vest de la locația curentă",
+      "custom": "Alege-ți propria rută: Selectează DIN → ÎN orașe",
       "loaded": "Din locația mea → Alege destinația",
       "empty": "Alege oraș de ridicare → La locația mea",
       "return": "Control total: Alege DIN → ÎN orașe"
@@ -434,6 +436,7 @@
       "south": "Disponibil pentru mărfuri spre sud de la {{origin}}",
       "east": "Disponibil pentru mărfuri spre est de la {{origin}}",
       "west": "Disponibil pentru mărfuri spre vest de la {{origin}}",
+      "custom": "Disponibil pentru ruta {{origin}} → {{dest}}",
       "loaded": "Marfă disponibilă de la {{origin}} {{dest}}, plecare astăzi",
       "empty": "Marfă disponibilă de la {{origin}} {{dest}}, plecare mâine",
       "return": "Întoarcere goală de la {{origin}} {{dest}}"
