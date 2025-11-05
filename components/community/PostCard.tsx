@@ -99,6 +99,19 @@ export default function PostCard({ post, onPress }: PostCardProps) {
   const [isWhatsAppModalVisible, setIsWhatsAppModalVisible] = useState(false);
   const [availableWhatsAppOptions, setAvailableWhatsAppOptions] = useState<WhatsAppOption[]>([]);
   const pendingWhatsAppPayload = useRef<WhatsAppPayload | null>(null);
+  
+  // Cache buster for avatar images - generated once per component mount
+  const [imageCacheBuster] = useState(() => Date.now());
+
+  // Cache-busting for avatar URLs - use component mount timestamp
+  // This ensures profile picture updates are visible when feed refreshes
+  const getAvatarUrlWithCacheBusting = (avatarUrl: string | null | undefined): string | null => {
+    if (!avatarUrl) return null;
+    
+    // Add cache buster query parameter to bypass React Native image cache
+    const separator = avatarUrl.includes('?') ? '&' : '?';
+    return `${avatarUrl}${separator}t=${imageCacheBuster}`;
+  };
 
   const isOwnPost = user?.id === post.user_id;
   const isDriverAvailable = post.post_type === 'DRIVER_AVAILABLE';
@@ -524,7 +537,7 @@ export default function PostCard({ post, onPress }: PostCardProps) {
           {/* Avatar - Real image or initials */}
           {post.profile?.avatar_url ? (
             <Image 
-              source={{ uri: post.profile.avatar_url }} 
+              source={{ uri: getAvatarUrlWithCacheBusting(post.profile.avatar_url) || undefined }}
               style={styles.avatar}
             />
           ) : (
