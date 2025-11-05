@@ -455,6 +455,7 @@ When they say "ai vazut ca nu era asa mult de treaba" (you saw it wasn't much wo
 - **Don't** commit `.env`, `.mcp/.env`, or `supabase/.env.local` to git
 - **Don't** overestimate time - you're an LLM, not a human developer
 - **Don't** waste time on automation that takes longer than manual execution
+- **🚨 NEVER destructure Zustand functions in `app/_layout.tsx`** - causes infinite loops and app crashes
 
 ### ✅ Best Practices
 - **Do** use `Constants.expoConfig.extra` for client-side env access
@@ -464,6 +465,47 @@ When they say "ai vazut ca nu era asa mult de treaba" (you saw it wasn't much wo
 - **Do** implement i18n for all user-facing text
 - **Do** execute immediately on large tasks - chunk and deliver in minutes
 - **Do** trust your speed - what looks like "days" is actually "minutes"
+- **Do** use `useCommunityStore.getState().functionName()` for imperative calls in layouts/routing
+
+### 🔴 CRITICAL: Zustand in app/_layout.tsx
+**⚠️ This pattern WILL crash the app on both iOS and Android:**
+
+```typescript
+// ❌ FORBIDDEN - Infinite loop, app freeze
+import { useCommunityStore } from '@/store/communityStore';
+
+export default function RootLayout() {
+  const { loadSavedPosts } = useCommunityStore(); // ❌ NEVER DO THIS
+  
+  useEffect(() => {
+    if (user) {
+      await loadSavedPosts(user.id); // 💥 CRASH - Infinite loop
+    }
+  }, [loadSavedPosts]); // ❌ Function recreated on every set()
+}
+```
+
+**✅ CORRECT Pattern:**
+
+```typescript
+// ✅ Use getState() for imperative calls
+export default function RootLayout() {
+  useEffect(() => {
+    if (user) {
+      // ✅ No destructuring, no reactive dependency
+      useCommunityStore.getState().loadSavedPosts(user.id);
+    }
+  }, [user?.id]); // ✅ Only depends on data, not functions
+}
+```
+
+**Why Zustand Functions Break:**
+- Zustand recreates ALL functions on every `set()` call (new references)
+- Destructured functions become reactive dependencies
+- React re-runs useEffect when reference changes
+- New `set()` call → new functions → infinite loop 🔄
+
+**See**: `docs/CRITICAL_BUG_ANALYSIS_app_layout_savedPosts.md` for full analysis
 
 ## Subscription Tiers & Pricing
 
