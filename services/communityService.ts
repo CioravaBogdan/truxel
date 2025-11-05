@@ -313,6 +313,27 @@ class CommunityService {
   }
 
   /**
+   * Delete an interaction with a post (e.g., unsave)
+   */
+  async deleteInteraction(
+    postId: string,
+    userId: string,
+    interactionType: InteractionType
+  ): Promise<void> {
+    const { error } = await supabase
+      .from('community_interactions')
+      .delete()
+      .eq('post_id', postId)
+      .eq('user_id', userId)
+      .eq('interaction_type', interactionType);
+
+    if (error) {
+      console.error('Error deleting interaction:', error);
+      throw error;
+    }
+  }
+
+  /**
    * Record a view interaction and increment counters once per user
    */
   async recordView(postId: string, userId: string): Promise<boolean> {

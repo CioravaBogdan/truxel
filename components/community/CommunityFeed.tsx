@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useFocusEffect } from '@react-navigation/native';
-import { Globe, MapPin, Package, Truck } from 'lucide-react-native';
+import { Globe, MapPin, Package, Truck, Bookmark } from 'lucide-react-native';
 import { useCommunityStore } from '../../store/communityStore';
 import { useAuthStore } from '../../store/authStore';
 import PostCard from './PostCard';
@@ -33,6 +33,7 @@ export default function CommunityFeed({ customHeader }: CommunityFeedProps = {})
   const { user } = useAuthStore();
   const {
     posts,
+    savedPosts,
     selectedTab,
     isLoading,
     isRefreshing,
@@ -41,6 +42,7 @@ export default function CommunityFeed({ customHeader }: CommunityFeedProps = {})
     selectedCity,
     selectedCountry,
     loadPosts,
+    loadSavedPosts,
     loadMorePosts,
     refreshPosts,
     setSelectedTab,
@@ -96,8 +98,16 @@ export default function CommunityFeed({ customHeader }: CommunityFeedProps = {})
 
   // Load posts on mount and tab/filter change
   useEffect(() => {
-    void loadPosts(true);
-  }, [loadPosts, selectedTab, selectedCity, selectedCountry]);
+    if (selectedTab === 'saved') {
+      // Load saved posts for user
+      if (user?.id) {
+        void loadSavedPosts(user.id);
+      }
+    } else {
+      // Load regular feed posts
+      void loadPosts(true);
+    }
+  }, [loadPosts, loadSavedPosts, selectedTab, selectedCity, selectedCountry, user?.id]);
 
   // Refresh posts when tab becomes focused (e.g., after deleting a post)
   useFocusEffect(
@@ -195,12 +205,20 @@ export default function CommunityFeed({ customHeader }: CommunityFeedProps = {})
               {t('community.be_first_to_post')}
             </Text>
           </>
-        ) : (
+        ) : selectedTab === 'routes' ? (
           <>
             <Package size={48} color="#D1D5DB" />
             <Text style={styles.emptyTitle}>{t('community.no_routes_available')}</Text>
             <Text style={styles.emptyText}>
               {t('community.post_route_to_find_drivers')}
+            </Text>
+          </>
+        ) : (
+          <>
+            <Bookmark size={48} color="#D1D5DB" />
+            <Text style={styles.emptyTitle}>{t('community.no_saved_posts')}</Text>
+            <Text style={styles.emptyText}>
+              {t('community.save_posts_hint')}
             </Text>
           </>
         )}
@@ -253,40 +271,62 @@ export default function CommunityFeed({ customHeader }: CommunityFeedProps = {})
         </View>
       )}
 
-      {/* Tabs */}
-      <View style={styles.tabs}>
+      {/* Tabs - 2 side-by-side + 1 full-width below */}
+      <View style={styles.tabsContainer}>
+        {/* Top row: Available Drivers + Available Loads */}
+        <View style={styles.tabsRow}>
+          <TouchableOpacity
+            style={[
+              styles.tabHalf, 
+              { backgroundColor: selectedTab === 'availability' ? '#10B981' : '#D1FAE5' },
+              selectedTab === 'availability' && styles.activeTab
+            ]}
+            onPress={() => setSelectedTab('availability')}
+          >
+            <Truck size={20} color={selectedTab === 'availability' ? 'white' : '#059669'} />
+            <Text style={[
+              styles.tabText,
+              { color: selectedTab === 'availability' ? 'white' : '#059669' },
+              selectedTab === 'availability' && styles.activeTabText
+            ]}>
+              {t('community.available_drivers').toUpperCase()}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              styles.tabHalf, 
+              { backgroundColor: selectedTab === 'routes' ? '#3B82F6' : '#DBEAFE' },
+              selectedTab === 'routes' && styles.activeTab
+            ]}
+            onPress={() => setSelectedTab('routes')}
+          >
+            <Package size={20} color={selectedTab === 'routes' ? 'white' : '#2563EB'} />
+            <Text style={[
+              styles.tabText,
+              { color: selectedTab === 'routes' ? 'white' : '#2563EB' },
+              selectedTab === 'routes' && styles.activeTabText
+            ]}>
+              {t('community.available_loads').toUpperCase()}
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Bottom row: Saved (full width) */}
         <TouchableOpacity
           style={[
-            styles.tab, 
-            { backgroundColor: selectedTab === 'availability' ? '#10B981' : '#D1FAE5' },
-            selectedTab === 'availability' && styles.activeTab
+            styles.tabFull, 
+            { backgroundColor: selectedTab === 'saved' ? '#F59E0B' : '#FEF3C7' },
+            selectedTab === 'saved' && styles.activeTab
           ]}
-          onPress={() => setSelectedTab('availability')}
+          onPress={() => setSelectedTab('saved')}
         >
-          <Truck size={20} color={selectedTab === 'availability' ? 'white' : '#059669'} />
+          <Bookmark size={20} color={selectedTab === 'saved' ? 'white' : '#D97706'} />
           <Text style={[
             styles.tabText,
-            { color: selectedTab === 'availability' ? 'white' : '#059669' },
-            selectedTab === 'availability' && styles.activeTabText
+            { color: selectedTab === 'saved' ? 'white' : '#D97706' },
+            selectedTab === 'saved' && styles.activeTabText
           ]}>
-            {t('community.available_drivers').toUpperCase()}
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[
-            styles.tab, 
-            { backgroundColor: selectedTab === 'routes' ? '#3B82F6' : '#DBEAFE' },
-            selectedTab === 'routes' && styles.activeTab
-          ]}
-          onPress={() => setSelectedTab('routes')}
-        >
-          <Package size={20} color={selectedTab === 'routes' ? 'white' : '#2563EB'} />
-          <Text style={[
-            styles.tabText,
-            { color: selectedTab === 'routes' ? 'white' : '#2563EB' },
-            selectedTab === 'routes' && styles.activeTabText
-          ]}>
-            {t('community.available_loads').toUpperCase()}
+            {t('community.saved').toUpperCase()}
           </Text>
         </TouchableOpacity>
       </View>
@@ -386,7 +426,7 @@ export default function CommunityFeed({ customHeader }: CommunityFeedProps = {})
   return (
     <>
       <FlatList
-        data={posts}
+        data={selectedTab === 'saved' ? savedPosts : posts}
         renderItem={renderPost}
         keyExtractor={(item) => item.id}
         ListHeaderComponent={renderHeader}
@@ -466,6 +506,23 @@ const styles = StyleSheet.create({
     color: '#6B7280',
     marginTop: 2,
   },
+  tabsContainer: {
+    backgroundColor: 'white',
+    marginHorizontal: 16,
+    borderRadius: 12,
+    padding: 6,
+    marginBottom: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  tabsRow: {
+    flexDirection: 'row',
+    gap: 6,
+    marginBottom: 6,
+  },
   tabs: {
     flexDirection: 'row',
     backgroundColor: 'white',
@@ -478,6 +535,23 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
+  },
+  tabHalf: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 14,
+    borderRadius: 10,
+    gap: 8,
+  },
+  tabFull: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 14,
+    borderRadius: 10,
+    gap: 8,
   },
   tab: {
     flex: 1,

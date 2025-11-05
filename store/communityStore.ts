@@ -16,7 +16,7 @@ interface CommunityState {
   userActivePosts: CommunityPost[];
 
   // UI state
-  selectedTab: 'availability' | 'routes';
+  selectedTab: 'availability' | 'routes' | 'saved';
   isLoading: boolean;
   isRefreshing: boolean;
   isCreatingPost: boolean;
@@ -69,7 +69,7 @@ interface CommunityState {
   recordView: (postId: string, userId: string) => Promise<void>;
 
   // Filter actions
-  setSelectedTab: (tab: 'availability' | 'routes') => void;
+  setSelectedTab: (tab: 'availability' | 'routes' | 'saved') => void;
   setFilters: (filters: Partial<PostFilters>) => void;
   clearFilters: () => void;
   setSelectedCity: (city: City | null) => void;
@@ -292,7 +292,8 @@ export const useCommunityStore = create<CommunityState>((set, get) => ({
   // Unsave a post
   unsavePost: async (postId: string, userId: string) => {
     try {
-      // Note: You might want to implement a delete interaction method in the service
+      await communityService.deleteInteraction(postId, userId, 'saved');
+      
       set(state => ({
         savedPosts: state.savedPosts.filter(p => p.id !== postId),
       }));
@@ -357,9 +358,13 @@ export const useCommunityStore = create<CommunityState>((set, get) => ({
   },
 
   // Set selected tab
-  setSelectedTab: (tab: 'availability' | 'routes') => {
+  setSelectedTab: (tab: 'availability' | 'routes' | 'saved') => {
     set({ selectedTab: tab, posts: [], nextCursor: undefined, hasMore: true });
-    get().loadPosts(true);
+    
+    // Don't call loadPosts for 'saved' tab - it will be loaded separately
+    if (tab !== 'saved') {
+      get().loadPosts(true);
+    }
   },
 
   // Set filters

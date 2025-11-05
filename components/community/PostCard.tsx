@@ -92,13 +92,16 @@ export default function PostCard({ post, onPress }: PostCardProps) {
   const { t, i18n } = useTranslation();
   const router = useRouter();
   const { user, profile, session, refreshProfile } = useAuthStore();
-  const { savePost, recordContact, deletePost, postLimits } = useCommunityStore();
+  const { savePost, unsavePost, recordContact, deletePost, postLimits, savedPosts } = useCommunityStore();
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const [isProcessingUpgrade, setIsProcessingUpgrade] = useState(false);
   const [whatsAppPreference, setWhatsAppPreference] = useState<string | null>(null);
   const [isWhatsAppModalVisible, setIsWhatsAppModalVisible] = useState(false);
   const [availableWhatsAppOptions, setAvailableWhatsAppOptions] = useState<WhatsAppOption[]>([]);
   const pendingWhatsAppPayload = useRef<WhatsAppPayload | null>(null);
+
+  // Check if current post is saved
+  const isSaved = savedPosts.some(p => p.id === post.id);
   
   // Cache buster for avatar images - generated once per component mount
   const [imageCacheBuster] = useState(() => Date.now());
@@ -526,7 +529,12 @@ export default function PostCard({ post, onPress }: PostCardProps) {
       return;
     }
 
-    await savePost(post.id, user.id);
+    // Toggle: if already saved, unsave it; otherwise save it
+    if (isSaved) {
+      await unsavePost(post.id, user.id);
+    } else {
+      await savePost(post.id, user.id);
+    }
   };
 
   return (
@@ -585,8 +593,16 @@ export default function PostCard({ post, onPress }: PostCardProps) {
             </TouchableOpacity>
           </View>
         ) : (
-          <TouchableOpacity style={styles.saveIconButton} onPress={handleSave} accessibilityLabel={t('common.save')}>
-            <Bookmark size={18} color="#6B7280" />
+          <TouchableOpacity 
+            style={styles.saveIconButton} 
+            onPress={handleSave} 
+            accessibilityLabel={isSaved ? t('community.unsave') : t('common.save')}
+          >
+            <Bookmark 
+              size={18} 
+              color={isSaved ? '#F59E0B' : '#6B7280'} 
+              fill={isSaved ? '#F59E0B' : 'none'} 
+            />
           </TouchableOpacity>
         )}
       </View>
