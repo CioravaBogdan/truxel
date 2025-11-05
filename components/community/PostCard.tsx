@@ -607,12 +607,15 @@ export default function PostCard({ post, onPress }: PostCardProps) {
           )}
         </View>
 
-        {/* LARGE Route Display - Origin → Destination */}
+        {/* LARGE Route Display - Origin → Destination OR Origin + Direction */}
         <View style={styles.routeDisplay}>
+          {/* Origin city - always visible */}
           <View style={styles.originBadge}>
             <MapPin size={16} color="#10B981" fill="#10B981" />
             <Text style={styles.cityText}>{post.origin_city}</Text>
           </View>
+          
+          {/* Two-city route: Origin → Destination (horizontal) */}
           {post.dest_city && (
             <>
               <Text style={styles.routeArrow}>→</Text>
@@ -622,20 +625,18 @@ export default function PostCard({ post, onPress }: PostCardProps) {
               </View>
             </>
           )}
-          {/* Direction badge for north/south/east/west templates */}
+          
+          {/* Directional route: Show direction badge BELOW origin (vertical) */}
           {!post.dest_city && post.template_key && ['north', 'south', 'east', 'west'].includes(post.template_key) && (
-            <>
-              <Text style={styles.routeArrow}>→</Text>
-              <View style={styles.directionBadge}>
-                <Navigation size={16} color="#3B82F6" />
-                <Text style={styles.directionText}>
-                  {post.template_key === 'north' ? '⬆️ ' + t('directions.north') :
-                   post.template_key === 'south' ? '⬇️ ' + t('directions.south') :
-                   post.template_key === 'east' ? '➡️ ' + t('directions.east') :
-                   '⬅️ ' + t('directions.west')}
-                </Text>
-              </View>
-            </>
+            <View style={styles.directionBadge}>
+              <Navigation size={14} color="#3B82F6" />
+              <Text style={styles.directionText}>
+                {post.template_key === 'north' ? '⬆️ ' + t('directions.north') :
+                 post.template_key === 'south' ? '⬇️ ' + t('directions.south') :
+                 post.template_key === 'east' ? '➡️ ' + t('directions.east') :
+                 '⬅️ ' + t('directions.west')}
+              </Text>
+            </View>
           )}
         </View>
 
@@ -803,14 +804,14 @@ export default function PostCard({ post, onPress }: PostCardProps) {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
-    borderRadius: 12,
+    borderRadius: 20,
     padding: 16,
-    marginBottom: 12,
+    marginBottom: 16,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 2,
-    elevation: 2,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 4,
+    elevation: 3,
   },
   header: {
     flexDirection: 'row',
@@ -936,6 +937,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
+    flexWrap: 'wrap',
     gap: 8,
     marginBottom: 12,
     paddingVertical: 10,
@@ -970,16 +972,19 @@ const styles = StyleSheet.create({
   directionBadge: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     gap: 6,
-    paddingVertical: 6,
-    paddingHorizontal: 10,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
     backgroundColor: '#DBEAFE',
     borderRadius: 8,
     borderWidth: 1,
     borderColor: '#BFDBFE',
+    marginTop: 4,
+    alignSelf: 'stretch',
   },
   directionText: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: '700',
     color: '#1E40AF',
   },
