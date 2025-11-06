@@ -39,6 +39,8 @@ export interface Lead {
   id: string;
   user_id: string;
   source_search_id?: string;
+  source_type?: 'search' | 'community'; // Type of source (N8N search or Community post)
+  source_id?: string; // ID of source (community_posts.id if from Community)
   company_name: string;
   contact_person_name?: string;
   email?: string;

@@ -58,7 +58,6 @@ export default function LeadsScreen() {
     convertedLeads,
     loadSavedPosts,
     loadConvertedLeads,
-    convertToMyBook,
     searchQuery, 
     setSearchQuery,
   } = useLeadsStore();
@@ -178,18 +177,23 @@ export default function LeadsScreen() {
     setSelectedCity(null);
   }, []);
 
-  // Convert Hot Lead to My Book
-  const handleAddToMyBook = async (post: CommunityPost) => {
-    if (!user) return;
+  // Delete lead from My Book (unsave converted post)
+  const handleDeleteFromMyBook = async (lead: Lead) => {
+    if (!user || !lead.source_id) return;
     
     try {
-      await convertToMyBook(post, user.id);
+      // Unsave the community post (this will remove the converted lead)
+      await leadsService.deleteLead(lead.id);
+      
+      // Reload My Book leads
+      await loadConvertedLeads(user.id);
+      
       Toast.show({
         type: 'success',
-        text1: t('leads.converted_successfully'),
+        text1: t('leads.removed_from_mybook'),
       });
     } catch (error) {
-      console.error('Error converting to My Book:', error);
+      console.error('Error deleting from My Book:', error);
       Toast.show({
         type: 'error',
         text1: t('common.error'),
@@ -197,6 +201,7 @@ export default function LeadsScreen() {
     }
   };
 
+  // Email, WhatsApp, Share handlers for Lead cards
   const handleSendEmail = (lead: Lead) => {
     if (!lead.email) {
       Toast.show({ type: 'error', text1: 'No email available' });
@@ -373,20 +378,34 @@ Shared from Truxel
   };
 
   // Render functions for different card types
-  const renderLeadCard = ({ item: lead }: { item: Lead }) => (
-    <Card style={styles.leadCard}>
-      <View style={styles.leadHeader}>
-        <View style={styles.leadHeaderLeft}>
-          <Text style={styles.leadName}>{lead.company_name}</Text>
-          {lead.city && (
-            <View style={styles.leadLocation}>
-              <MapPin size={14} color="#64748B" />
-              <Text style={styles.leadCity}>{lead.city}</Text>
-            </View>
-          )}
+  const renderLeadCard = ({ item: lead }: { item: Lead }) => {
+    // Check if this lead is from My Book (converted from community post)
+    const isMyBookLead = lead.source_type === 'community';
+    
+    return (
+      <Card style={styles.leadCard}>
+        <View style={styles.leadHeader}>
+          <View style={styles.leadHeaderLeft}>
+            <Text style={styles.leadName}>{lead.company_name}</Text>
+            {lead.city && (
+              <View style={styles.leadLocation}>
+                <MapPin size={14} color="#64748B" />
+                <Text style={styles.leadCity}>{lead.city}</Text>
+              </View>
+            )}
+          </View>
+          <View style={styles.leadHeaderRight}>
+            {isMyBookLead && selectedTab === 'mybook' && (
+              <TouchableOpacity
+                style={styles.bookmarkButton}
+                onPress={() => handleDeleteFromMyBook(lead)}
+              >
+                <BookMarked size={20} color="#10B981" fill="#10B981" />
+              </TouchableOpacity>
+            )}
+            <StatusBadge status={lead.status} />
+          </View>
         </View>
-        <StatusBadge status={lead.status} />
-      </View>
 
       <View style={styles.leadActions}>
         {lead.email && (
@@ -421,25 +440,15 @@ Shared from Truxel
         </TouchableOpacity>
       </View>
 
-      {lead.user_notes && (
-        <Text style={styles.leadNotes} numberOfLines={2}>
-          {lead.user_notes}
-        </Text>
-      )}
-    </Card>
-  );
-
-  const renderHotLeadCard = ({ item: post }: { item: CommunityPost }) => (
-    <View style={styles.hotLeadCardWrapper}>
-      <PostCard post={post} />
-      <TouchableOpacity 
-        style={styles.addToMyBookButton}
-        onPress={() => handleAddToMyBook(post)}
-      >
-        <BookMarked size={18} color="white" />
-        <Text style={styles.addToMyBookText}>{t('leads.add_to_mybook')}</Text>
-      </TouchableOpacity>
-    </View>
+        {lead.user_notes && (
+          <Text style={styles.leadNotes} numberOfLines={2}>
+            {lead.user_notes}
+          </Text>
+        )}
+      </Card>
+    );
+  };  const renderHotLeadCard = ({ item: post }: { item: CommunityPost }) => (
+    <PostCard post={post} />
   );
 
   return (
@@ -759,6 +768,14 @@ const styles = StyleSheet.create({
     flex: 1,
     marginRight: 12,
   },
+  leadHeaderRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  bookmarkButton: {
+    padding: 4,
+  },
   leadName: {
     fontSize: 16,
     fontWeight: '600',
@@ -933,25 +950,5 @@ const styles = StyleSheet.create({
   },
   filterButtonTextActive: {
     color: 'white',
-  },
-  // Hot Lead Card wrapper
-  hotLeadCardWrapper: {
-    marginBottom: 12,
-  },
-  addToMyBookButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#10B981',
-    paddingVertical: 10,
-    paddingHorizontal: 16,
-    borderRadius: 8,
-    marginTop: 8,
-    gap: 8,
-  },
-  addToMyBookText: {
-    color: 'white',
-    fontSize: 14,
-    fontWeight: '600',
   },
 });

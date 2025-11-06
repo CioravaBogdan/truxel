@@ -129,6 +129,7 @@
     "no_mybook_leads": "Your book is empty",
     "save_posts_hint": "Save posts from Community to see them here",
     "convert_hint": "Convert Hot Leads to build your permanent pipeline",
+    "removed_from_mybook": "Removed from My Book",
     "filter_all": "All",
     "filter_email": "Has Email",
     "filter_phone": "Has Phone",
