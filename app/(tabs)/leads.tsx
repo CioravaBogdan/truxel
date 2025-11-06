@@ -924,7 +924,7 @@ const styles = StyleSheet.create({
     color: '#6B7280',
     fontWeight: '600',
   },
-  // Filter buttons (Hot Leads tab)
+  // Filter buttons (Hot Leads tab) - Pill style with category colors
   filterButtons: {
     flexDirection: 'row',
     paddingHorizontal: 16,
@@ -934,14 +934,25 @@ const styles = StyleSheet.create({
   filterButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 20,
-    backgroundColor: '#F1F5F9',
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 24, // More pronounced pill shape
+    backgroundColor: '#F8FAFC',
+    borderWidth: 1.5,
+    borderColor: '#E2E8F0',
     gap: 6,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    elevation: 1,
   },
   filterButtonActive: {
     backgroundColor: '#10B981',
+    borderColor: '#10B981',
+    shadowOpacity: 0.15,
+    shadowRadius: 4,
+    elevation: 3,
   },
   filterButtonText: {
     fontSize: 13,
