@@ -7,6 +7,10 @@ import {
   TouchableOpacity,
   RefreshControl,
   Linking,
+  ActivityIndicator,
+  Alert,
+  Modal,
+  Platform,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -17,6 +21,9 @@ import { useAuthStore } from '@/store/authStore';
 import { useLeadsStore } from '@/store/leadsStore';
 import { leadsService } from '@/services/leadsService';
 import PostCard from '@/components/community/PostCard';
+import CountryPickerModal from '@/components/community/CommunityFiltersModal';
+import CitySearchModal from '@/components/community/CitySearchModal';
+import { cityService } from '@/services/cityService';
 import * as Sharing from 'expo-sharing';
 import { File, Paths } from 'expo-file-system';
 import Toast from 'react-native-toast-message';
@@ -32,9 +39,10 @@ import {
   BookMarked,
   Users,
   Truck,
+  Globe,
 } from 'lucide-react-native';
 import { Lead } from '@/types/database.types';
-import type { CommunityPost } from '@/types/community.types';
+import type { CommunityPost, Country, City } from '@/types/community.types';
 
 export default function LeadsScreen() {
   const { t } = useTranslation();
@@ -55,6 +63,47 @@ export default function LeadsScreen() {
     setSearchQuery,
   } = useLeadsStore();
   const [isRefreshing, setIsRefreshing] = useState(false);
+
+  // Filter state (Country + City - identical to Community Feed)
+  const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
+  const [selectedCity, setSelectedCity] = useState<City | null>(null);
+  const [isCountryPickerVisible, setCountryPickerVisible] = useState(false);
+  const [isCityPickerVisible, setCityPickerVisible] = useState(false);
+  const [isInitializingFilters, setIsInitializingFilters] = useState(true);
+
+  // Initialize filters with GPS location (on mount)
+  const initializeFilters = useCallback(async () => {
+    try {
+      const locationInfo = await cityService.getCurrentLocationCity();
+      
+      if (locationInfo?.nearestMajorCity) {
+        const { country_code, country_name } = locationInfo.nearestMajorCity;
+        
+        setSelectedCountry({ code: country_code, name: country_name });
+        setSelectedCity(locationInfo.nearestMajorCity); // Pass full City object
+      }
+    } catch (error) {
+      console.log('[LeadsScreen] GPS initialization failed (non-critical):', error);
+    } finally {
+      setIsInitializingFilters(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    let isMounted = true;
+    
+    const initFilters = async () => {
+      if (isMounted) {
+        await initializeFilters();
+      }
+    };
+
+    void initFilters();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [initializeFilters]);
 
   // Load data based on selected tab
   const loadLeads = useCallback(async () => {
@@ -93,6 +142,41 @@ export default function LeadsScreen() {
     
     setIsRefreshing(false);
   };
+
+  // Filter handlers (identical to Community Feed)
+  const handleCountryPress = useCallback(() => {
+    setCountryPickerVisible(true);
+  }, []);
+
+  const handleCityPress = useCallback(() => {
+    if (!selectedCountry) {
+      Alert.alert(
+        t('community.select_country_first'),
+        t('community.select_country_before_city')
+      );
+      return;
+    }
+    setCityPickerVisible(true);
+  }, [selectedCountry, t]);
+
+  const handleCountrySelect = useCallback((country: Country) => {
+    setSelectedCountry(country);
+    setCountryPickerVisible(false);
+  }, []);
+
+  const handleCitySelect = useCallback((city: City) => {
+    setSelectedCity(city);
+    setCityPickerVisible(false);
+  }, []);
+
+  const handleClearCountry = useCallback(() => {
+    setSelectedCountry(null);
+    setSelectedCity(null); // Clear city when country is cleared
+  }, []);
+
+  const handleClearCity = useCallback(() => {
+    setSelectedCity(null);
+  }, []);
 
   // Convert Hot Lead to My Book
   const handleAddToMyBook = async (post: CommunityPost) => {
@@ -213,12 +297,39 @@ Shared from Truxel
   // Filter logic based on selected tab
   const getFilteredData = () => {
     if (selectedTab === 'search') {
-      return leads.filter((lead) =>
-        lead.company_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        lead.city?.toLowerCase().includes(searchQuery.toLowerCase())
-      );
+      let filtered = leads;
+      
+      // Apply Country filter
+      if (selectedCountry) {
+        filtered = filtered.filter(lead => lead.country === selectedCountry.code);
+      }
+      
+      // Apply City filter
+      if (selectedCity) {
+        filtered = filtered.filter(lead => lead.city === selectedCity.name);
+      }
+      
+      // Apply search query
+      if (searchQuery) {
+        filtered = filtered.filter((lead) =>
+          lead.company_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          lead.city?.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+      }
+      
+      return filtered;
     } else if (selectedTab === 'hotleads') {
       let filtered = savedPosts;
+      
+      // Apply Country filter
+      if (selectedCountry) {
+        filtered = filtered.filter(p => p.origin_country === selectedCountry.code);
+      }
+      
+      // Apply City filter
+      if (selectedCity) {
+        filtered = filtered.filter(p => p.origin_city === selectedCity.name);
+      }
       
       // Apply post type filter
       if (hotLeadsFilter === 'drivers') {
@@ -237,10 +348,27 @@ Shared from Truxel
       
       return filtered;
     } else { // mybook
-      return convertedLeads.filter((lead) =>
-        lead.company_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        lead.city?.toLowerCase().includes(searchQuery.toLowerCase())
-      );
+      let filtered = convertedLeads;
+      
+      // Apply Country filter
+      if (selectedCountry) {
+        filtered = filtered.filter(lead => lead.country === selectedCountry.code);
+      }
+      
+      // Apply City filter
+      if (selectedCity) {
+        filtered = filtered.filter(lead => lead.city === selectedCity.name);
+      }
+      
+      // Apply search query
+      if (searchQuery) {
+        filtered = filtered.filter((lead) =>
+          lead.company_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          lead.city?.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+      }
+      
+      return filtered;
     }
   };
 
@@ -383,6 +511,72 @@ Shared from Truxel
         </TouchableOpacity>
       </View>
 
+      {/* Country + City Filter Bar (identical to Community Feed) */}
+      <View style={styles.filterBar}>
+        {isInitializingFilters ? (
+          <ActivityIndicator size="small" color="#10B981" />
+        ) : (
+          <>
+            {/* Country Filter */}
+            <TouchableOpacity
+              style={styles.filterControl}
+              onPress={handleCountryPress}
+            >
+              <Globe size={14} color="#6B7280" />
+              <View style={styles.filterLabelContainer}>
+                <Text style={styles.filterLabel}>{t('community.country')}</Text>
+                <Text 
+                  style={selectedCountry ? styles.filterValueSelected : styles.filterValuePlaceholder}
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                >
+                  {selectedCountry?.name || t('community.select_country')}
+                </Text>
+              </View>
+              {selectedCountry && (
+                <TouchableOpacity
+                  style={styles.clearButton}
+                  onPress={handleClearCountry}
+                  hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                >
+                  <Text style={styles.clearButtonText}>✕</Text>
+                </TouchableOpacity>
+              )}
+            </TouchableOpacity>
+
+            {/* City Filter */}
+            <TouchableOpacity
+              style={[styles.filterControl, !selectedCountry && styles.filterControlDisabled]}
+              onPress={handleCityPress}
+              disabled={!selectedCountry}
+            >
+              <MapPin size={14} color={selectedCountry ? "#6B7280" : "#D1D5DB"} />
+              <View style={styles.filterLabelContainer}>
+                <Text style={[styles.filterLabel, !selectedCountry && styles.filterLabelDisabled]}>
+                  {t('community.city')}
+                </Text>
+                <Text 
+                  style={selectedCity ? styles.filterValueSelected : styles.filterValuePlaceholder}
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                >
+                  {selectedCity?.name || t('community.all_cities')}
+                </Text>
+              </View>
+              {selectedCity && selectedCountry && (
+                <TouchableOpacity
+                  style={styles.clearButton}
+                  onPress={handleClearCity}
+                  hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                >
+                  <Text style={styles.clearButtonText}>✕</Text>
+                </TouchableOpacity>
+              )}
+            </TouchableOpacity>
+          </>
+        )}
+      </View>
+
       {/* Hot Leads Filter Buttons */}
       {selectedTab === 'hotleads' && (
         <View style={styles.filterButtons}>
@@ -499,6 +693,29 @@ Shared from Truxel
           }
         />
       )}
+
+      {/* Country Picker Modal */}
+      <CountryPickerModal
+        visible={isCountryPickerVisible}
+        onClose={() => setCountryPickerVisible(false)}
+        onSelect={handleCountrySelect}
+        onClear={handleClearCountry}
+        selectedCountryCode={selectedCountry?.code}
+      />
+
+      {/* City Search Modal */}
+      <Modal
+        visible={isCityPickerVisible}
+        animationType="slide"
+        presentationStyle={Platform.OS === 'ios' ? 'pageSheet' : 'fullScreen'}
+        onRequestClose={() => setCityPickerVisible(false)}
+      >
+        <CitySearchModal
+          countryCode={selectedCountry?.code || ''}
+          onSelect={handleCitySelect}
+          onClose={() => setCityPickerVisible(false)}
+        />
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -633,6 +850,62 @@ const styles = StyleSheet.create({
   },
   activeTabText: {
     fontWeight: '700',
+  },
+  // Country + City Filter Bar (identical to Community Feed)
+  filterBar: {
+    flexDirection: 'row',
+    backgroundColor: 'white',
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    marginBottom: 12,
+    gap: 8,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: '#E5E7EB',
+  },
+  filterControl: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F9FAFB',
+    borderRadius: 8,
+    padding: 8,
+    gap: 8,
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+  },
+  filterControlDisabled: {
+    opacity: 0.5,
+  },
+  filterLabelContainer: {
+    flex: 1,
+    minWidth: 0,
+  },
+  filterLabel: {
+    fontSize: 10,
+    color: '#6B7280',
+    fontWeight: '500',
+    marginBottom: 2,
+  },
+  filterLabelDisabled: {
+    color: '#D1D5DB',
+  },
+  filterValueSelected: {
+    fontSize: 12,
+    color: '#111827',
+    fontWeight: '600',
+  },
+  filterValuePlaceholder: {
+    fontSize: 12,
+    color: '#9CA3AF',
+  },
+  clearButton: {
+    padding: 4,
+  },
+  clearButtonText: {
+    fontSize: 18,
+    color: '#6B7280',
+    fontWeight: '600',
   },
   // Filter buttons (Hot Leads tab)
   filterButtons: {
