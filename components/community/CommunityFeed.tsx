@@ -440,7 +440,15 @@ export default function CommunityFeed({ customHeader }: CommunityFeedProps = {})
         refreshControl={
           <RefreshControl
             refreshing={isRefreshing}
-            onRefresh={refreshPosts}
+            onRefresh={() => {
+              if (selectedTab === 'saved' && user?.id) {
+                // For Saved tab, reload from DB
+                void useCommunityStore.getState().loadSavedPosts(user.id);
+              } else {
+                // For other tabs, use refreshPosts
+                void refreshPosts();
+              }
+            }}
             colors={['#3B82F6']}
           />
         }

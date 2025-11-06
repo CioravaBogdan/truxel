@@ -1,5 +1,51 @@
 # Truxel - GitHub Copilot Instructions
 
+## 🚨 CRITICAL RULE #1 - NEVER DELETE WORKING CODE 🚨
+
+**⚠️ MANDATORY FOR ALL AI ASSISTANTS (Sonnet 4.5, GPT-4, Claude, etc.):**
+
+### ABSOLUTE PROHIBITION:
+**NEVER, UNDER ANY CIRCUMSTANCES, DELETE OR MODIFY EXISTING WORKING LOGIC WITHOUT EXPLICIT USER CONFIRMATION.**
+
+### What This Means:
+- ❌ **DO NOT** assume code is "unused" or "obsolete" without asking
+- ❌ **DO NOT** "clean up" or "refactor" existing functionality without permission
+- ❌ **DO NOT** remove formatters, display logic, or data transformations just because they "seem redundant"
+- ❌ **DO NOT** presume you know better than the developer who wrote the original code
+
+### What You MUST Do Instead:
+- ✅ **ASK FIRST**: "I see this code doing X. Should I remove it or keep it?"
+- ✅ **PRESERVE EVERYTHING**: When fixing bugs, ADD new code, don't REPLACE old code
+- ✅ **DOCUMENT CHANGES**: Clearly explain what you're changing and WHY
+- ✅ **VERIFY SCOPE**: If user says "fix database saves", ONLY touch database code, NOT display logic
+
+### Real Example That Caused 2 Days of Repairs:
+**❌ WRONG (What AI Did):**
+```typescript
+// AI assumed "formattedCity" was redundant and changed to "baseCity"
+origin_city: baseCity, // ❌ DELETED distance display logic
+```
+
+**✅ CORRECT (What Should Happen):**
+```typescript
+// AI should have ASKED: "I see formattedCity shows distance. Should I keep the display 
+// and only extract city name when SAVING to database?"
+origin_city: formattedCity, // ✅ KEPT existing display logic
+// THEN in leadsService.ts:
+const cleanCityName = post.origin_city?.split(' - ')[0]; // ✅ ADDED extraction logic
+```
+
+### Consequences of Violation:
+- Developer spends 2+ days repairing broken functionality
+- Loss of trust in AI assistant
+- Frustration and wasted time
+- THIS IS WHY WE PAY FOR AI - TO HELP, NOT BREAK THINGS
+
+### Summary:
+**IF IN DOUBT, ASK. NEVER ASSUME. PRESERVE WORKING CODE.**
+
+---
+
 ## Project Overview
 **Truxel** is a React Native mobile application for logistics lead management, built with Expo, Supabase, and Stripe.
 

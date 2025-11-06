@@ -25,6 +25,7 @@
     "close": "Close",
     "no": "No",
     "yes": "Yes",
+    "ok": "OK",
     "upgrade": "Upgrade"
   },
   "auth": {
@@ -124,6 +125,8 @@
     "filter_forwarding": "Forwarding",
     "add_to_mybook": "Add to My Book",
     "converted_successfully": "Added to My Book successfully",
+    "duplicate_lead_title": "Lead Already Exists",
+    "duplicate_lead_message": "You already have a lead with this contact information (phone or email + company) in your book.",
     "no_search_results": "No search results yet",
     "no_hot_leads": "No saved posts yet",
     "no_mybook_leads": "Your book is empty",

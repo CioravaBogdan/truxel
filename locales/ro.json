@@ -24,7 +24,8 @@
     "back": "Înapoi",
     "close": "Închide",
     "no": "Nu",
-    "yes": "Da"
+    "yes": "Da",
+    "ok": "OK"
   },
   "auth": {
     "welcome": "Bine ai venit la Truxel",
@@ -96,6 +97,8 @@
     "filter_forwarding": "Expediere",
     "add_to_mybook": "Adaugă în Cartea Mea",
     "converted_successfully": "Adăugat în Cartea Mea cu succes",
+    "duplicate_lead_title": "Lead Existent Deja",
+    "duplicate_lead_message": "Ai deja un lead cu aceste informații de contact (telefon sau email + companie) în cartea ta.",
     "no_search_results": "Niciun rezultat încă",
     "no_hot_leads": "Nicio postare salvată încă",
     "no_mybook_leads": "Cartea ta este goală",

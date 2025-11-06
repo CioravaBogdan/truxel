@@ -93,7 +93,10 @@ export default function PostCard({ post, onPress, onUnsave }: PostCardProps) {
   const { t, i18n } = useTranslation();
   const router = useRouter();
   const { user, profile, session, refreshProfile } = useAuthStore();
-  const { savePost, unsavePost, recordContact, deletePost, postLimits } = useCommunityStore();
+  
+  // ⚠️ DO NOT destructure Zustand functions - use getState() for imperative calls
+  // Destructuring creates stale references that break after any set() call
+  const postLimits = useCommunityStore((state) => state.postLimits);
   
   // Use selector - Zustand will re-render when THIS SPECIFIC result changes
   const isSaved = useCommunityStore((state) => 
@@ -153,7 +156,7 @@ export default function PostCard({ post, onPress, onUnsave }: PostCardProps) {
 
   const recordWhatsAppContact = async () => {
     if (user) {
-      await recordContact(post.id, user.id);
+      await useCommunityStore.getState().recordContact(post.id, user.id);
     }
     pendingWhatsAppPayload.current = null;
   };
@@ -413,7 +416,7 @@ export default function PostCard({ post, onPress, onUnsave }: PostCardProps) {
 
     // Record interaction
     if (user) {
-      await recordContact(post.id, user.id);
+      await useCommunityStore.getState().recordContact(post.id, user.id);
     }
 
     const subjectKey = isDriverAvailable ? 'community.email_subject_driver' : 'community.email_subject_load';
@@ -479,7 +482,7 @@ export default function PostCard({ post, onPress, onUnsave }: PostCardProps) {
 
     // Record interaction
     if (user) {
-      await recordContact(post.id, user.id);
+      await useCommunityStore.getState().recordContact(post.id, user.id);
     }
 
   const phoneNumber = targetPhone.replace(/[^0-9+]/g, '');
@@ -514,7 +517,7 @@ export default function PostCard({ post, onPress, onUnsave }: PostCardProps) {
           style: 'destructive',
           onPress: async () => {
             try {
-              await deletePost(post.id, user.id);
+              await useCommunityStore.getState().deletePost(post.id, user.id);
               Toast.show({
                 type: 'success',
                 text1: t('community.post_deleted_success'),
@@ -540,10 +543,10 @@ export default function PostCard({ post, onPress, onUnsave }: PostCardProps) {
 
     // Toggle: if already saved, unsave it; otherwise save it
     if (isSaved) {
-      await unsavePost(post.id, user.id);
+      await useCommunityStore.getState().unsavePost(post.id, user.id);
       onUnsave?.(); // Trigger callback for Hot Leads refresh
     } else {
-      await savePost(post.id, user.id);
+      await useCommunityStore.getState().savePost(post.id, user.id);
     }
   };
 
