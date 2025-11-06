@@ -9,8 +9,7 @@ interface LeadsState {
   // Search Results tab (N8N leads)
   leads: Lead[];
   
-  // Hot Leads tab (saved community posts)
-  savedPosts: CommunityPost[];
+  // Hot Leads tab filter (savedPosts now come from communityStore)
   hotLeadsFilter: 'all' | 'drivers' | 'forwarding';
   
   // My Book tab (converted leads)
@@ -30,9 +29,8 @@ interface LeadsState {
   deleteLead: (id: string) => void;
   
   // Hot Leads actions
-  setSavedPosts: (posts: CommunityPost[]) => void;
   setHotLeadsFilter: (filter: 'all' | 'drivers' | 'forwarding') => void;
-  loadSavedPosts: (userId: string) => Promise<void>;
+  // Note: savedPosts and loadSavedPosts are now in communityStore for real-time updates
   
   // My Book actions
   setConvertedLeads: (leads: Lead[]) => void;
@@ -55,7 +53,6 @@ export const useLeadsStore = create<LeadsState>((set, get) => ({
   // Initial state
   selectedTab: 'search', // Default to Search Results tab
   leads: [],
-  savedPosts: [],
   hotLeadsFilter: 'all',
   convertedLeads: [],
   isLoading: false,
@@ -82,21 +79,7 @@ export const useLeadsStore = create<LeadsState>((set, get) => ({
   })),
 
   // Hot Leads actions
-  setSavedPosts: (savedPosts) => set({ savedPosts }),
-
   setHotLeadsFilter: (hotLeadsFilter) => set({ hotLeadsFilter }),
-
-  loadSavedPosts: async (userId: string) => {
-    set({ isLoading: true });
-    try {
-      const { communityService } = await import('@/services/communityService');
-      const posts = await communityService.getSavedPosts(userId);
-      set({ savedPosts: posts, isLoading: false });
-    } catch (error) {
-      console.error('Error loading saved posts:', error);
-      set({ isLoading: false });
-    }
-  },
 
   // My Book actions
   setConvertedLeads: (convertedLeads) => set({ convertedLeads }),
@@ -153,7 +136,6 @@ export const useLeadsStore = create<LeadsState>((set, get) => ({
   reset: () => set({
     selectedTab: 'search',
     leads: [],
-    savedPosts: [],
     hotLeadsFilter: 'all',
     convertedLeads: [],
     isLoading: false,

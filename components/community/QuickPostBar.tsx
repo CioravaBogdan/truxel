@@ -212,7 +212,7 @@ function QuickPostBar() {
         template_key: template.key,
         origin_lat: location.latitude,
         origin_lng: location.longitude,
-  origin_city: formattedCity,
+  origin_city: baseCity, // Use clean city name, not formatted display text
   origin_country: location.country || location.nearestMajorCity?.country_name || 'RO',
         contact_phone: profile?.phone_number,
         contact_whatsapp: true,

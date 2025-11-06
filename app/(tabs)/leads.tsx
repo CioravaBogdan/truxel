@@ -19,6 +19,7 @@ import { StatusBadge } from '@/components/StatusBadge';
 import { Input } from '@/components/Input';
 import { useAuthStore } from '@/store/authStore';
 import { useLeadsStore } from '@/store/leadsStore';
+import { useCommunityStore } from '@/store/communityStore';
 import { leadsService } from '@/services/leadsService';
 import PostCard from '@/components/community/PostCard';
 import CountryPickerModal from '@/components/community/CommunityFiltersModal';
@@ -52,15 +53,16 @@ export default function LeadsScreen() {
     setSelectedTab,
     leads, 
     setLeads, 
-    savedPosts,
     hotLeadsFilter,
     setHotLeadsFilter,
     convertedLeads,
-    loadSavedPosts,
     loadConvertedLeads,
     searchQuery, 
     setSearchQuery,
   } = useLeadsStore();
+  
+  // Hot Leads (saved community posts) come from communityStore for real-time updates
+  const { savedPosts, loadSavedPosts } = useCommunityStore();
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   // Filter state (Country + City - identical to Community Feed)
@@ -400,7 +402,7 @@ Shared from Truxel
                 style={styles.bookmarkButton}
                 onPress={() => handleDeleteFromMyBook(lead)}
               >
-                <BookMarked size={20} color="#10B981" fill="#10B981" />
+                <BookMarked size={20} color="#F59E0B" fill="#F59E0B" />
               </TouchableOpacity>
             )}
             <StatusBadge status={lead.status} />
