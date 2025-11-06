@@ -171,6 +171,18 @@ export default function CommunityFeed({ customHeader }: CommunityFeedProps = {})
       onPress={() => {
         // Navigate to post details if needed
       }}
+      onUnsave={() => {
+        // Reload saved posts when unsaved from Community feed
+        if (user?.id) {
+          console.log('[CommunityFeed] 🔄 Post unsaved, reloading saved posts list. Current tab:', selectedTab);
+          console.log('[CommunityFeed] Current savedPosts count BEFORE reload:', savedPosts.length);
+          
+          // Force reload from database
+          useCommunityStore.getState().loadSavedPosts(user.id).then(() => {
+            console.log('[CommunityFeed] ✅ Reload complete. New savedPosts count:', useCommunityStore.getState().savedPosts.length);
+          });
+        }
+      }}
     />
   );
 
