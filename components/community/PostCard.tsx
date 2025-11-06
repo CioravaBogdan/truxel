@@ -86,9 +86,10 @@ type WhatsAppOption = {
 interface PostCardProps {
   post: CommunityPost;
   onPress?: () => void;
+  onUnsave?: () => void; // Callback after unsaving (for Hot Leads refresh)
 }
 
-export default function PostCard({ post, onPress }: PostCardProps) {
+export default function PostCard({ post, onPress, onUnsave }: PostCardProps) {
   const { t, i18n } = useTranslation();
   const router = useRouter();
   const { user, profile, session, refreshProfile } = useAuthStore();
@@ -540,6 +541,7 @@ export default function PostCard({ post, onPress }: PostCardProps) {
     // Toggle: if already saved, unsave it; otherwise save it
     if (isSaved) {
       await unsavePost(post.id, user.id);
+      onUnsave?.(); // Trigger callback for Hot Leads refresh
     } else {
       await savePost(post.id, user.id);
     }
