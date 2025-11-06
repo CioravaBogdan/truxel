@@ -16,18 +16,47 @@ import { Input } from '@/components/Input';
 import { useAuthStore } from '@/store/authStore';
 import { useLeadsStore } from '@/store/leadsStore';
 import { leadsService } from '@/services/leadsService';
+import PostCard from '@/components/community/PostCard';
 import * as Sharing from 'expo-sharing';
 import { File, Paths } from 'expo-file-system';
 import Toast from 'react-native-toast-message';
-import { Mail, Phone, MessageCircle, MapPin, Share2, Download } from 'lucide-react-native';
+import { 
+  Mail, 
+  Phone, 
+  MessageCircle, 
+  MapPin, 
+  Share2, 
+  Download, 
+  Search as SearchIcon,
+  Zap,
+  BookMarked,
+  Users,
+  Truck,
+} from 'lucide-react-native';
 import { Lead } from '@/types/database.types';
+import type { CommunityPost } from '@/types/community.types';
 
 export default function LeadsScreen() {
   const { t } = useTranslation();
   const { user, profile } = useAuthStore();
-  const { leads, setLeads, searchQuery, setSearchQuery } = useLeadsStore();
+  const { 
+    selectedTab,
+    setSelectedTab,
+    leads, 
+    setLeads, 
+    savedPosts,
+    hotLeadsFilter,
+    setHotLeadsFilter,
+    convertedLeads,
+    loadSavedPosts,
+    loadConvertedLeads,
+    convertToMyBook,
+    searchQuery, 
+    setSearchQuery,
+  } = useLeadsStore();
   const [isRefreshing, setIsRefreshing] = useState(false);
 
+  // Load data based on selected tab
   const loadLeads = useCallback(async () => {
     if (!user) return;
     try {
@@ -39,13 +68,49 @@ export default function LeadsScreen() {
   }, [setLeads, user]);
 
   useEffect(() => {
-    loadLeads();
-  }, [loadLeads]);
+    if (!user) return;
+    
+    if (selectedTab === 'search') {
+      void loadLeads();
+    } else if (selectedTab === 'hotleads') {
+      void loadSavedPosts(user.id);
+    } else if (selectedTab === 'mybook') {
+      void loadConvertedLeads(user.id);
+    }
+  }, [selectedTab, user, loadLeads, loadSavedPosts, loadConvertedLeads]);
 
   const onRefresh = async () => {
+    if (!user) return;
     setIsRefreshing(true);
-    await loadLeads();
+    
+    if (selectedTab === 'search') {
+      await loadLeads();
+    } else if (selectedTab === 'hotleads') {
+      await loadSavedPosts(user.id);
+    } else if (selectedTab === 'mybook') {
+      await loadConvertedLeads(user.id);
+    }
+    
     setIsRefreshing(false);
+  };
+
+  // Convert Hot Lead to My Book
+  const handleAddToMyBook = async (post: CommunityPost) => {
+    if (!user) return;
+    
+    try {
+      await convertToMyBook(post, user.id);
+      Toast.show({
+        type: 'success',
+        text1: t('leads.converted_successfully'),
+      });
+    } catch (error) {
+      console.error('Error converting to My Book:', error);
+      Toast.show({
+        type: 'error',
+        text1: t('common.error'),
+      });
+    }
   };
 
   const handleSendEmail = (lead: Lead) => {
@@ -145,11 +210,41 @@ Shared from Truxel
     }
   };
 
-  const filteredLeads = leads.filter((lead) =>
-    lead.company_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    lead.city?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Filter logic based on selected tab
+  const getFilteredData = () => {
+    if (selectedTab === 'search') {
+      return leads.filter((lead) =>
+        lead.company_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        lead.city?.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    } else if (selectedTab === 'hotleads') {
+      let filtered = savedPosts;
+      
+      // Apply post type filter
+      if (hotLeadsFilter === 'drivers') {
+        filtered = filtered.filter(p => p.post_type === 'DRIVER_AVAILABLE');
+      } else if (hotLeadsFilter === 'forwarding') {
+        filtered = filtered.filter(p => p.post_type === 'LOAD_AVAILABLE');
+      }
+      
+      // Apply search query
+      if (searchQuery) {
+        filtered = filtered.filter(p =>
+          p.origin_city?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          p.profile?.company_name?.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+      }
+      
+      return filtered;
+    } else { // mybook
+      return convertedLeads.filter((lead) =>
+        lead.company_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        lead.city?.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+  };
 
+  // Render functions for different card types
   const renderLeadCard = ({ item: lead }: { item: Lead }) => (
     <Card style={styles.leadCard}>
       <View style={styles.leadHeader}>
@@ -206,6 +301,19 @@ Shared from Truxel
     </Card>
   );
 
+  const renderHotLeadCard = ({ item: post }: { item: CommunityPost }) => (
+    <View style={styles.hotLeadCardWrapper}>
+      <PostCard post={post} />
+      <TouchableOpacity 
+        style={styles.addToMyBookButton}
+        onPress={() => handleAddToMyBook(post)}
+      >
+        <BookMarked size={18} color="white" />
+        <Text style={styles.addToMyBookText}>{t('leads.add_to_mybook')}</Text>
+      </TouchableOpacity>
+    </View>
+  );
+
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <View style={styles.header}>
@@ -215,6 +323,117 @@ Shared from Truxel
         </TouchableOpacity>
       </View>
 
+      {/* Tabs Container */}
+      <View style={styles.tabsContainer}>
+        {/* Top row: Search Results + Hot Leads */}
+        <View style={styles.tabsRow}>
+          <TouchableOpacity
+            style={[
+              styles.tabHalf, 
+              { backgroundColor: selectedTab === 'search' ? '#2563EB' : '#DBEAFE' },
+              selectedTab === 'search' && styles.activeTab
+            ]}
+            onPress={() => setSelectedTab('search')}
+          >
+            <SearchIcon size={18} color={selectedTab === 'search' ? 'white' : '#2563EB'} />
+            <Text style={[
+              styles.tabText,
+              { color: selectedTab === 'search' ? 'white' : '#2563EB' },
+              selectedTab === 'search' && styles.activeTabText
+            ]}>
+              {t('leads.search_results').toUpperCase()}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              styles.tabHalf, 
+              { backgroundColor: selectedTab === 'hotleads' ? '#F59E0B' : '#FEF3C7' },
+              selectedTab === 'hotleads' && styles.activeTab
+            ]}
+            onPress={() => setSelectedTab('hotleads')}
+          >
+            <Zap size={18} color={selectedTab === 'hotleads' ? 'white' : '#D97706'} />
+            <Text style={[
+              styles.tabText,
+              { color: selectedTab === 'hotleads' ? 'white' : '#D97706' },
+              selectedTab === 'hotleads' && styles.activeTabText
+            ]}>
+              {t('leads.hot_leads').toUpperCase()}
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Bottom row: My Book (full width) */}
+        <TouchableOpacity
+          style={[
+            styles.tabFull, 
+            { backgroundColor: selectedTab === 'mybook' ? '#10B981' : '#D1FAE5' },
+            selectedTab === 'mybook' && styles.activeTab
+          ]}
+          onPress={() => setSelectedTab('mybook')}
+        >
+          <BookMarked size={18} color={selectedTab === 'mybook' ? 'white' : '#059669'} />
+          <Text style={[
+            styles.tabText,
+            { color: selectedTab === 'mybook' ? 'white' : '#059669' },
+            selectedTab === 'mybook' && styles.activeTabText
+          ]}>
+            {t('leads.my_book').toUpperCase()}
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Hot Leads Filter Buttons */}
+      {selectedTab === 'hotleads' && (
+        <View style={styles.filterButtons}>
+          <TouchableOpacity
+            style={[
+              styles.filterButton,
+              hotLeadsFilter === 'all' && styles.filterButtonActive
+            ]}
+            onPress={() => setHotLeadsFilter('all')}
+          >
+            <Text style={[
+              styles.filterButtonText,
+              hotLeadsFilter === 'all' && styles.filterButtonTextActive
+            ]}>
+              {t('leads.filter_all')}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              styles.filterButton,
+              hotLeadsFilter === 'drivers' && styles.filterButtonActive
+            ]}
+            onPress={() => setHotLeadsFilter('drivers')}
+          >
+            <Users size={16} color={hotLeadsFilter === 'drivers' ? 'white' : '#64748B'} />
+            <Text style={[
+              styles.filterButtonText,
+              hotLeadsFilter === 'drivers' && styles.filterButtonTextActive
+            ]}>
+              {t('leads.filter_drivers')}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              styles.filterButton,
+              hotLeadsFilter === 'forwarding' && styles.filterButtonActive
+            ]}
+            onPress={() => setHotLeadsFilter('forwarding')}
+          >
+            <Truck size={16} color={hotLeadsFilter === 'forwarding' ? 'white' : '#64748B'} />
+            <Text style={[
+              styles.filterButtonText,
+              hotLeadsFilter === 'forwarding' && styles.filterButtonTextActive
+            ]}>
+              {t('leads.filter_forwarding')}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      )}
+
+      {/* Search Input */}
       <View style={styles.searchContainer}>
         <Input
           placeholder={t('common.search')}
@@ -224,20 +443,62 @@ Shared from Truxel
         />
       </View>
 
-      <FlatList
-        data={filteredLeads}
-        renderItem={renderLeadCard}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={styles.listContent}
-        refreshControl={
-          <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
-        }
-        ListEmptyComponent={
-          <View style={styles.emptyContainer}>
-            <Text style={styles.emptyText}>{t('leads.no_leads')}</Text>
-          </View>
-        }
-      />
+      {/* Conditional FlatList based on selectedTab */}
+      {selectedTab === 'search' && (
+        <FlatList
+          data={getFilteredData() as Lead[]}
+          renderItem={renderLeadCard}
+          keyExtractor={(item) => item.id}
+          contentContainerStyle={styles.listContent}
+          refreshControl={
+            <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
+          }
+          ListEmptyComponent={
+            <View style={styles.emptyContainer}>
+              <SearchIcon size={48} color="#CBD5E1" />
+              <Text style={styles.emptyText}>{t('leads.no_search_results')}</Text>
+            </View>
+          }
+        />
+      )}
+
+      {selectedTab === 'hotleads' && (
+        <FlatList
+          data={getFilteredData() as CommunityPost[]}
+          renderItem={renderHotLeadCard}
+          keyExtractor={(item) => item.id}
+          contentContainerStyle={styles.listContent}
+          refreshControl={
+            <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
+          }
+          ListEmptyComponent={
+            <View style={styles.emptyContainer}>
+              <Zap size={48} color="#CBD5E1" />
+              <Text style={styles.emptyText}>{t('leads.no_hot_leads')}</Text>
+              <Text style={styles.emptyHint}>{t('leads.save_posts_hint')}</Text>
+            </View>
+          }
+        />
+      )}
+
+      {selectedTab === 'mybook' && (
+        <FlatList
+          data={getFilteredData() as Lead[]}
+          renderItem={renderLeadCard}
+          keyExtractor={(item) => item.id}
+          contentContainerStyle={styles.listContent}
+          refreshControl={
+            <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
+          }
+          ListEmptyComponent={
+            <View style={styles.emptyContainer}>
+              <BookMarked size={48} color="#CBD5E1" />
+              <Text style={styles.emptyText}>{t('leads.no_mybook_leads')}</Text>
+              <Text style={styles.emptyHint}>{t('leads.convert_hint')}</Text>
+            </View>
+          }
+        />
+      )}
     </SafeAreaView>
   );
 }
@@ -321,5 +582,103 @@ const styles = StyleSheet.create({
   emptyText: {
     fontSize: 16,
     color: '#64748B',
+    marginTop: 12,
+  },
+  emptyHint: {
+    fontSize: 14,
+    color: '#94A3B8',
+    marginTop: 8,
+    textAlign: 'center',
+  },
+  // Tab styles
+  tabsContainer: {
+    paddingHorizontal: 16,
+    paddingTop: 12,
+    paddingBottom: 8,
+  },
+  tabsRow: {
+    flexDirection: 'row',
+    gap: 8,
+    marginBottom: 8,
+  },
+  tabHalf: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 12,
+    gap: 8,
+  },
+  tabFull: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 12,
+    gap: 8,
+  },
+  tabText: {
+    fontSize: 13,
+    fontWeight: '600',
+  },
+  activeTab: {
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  activeTabText: {
+    fontWeight: '700',
+  },
+  // Filter buttons (Hot Leads tab)
+  filterButtons: {
+    flexDirection: 'row',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    gap: 8,
+  },
+  filterButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 20,
+    backgroundColor: '#F1F5F9',
+    gap: 6,
+  },
+  filterButtonActive: {
+    backgroundColor: '#10B981',
+  },
+  filterButtonText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#64748B',
+  },
+  filterButtonTextActive: {
+    color: 'white',
+  },
+  // Hot Lead Card wrapper
+  hotLeadCardWrapper: {
+    marginBottom: 12,
+  },
+  addToMyBookButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#10B981',
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    marginTop: 8,
+    gap: 8,
+  },
+  addToMyBookText: {
+    color: 'white',
+    fontSize: 14,
+    fontWeight: '600',
   },
 });

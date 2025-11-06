@@ -1,5 +1,6 @@
 import { supabase } from '@/lib/supabase';
 import { Lead, LeadStatus } from '@/types/database.types';
+import type { CommunityPost } from '@/types/community.types';
 
 export const leadsService = {
   async getLeads(userId: string): Promise<Lead[]> {
@@ -73,6 +74,56 @@ export const leadsService = {
       .eq('id', id);
 
     if (error) throw error;
+  },
+
+  /**
+   * Get converted leads (from Community Hot Leads)
+   * Filters by source_type='community' to show only converted posts
+   */
+  async getConvertedLeads(userId: string): Promise<Lead[]> {
+    const { data, error } = await supabase
+      .from('leads')
+      .select('*')
+      .eq('user_id', userId)
+      .eq('source_type', 'community')
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+    return data || [];
+  },
+
+  /**
+   * Convert a Community post to a permanent lead in My Book
+   * Creates a new lead record with source_type='community' and source_id=post.id
+   */
+  async convertPostToLead(post: CommunityPost, userId: string): Promise<Lead> {
+    // Map CommunityPost fields to Lead fields
+    const leadData = {
+      user_id: userId,
+      source_type: 'community',
+      source_id: post.id,
+      company_name: post.profile?.company_name || 'Unknown Company',
+      contact_person_name: post.profile?.full_name || null,
+      email: post.profile?.email || null,
+      phone: post.contact_phone || post.profile?.phone_number || null,
+      whatsapp: post.contact_whatsapp ? (post.contact_phone || post.profile?.phone_number) : null,
+      city: post.origin_city,
+      country: post.origin_country,
+      latitude: post.origin_lat ? parseFloat(post.origin_lat.toString()) : null,
+      longitude: post.origin_lng ? parseFloat(post.origin_lng.toString()) : null,
+      description: `Converted from Community ${post.post_type === 'DRIVER_AVAILABLE' ? 'Driver' : 'Load'} post`,
+      status: 'new' as LeadStatus,
+      user_notes: `Origin: ${post.origin_city}${post.dest_city ? ` → Destination: ${post.dest_city}` : ''}`,
+    };
+
+    const { data, error } = await supabase
+      .from('leads')
+      .insert(leadData)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
   },
 
   async exportLeadsToCSV(leads: Lead[]): Promise<string> {
