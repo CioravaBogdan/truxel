@@ -47,6 +47,9 @@ import type { CommunityPost, Country, City } from '@/types/community.types';
 export default function LeadsScreen() {
   const { t } = useTranslation();
   const { user, profile } = useAuthStore();
+  // ⚠️ DO NOT destructure Zustand functions (loadSavedPosts, loadConvertedLeads, convertToMyBook)
+  // They become stale references after set() calls, causing infinite loops in useEffect
+  // Use useLeadsStore.getState().functionName() for imperative calls instead
   const { 
     selectedTab,
     setSelectedTab,
@@ -56,9 +59,6 @@ export default function LeadsScreen() {
     hotLeadsFilter,
     setHotLeadsFilter,
     convertedLeads,
-    loadSavedPosts,
-    loadConvertedLeads,
-    convertToMyBook,
     searchQuery, 
     setSearchQuery,
   } = useLeadsStore();
@@ -122,11 +122,11 @@ export default function LeadsScreen() {
     if (selectedTab === 'search') {
       void loadLeads();
     } else if (selectedTab === 'hotleads') {
-      void loadSavedPosts(user.id);
+      void useLeadsStore.getState().loadSavedPosts(user.id);
     } else if (selectedTab === 'mybook') {
-      void loadConvertedLeads(user.id);
+      void useLeadsStore.getState().loadConvertedLeads(user.id);
     }
-  }, [selectedTab, user, loadLeads, loadSavedPosts, loadConvertedLeads]);
+  }, [selectedTab, user, loadLeads]);
 
   const onRefresh = async () => {
     if (!user) return;
@@ -135,9 +135,9 @@ export default function LeadsScreen() {
     if (selectedTab === 'search') {
       await loadLeads();
     } else if (selectedTab === 'hotleads') {
-      await loadSavedPosts(user.id);
+      await useLeadsStore.getState().loadSavedPosts(user.id);
     } else if (selectedTab === 'mybook') {
-      await loadConvertedLeads(user.id);
+      await useLeadsStore.getState().loadConvertedLeads(user.id);
     }
     
     setIsRefreshing(false);
@@ -187,7 +187,7 @@ export default function LeadsScreen() {
       await leadsService.deleteLead(lead.id);
       
       // Reload My Book leads
-      await loadConvertedLeads(user.id);
+      await useLeadsStore.getState().loadConvertedLeads(user.id);
       
       Toast.show({
         type: 'success',
@@ -207,7 +207,7 @@ export default function LeadsScreen() {
     if (!user) return;
     
     try {
-      await convertToMyBook(post, user.id);
+      await useLeadsStore.getState().convertToMyBook(post, user.id);
       Toast.show({
         type: 'success',
         text1: t('leads.converted_successfully'),
@@ -501,7 +501,7 @@ Shared from Truxel
         onUnsave={() => {
           // Reload Hot Leads after unsaving
           if (user) {
-            void loadSavedPosts(user.id);
+            void useLeadsStore.getState().loadSavedPosts(user.id);
           }
         }}
       />
