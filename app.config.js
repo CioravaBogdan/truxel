@@ -73,9 +73,10 @@ export default {
       enabled: false
     },
     extra: {
-      supabaseUrl: process.env.EXPO_PUBLIC_SUPABASE_URL,
-      supabaseAnonKey: process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY,
-      stripePublishableKey: process.env.EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY,
+      // TRUXEL_ prefix for EAS builds, EXPO_PUBLIC_ for local development
+      supabaseUrl: process.env.TRUXEL_SUPABASE_URL || process.env.EXPO_PUBLIC_SUPABASE_URL,
+      supabaseAnonKey: process.env.TRUXEL_SUPABASE_ANON_KEY || process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY,
+      stripePublishableKey: process.env.TRUXEL_STRIPE_PUBLISHABLE_KEY || process.env.EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY,
       eas: {
         projectId: "ec6e92c9-663d-4a34-a69a-88ce0ddaafab"
       }

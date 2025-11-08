@@ -7,9 +7,10 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Client-Info, Apikey",
 };
 
-const STRIPE_SECRET_KEY = Deno.env.get("STRIPE_SECRET_KEY");
-const SUPABASE_URL = Deno.env.get("SUPABASE_URL");
-const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+// TRUXEL_ prefix for project separation from KidBooksmith
+const STRIPE_SECRET_KEY = Deno.env.get("TRUXEL_STRIPE_SECRET_KEY") || Deno.env.get("STRIPE_SECRET_KEY");
+const SUPABASE_URL = Deno.env.get("TRUXEL_SUPABASE_URL") || Deno.env.get("SUPABASE_URL");
+const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("TRUXEL_SUPABASE_SERVICE_ROLE_KEY") || Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
 
 interface CheckoutRequest {
   priceId: string;

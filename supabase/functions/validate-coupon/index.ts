@@ -1,7 +1,8 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import Stripe from 'https://esm.sh/stripe@14.21.0?target=deno';
 
-const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY')!, {
+// TRUXEL_ prefix for project separation from KidBooksmith
+const stripe = new Stripe(Deno.env.get('TRUXEL_STRIPE_SECRET_KEY') || Deno.env.get('STRIPE_SECRET_KEY')!, {
   apiVersion: '2024-11-20.acacia',
   httpClient: Stripe.createFetchHttpClient(),
 });
