@@ -58,16 +58,25 @@ class NotificationService {
         return false;
       }
 
-      // Get and save Expo push token (for future server-side notifications)
+      // Get and save Expo push token (for remote push notifications)
       if (Platform.OS !== 'web') {
-        const token = (await Notifications.getExpoPushTokenAsync()).data;
+        const token = (await Notifications.getExpoPushTokenAsync({
+          projectId: '1d1c6eac-50f6-4b1e-b71c-c55ccf0c9d4e'
+        })).data;
         console.log('[NotificationService] Expo push token:', token);
 
         // Save token to user profile
-        await supabase
+        const { error: updateError } = await supabase
           .from('profiles')
           .update({ expo_push_token: token })
           .eq('user_id', userId);
+
+        if (updateError) {
+          console.error('[NotificationService] Error saving push token:', updateError);
+          throw updateError;
+        }
+
+        console.log('[NotificationService] Push token saved to profile');
       }
 
       // Perform initial check

@@ -8,6 +8,8 @@ export default {
     scheme: "truxel",
     userInterfaceStyle: "automatic",
     newArchEnabled: true,
+    owner: "cioravabogdan",
+    projectId: "1d1c6eac-50f6-4b1e-b71c-c55ccf0c9d4e",
     splash: {
       image: "./assets/images/icon.png",
       resizeMode: "contain",
@@ -36,13 +38,15 @@ export default {
         "ACCESS_COARSE_LOCATION",
         "ACCESS_FINE_LOCATION",
         "FOREGROUND_SERVICE",
-        "INTERNET"
+        "INTERNET",
+        "POST_NOTIFICATIONS"
       ],
       config: {
         googleMaps: {
           apiKey: ""
         }
-      }
+      },
+      googleServicesFile: "./google-services.json"
     },
     web: {
       bundler: "metro",
@@ -73,7 +77,10 @@ export default {
     extra: {
       supabaseUrl: process.env.EXPO_PUBLIC_SUPABASE_URL,
       supabaseAnonKey: process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY,
-      stripePublishableKey: process.env.EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY
+      stripePublishableKey: process.env.EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY,
+      eas: {
+        projectId: "1d1c6eac-50f6-4b1e-b71c-c55ccf0c9d4e"
+      }
     }
   }
 };
