@@ -16,7 +16,7 @@ export default {
     },
     ios: {
       supportsTablet: true,
-      bundleIdentifier: "com.cioravabogdan.truxel",
+      bundleIdentifier: "io.truxel.app",
       infoPlist: {
         ITSAppUsesNonExemptEncryption: false,
         NSLocationWhenInUseUsageDescription: "Truxel needs your location to find companies near you.",
@@ -33,7 +33,7 @@ export default {
       usesAppleSignIn: true
     },
     android: {
-      package: "com.cioravabogdan.truxel",
+      package: "io.truxel.app",
       permissions: [
         "ACCESS_COARSE_LOCATION",
         "ACCESS_FINE_LOCATION",
