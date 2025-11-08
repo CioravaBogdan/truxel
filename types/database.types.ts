@@ -26,6 +26,11 @@ export interface Profile {
   subscription_renewal_date?: string;
   preferred_language: Language;
   expo_push_token?: string;
+  last_known_city?: string;
+  last_known_lat?: number;
+  last_known_lng?: number;
+  notification_radius_km?: number;
+  community_notifications_enabled?: boolean;
   stripe_customer_id?: string;
   stripe_subscription_id?: string;
   stripe_subscription_status?: string;

@@ -1,25 +1,23 @@
--- Migration: Add notification and location fields to profiles
+-- Migration: Add last_known_city to profiles
 -- Date: 2025-11-08
--- Purpose: Support push notifications and location-based post filtering
+-- Purpose: Support location-based post filtering for push notifications
+-- NOTE: Other notification fields (expo_push_token, last_known_lat, last_known_lng, 
+--       notification_radius_km, community_notifications_enabled) already exist
 
--- Add expo_push_token for push notifications
+-- VERIFIED EXISTING COLUMNS (2025-11-08):
+-- ✅ expo_push_token TEXT (nullable)
+-- ✅ last_known_lat NUMERIC (nullable)
+-- ✅ last_known_lng NUMERIC (nullable)
+-- ✅ notification_radius_km INTEGER (default 25)
+-- ✅ community_notifications_enabled BOOLEAN (default false)
+
+-- Add only missing column
 ALTER TABLE profiles 
-ADD COLUMN IF NOT EXISTS expo_push_token TEXT;
+ADD COLUMN IF NOT EXISTS last_known_city TEXT;
 
--- Add last known location fields for notification filtering
-ALTER TABLE profiles 
-ADD COLUMN IF NOT EXISTS last_known_city TEXT,
-ADD COLUMN IF NOT EXISTS last_known_lat DOUBLE PRECISION,
-ADD COLUMN IF NOT EXISTS last_known_lng DOUBLE PRECISION,
-ADD COLUMN IF NOT EXISTS notification_radius_km INTEGER DEFAULT 50;
-
--- Add index for location queries (optional, for performance)
+-- Add index for fast city-based queries
 CREATE INDEX IF NOT EXISTS idx_profiles_last_known_city 
 ON profiles (last_known_city);
 
--- Comment the columns for documentation
-COMMENT ON COLUMN profiles.expo_push_token IS 'Expo push notification token';
+-- Add comment for documentation
 COMMENT ON COLUMN profiles.last_known_city IS 'User''s last known city for location-based notifications';
-COMMENT ON COLUMN profiles.last_known_lat IS 'User''s last known latitude';
-COMMENT ON COLUMN profiles.last_known_lng IS 'User''s last known longitude';
-COMMENT ON COLUMN profiles.notification_radius_km IS 'Radius in km for location-based notifications (default 50km)';
