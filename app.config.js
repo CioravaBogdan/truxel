@@ -45,8 +45,7 @@ export default {
         googleMaps: {
           apiKey: ""
         }
-      },
-      googleServicesFile: "./google-services.json"
+      }
     },
     web: {
       bundler: "metro",
