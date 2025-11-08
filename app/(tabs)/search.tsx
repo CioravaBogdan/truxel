@@ -134,7 +134,13 @@ export default function SearchScreen() {
         return;
       }
 
-      const location = await Location.getCurrentPositionAsync({});
+      // Android-optimized: Use lower accuracy for faster response
+      // iOS will ignore this and use its own fast location
+      const location = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.Balanced, // Faster on Android (uses WiFi/Network)
+        timeInterval: 1000, // Request every second (helps Android wake up GPS)
+      });
+      
       setLatitude(location.coords.latitude);
       setLongitude(location.coords.longitude);
 
@@ -154,12 +160,22 @@ export default function SearchScreen() {
         text1: t('common.success'),
         text2: t('search.use_current_location'),
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Location error:', error);
-      Toast.show({
-        type: 'error',
-        text1: t('errors.something_went_wrong'),
-      });
+      
+      // Better error message for timeout
+      if (error?.code === 'E_LOCATION_TIMEOUT') {
+        Toast.show({
+          type: 'error',
+          text1: t('common.error'),
+          text2: 'Location timeout. Please ensure GPS is enabled and try again.',
+        });
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: t('errors.something_went_wrong'),
+        });
+      }
     } finally {
       setIsLoading(false);
     }

@@ -1,5 +1,6 @@
 import * as AppleAuthentication from 'expo-apple-authentication';
 import * as Crypto from 'expo-crypto';
+import Constants from 'expo-constants';
 import { supabase } from '@/lib/supabase';
 import { Platform } from 'react-native';
 
@@ -10,6 +11,12 @@ import { Platform } from 'react-native';
 export async function signInWithApple() {
   try {
     console.log('Starting Apple Sign In...');
+    
+    // Check if running in Expo Go (doesn't support Apple Sign In properly)
+    const appOwnership = Constants.appOwnership;
+    if (appOwnership === 'expo') {
+      throw new Error('Apple Sign In requires a Development Build. It does not work in Expo Go. Run: npx expo run:ios');
+    }
     
     // Check if Apple Auth is available (iOS 13+)
     const isAvailable = await AppleAuthentication.isAvailableAsync();
@@ -102,12 +109,23 @@ export async function signInWithGoogle() {
   try {
     console.log('Starting Google Sign In...');
     
+    // For Expo Go: Use exp:// scheme
+    // For Development Build: Use truxel:// scheme
+    // For Production: Use truxel:// scheme
+    const redirectTo = Platform.OS === 'web' 
+      ? window.location.origin // Web: use current origin
+      : 'truxel://auth/callback'; // Mobile: use deep link
+    
+    console.log('Google OAuth redirect URL:', redirectTo);
+    
     // Supabase handles the OAuth flow
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
         // Redirect back to app after auth
-        redirectTo: 'truxel://',
+        redirectTo,
+        // Skip browser redirect on mobile (we'll handle it manually)
+        skipBrowserRedirect: Platform.OS !== 'web',
         // Request user info scopes
         queryParams: {
           access_type: 'offline',
@@ -124,6 +142,7 @@ export async function signInWithGoogle() {
     console.log('Google OAuth initiated:', {
       hasUrl: !!data.url,
       provider: data.provider,
+      redirectTo,
     });
 
     // Note: The actual sign-in happens in browser
