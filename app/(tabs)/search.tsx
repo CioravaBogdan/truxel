@@ -35,6 +35,7 @@ export default function SearchScreen() {
   const { t } = useTranslation();
   const { user, profile, setProfile } = useAuthStore();
   const [keywords, setKeywords] = useState('');
+  const [keywordsList, setKeywordsList] = useState<string[]>([]);
   const [address, setAddress] = useState('');
   const [latitude, setLatitude] = useState<number | null>(null);
   const [longitude, setLongitude] = useState<number | null>(null);
@@ -109,6 +110,17 @@ export default function SearchScreen() {
     return () => clearInterval(interval);
   }, [activeSearch]);
 
+  // Parse keywords from text input
+  const parseKeywords = (text: string): string[] => {
+    return text.split(',').map(k => k.trim()).filter(k => k.length > 0);
+  };
+
+  // Update keywords list when text changes
+  useEffect(() => {
+    const parsed = parseKeywords(keywords);
+    setKeywordsList(parsed);
+  }, [keywords]);
+
   const handleUseCurrentLocation = async () => {
     setIsLoading(true);
     try {
@@ -154,11 +166,23 @@ export default function SearchScreen() {
   };
 
   const handleStartSearch = async () => {
-    if (!keywords.trim()) {
+    // Parse keywords into array (split by comma)
+    const keywordsArray = keywords.split(',').map(k => k.trim()).filter(k => k.length > 0);
+    
+    if (keywordsArray.length === 0) {
       Toast.show({
         type: 'error',
         text1: t('common.error'),
-        text2: 'Please enter keywords',
+        text2: t('search.enter_at_least_one_keyword'),
+      });
+      return;
+    }
+
+    if (keywordsArray.length > 5) {
+      Toast.show({
+        type: 'error',
+        text1: t('search.max_keywords_title'),
+        text2: t('search.max_keywords_message'),
       });
       return;
     }
@@ -167,7 +191,7 @@ export default function SearchScreen() {
       Toast.show({
         type: 'error',
         text1: t('common.error'),
-        text2: 'Please select a location',
+        text2: t('search.select_location_first'),
       });
       return;
     }
@@ -187,8 +211,11 @@ export default function SearchScreen() {
     // Direct search without confirmation popup
     setIsLoading(true);
     try {
+      // Join keywords back with commas for webhook (webhook expects this format)
+      const keywordsString = keywordsArray.join(', ');
+      
       const newSearch = await searchesService.initiateSearch(user.id, profile, {
-        keywords,
+        keywords: keywordsString,
         address,
         latitude,
         longitude,
@@ -204,6 +231,7 @@ export default function SearchScreen() {
       });
 
       setKeywords('');
+      setKeywordsList([]);
     } catch (error: any) {
       Toast.show({
         type: 'error',
@@ -392,21 +420,67 @@ export default function SearchScreen() {
         </Card>
 
         <Card style={styles.section}>
-          <Text style={styles.sectionTitle}>{t('search.keywords')}</Text>
+          <View style={styles.keywordsHeader}>
+            <Text style={styles.sectionTitle}>{t('search.keywords')}</Text>
+            <View style={styles.keywordCounter}>
+              <Text style={[
+                styles.counterText,
+                keywordsList.length > 5 && styles.counterTextError
+              ]}>
+                {keywordsList.length} / 5
+              </Text>
+            </View>
+          </View>
+          
+          <Text style={styles.keywordsHint}>
+            {t('search.keywords_hint')}
+          </Text>
+          
           <Input
             placeholder={t('search.keywords_placeholder')}
             value={keywords}
             onChangeText={setKeywords}
             multiline
+            style={keywordsList.length > 5 ? styles.inputError : undefined}
+          />
+          
+          {/* Visual Keywords Display */}
+          {keywordsList.length > 0 && (
+            <View style={styles.keywordsPreview}>
+              <Text style={styles.previewLabel}>{t('search.your_keywords')}:</Text>
+              <View style={styles.keywordTags}>
+                {keywordsList.slice(0, 5).map((keyword, index) => (
+                  <View key={index} style={styles.keywordTag}>
+                    <Text style={styles.keywordTagText}>{keyword}</Text>
+                  </View>
+                ))}
+                {keywordsList.length > 5 && (
+                  <View style={styles.keywordTagError}>
+                    <Text style={styles.keywordTagTextError}>
+                      +{keywordsList.length - 5} {t('search.too_many')}
+                    </Text>
+                  </View>
+                )}
+              </View>
+            </View>
+          )}
+
+          {/* Cost Info */}
+          <View style={styles.costInfo}>
+            <Crosshair size={20} color="#64748B" />
+            <Text style={styles.costText}>
+              {t('search.search_cost', { remaining: searchesRemaining })}
+            </Text>
+          </View>
+
+          {/* Start Search Button - Directly under keywords */}
+          <Button
+            title={t('search.start_search')}
+            onPress={handleStartSearch}
+            loading={isLoading}
+            disabled={!latitude || !longitude || !keywords.trim() || searchesRemaining === 0}
           />
         </Card>
-
-        <View style={styles.costInfo}>
-          <Crosshair size={20} color="#64748B" />
-          <Text style={styles.costText}>
-            {t('search.search_cost', { remaining: searchesRemaining })}
-          </Text>
-        </View>
 
         {/* Quick Search Section */}
         {profile?.preferred_industries && profile.preferred_industries.length > 0 && (
@@ -437,13 +511,6 @@ export default function SearchScreen() {
             />
           </Card>
         )}
-
-        <Button
-          title={t('search.start_search')}
-          onPress={handleStartSearch}
-          loading={isLoading}
-          disabled={!latitude || !longitude || !keywords.trim() || searchesRemaining === 0}
-        />
       </ScrollView>
     </SafeAreaView>
   );
@@ -501,8 +568,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 16,
+    marginVertical: 16,
     padding: 12,
+    backgroundColor: '#F8FAFC',
+    borderRadius: 8,
   },
   costText: {
     fontSize: 14,
@@ -637,5 +706,83 @@ const styles = StyleSheet.create({
   },
   quickSearchButton: {
     backgroundColor: '#3B82F6',
+  },
+  // Keywords Section Styles
+  keywordsHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  keywordCounter: {
+    backgroundColor: '#F1F5F9',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+  },
+  counterText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#64748B',
+  },
+  counterTextError: {
+    color: '#EF4444',
+  },
+  keywordsHint: {
+    fontSize: 13,
+    color: '#64748B',
+    marginBottom: 12,
+    lineHeight: 18,
+  },
+  inputError: {
+    borderColor: '#EF4444',
+    borderWidth: 2,
+  },
+  keywordsPreview: {
+    marginTop: 12,
+    padding: 12,
+    backgroundColor: '#F8FAFC',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+  },
+  previewLabel: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: '#475569',
+    marginBottom: 8,
+  },
+  keywordTags: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+  },
+  keywordTag: {
+    backgroundColor: '#DBEAFE',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: '#93C5FD',
+  },
+  keywordTagText: {
+    fontSize: 13,
+    color: '#1E40AF',
+    fontWeight: '500',
+  },
+  keywordTagError: {
+    backgroundColor: '#FEE2E2',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: '#FCA5A5',
+  },
+  keywordTagTextError: {
+    fontSize: 13,
+    color: '#991B1B',
+    fontWeight: '600',
   },
 });
