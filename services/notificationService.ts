@@ -61,7 +61,7 @@ class NotificationService {
       // Get and save Expo push token (for remote push notifications)
       if (Platform.OS !== 'web') {
         const token = (await Notifications.getExpoPushTokenAsync({
-          projectId: '1d1c6eac-50f6-4b1e-b71c-c55ccf0c9d4e'
+          projectId: 'ec6e92c9-d706-4c1f-99b2-a5dd7e5e9bb1'
         })).data;
         console.log('[NotificationService] Expo push token:', token);
 

@@ -9,7 +9,7 @@ export default {
     userInterfaceStyle: "automatic",
     newArchEnabled: true,
     owner: "cioravabogdan",
-    projectId: "1d1c6eac-50f6-4b1e-b71c-c55ccf0c9d4e",
+    projectId: "ec6e92c9-d706-4c1f-99b2-a5dd7e5e9bb1",
     splash: {
       image: "./assets/images/icon.png",
       resizeMode: "contain",
@@ -78,7 +78,7 @@ export default {
       supabaseAnonKey: process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY,
       stripePublishableKey: process.env.EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY,
       eas: {
-        projectId: "1d1c6eac-50f6-4b1e-b71c-c55ccf0c9d4e"
+        projectId: "ec6e92c9-d706-4c1f-99b2-a5dd7e5e9bb1"
       }
     }
   }
