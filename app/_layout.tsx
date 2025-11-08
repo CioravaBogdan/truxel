@@ -4,6 +4,8 @@ import { StatusBar } from 'expo-status-bar';
 import { useFrameworkReady } from '@/hooks/useFrameworkReady';
 import { useAuthStore } from '@/store/authStore';
 import { authService } from '@/services/authService';
+import { sessionService } from '@/services/sessionService';
+import { notificationService } from '@/services/notificationService';
 import i18n from '@/lib/i18n';
 import Toast from 'react-native-toast-message';
 
@@ -42,6 +44,19 @@ export default function RootLayout() {
               i18n.changeLanguage(userLanguage);
             }
             
+            // Start session auto-refresh service
+            console.log('RootLayout: Starting session service');
+            sessionService.start();
+            
+            // Initialize push notification service
+            console.log('RootLayout: Initializing notification service');
+            notificationService.initialize(session.user.id).then(success => {
+              if (success) {
+                console.log('RootLayout: Starting notification polling');
+                notificationService.startLocationPolling();
+              }
+            });
+            
             setIsLoading(false);
           } catch (error) {
             console.error('RootLayout: Error fetching profile:', error);
@@ -51,6 +66,12 @@ export default function RootLayout() {
         } else {
           console.log('RootLayout: Auth changed - no session, clearing profile');
           setProfile(null);
+          
+          // Stop services on logout
+          console.log('RootLayout: Stopping session and notification services');
+          sessionService.stop();
+          notificationService.stopLocationPolling();
+          
           // Reset to English when logged out
           if (i18n.language !== 'en') {
             i18n.changeLanguage('en');

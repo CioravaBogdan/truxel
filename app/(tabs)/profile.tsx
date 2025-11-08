@@ -221,6 +221,7 @@ export default function ProfileScreen() {
   };
 
   // Load profile data into form
+  // FIXED: Only depend on profile?.user_id to prevent re-renders on any profile field change
   useEffect(() => {
     console.log('useEffect triggered, profile:', profile);
     // Only load from profile if we don't have unsaved changes
@@ -258,7 +259,7 @@ export default function ProfileScreen() {
     } else {
       console.log('Skipping profile load - has unsaved changes or no profile');
     }
-  }, [profile, hasUnsavedChanges, sortedDialCodes]);
+  }, [profile?.user_id, hasUnsavedChanges, sortedDialCodes]);
 
   // Toggle industry selection (max 5)
   const toggleIndustry = (industry: string) => {
