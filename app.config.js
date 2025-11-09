@@ -27,10 +27,10 @@ export default {
           "whatsapp-messenger"
         ]
       },
-      // iOS uses Apple Maps by default (no API key needed)
-      // Only uncomment if you want to force Google Maps on iOS
+      // Maps disabled - not using MapView in app (Location via Expo Location only)
+      // If needed in future, uncomment and use TRUXEL_ prefix:
       // config: {
-      //   googleMapsApiKey: process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY || ""
+      //   googleMapsApiKey: process.env.TRUXEL_GOOGLE_MAPS_API_KEY || ""
       // },
       usesAppleSignIn: true
     },
@@ -43,12 +43,13 @@ export default {
         "INTERNET",
         "POST_NOTIFICATIONS"
       ],
-      // Android requires Google Maps API key for react-native-maps
-      config: {
-        googleMaps: {
-          apiKey: process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY || ""
-        }
-      }
+      // Maps disabled - not using MapView in app (Location via Expo Location only)
+      // If needed in future, uncomment and use TRUXEL_ prefix:
+      // config: {
+      //   googleMaps: {
+      //     apiKey: process.env.TRUXEL_GOOGLE_MAPS_API_KEY || ""
+      //   }
+      // }
     },
     web: {
       bundler: "metro",
