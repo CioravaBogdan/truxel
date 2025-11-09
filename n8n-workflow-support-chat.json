@@ -1,0 +1,234 @@
+{
+  "name": "Truxel Support Chat - Real-time Response",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "70100ffe-0d06-4cff-9ad1-b7001713ab5c",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-receive",
+      "name": "Webhook - Receive Message",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [250, 300],
+      "webhookId": "70100ffe-0d06-4cff-9ad1-b7001713ab5c"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extract message data from webhook\nconst userId = $input.item.json.body.userId;\nconst userName = $input.item.json.body.userName;\nconst userEmail = $input.item.json.body.userEmail;\nconst message = $input.item.json.body.message;\nconst conversationId = $input.item.json.body.conversationId;\nconst userLanguage = $input.item.json.body.userLanguage || 'en';\nconst subscriptionTier = $input.item.json.body.subscriptionTier || 'trial';\n\n// Validate required fields\nif (!conversationId) {\n  throw new Error('Missing conversationId - cannot respond to message');\n}\n\nif (!message || message.trim() === '') {\n  throw new Error('Empty message received');\n}\n\n// Build context for AI\nconst context = {\n  userId,\n  userName: userName || 'User',\n  userEmail,\n  message,\n  conversationId,\n  userLanguage,\n  subscriptionTier,\n  timestamp: new Date().toISOString()\n};\n\n// Build prompt for AI\nconst prompt = `You are Truxel Support AI Assistant. A logistics lead generation app user needs help.\n\nUser Context:\n- Name: ${userName}\n- Email: ${userEmail}\n- Language: ${userLanguage}\n- Subscription: ${subscriptionTier}\n\nUser Question:\n\"${message}\"\n\nProvide a helpful, concise response in ${userLanguage} language. Be friendly and professional.\nIf the question is about pricing, mention our plans: Standard (€29.99/mo), Pro (€49.99/mo), Premium (€99.99/mo).\nIf they need human support, let them know the team will respond shortly.\n\nResponse:`;\n\nreturn {\n  json: {\n    ...context,\n    aiPrompt: prompt\n  }\n};"
+      },
+      "id": "function-prepare",
+      "name": "Function - Prepare AI Context",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "model": "gpt-4",
+        "messages": {
+          "values": [
+            {
+              "role": "user",
+              "content": "={{ $json.aiPrompt }}"
+            }
+          ]
+        },
+        "options": {
+          "temperature": 0.7,
+          "maxTokens": 300
+        }
+      },
+      "id": "openai-generate",
+      "name": "OpenAI - Generate Response",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1,
+      "position": [650, 300],
+      "credentials": {
+        "openAiApi": {
+          "id": "your-openai-credential-id",
+          "name": "OpenAI API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "insert",
+        "table": "support_messages",
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "conversation_id": "={{ $('Function - Prepare AI Context').item.json.conversationId }}",
+            "sender_type": "ai",
+            "sender_name": "AI Assistant",
+            "message": "={{ $json.choices[0].message.content }}"
+          }
+        }
+      },
+      "id": "supabase-insert-response",
+      "name": "Supabase - Insert AI Response",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [850, 300],
+      "credentials": {
+        "supabaseApi": {
+          "id": "your-supabase-credential-id",
+          "name": "Supabase Truxel"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "update",
+        "table": "support_conversations",
+        "filterType": "manual",
+        "filters": {
+          "conditions": [
+            {
+              "field": "id",
+              "operator": "eq",
+              "value": "={{ $('Function - Prepare AI Context').item.json.conversationId }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status": "waiting_user"
+          }
+        }
+      },
+      "id": "supabase-update-status",
+      "name": "Supabase - Update Conversation Status",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [1050, 300],
+      "credentials": {
+        "supabaseApi": {
+          "id": "your-supabase-credential-id",
+          "name": "Supabase Truxel"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"success\": true, \"message\": \"Response sent\", \"conversationId\": $('Function - Prepare AI Context').item.json.conversationId } }}"
+      },
+      "id": "webhook-response",
+      "name": "Webhook Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1250, 300]
+    },
+    {
+      "parameters": {
+        "url": "https://exp.host/--/api/v2/push/send",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "to",
+              "value": "={{ $('Function - Prepare AI Context').item.json.expoPushToken }}"
+            },
+            {
+              "name": "title",
+              "value": "Support Response"
+            },
+            {
+              "name": "body",
+              "value": "You have a new message from support"
+            },
+            {
+              "name": "data",
+              "value": "={{ { \"conversationId\": $('Function - Prepare AI Context').item.json.conversationId, \"type\": \"support_message\" } }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "push-notification",
+      "name": "Push Notification (Optional)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [850, 500],
+      "executeOnce": true,
+      "disabled": true,
+      "notes": "Enable this to send push notifications to offline users"
+    }
+  ],
+  "connections": {
+    "Webhook - Receive Message": {
+      "main": [
+        [
+          {
+            "node": "Function - Prepare AI Context",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Function - Prepare AI Context": {
+      "main": [
+        [
+          {
+            "node": "OpenAI - Generate Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI - Generate Response": {
+      "main": [
+        [
+          {
+            "node": "Supabase - Insert AI Response",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Push Notification (Optional)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase - Insert AI Response": {
+      "main": [
+        [
+          {
+            "node": "Supabase - Update Conversation Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase - Update Conversation Status": {
+      "main": [
+        [
+          {
+            "node": "Webhook Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-11-09T00:00:00.000Z",
+  "versionId": "1"
+}

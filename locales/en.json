@@ -489,5 +489,31 @@
       "DRIVER_AVAILABLE": "Driver Available",
       "LOAD_AVAILABLE": "Load Available"
     }
+  },
+  "support": {
+    "title": "Contact Support",
+    "description": "Need help? Send us a message and our team will get back to you as soon as possible.",
+    "need_help_choosing": "Need help choosing a plan?",
+    "quick_questions": "Quick questions",
+    "write_custom_message": "Write custom message",
+    "your_message": "Your message",
+    "message_placeholder": "Type your message...",
+    "back_to_templates": "Back to templates",
+    "send_message": "Send Message",
+    "message_sent": "Message Sent!",
+    "message_sent_description": "You'll receive a response here shortly.",
+    "message_received": "We received your message and will respond shortly.",
+    "error_empty_message": "Please enter a message",
+    "error_not_logged_in": "You must be logged in to contact support",
+    "error_sending": "Failed to send message",
+    "no_messages_yet": "No messages yet",
+    "start_conversation": "Send a message to start the conversation with our support team",
+    "templates": {
+      "pricing_question": "I have a question about pricing and plans",
+      "feature_request": "I'd like to suggest a new feature",
+      "bug_report": "I found a bug or technical issue",
+      "account_help": "I need help with my account",
+      "subscription_help": "I need help with my subscription"
+    }
   }
 }

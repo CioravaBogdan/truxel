@@ -472,5 +472,31 @@
       "DRIVER_AVAILABLE": "Șofer Disponibil",
       "LOAD_AVAILABLE": "Marfă Disponibilă"
     }
+  },
+  "support": {
+    "title": "Contact Suport",
+    "description": "Ai nevoie de ajutor? Trimite-ne un mesaj și echipa noastră îți va răspunde cât mai curând.",
+    "need_help_choosing": "Ai nevoie de ajutor la alegerea planului?",
+    "quick_questions": "Întrebări rapide",
+    "write_custom_message": "Scrie mesaj personalizat",
+    "your_message": "Mesajul tău",
+    "message_placeholder": "Scrie mesajul tău...",
+    "back_to_templates": "Înapoi la șabloane",
+    "send_message": "Trimite Mesaj",
+    "message_sent": "Mesaj Trimis!",
+    "message_sent_description": "Vei primi un răspuns aici în curând.",
+    "message_received": "Am primit mesajul tău și vom răspunde în curând.",
+    "error_empty_message": "Te rog introdu un mesaj",
+    "error_not_logged_in": "Trebuie să fii autentificat pentru a contacta suportul",
+    "error_sending": "Eroare la trimiterea mesajului",
+    "no_messages_yet": "Nu sunt mesaje încă",
+    "start_conversation": "Trimite un mesaj pentru a începe conversația cu echipa noastră de suport",
+    "templates": {
+      "pricing_question": "Am o întrebare despre prețuri și planuri",
+      "feature_request": "Aș vrea să sugerez o funcționalitate nouă",
+      "bug_report": "Am găsit un bug sau o problemă tehnică",
+      "account_help": "Am nevoie de ajutor cu contul meu",
+      "subscription_help": "Am nevoie de ajutor cu abonamentul meu"
+    }
   }
 }
