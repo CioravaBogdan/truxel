@@ -27,9 +27,10 @@ export default {
           "whatsapp-messenger"
         ]
       },
-      // TEMPORARILY DISABLED - Google Maps API key required
+      // iOS uses Apple Maps by default (no API key needed)
+      // Only uncomment if you want to force Google Maps on iOS
       // config: {
-      //   googleMapsApiKey: ""
+      //   googleMapsApiKey: process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY || ""
       // },
       usesAppleSignIn: true
     },
@@ -42,12 +43,12 @@ export default {
         "INTERNET",
         "POST_NOTIFICATIONS"
       ],
-      // TEMPORARILY DISABLED - Google Maps API key required
-      // config: {
-      //   googleMaps: {
-      //     apiKey: ""
-      //   }
-      // }
+      // Android requires Google Maps API key for react-native-maps
+      config: {
+        googleMaps: {
+          apiKey: process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY || ""
+        }
+      }
     },
     web: {
       bundler: "metro",
