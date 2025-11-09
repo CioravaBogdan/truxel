@@ -405,7 +405,8 @@ export default function ProfileScreen() {
     );
   }
 
-  const tierInfo = SUBSCRIPTION_TIERS[profile.subscription_tier];
+  // Fallback to trial if tier not found (prevents undefined crash)
+  const tierInfo = SUBSCRIPTION_TIERS[profile.subscription_tier] || SUBSCRIPTION_TIERS['trial'];
   const searchesUsed =
     profile.subscription_tier === 'trial'
       ? profile.trial_searches_used

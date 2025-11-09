@@ -1,7 +1,9 @@
 import { supabase } from '@/lib/supabase';
 import { SubscriptionTierData, AdditionalSearchPack } from '@/types/database.types';
+import Constants from 'expo-constants';
 
-const SUPABASE_URL = process.env.EXPO_PUBLIC_SUPABASE_URL;
+const SUPABASE_URL = Constants.expoConfig?.extra?.supabaseUrl;
+const SUPABASE_ANON_KEY = Constants.expoConfig?.extra?.supabaseAnonKey;
 
 interface CheckoutSessionResponse {
   sessionId: string;
@@ -19,15 +21,20 @@ export const stripeService = {
     console.log('stripeService: Starting getAvailableSubscriptionTiers...');
     try {
       // Use REST API directly as Supabase client query hangs
-      const SUPABASE_URL = process.env.EXPO_PUBLIC_SUPABASE_URL || 'https://upxocyomsfhqoflwibwn.supabase.co';
-      const SUPABASE_KEY = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY;
+      // Use Constants for production build compatibility
+      const url = SUPABASE_URL || 'https://upxocyomsfhqoflwibwn.supabase.co';
+      const key = SUPABASE_ANON_KEY;
+      
+      if (!key) {
+        throw new Error('Supabase anon key not configured');
+      }
       
       const response = await fetch(
-        `${SUPABASE_URL}/rest/v1/subscription_tiers?tier_name=neq.trial&order=price.asc`,
+        `${url}/rest/v1/subscription_tiers?tier_name=neq.trial&order=price.asc`,
         {
           headers: {
-            'apikey': SUPABASE_KEY!,
-            'Authorization': `Bearer ${SUPABASE_KEY}`,
+            'apikey': key,
+            'Authorization': `Bearer ${key}`,
           },
         }
       );
@@ -51,15 +58,20 @@ export const stripeService = {
     console.log('stripeService: Starting getAvailableSearchPacks...');
     try {
       // Use REST API directly as Supabase client query hangs
-      const SUPABASE_URL = process.env.EXPO_PUBLIC_SUPABASE_URL || 'https://upxocyomsfhqoflwibwn.supabase.co';
-      const SUPABASE_KEY = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY;
+      // Use Constants for production build compatibility
+      const url = SUPABASE_URL || 'https://upxocyomsfhqoflwibwn.supabase.co';
+      const key = SUPABASE_ANON_KEY;
+      
+      if (!key) {
+        throw new Error('Supabase anon key not configured');
+      }
       
       const response = await fetch(
-        `${SUPABASE_URL}/rest/v1/additional_search_packs?order=price.asc`,
+        `${url}/rest/v1/additional_search_packs?order=price.asc`,
         {
           headers: {
-            'apikey': SUPABASE_KEY!,
-            'Authorization': `Bearer ${SUPABASE_KEY}`,
+            'apikey': key,
+            'Authorization': `Bearer ${key}`,
           },
         }
       );
