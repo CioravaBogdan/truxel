@@ -27,9 +27,10 @@ export default {
           "whatsapp-messenger"
         ]
       },
-      config: {
-        googleMapsApiKey: ""
-      },
+      // TEMPORARILY DISABLED - Google Maps API key required
+      // config: {
+      //   googleMapsApiKey: ""
+      // },
       usesAppleSignIn: true
     },
     android: {
@@ -41,11 +42,12 @@ export default {
         "INTERNET",
         "POST_NOTIFICATIONS"
       ],
-      config: {
-        googleMaps: {
-          apiKey: ""
-        }
-      }
+      // TEMPORARILY DISABLED - Google Maps API key required
+      // config: {
+      //   googleMaps: {
+      //     apiKey: ""
+      //   }
+      // }
     },
     web: {
       bundler: "metro",
