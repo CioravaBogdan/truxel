@@ -6,7 +6,6 @@ import {
   FlatList,
   TouchableOpacity,
   RefreshControl,
-  Linking,
   ActivityIndicator,
   Alert,
   Modal,
@@ -14,6 +13,12 @@ import {
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import {
+  safeOpenWhatsApp,
+  safeOpenEmail,
+  safeOpenPhone,
+  showNativeModuleError
+} from '@/utils/safeNativeModules';
 import { Card } from '@/components/Card';
 import { StatusBadge } from '@/components/StatusBadge';
 import { Input } from '@/components/Input';
@@ -233,7 +238,7 @@ export default function LeadsScreen() {
   };
 
   // Email, WhatsApp, Share handlers for Lead cards
-  const handleSendEmail = (lead: Lead) => {
+  const handleSendEmail = async (lead: Lead) => {
     if (!lead.email) {
       Toast.show({ type: 'error', text1: 'No email available' });
       return;
@@ -249,11 +254,20 @@ export default function LeadsScreen() {
       userEmail: profile?.email || '',
     });
 
-    const mailto = `mailto:${lead.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    Linking.openURL(mailto);
+    // Use safe wrapper to prevent iOS crashes
+    const result = await safeOpenEmail(
+      lead.email,
+      subject,
+      body,
+      'Cannot open email client'
+    );
+
+    if (!result.success) {
+      showNativeModuleError('Error', result.userMessage);
+    }
   };
 
-  const handleSendWhatsApp = (lead: Lead) => {
+  const handleSendWhatsApp = async (lead: Lead) => {
     if (!lead.whatsapp && !lead.phone) {
       Toast.show({ type: 'error', text1: 'No WhatsApp number available' });
       return;
@@ -267,16 +281,25 @@ export default function LeadsScreen() {
       userPhone: profile?.phone_number || '',
     });
 
-    const phone = (lead.whatsapp || lead.phone || '').replace(/[^0-9]/g, '');
-    const whatsappUrl = `whatsapp://send?phone=${phone}&text=${encodeURIComponent(message)}`;
+    const phone = (lead.whatsapp || lead.phone || '').replace(/[^0-9+]/g, '');
+    
+    // Ensure phone has country code
+    const phoneWithCode = phone.startsWith('+') ? phone : `+${phone}`;
 
-    Linking.canOpenURL(whatsappUrl).then((supported) => {
-      if (supported) {
-        Linking.openURL(whatsappUrl);
-      } else {
-        Toast.show({ type: 'error', text1: 'WhatsApp not installed' });
-      }
-    });
+    // Use safe wrapper to prevent iOS crashes
+    const result = await safeOpenWhatsApp(
+      phoneWithCode,
+      message,
+      'WhatsApp not installed or accessible'
+    );
+
+    if (!result.success) {
+      Toast.show({ 
+        type: 'error', 
+        text1: 'WhatsApp Error',
+        text2: result.userMessage 
+      });
+    }
   };
 
   const handleShareLead = async (lead: Lead) => {
@@ -472,7 +495,17 @@ Shared from Truxel
         {lead.phone && (
           <TouchableOpacity
             style={styles.actionButton}
-            onPress={() => Linking.openURL(`tel:${lead.phone}`)}
+            onPress={async () => {
+              if (!lead.phone) return;
+              const result = await safeOpenPhone(lead.phone, 'Cannot make phone call');
+              if (!result.success) {
+                Toast.show({
+                  type: 'error',
+                  text1: 'Phone Error',
+                  text2: result.userMessage
+                });
+              }
+            }}
           >
             <Phone size={20} color="#F59E0B" />
           </TouchableOpacity>

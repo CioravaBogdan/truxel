@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Card } from '@/components/Card';
 import { Button } from '@/components/Button';
+import { ChatSupportModal } from '@/components/ChatSupportModal';
 import { useAuthStore } from '@/store/authStore';
 import { stripeService } from '@/services/stripeService';
 import Toast from 'react-native-toast-message';
@@ -76,6 +77,9 @@ export default function PricingScreen() {
   const [validatingCoupon, setValidatingCoupon] = useState(false);
   const [validatedCoupon, setValidatedCoupon] = useState<any>(null);
   const [couponError, setCouponError] = useState<string | null>(null);
+  
+  // Support modal state
+  const [showSupportModal, setShowSupportModal] = useState(false);
 
   const checkSubscriptionStatus = useCallback(async () => {
     const state = useAuthStore.getState();
@@ -906,7 +910,22 @@ export default function PricingScreen() {
         <View style={styles.footer}>
           <Text style={styles.footerText}>{t('pricing.footer_note')}</Text>
         </View>
+
+        {/* Support Button */}
+        <TouchableOpacity
+          style={styles.supportButton}
+          onPress={() => setShowSupportModal(true)}
+        >
+          <Text style={styles.supportButtonText}>💬 {t('support.title')}</Text>
+          <Text style={styles.supportButtonSubtext}>{t('support.need_help_choosing')}</Text>
+        </TouchableOpacity>
       </ScrollView>
+
+      {/* Chat Support Modal */}
+      <ChatSupportModal
+        visible={showSupportModal}
+        onClose={() => setShowSupportModal(false)}
+      />
     </SafeAreaView>
   );
 }
@@ -1218,5 +1237,27 @@ const styles = StyleSheet.create({
     color: '#94A3B8',
     textDecorationLine: 'line-through',
     marginBottom: 2,
+  },
+  // Support button styles
+  supportButton: {
+    backgroundColor: '#F0F9FF',
+    padding: 16,
+    borderRadius: 12,
+    alignItems: 'center',
+    marginTop: 16,
+    marginHorizontal: 16,
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: '#BFDBFE',
+  },
+  supportButtonText: {
+    fontSize: 16,
+    color: '#1E40AF',
+    fontWeight: '600',
+    marginBottom: 4,
+  },
+  supportButtonSubtext: {
+    fontSize: 13,
+    color: '#60A5FA',
   },
 });

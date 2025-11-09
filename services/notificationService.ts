@@ -2,6 +2,11 @@ import * as Notifications from 'expo-notifications';
 import { supabase } from '@/lib/supabase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Platform } from 'react-native';
+import {
+  safeRequestNotificationPermissions,
+  safeGetExpoPushToken,
+  safeScheduleNotification
+} from '@/utils/safeNativeModules';
 
 const LAST_CHECK_KEY = 'notification_last_check';
 const POLLING_INTERVAL = 7 * 60 * 1000; // 7 minutes (between 5-10min as requested)
@@ -44,25 +49,26 @@ class NotificationService {
         }),
       });
 
-      // Request permissions
-      const { status: existingStatus } = await Notifications.getPermissionsAsync();
-      let finalStatus = existingStatus;
-
-      if (existingStatus !== 'granted') {
-        const { status } = await Notifications.requestPermissionsAsync();
-        finalStatus = status;
-      }
-
-      if (finalStatus !== 'granted') {
+      // Request permissions (safe wrapper prevents crashes)
+      const permissionsResult = await safeRequestNotificationPermissions();
+      
+      if (!permissionsResult || permissionsResult.status !== 'granted') {
         console.log('[NotificationService] Permissions not granted');
         return false;
       }
 
-      // Get and save Expo push token (for remote push notifications)
+      // Get and save Expo push token (safe wrapper prevents crashes)
       if (Platform.OS !== 'web') {
-        const token = (await Notifications.getExpoPushTokenAsync({
+        const token = await safeGetExpoPushToken({
           projectId: 'ec6e92c9-663d-4a34-a69a-88ce0ddaafab'
-        })).data;
+        });
+        
+        if (!token) {
+          console.log('[NotificationService] Could not get push token (non-critical)');
+          // Continue anyway - local notifications still work
+          return true;
+        }
+        
         console.log('[NotificationService] Expo push token:', token);
 
         // Save token to user profile
@@ -234,17 +240,21 @@ class NotificationService {
         ? `${post.cargo_type}${post.cargo_weight ? ` (${post.cargo_weight}t)` : ''}`
         : 'cargo';
 
-      await Notifications.scheduleNotificationAsync({
-        content: {
+      const notificationId = await safeScheduleNotification(
+        {
           title: `🚛 New load in ${city}`,
           body: `${companyName} posted: ${cargoInfo}`,
           data: { postId: post.id },
           sound: true,
         },
-        trigger: null, // Send immediately
-      });
+        null // Send immediately
+      );
 
-      console.log('[NotificationService] Notification sent');
+      if (notificationId) {
+        console.log('[NotificationService] Notification sent:', notificationId);
+      } else {
+        console.log('[NotificationService] Could not send notification (non-critical)');
+      }
     } catch (error) {
       console.error('[NotificationService] Error sending notification:', error);
     }

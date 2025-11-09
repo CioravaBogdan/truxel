@@ -6,18 +6,40 @@ import { useAuthStore } from '@/store/authStore';
 import { authService } from '@/services/authService';
 import { sessionService } from '@/services/sessionService';
 import { notificationService } from '@/services/notificationService';
+import { nativeModulesService } from '@/services/nativeModulesService';
 import i18n from '@/lib/i18n';
 import Toast from 'react-native-toast-message';
 
 export default function RootLayout() {
   useFrameworkReady();
   const [isNavigationReady, setIsNavigationReady] = useState(false);
+  const [nativeModulesReady, setNativeModulesReady] = useState(false);
 
   const router = useRouter();
   const segments = useSegments();
   const { setSession, setUser, setProfile, setIsLoading, isAuthenticated } = useAuthStore();
 
+  // Initialize native modules first (prevents iOS crashes)
   useEffect(() => {
+    console.log('RootLayout: Initializing native modules safely...');
+    nativeModulesService
+      .initialize()
+      .then((success) => {
+        console.log('RootLayout: Native modules initialization completed:', success);
+        setNativeModulesReady(true);
+      })
+      .catch((error) => {
+        console.error('RootLayout: Native modules error (continuing anyway):', error);
+        setNativeModulesReady(true); // Continue even if initialization fails
+      });
+  }, []);
+
+  useEffect(() => {
+    if (!nativeModulesReady) {
+      console.log('RootLayout: Waiting for native modules to be ready...');
+      return;
+    }
+
     console.log('RootLayout: Setting up auth listener (no manual getSession call)...');
 
     const { data: authListener } = authService.onAuthStateChange(
@@ -44,18 +66,28 @@ export default function RootLayout() {
               i18n.changeLanguage(userLanguage);
             }
             
-            // Start session auto-refresh service
-            console.log('RootLayout: Starting session service');
-            sessionService.start();
+            // Start session auto-refresh service (wrapped in try-catch)
+            try {
+              console.log('RootLayout: Starting session service');
+              sessionService.start();
+            } catch (sessionError) {
+              console.error('RootLayout: Session service error (non-critical):', sessionError);
+            }
             
-            // Initialize push notification service
-            console.log('RootLayout: Initializing notification service');
-            notificationService.initialize(session.user.id).then(success => {
-              if (success) {
-                console.log('RootLayout: Starting notification polling');
-                notificationService.startLocationPolling();
-              }
-            });
+            // Initialize push notification service (wrapped in try-catch)
+            try {
+              console.log('RootLayout: Initializing notification service');
+              notificationService.initialize(session.user.id).then(success => {
+                if (success) {
+                  console.log('RootLayout: Starting notification polling');
+                  notificationService.startLocationPolling();
+                }
+              }).catch(notifError => {
+                console.error('RootLayout: Notification service error (non-critical):', notifError);
+              });
+            } catch (notifError) {
+              console.error('RootLayout: Notification initialization error (non-critical):', notifError);
+            }
             
             setIsLoading(false);
           } catch (error) {
@@ -84,7 +116,7 @@ export default function RootLayout() {
     return () => {
       authListener?.subscription.unsubscribe();
     };
-  }, []);
+  }, [nativeModulesReady, setSession, setUser, setProfile, setIsLoading]);
 
   useEffect(() => {
     // Wait for Stack to be mounted before attempting navigation
@@ -121,7 +153,7 @@ export default function RootLayout() {
     } else {
       console.log('RootLayout: No navigation needed, staying on current screen');
     }
-  }, [isAuthenticated, segments, isNavigationReady]);
+  }, [isAuthenticated, segments, isNavigationReady, router]);
 
   return (
     <>

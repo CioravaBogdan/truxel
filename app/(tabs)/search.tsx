@@ -9,8 +9,9 @@ import {
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import * as Location from 'expo-location';
+import { useLocation } from '@/hooks/useLocation';
 import * as Notifications from 'expo-notifications';
+import { safeScheduleNotification } from '@/utils/safeNativeModules';
 import { Card } from '@/components/Card';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
@@ -68,25 +69,25 @@ export default function SearchScreen() {
       if (updatedSearch.id === activeSearch.id) {
         setActiveSearch(updatedSearch);
 
-        // Send notification when search completes
+        // Send notification when search completes (safe wrapper prevents crashes)
         if (updatedSearch.status === 'completed') {
-          Notifications.scheduleNotificationAsync({
-            content: {
+          safeScheduleNotification(
+            {
               title: t('search.search_complete'),
               body: t('search.results_ready'),
               sound: true,
             },
-            trigger: null, // Immediate
-          });
+            null // Immediate
+          );
         } else if (updatedSearch.status === 'failed') {
-          Notifications.scheduleNotificationAsync({
-            content: {
+          safeScheduleNotification(
+            {
               title: t('search.search_failed'),
               body: t('search.please_try_again'),
               sound: true,
             },
-            trigger: null,
-          });
+            null
+          );
         }
       }
     });
@@ -121,37 +122,20 @@ export default function SearchScreen() {
     setKeywordsList(parsed);
   }, [keywords]);
 
+  const { getCurrentLocation, reverseGeocode } = useLocation();
+
   const handleUseCurrentLocation = async () => {
     setIsLoading(true);
     try {
-      const { status } = await Location.requestForegroundPermissionsAsync();
-
-      if (status !== 'granted') {
-        Toast.show({
-          type: 'error',
-          text1: t('search.location_denied'),
-        });
-        return;
-      }
-
-      // Android-optimized: Use lower accuracy for faster response
-      // iOS will ignore this and use its own fast location
-      const location = await Location.getCurrentPositionAsync({
-        accuracy: Location.Accuracy.Balanced, // Faster on Android (uses WiFi/Network)
-        timeInterval: 1000, // Request every second (helps Android wake up GPS)
-      });
+      // Platform-agnostic: Works on mobile (Expo Location) and web (browser Geolocation API)
+      const location = await getCurrentLocation();
       
-      setLatitude(location.coords.latitude);
-      setLongitude(location.coords.longitude);
+      setLatitude(location.latitude);
+      setLongitude(location.longitude);
 
-      const reverseGeocode = await Location.reverseGeocodeAsync({
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-      });
-
-      if (reverseGeocode[0]) {
-        const geo = reverseGeocode[0];
-        const addressStr = `${geo.city || geo.region || ''}, ${geo.country || ''}`;
+      // Platform-agnostic reverse geocoding (Expo Location on mobile, Nominatim on web)
+      const addressStr = await reverseGeocode(location.latitude, location.longitude);
+      if (addressStr) {
         setAddress(addressStr);
       }
 
@@ -163,8 +147,13 @@ export default function SearchScreen() {
     } catch (error: any) {
       console.error('Location error:', error);
       
-      // Better error message for timeout
-      if (error?.code === 'E_LOCATION_TIMEOUT') {
+      // Handle permission denied or geolocation errors
+      if (error.message?.includes('denied') || error.message?.includes('Permission')) {
+        Toast.show({
+          type: 'error',
+          text1: t('search.location_denied'),
+        });
+      } else if (error.message?.includes('timeout')) {
         Toast.show({
           type: 'error',
           text1: t('common.error'),

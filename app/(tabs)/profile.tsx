@@ -16,6 +16,7 @@ import { router } from 'expo-router';
 import { Card } from '@/components/Card';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
+import { ChatSupportModal } from '@/components/ChatSupportModal';
 import { useAuthStore } from '@/store/authStore';
 import { authService } from '@/services/authService';
 import Toast from 'react-native-toast-message';
@@ -111,6 +112,7 @@ export default function ProfileScreen() {
   const [isSaving, setIsSaving] = useState(false);
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const [showSupportModal, setShowSupportModal] = useState(false);
   const [selectedPhoneCountry, setSelectedPhoneCountry] = useState<string>(PHONE_COUNTRIES[0].iso);
   const [phoneNumberLocal, setPhoneNumberLocal] = useState('');
   const [phoneError, setPhoneError] = useState<string | null>(null);
@@ -727,6 +729,14 @@ export default function ProfileScreen() {
           </View>
         </Card>
 
+        {/* Support Button */}
+        <TouchableOpacity
+          style={styles.supportButton}
+          onPress={() => setShowSupportModal(true)}
+        >
+          <Text style={styles.supportButtonText}>💬 {t('support.title')}</Text>
+        </TouchableOpacity>
+
         <Button
           title={t('common.logout')}
           onPress={handleLogout}
@@ -739,6 +749,12 @@ export default function ProfileScreen() {
           {t('profile.version')} 1.0.0
         </Text>
       </ScrollView>
+
+      {/* Chat Support Modal */}
+      <ChatSupportModal
+        visible={showSupportModal}
+        onClose={() => setShowSupportModal(false)}
+      />
     </SafeAreaView>
   );
 }
@@ -848,6 +864,24 @@ const styles = StyleSheet.create({
   },
   languageNameActive: {
     color: '#2563EB',
+    fontWeight: '600',
+  },
+  supportButton: {
+    backgroundColor: '#007AFF',
+    padding: 16,
+    borderRadius: 12,
+    alignItems: 'center',
+    marginTop: 16,
+    marginHorizontal: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  supportButtonText: {
+    fontSize: 16,
+    color: '#fff',
     fontWeight: '600',
   },
   logoutButton: {

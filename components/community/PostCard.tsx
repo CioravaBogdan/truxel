@@ -35,6 +35,12 @@ import { formatDistanceToNow } from 'date-fns';
 import { enUS, ro, pl, tr, lt, es } from 'date-fns/locale';
 import { UpgradePromptModal } from './UpgradePromptModal';
 import { stripeService } from '../../services/stripeService';
+import {
+  safeOpenWhatsApp,
+  safeOpenEmail,
+  safeOpenPhone,
+  showNativeModuleError
+} from '@/utils/safeNativeModules';
 
 const WHATSAPP_PREF_KEY = 'community_whatsapp_preferred_scheme_v2';
 
@@ -455,18 +461,19 @@ export default function PostCard({ post, onPress, onUnsave }: PostCardProps) {
       defaultValue: defaultBody,
     });
 
-  const emailUrl = `mailto:${targetEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    // Use safe wrapper to prevent iOS crashes
+    const result = await safeOpenEmail(
+      targetEmail,
+      subject,
+      body,
+      t('community.cannot_open_email')
+    );
 
-    try {
-      const supported = await Linking.canOpenURL(emailUrl);
-      if (!supported) {
-        Alert.alert(t('community.error'), t('community.cannot_open_email'));
-        return;
-      }
-
-      await Linking.openURL(emailUrl);
-    } catch {
-      Alert.alert(t('community.error'), t('community.cannot_open_email'));
+    if (!result.success) {
+      showNativeModuleError(
+        t('community.error'),
+        result.userMessage
+      );
     }
   };
 
@@ -485,19 +492,17 @@ export default function PostCard({ post, onPress, onUnsave }: PostCardProps) {
       await useCommunityStore.getState().recordContact(post.id, user.id);
     }
 
-  const phoneNumber = targetPhone.replace(/[^0-9+]/g, '');
-    const phoneUrl = `tel:${phoneNumber}`;
+    // Use safe wrapper to prevent iOS crashes
+    const result = await safeOpenPhone(
+      targetPhone,
+      t('community.cannot_make_call')
+    );
 
-    try {
-      const supported = await Linking.canOpenURL(phoneUrl);
-      if (!supported) {
-        Alert.alert(t('community.error'), t('community.cannot_make_call'));
-        return;
-      }
-
-      await Linking.openURL(phoneUrl);
-    } catch {
-      Alert.alert(t('community.error'), t('community.cannot_make_call'));
+    if (!result.success) {
+      showNativeModuleError(
+        t('community.error'),
+        result.userMessage
+      );
     }
   };
 

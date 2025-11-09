@@ -2,6 +2,11 @@ import { supabase } from '../lib/supabase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Location from 'expo-location';
 import { City, LocationInfo } from '../types/community.types';
+import {
+  safeRequestLocationPermissions,
+  safeGetCurrentPosition,
+  safeReverseGeocode
+} from '@/utils/safeNativeModules';
 
 class CityService {
   private cache: Map<string, { data: City[], timestamp: number }> = new Map();
@@ -158,33 +163,38 @@ class CityService {
    */
   async getCurrentLocationCity(): Promise<LocationInfo | null> {
     try {
-      // Request permission
-      const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        console.log('Location permission denied');
+      // Request permission (safe wrapper prevents crashes)
+      const status = await safeRequestLocationPermissions();
+      if (!status || status !== 'granted') {
+        console.log('[CityService] Location permission denied');
         return null;
       }
 
-      // Get current location with timeout
+      // Get current location with timeout (safe wrapper prevents crashes)
       const location = await Promise.race([
-        Location.getCurrentPositionAsync({
+        safeGetCurrentPosition({
           accuracy: Location.Accuracy.Balanced,
+          // Android needs more time for GPS lock
+          timeInterval: 5000,
+          distanceInterval: 0,
         }),
-        new Promise<never>((_, reject) => 
-          setTimeout(() => reject(new Error('Location timeout')), 10000)
+        new Promise<Location.LocationObject | null>((resolve) => 
+          setTimeout(() => {
+            console.warn('[CityService] Location timeout after 30s');
+            resolve(null);
+          }, 30000)
         )
       ]);
 
+      if (!location) {
+        console.log('[CityService] Could not get current location');
+        return null;
+      }
+
       const { latitude, longitude } = location.coords;
 
-      // Reverse geocode to capture the exact locality (e.g., Podu Turcului)
-      let reverseGeo: Location.LocationGeocodedAddress | undefined;
-      try {
-        const results = await Location.reverseGeocodeAsync({ latitude, longitude });
-        reverseGeo = results?.[0];
-      } catch (reverseError) {
-        console.warn('Reverse geocode failed:', reverseError);
-      }
+      // Reverse geocode to capture the exact locality (safe wrapper prevents crashes)
+      const reverseGeo = await safeReverseGeocode({ latitude, longitude });
 
       // Find nearest major city using mathematical calculation
       const nearestMajor = await this.findNearestMajorCityWithDetails(latitude, longitude);
