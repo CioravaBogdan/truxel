@@ -166,6 +166,10 @@
     "photo_permission_message": "Profil fotoğrafınızı yüklemek için fotoğraf galerisine erişime ihtiyacımız var",
     "avatar_updated": "Profil fotoğrafı başarıyla güncellendi",
     "avatar_upload_failed": "Profil fotoğrafı yüklenemedi",
+    "distance_unit": "Mesafe Birimi",
+    "distance_unit_desc": "Mesafeler için tercih ettiğiniz birimi seçin",
+    "unit_km": "Kilometre (km)",
+    "unit_mi": "Mil (mi)",
     "phone_number_helper": "Ülke kodunuzu seçin, ardından numarayı baştaki sıfır olmadan girin.",
     "phone_number_placeholder": "5312345678",
     "phone_number_invalid": "Numara çok kısa görünüyor. Kontrol edip tekrar deneyin."

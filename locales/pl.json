@@ -166,6 +166,10 @@
     "photo_permission_message": "Potrzebujemy dostępu do galerii zdjęć, aby przesłać zdjęcie profilowe",
     "avatar_updated": "Zdjęcie profilowe zaktualizowane pomyślnie",
     "avatar_upload_failed": "Nie udało się przesłać zdjęcia profilowego",
+    "distance_unit": "Jednostka Odległości",
+    "distance_unit_desc": "Wybierz preferowaną jednostkę dla odległości",
+    "unit_km": "Kilometry (km)",
+    "unit_mi": "Mile (mi)",
     "phone_number_helper": "Wybierz kod kraju, a następnie wpisz resztę numeru bez zera na początku.",
     "phone_number_placeholder": "712345678",
     "phone_number_invalid": "Numer wydaje się zbyt krótki. Sprawdź go i spróbuj ponownie."

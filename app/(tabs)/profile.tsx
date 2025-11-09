@@ -19,6 +19,7 @@ import { Input } from '@/components/Input';
 import { ChatSupportModal } from '@/components/ChatSupportModal';
 import { useAuthStore } from '@/store/authStore';
 import { authService } from '@/services/authService';
+import { getRadiusOptions, type DistanceUnit } from '@/utils/distance';
 import Toast from 'react-native-toast-message';
 import * as ImagePicker from 'expo-image-picker';
 import { supabase } from '@/lib/supabase';
@@ -60,13 +61,8 @@ const TRUCK_TYPES = [
   { value: 'Other', label: 'Other' },
 ];
 
-const SEARCH_RADIUS_OPTIONS = [
-  { value: 1, label: '1 km' },
-  { value: 5, label: '5 km' },
-  { value: 10, label: '10 km' },
-  { value: 25, label: '25 km' },
-  { value: 50, label: '50 km' },
-];
+// REMOVED: SEARCH_RADIUS_OPTIONS now dynamic based on user's preferred_distance_unit
+// Uses getRadiusOptions() from @/utils/distance
 
 const INDUSTRIES = [
   'Automotive', 'Construction', 'Electronics', 'Food & Beverage', 'Furniture',
@@ -125,6 +121,7 @@ export default function ProfileScreen() {
   const [companyName, setCompanyName] = useState('');
   const [truckType, setTruckType] = useState<string | null>(null);
   const [searchRadius, setSearchRadius] = useState(10);
+  const [distanceUnit, setDistanceUnit] = useState<DistanceUnit>('km');
   const [selectedIndustries, setSelectedIndustries] = useState<string[]>([]);
 
   const sortedDialCodes = useMemo(() => [...PHONE_COUNTRIES].sort((a, b) => b.dialCode.length - a.dialCode.length), []);
@@ -132,6 +129,12 @@ export default function ProfileScreen() {
     () => PHONE_COUNTRIES.find((country) => country.iso === selectedPhoneCountry) || PHONE_COUNTRIES[0],
     [selectedPhoneCountry]
   );
+  
+  // Dynamic radius options based on user's preferred distance unit
+  const SEARCH_RADIUS_OPTIONS = useMemo(() => {
+    const distanceUnit = profile?.preferred_distance_unit || 'km';
+    return getRadiusOptions(distanceUnit);
+  }, [profile?.preferred_distance_unit]);
 
   // Upload avatar function
   const handleUploadAvatar = async () => {
@@ -239,6 +242,7 @@ export default function ProfileScreen() {
       setCompanyName(profile.company_name || '');
       setTruckType(profile.truck_type || null);
       setSearchRadius(profile.search_radius_km || 10);
+      setDistanceUnit(profile.preferred_distance_unit || 'km');
       setSelectedIndustries(profile.preferred_industries || []);
 
       const currentPhone = profile.phone_number || '';
@@ -316,6 +320,7 @@ export default function ProfileScreen() {
         company_name: companyName || undefined,
         truck_type: truckType || undefined,
         search_radius_km: searchRadius,
+        preferred_distance_unit: distanceUnit,
         preferred_industries: selectedIndustries,
         phone_number: phoneUpdate,
       });
@@ -607,6 +612,59 @@ export default function ProfileScreen() {
                 </Text>
               </TouchableOpacity>
             ))}
+          </View>
+        </Card>
+
+        {/* Distance Unit Selection */}
+        <Card style={styles.section}>
+          <View style={styles.sectionHeader}>
+            <MapPin size={24} color="#2563EB" />
+            <Text style={styles.sectionTitle}>{t('profile.distance_unit')}</Text>
+          </View>
+          <Text style={styles.sectionDescription}>
+            {t('profile.distance_unit_desc')}
+          </Text>
+
+          <View style={styles.radiusContainer}>
+            <TouchableOpacity
+              style={[
+                styles.radiusButton,
+                distanceUnit === 'km' && styles.radiusButtonSelected,
+              ]}
+              onPress={() => {
+                setHasUnsavedChanges(true);
+                setDistanceUnit('km');
+              }}
+            >
+              <Text
+                style={[
+                  styles.radiusText,
+                  distanceUnit === 'km' && styles.radiusTextSelected,
+                ]}
+              >
+                {t('profile.unit_km')}
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[
+                styles.radiusButton,
+                distanceUnit === 'mi' && styles.radiusButtonSelected,
+              ]}
+              onPress={() => {
+                setHasUnsavedChanges(true);
+                setDistanceUnit('mi');
+              }}
+            >
+              <Text
+                style={[
+                  styles.radiusText,
+                  distanceUnit === 'mi' && styles.radiusTextSelected,
+                ]}
+              >
+                {t('profile.unit_mi')}
+              </Text>
+            </TouchableOpacity>
           </View>
         </Card>
 

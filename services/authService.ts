@@ -1,6 +1,8 @@
 import { supabase } from '@/lib/supabase';
 import { Language, Profile } from '@/types/database.types';
 import { User } from '@supabase/supabase-js';
+import { autoDetectDistanceUnit } from '@/utils/distance';
+import * as Localization from 'expo-localization';
 
 export interface SignUpData {
   email: string;
@@ -20,6 +22,10 @@ export const authService = {
     if (authError) throw authError;
     if (!authData.user) throw new Error('User creation failed');
 
+    // Auto-detect distance unit based on device locale
+    const deviceLocale = Localization.getLocales()[0]?.languageTag || 'en';
+    const distanceUnit = autoDetectDistanceUnit(deviceLocale);
+
     const { error: profileError } = await supabase
       .from('profiles')
       .insert({
@@ -32,6 +38,7 @@ export const authService = {
         subscription_status: 'active',
         trial_searches_used: 0,
         monthly_searches_used: 0,
+        preferred_distance_unit: distanceUnit, // Auto-detect km or mi based on locale
       });
 
     if (profileError) throw profileError;

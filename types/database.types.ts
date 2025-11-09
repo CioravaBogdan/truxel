@@ -5,6 +5,7 @@ export type SearchStatus = 'pending' | 'completed' | 'failed';
 export type TransactionType = 'subscription' | 'search_pack' | 'renewal';
 export type TransactionStatus = 'pending' | 'completed' | 'failed' | 'refunded';
 export type Language = 'en' | 'ro' | 'pl' | 'tr' | 'lt' | 'es';
+export type DistanceUnit = 'km' | 'mi';
 
 export interface Profile {
   id: string;
@@ -25,6 +26,7 @@ export interface Profile {
   subscription_start_date: string;
   subscription_renewal_date?: string;
   preferred_language: Language;
+  preferred_distance_unit: DistanceUnit;
   expo_push_token?: string;
   last_known_city?: string;
   last_known_lat?: number;

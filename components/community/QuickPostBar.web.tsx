@@ -12,6 +12,7 @@ import { Briefcase, Truck } from 'lucide-react-native';
 import { useAuthStore } from '../../store/authStore';
 import { useCommunityStore } from '../../store/communityStore';
 import { cityService } from '../../services/cityService';
+import { convertDistance } from '../../utils/distance';
 import {
   AVAILABILITY_TEMPLATES,
   ROUTE_TEMPLATES,
@@ -192,14 +193,19 @@ function QuickPostBar() {
       const majorCityName = location.nearestMajorCityName || location.nearestMajorCity?.name || location.city;
       const baseCity = location.locality || location.city || majorCityName || 'Unknown';
 
+      // Convert distance to user's preferred unit (km or mi)
+      const distanceUnit = profile?.preferred_distance_unit || 'km';
+      
       let distanceDescriptor = '';
       if (location.distanceToMajor && location.distanceToMajor >= 5 && majorCityName) {
-        const distance = Math.round(location.distanceToMajor);
-        if (location.directionFromMajor && distance >= 30) {
+        const distanceInKm = location.distanceToMajor;
+        const convertedDistance = Math.round(convertDistance(distanceInKm, distanceUnit));
+        
+        if (location.directionFromMajor && distanceInKm >= 30) {
           const directionText = t(location.directionFromMajor);
-          distanceDescriptor = `${distance}km ${directionText} ${t('directions.of')} ${majorCityName}`;
+          distanceDescriptor = `${convertedDistance}${distanceUnit} ${directionText} ${t('directions.of')} ${majorCityName}`;
         } else {
-          distanceDescriptor = `${distance}km ${t('directions.of')} ${majorCityName}`;
+          distanceDescriptor = `${convertedDistance}${distanceUnit} ${t('directions.of')} ${majorCityName}`;
         }
       }
 
@@ -301,14 +307,19 @@ function QuickPostBar() {
       const majorCityName = location.nearestMajorCityName || location.nearestMajorCity?.name || location.city;
       const baseCity = location.locality || location.city || majorCityName || 'Unknown';
 
+      // Convert distance to user's preferred unit (km or mi)
+      const distanceUnit = profile?.preferred_distance_unit || 'km';
+      
       let distanceDescriptor = '';
       if (location.distanceToMajor && location.distanceToMajor >= 5 && majorCityName) {
-        const distance = Math.round(location.distanceToMajor);
-        if (location.directionFromMajor && distance >= 30) {
+        const distanceInKm = location.distanceToMajor;
+        const convertedDistance = Math.round(convertDistance(distanceInKm, distanceUnit));
+        
+        if (location.directionFromMajor && distanceInKm >= 30) {
           const directionText = t(location.directionFromMajor);
-          distanceDescriptor = `${distance}km ${directionText} ${t('directions.of')} ${majorCityName}`;
+          distanceDescriptor = `${convertedDistance}${distanceUnit} ${directionText} ${t('directions.of')} ${majorCityName}`;
         } else {
-          distanceDescriptor = `${distance}km ${t('directions.of')} ${majorCityName}`;
+          distanceDescriptor = `${convertedDistance}${distanceUnit} ${t('directions.of')} ${majorCityName}`;
         }
       }
 

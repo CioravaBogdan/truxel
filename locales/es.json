@@ -46,6 +46,10 @@
     "photo_permission_message": "Necesitamos acceso a la galería de fotos para subir tu foto de perfil",
     "avatar_updated": "Foto de perfil actualizada exitosamente",
     "avatar_upload_failed": "Error al subir la foto de perfil",
+    "distance_unit": "Unidad de Distancia",
+    "distance_unit_desc": "Elige tu unidad preferida para distancias",
+    "unit_km": "Kilómetros (km)",
+    "unit_mi": "Millas (mi)",
     "phone_number_helper": "Elige el prefijo del país y luego escribe el número sin el cero inicial.",
     "phone_number_placeholder": "612345678",
     "phone_number_invalid": "El número parece demasiado corto. Revísalo e inténtalo de nuevo."

@@ -46,6 +46,10 @@
     "photo_permission_message": "Mums reikia prieigos prie nuotraukų galerijos, kad įkeltume jūsų profilio nuotrauką",
     "avatar_updated": "Profilio nuotrauka sėkmingai atnaujinta",
     "avatar_upload_failed": "Nepavyko įkelti profilio nuotraukos",
+    "distance_unit": "Atstumo Vienetas",
+    "distance_unit_desc": "Pasirinkite pageidaujamą vienetą atstumams",
+    "unit_km": "Kilometrai (km)",
+    "unit_mi": "Mylios (mi)",
     "phone_number_helper": "Pasirinkite šalies kodą ir įveskite likusį numerį be pradžios nulio.",
     "phone_number_placeholder": "61234567",
     "phone_number_invalid": "Numeris atrodo per trumpas. Patikrinkite ir bandykite dar kartą."
