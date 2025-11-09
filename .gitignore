@@ -30,6 +30,7 @@ yarn-error.*
 # local env files
 .env*.local
 .env
+TRUXEL_ENV_FOR_EXPO.json
 
 # typescript
 *.tsbuildinfo

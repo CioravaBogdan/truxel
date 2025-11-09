@@ -4,9 +4,9 @@ import * as SecureStore from 'expo-secure-store';
 import { Platform } from 'react-native';
 import Constants from 'expo-constants';
 
-// TRUXEL_ prefix for EAS builds, EXPO_PUBLIC_ for local development
-const supabaseUrl = Constants.expoConfig?.extra?.supabaseUrl || process.env.TRUXEL_SUPABASE_URL || process.env.EXPO_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = Constants.expoConfig?.extra?.supabaseAnonKey || process.env.TRUXEL_SUPABASE_ANON_KEY || process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY!;
+// Use Constants.expoConfig.extra (populated from .env TRUXEL_ variables)
+const supabaseUrl = Constants.expoConfig?.extra?.supabaseUrl!;
+const supabaseAnonKey = Constants.expoConfig?.extra?.supabaseAnonKey!;
 
 console.log('Supabase config:', {
   url: supabaseUrl,

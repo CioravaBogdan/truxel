@@ -32,7 +32,9 @@ export default {
       // config: {
       //   googleMapsApiKey: process.env.TRUXEL_GOOGLE_MAPS_API_KEY || ""
       // },
-      usesAppleSignIn: true
+      usesAppleSignIn: true,
+      // iOS App Icons (from Truxel_Brand assets)
+      icon: "./assets/Truxel_Brand/App Store 1024 x 1024.png"
     },
     android: {
       package: "io.truxel.app",
@@ -50,6 +52,11 @@ export default {
       //     apiKey: process.env.TRUXEL_GOOGLE_MAPS_API_KEY || ""
       //   }
       // }
+      // Android Adaptive Icon
+      adaptiveIcon: {
+        foregroundImage: "./assets/Truxel_Brand/androind launcher 192x192.png",
+        backgroundColor: "#ffffff"
+      }
     },
     web: {
       bundler: "metro",
@@ -78,14 +85,14 @@ export default {
       enabled: false
     },
     extra: {
-      // TRUXEL_ prefix for EAS builds, EXPO_PUBLIC_ for local development
-      supabaseUrl: process.env.TRUXEL_SUPABASE_URL || process.env.EXPO_PUBLIC_SUPABASE_URL,
-      supabaseAnonKey: process.env.TRUXEL_SUPABASE_ANON_KEY || process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY,
-      stripePublishableKey: process.env.TRUXEL_STRIPE_PUBLISHABLE_KEY || process.env.EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY,
+      // TRUXEL_ prefix for all environments (consistent naming)
+      supabaseUrl: process.env.TRUXEL_SUPABASE_URL,
+      supabaseAnonKey: process.env.TRUXEL_SUPABASE_ANON_KEY,
+      stripePublishableKey: process.env.TRUXEL_STRIPE_PUBLISHABLE_KEY,
       // N8N Webhook URLs (for analytics and automation)
-      n8nSearchWebhook: process.env.TRUXEL_N8N_SEARCH_WEBHOOK || process.env.EXPO_PUBLIC_N8N_SEARCH_WEBHOOK,
-      n8nCityWebhook: process.env.TRUXEL_N8N_CITY_WEBHOOK || process.env.EXPO_PUBLIC_N8N_CITY_WEBHOOK,
-      n8nChatWebhook: process.env.TRUXEL_N8N_CHAT_WEBHOOK || process.env.EXPO_PUBLIC_N8N_CHAT_WEBHOOK,
+      n8nSearchWebhook: process.env.TRUXEL_N8N_SEARCH_WEBHOOK,
+      n8nCityWebhook: process.env.TRUXEL_N8N_CITY_WEBHOOK,
+      n8nChatWebhook: process.env.TRUXEL_N8N_CHAT_WEBHOOK,
       eas: {
         projectId: "ec6e92c9-663d-4a34-a69a-88ce0ddaafab"
       }

@@ -3,6 +3,7 @@ import { Language, Profile } from '@/types/database.types';
 import { User } from '@supabase/supabase-js';
 import { autoDetectDistanceUnit } from '@/utils/distance';
 import * as Localization from 'expo-localization';
+import Constants from 'expo-constants';
 
 export interface SignUpData {
   email: string;
@@ -75,8 +76,8 @@ export const authService = {
     
     try {
       // Use REST API directly instead of Supabase client (fixes mobile timeout issue)
-  const SUPABASE_URL = process.env.EXPO_PUBLIC_SUPABASE_URL;
-  const SUPABASE_KEY = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY;
+      const SUPABASE_URL = Constants.expoConfig?.extra?.supabaseUrl;
+      const SUPABASE_KEY = Constants.expoConfig?.extra?.supabaseAnonKey;
 
       // Use provided access token or fallback to anon key
       const token = accessToken || SUPABASE_KEY;
