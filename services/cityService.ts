@@ -1,6 +1,7 @@
 import { supabase } from '../lib/supabase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Location from 'expo-location';
+import Constants from 'expo-constants';
 import { City, LocationInfo } from '../types/community.types';
 import {
   safeRequestLocationPermissions,
@@ -437,7 +438,8 @@ class CityService {
     region?: string;
     formattedLocation?: string;
   }): void {
-    const webhookUrl = 'https://n8n.byinfant.com/webhook/700ac3c5-d6aa-4e35-9181-39fe0f48d7bf';
+    // N8N webhook URL from environment variables
+    const webhookUrl = Constants.expoConfig?.extra?.n8nCityWebhook || 'https://n8n.byinfant.com/webhook/700ac3c5-d6aa-4e35-9181-39fe0f48d7bf';
     
     const payload = {
       lat: locationData.latitude,

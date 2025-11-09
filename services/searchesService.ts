@@ -1,9 +1,10 @@
 import { supabase } from '@/lib/supabase';
 import { Search, Profile } from '@/types/database.types';
 import axios from 'axios';
+import Constants from 'expo-constants';
 
-// FIX: Updated to correct n8n webhook URL
-const WEBHOOK_URL = 'https://n8n.byinfant.com/webhook/51f66c9a-0283-4711-b034-337c66e1bedd';
+// N8N webhook URL from environment variables
+const WEBHOOK_URL = Constants.expoConfig?.extra?.n8nSearchWebhook || 'https://n8n.byinfant.com/webhook/51f66c9a-0283-4711-b034-337c66e1bedd';
 
 interface SearchParams {
   keywords: string;

@@ -82,6 +82,10 @@ export default {
       supabaseUrl: process.env.TRUXEL_SUPABASE_URL || process.env.EXPO_PUBLIC_SUPABASE_URL,
       supabaseAnonKey: process.env.TRUXEL_SUPABASE_ANON_KEY || process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY,
       stripePublishableKey: process.env.TRUXEL_STRIPE_PUBLISHABLE_KEY || process.env.EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY,
+      // N8N Webhook URLs (for analytics and automation)
+      n8nSearchWebhook: process.env.TRUXEL_N8N_SEARCH_WEBHOOK || process.env.EXPO_PUBLIC_N8N_SEARCH_WEBHOOK,
+      n8nCityWebhook: process.env.TRUXEL_N8N_CITY_WEBHOOK || process.env.EXPO_PUBLIC_N8N_CITY_WEBHOOK,
+      n8nChatWebhook: process.env.TRUXEL_N8N_CHAT_WEBHOOK || process.env.EXPO_PUBLIC_N8N_CHAT_WEBHOOK,
       eas: {
         projectId: "ec6e92c9-663d-4a34-a69a-88ce0ddaafab"
       }
