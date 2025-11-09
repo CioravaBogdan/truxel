@@ -21,16 +21,20 @@ import { Search as SearchType } from '@/types/database.types';
 import Toast from 'react-native-toast-message';
 import { MapPin, Crosshair, Search, Clock, CheckCircle, AlertCircle } from 'lucide-react-native';
 
-// Configure notifications
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: false,
-    shouldShowBanner: true,
-    shouldShowList: true,
-  }),
-});
+// Configure notifications SAFELY (wrapped in try-catch to prevent iOS crash)
+try {
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: true,
+      shouldSetBadge: false,
+      shouldShowBanner: true,
+      shouldShowList: true,
+    }),
+  });
+} catch (error) {
+  console.error('[Search] Notification handler setup failed (non-critical):', error);
+}
 
 export default function SearchScreen() {
   const { t } = useTranslation();

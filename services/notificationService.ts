@@ -38,16 +38,20 @@ class NotificationService {
     try {
       this.userId = userId;
 
-      // Configure notification behavior
-      Notifications.setNotificationHandler({
-        handleNotification: async () => ({
-          shouldShowAlert: true,
-          shouldPlaySound: true,
-          shouldSetBadge: true,
-          shouldShowBanner: true,
-          shouldShowList: true,
-        }),
-      });
+      // Configure notification behavior (wrapped in try-catch to prevent iOS crash)
+      try {
+        Notifications.setNotificationHandler({
+          handleNotification: async () => ({
+            shouldShowAlert: true,
+            shouldPlaySound: true,
+            shouldSetBadge: true,
+            shouldShowBanner: true,
+            shouldShowList: true,
+          }),
+        });
+      } catch (handlerError) {
+        console.error('[NotificationService] setNotificationHandler failed (non-critical):', handlerError);
+      }
 
       // Request permissions (safe wrapper prevents crashes)
       const permissionsResult = await safeRequestNotificationPermissions();
