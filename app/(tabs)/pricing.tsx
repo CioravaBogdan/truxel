@@ -43,6 +43,7 @@ import {
   getUserTier,
   type OfferingPackage 
 } from '@/services/revenueCatService';
+import type { CustomerInfo } from 'react-native-purchases';
 
 // Check if running in native build (not Expo Go)
 const isNativeBuild = Constants.appOwnership !== 'expo' && (Platform.OS === 'ios' || Platform.OS === 'android');
@@ -81,13 +82,21 @@ export default function PricingScreen() {
   const session = authStore?.session;
   const refreshProfile = authStore?.refreshProfile;
   
+  // Stripe state (for Expo Go / web fallback)
   const [tiers, setTiers] = useState<SubscriptionTierData[]>([]);
   const [searchPacks, setSearchPacks] = useState<AdditionalSearchPack[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [processingPriceId, setProcessingPriceId] = useState<string | null>(null);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
   
-  // Coupon state
+  // RevenueCat state (for native builds)
+  const [rcSubscriptions, setRcSubscriptions] = useState<OfferingPackage[]>([]);
+  const [rcSearchPacks, setRcSearchPacks] = useState<OfferingPackage[]>([]);
+  const [rcCustomerInfo, setRcCustomerInfo] = useState<CustomerInfo | null>(null);
+  const [userCurrency, setUserCurrency] = useState<'EUR' | 'USD'>('EUR');
+  const [purchasingPackage, setPurchasingPackage] = useState<string | null>(null);
+  
+  // Coupon state (Stripe only - not used in RevenueCat native IAP)
   const [couponCode, setCouponCode] = useState('');
   const [validatingCoupon, setValidatingCoupon] = useState(false);
   const [validatedCoupon, setValidatedCoupon] = useState<any>(null);
@@ -162,11 +171,52 @@ export default function PricingScreen() {
     }
   }, [t]);
 
+  const loadRevenueCatOfferings = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      console.log('📦 Loading RevenueCat offerings for native build...');
+      
+      const offerings = await getRevenueCatOfferings();
+      setRcSubscriptions(offerings.subscriptions);
+      setRcSearchPacks(offerings.searchPacks);
+      setUserCurrency(offerings.userCurrency);
+      
+      const info = await getCustomerInfo();
+      setRcCustomerInfo(info);
+      
+      console.log('✅ RevenueCat offerings loaded:', {
+        subscriptions: offerings.subscriptions.length,
+        searchPacks: offerings.searchPacks.length,
+        currency: offerings.userCurrency
+      });
+    } catch (error: any) {
+      console.error('❌ RevenueCat error:', error);
+      Toast.show({
+        type: 'error',
+        text1: t('common.error'),
+        text2: error.message || 'Failed to load pricing options',
+      });
+      setRcSubscriptions([]);
+      setRcSearchPacks([]);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [t]);
+
   useEffect(() => {
-    console.log('PricingScreen mounted');
-    loadPricingData();
+    console.log('PricingScreen mounted, isNativeBuild:', isNativeBuild);
+    
+    if (isNativeBuild) {
+      console.log('🍎 Native build detected - loading RevenueCat offerings');
+      loadRevenueCatOfferings();
+    } else {
+      console.log('🌐 Expo Go/Web detected - loading Stripe pricing');
+      loadPricingData();
+    }
+    
     checkSubscriptionStatus();
-  }, [loadPricingData, checkSubscriptionStatus]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loadRevenueCatOfferings, loadPricingData, checkSubscriptionStatus]);
 
   useEffect(() => {
     const checkInterval = setInterval(() => {
@@ -331,6 +381,83 @@ export default function PricingScreen() {
       });
     } finally {
       setProcessingPriceId(null);
+    }
+  };
+
+  const handleRevenueCatPurchase = async (pkg: OfferingPackage) => {
+    if (!profile) {
+      Toast.show({
+        type: 'error',
+        text1: t('common.error'),
+        text2: 'Please login to continue',
+      });
+      return;
+    }
+
+    try {
+      setPurchasingPackage(pkg.identifier);
+      console.log('🛒 RevenueCat purchase:', pkg.identifier);
+      
+      const info = await purchaseRevenueCatPackage(pkg);
+      setRcCustomerInfo(info);
+      
+      const newTier = getUserTier(info);
+      console.log('✅ Purchase successful! New tier:', newTier);
+      
+      // Refresh profile to update local state
+      await authStore.refreshProfile?.();
+      
+      Toast.show({
+        type: 'success',
+        text1: t('subscription.activated'),
+        text2: `Welcome to ${newTier} tier! 🎉`,
+        visibilityTime: 5000,
+      });
+      
+      // Reload offerings to update UI
+      await loadRevenueCatOfferings();
+    } catch (error: any) {
+      console.error('❌ RevenueCat purchase failed:', error);
+      
+      if (error.message !== 'User cancelled purchase') {
+        Alert.alert(
+          t('common.error'),
+          error.message || 'Purchase failed. Please try again.'
+        );
+      }
+    } finally {
+      setPurchasingPackage(null);
+    }
+  };
+
+  const handleRestorePurchases = async () => {
+    try {
+      setIsLoading(true);
+      console.log('🔄 Restoring RevenueCat purchases...');
+      
+      const info = await restoreRevenueCatPurchases();
+      setRcCustomerInfo(info);
+      
+      const tier = getUserTier(info);
+      console.log('✅ Purchases restored! Tier:', tier);
+      
+      await authStore.refreshProfile?.();
+      
+      Toast.show({
+        type: 'success',
+        text1: t('subscription.restored'),
+        text2: `Your ${tier} subscription has been restored.`,
+      });
+      
+      await loadRevenueCatOfferings();
+    } catch (error: any) {
+      console.error('❌ Restore failed:', error);
+      Alert.alert(
+        t('common.error'),
+        'Failed to restore purchases. Please try again.'
+      );
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -698,55 +825,117 @@ export default function PricingScreen() {
           </Card>
         )}
 
-        {/* Coupon Code Section */}
-        <Card style={styles.couponCard}>
-          <View style={styles.couponHeader}>
-            <Tag size={24} color="#2563EB" />
-            <Text style={styles.couponTitle}>Have a coupon code?</Text>
-          </View>
-          
-          {!validatedCoupon ? (
-            <View style={styles.couponInputContainer}>
-              <TextInput
-                style={styles.couponInput}
-                placeholder="Enter coupon code"
-                value={couponCode}
-                onChangeText={(text) => {
-                  setCouponCode(text.toUpperCase());
-                  setCouponError(null);
-                }}
-                autoCapitalize="characters"
-                editable={!validatingCoupon}
-              />
-              <Button
-                title={validatingCoupon ? 'Validating...' : 'Apply'}
-                onPress={handleValidateCoupon}
-                loading={validatingCoupon}
-                variant="primary"
-                style={styles.couponButton}
-              />
+        {/* Coupon Code Section - Only show for Stripe (not RevenueCat) */}
+        {!isNativeBuild && (
+          <Card style={styles.couponCard}>
+            <View style={styles.couponHeader}>
+              <Tag size={24} color="#2563EB" />
+              <Text style={styles.couponTitle}>Have a coupon code?</Text>
             </View>
-          ) : (
-            <View style={styles.couponAppliedContainer}>
-              <View style={styles.couponAppliedInfo}>
-                <Check size={20} color="#10B981" />
-                <Text style={styles.couponAppliedText}>
-                  Coupon Applied: {validatedCoupon.discount_text}
-                </Text>
+            
+            {!validatedCoupon ? (
+              <View style={styles.couponInputContainer}>
+                <TextInput
+                  style={styles.couponInput}
+                  placeholder="Enter coupon code"
+                  value={couponCode}
+                  onChangeText={(text) => {
+                    setCouponCode(text.toUpperCase());
+                    setCouponError(null);
+                  }}
+                  autoCapitalize="characters"
+                  editable={!validatingCoupon}
+                />
+                <Button
+                  title={validatingCoupon ? 'Validating...' : 'Apply'}
+                  onPress={handleValidateCoupon}
+                  loading={validatingCoupon}
+                  variant="primary"
+                  style={styles.couponButton}
+                />
               </View>
-              <TouchableOpacity onPress={handleRemoveCoupon}>
-                <XCircle size={20} color="#EF4444" />
-              </TouchableOpacity>
-            </View>
-          )}
-          
-          {couponError && (
-            <Text style={styles.couponError}>{couponError}</Text>
-          )}
-        </Card>
+            ) : (
+              <View style={styles.couponAppliedContainer}>
+                <View style={styles.couponAppliedInfo}>
+                  <Check size={20} color="#10B981" />
+                  <Text style={styles.couponAppliedText}>
+                    Coupon Applied: {validatedCoupon.discount_text}
+                  </Text>
+                </View>
+                <TouchableOpacity onPress={handleRemoveCoupon}>
+                  <XCircle size={20} color="#EF4444" />
+                </TouchableOpacity>
+              </View>
+            )}
+            
+            {couponError && (
+              <Text style={styles.couponError}>{couponError}</Text>
+            )}
+          </Card>
+        )}
 
-        <View style={styles.tiersContainer}>
-          {tiers.map((tier) => (
+        {/* RevenueCat Native Subscriptions */}
+        {isNativeBuild && rcSubscriptions.length > 0 && (
+          <View style={styles.tiersContainer}>
+            {rcSubscriptions.map((pkg) => {
+              // Extract tier name from package identifier (e.g., "rc_monthly_standard" -> "standard")
+              const tierName = pkg.identifier.split('_').pop() || '';
+              const isActive = profile?.subscription_tier === tierName;
+              
+              return (
+                <Card
+                  key={pkg.identifier}
+                  style={
+                    isActive
+                      ? { ...styles.tierCard, ...styles.currentTierCard }
+                      : styles.tierCard
+                  }
+                >
+                  {isActive && (
+                    <View style={styles.currentBadge}>
+                      <Text style={styles.currentBadgeText}>
+                        {t('pricing.current_plan')}
+                      </Text>
+                    </View>
+                  )}
+
+                  <View style={styles.tierHeader}>
+                    {getTierIcon(tierName)}
+                    <Text style={styles.tierName}>
+                      {t(`pricing.tier_${tierName}`)}
+                    </Text>
+                    <Text style={styles.tierPrice}>
+                      {pkg.product.priceString}
+                      <Text style={styles.tierPriceUnit}>
+                        /{t('pricing.month')}
+                      </Text>
+                    </Text>
+                  </View>
+
+                  <View style={styles.featuresContainer}>
+                    <View style={styles.featureRow}>
+                      <Check size={20} color="#10B981" />
+                      <Text style={styles.featureText}>{pkg.product.description}</Text>
+                    </View>
+                  </View>
+
+                  <Button
+                    title={isActive ? t('pricing.current_plan') : t('pricing.subscribe')}
+                    onPress={() => handleRevenueCatPurchase(pkg)}
+                    loading={purchasingPackage === pkg.identifier}
+                    disabled={isActive}
+                    variant={isActive ? 'outline' : 'primary'}
+                  />
+                </Card>
+              );
+            })}
+          </View>
+        )}
+
+        {/* Stripe Subscriptions (Expo Go / Web fallback) */}
+        {!isNativeBuild && tiers.length > 0 && (
+          <View style={styles.tiersContainer}>
+            {tiers.map((tier) => (
             <Card
               key={tier.id}
               style={
@@ -872,9 +1061,55 @@ export default function PricingScreen() {
               )}
             </Card>
           ))}
-        </View>
+          </View>
+        )}
 
-        {searchPacks.length > 0 && (
+        {/* RevenueCat Search Packs */}
+        {isNativeBuild && rcSearchPacks.length > 0 && (
+          <>
+            <View style={styles.divider} />
+
+            <View style={styles.section}>
+              <Users size={32} color="#2563EB" />
+              <Text style={styles.sectionTitle}>
+                {t('pricing.additional_searches')}
+              </Text>
+              <Text style={styles.sectionSubtitle}>
+                {t('pricing.additional_searches_desc')}
+              </Text>
+            </View>
+
+            <View style={styles.packsContainer}>
+              {rcSearchPacks.map((pkg) => (
+                <Card key={pkg.identifier} style={styles.packCard}>
+                  <View style={styles.packHeader}>
+                    <Text style={styles.packName}>{pkg.product.title}</Text>
+                    <Text style={styles.packPrice}>{pkg.product.priceString}</Text>
+                  </View>
+
+                  <Button
+                    title={t('pricing.buy_now')}
+                    onPress={() => handleRevenueCatPurchase(pkg)}
+                    loading={purchasingPackage === pkg.identifier}
+                    variant="outline"
+                  />
+                </Card>
+              ))}
+            </View>
+
+            {/* Restore Purchases Button for Native Builds */}
+            <Button
+              title={t('subscription.restore_purchases')}
+              onPress={handleRestorePurchases}
+              loading={isLoading}
+              variant="ghost"
+              style={{ marginTop: 16 }}
+            />
+          </>
+        )}
+
+        {/* Stripe Search Packs (Expo Go / Web fallback) */}
+        {!isNativeBuild && searchPacks.length > 0 && (
           <>
             <View style={styles.divider} />
 

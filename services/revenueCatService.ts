@@ -1,14 +1,60 @@
-import Purchases, { 
-  CustomerInfo,
+import { Platform } from 'react-native';
+import Constants from 'expo-constants';
+
+// Mobile SDK (iOS/Android)
+import PurchasesMobile, { 
+  CustomerInfo as CustomerInfoMobile,
   PurchasesPackage 
 } from 'react-native-purchases';
+
+// Web SDK
+import { Purchases as PurchasesWebClass } from '@revenuecat/purchases-js';
+import type { 
+  CustomerInfo as CustomerInfoWeb,
+  Package as PackageWeb,
+  PurchaseResult
+} from '@revenuecat/purchases-js';
+
 import { autoDetectCurrency, CurrencyCode } from '@/utils/currency';
 import * as Localization from 'expo-localization';
+
+// Platform detection
+const isWeb = Platform.OS === 'web';
+
+// Unified CustomerInfo type
+export type CustomerInfo = CustomerInfoMobile | CustomerInfoWeb;
+
+// Web SDK instance (initialized lazily)
+let webPurchasesInstance: InstanceType<typeof PurchasesWebClass> | null = null;
+
+/**
+ * Initialize RevenueCat for web platform
+ * Called automatically on first use
+ */
+function initializeWebSDK(userId: string): InstanceType<typeof PurchasesWebClass> {
+  if (webPurchasesInstance) {
+    return webPurchasesInstance;
+  }
+  
+  const apiKey = Constants.expoConfig?.extra?.revenueCatIosKey; // Use iOS key for web too
+  
+  if (!apiKey) {
+    throw new Error('RevenueCat API key not configured');
+  }
+  
+  console.log('🌐 Initializing RevenueCat Web SDK...');
+  webPurchasesInstance = PurchasesWebClass.configure({
+    apiKey,
+    appUserId: userId
+  });
+  
+  return webPurchasesInstance;
+}
 
 export interface OfferingPackage {
   identifier: string;
   packageType: string;
-  revenueCatPackage: PurchasesPackage; // Keep original for purchase
+  revenueCatPackage: PurchasesPackage | PackageWeb; // Keep original for purchase
   product: {
     identifier: string;
     title: string;
@@ -27,19 +73,40 @@ export interface TruxelOfferings {
 
 /**
  * Fetch available offerings from RevenueCat
+ * Works on ALL platforms: iOS (StoreKit), Android (Play Billing), Web (Stripe)
  * Automatically filters to show only EUR or USD packages based on user locale
  * 
+ * @param userId - Required for web initialization
  * @returns Object containing subscriptions and search packs for user's currency
  */
-export async function getOfferings(): Promise<TruxelOfferings> {
+export async function getOfferings(userId?: string): Promise<TruxelOfferings> {
   try {
-    const offerings = await Purchases.getOfferings();
+    console.log(`🌍 Platform: ${Platform.OS} | isWeb: ${isWeb}`);
     
     // Detect user currency (EUR or USD)
     const deviceLocale = Localization.getLocales()[0]?.languageTag || 'en';
     const userCurrency = autoDetectCurrency(deviceLocale);
-    
     console.log(`💰 User currency detected: ${userCurrency} (locale: ${deviceLocale})`);
+    
+    let offerings;
+    
+    if (isWeb) {
+      // Web: Use purchases-js SDK (Stripe backend)
+      if (!userId) {
+        console.warn('⚠️ User ID required for web payments');
+        return { 
+          subscriptions: [], 
+          searchPacks: [],
+          userCurrency
+        };
+      }
+      
+      const webSDK = initializeWebSDK(userId);
+      offerings = await webSDK.getOfferings();
+    } else {
+      // Mobile: Use react-native-purchases (native IAP)
+      offerings = await PurchasesMobile.getOfferings();
+    }
     
     // Get main subscription offering
     const defaultOffering = offerings.current;
@@ -47,12 +114,21 @@ export async function getOfferings(): Promise<TruxelOfferings> {
     // Get search packs offering
     const searchPacksOffering = offerings.all['search_packs'];
     
+    if (!defaultOffering) {
+      console.warn('⚠️ No current offering found');
+      return { 
+        subscriptions: [], 
+        searchPacks: [],
+        userCurrency
+      };
+    }
+    
     // Filter packages by currency
-    const subscriptions = defaultOffering?.availablePackages.filter(pkg =>
+    const subscriptions = defaultOffering.availablePackages.filter((pkg: any) =>
       pkg.product.currencyCode === userCurrency
     ) || [];
     
-    const searchPacks = searchPacksOffering?.availablePackages.filter(pkg =>
+    const searchPacks = searchPacksOffering?.availablePackages.filter((pkg: any) =>
       pkg.product.currencyCode === userCurrency
     ) || [];
     
@@ -75,16 +151,35 @@ export async function getOfferings(): Promise<TruxelOfferings> {
 
 /**
  * Purchase a subscription or one-time product
+ * Works on all platforms: iOS/Android (native IAP) and Web (Stripe)
  * 
  * @param pkg - The package to purchase (from getOfferings)
+ * @param userId - Required for web initialization
  * @returns CustomerInfo with updated entitlements
  * @throws Error if purchase fails or is cancelled
  */
-export async function purchasePackage(pkg: OfferingPackage): Promise<CustomerInfo> {
+export async function purchasePackage(pkg: OfferingPackage, userId?: string): Promise<CustomerInfo> {
   try {
-    console.log(`🛒 Purchasing package: ${pkg.identifier}`);
+    console.log(`🛒 Purchasing package: ${pkg.identifier} on ${Platform.OS}`);
     
-    const { customerInfo } = await Purchases.purchasePackage(pkg.revenueCatPackage);
+    let customerInfo: CustomerInfo;
+    
+    if (isWeb) {
+      // Web: Use purchases-js SDK
+      if (!userId) {
+        throw new Error('User ID required for web payments');
+      }
+      
+      const webSDK = initializeWebSDK(userId);
+      const result = await webSDK.purchase({
+        rcPackage: pkg.revenueCatPackage as PackageWeb
+      });
+      customerInfo = result.customerInfo;
+    } else {
+      // Mobile: Use react-native-purchases
+      const result = await PurchasesMobile.purchasePackage(pkg.revenueCatPackage as PurchasesPackage);
+      customerInfo = result.customerInfo;
+    }
     
     console.log('✅ Purchase successful!');
     console.log('Entitlements:', Object.keys(customerInfo.entitlements.active));
@@ -105,12 +200,27 @@ export async function purchasePackage(pkg: OfferingPackage): Promise<CustomerInf
  * Restore previous purchases
  * Useful when user reinstalls app or logs in on new device
  * 
+ * @param userId - Required for web initialization
  * @returns CustomerInfo with restored entitlements
  */
-export async function restorePurchases(): Promise<CustomerInfo> {
+export async function restorePurchases(userId?: string): Promise<CustomerInfo> {
   try {
-    console.log('🔄 Restoring purchases...');
-    const customerInfo = await Purchases.restorePurchases();
+    console.log(`🔄 Restoring purchases on ${Platform.OS}...`);
+    
+    let customerInfo: CustomerInfo;
+    
+    if (isWeb) {
+      // Web: Restore is automatic on getCustomerInfo
+      if (!userId) {
+        throw new Error('User ID required for web');
+      }
+      const webSDK = initializeWebSDK(userId);
+      customerInfo = await webSDK.getCustomerInfo();
+    } else {
+      // Mobile: Use react-native-purchases
+      customerInfo = await PurchasesMobile.restorePurchases();
+    }
+    
     console.log('✅ Purchases restored!');
     console.log('Active entitlements:', Object.keys(customerInfo.entitlements.active));
     return customerInfo;
@@ -123,11 +233,23 @@ export async function restorePurchases(): Promise<CustomerInfo> {
 /**
  * Get current user's customer info (entitlements, subscriptions, etc.)
  * 
+ * @param userId - Required for web initialization
  * @returns CustomerInfo
  */
-export async function getCustomerInfo(): Promise<CustomerInfo> {
+export async function getCustomerInfo(userId?: string): Promise<CustomerInfo> {
   try {
-    const customerInfo = await Purchases.getCustomerInfo();
+    let customerInfo: CustomerInfo;
+    
+    if (isWeb) {
+      if (!userId) {
+        throw new Error('User ID required for web');
+      }
+      const webSDK = initializeWebSDK(userId);
+      customerInfo = await webSDK.getCustomerInfo();
+    } else {
+      customerInfo = await PurchasesMobile.getCustomerInfo();
+    }
+    
     return customerInfo;
   } catch (error) {
     console.error('❌ Failed to get customer info:', error);
@@ -186,19 +308,43 @@ export function hasSearchCredits(customerInfo: CustomerInfo): boolean {
 
 /**
  * Format RevenueCat package for display
+ * Works for both mobile (PurchasesPackage) and web (Package) types
  */
-function formatPackage(pkg: PurchasesPackage): OfferingPackage {
-  return {
-    identifier: pkg.identifier,
-    packageType: pkg.packageType,
-    revenueCatPackage: pkg,
-    product: {
-      identifier: pkg.product.identifier,
-      title: pkg.product.title,
-      description: pkg.product.description,
-      priceString: pkg.product.priceString,
-      price: pkg.product.price,
-      currencyCode: pkg.product.currencyCode
-    }
-  };
+function formatPackage(pkg: PurchasesPackage | PackageWeb): OfferingPackage {
+  // Check if it's a web package
+  const isWebPackage = 'rcBillingProduct' in pkg;
+  
+  if (isWebPackage) {
+    // Web package structure
+    const webProduct = pkg.rcBillingProduct;
+    return {
+      identifier: pkg.identifier,
+      packageType: pkg.packageType,
+      revenueCatPackage: pkg,
+      product: {
+        identifier: webProduct.identifier,
+        title: webProduct.title,
+        description: webProduct.description || '',
+        priceString: webProduct.currentPrice.formattedPrice,
+        price: webProduct.currentPrice.amountMicros / 1000000,
+        currencyCode: webProduct.currentPrice.currency
+      }
+    };
+  } else {
+    // Mobile package structure
+    const mobileProduct = pkg.product;
+    return {
+      identifier: pkg.identifier,
+      packageType: pkg.packageType,
+      revenueCatPackage: pkg,
+      product: {
+        identifier: mobileProduct.identifier,
+        title: mobileProduct.title,
+        description: mobileProduct.description,
+        priceString: mobileProduct.priceString,
+        price: mobileProduct.price,
+        currencyCode: mobileProduct.currencyCode
+      }
+    };
+  }
 }
