@@ -54,13 +54,33 @@ Deno.serve(async (req: Request) => {
       );
     }
 
-    const { data: profile } = await supabase
+    console.log('Fetching profile for user:', user.id);
+    
+    const { data: profile, error: profileError } = await supabase
       .from("profiles")
       .select("*")
       .eq("user_id", user.id)
       .maybeSingle();
 
-    if (!profile || !profile.stripe_subscription_id) {
+    if (profileError) {
+      console.error('Profile query error:', profileError);
+    }
+
+    console.log('Profile found:', profile ? 'YES' : 'NO');
+
+    if (!profile) {
+      console.error('Profile not found for user:', user.id);
+      return new Response(
+        JSON.stringify({ error: "Profile not found" }),
+        {
+          status: 404,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        }
+      );
+    }
+
+    if (!profile.stripe_subscription_id) {
+      console.log('No subscription found for user:', user.id);
       return new Response(
         JSON.stringify({ error: "No active subscription found" }),
         {

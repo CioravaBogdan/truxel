@@ -57,20 +57,53 @@ Deno.serve(async (req: Request) => {
       );
     }
 
-    const { data: profile } = await supabase
+    console.log('Fetching profile for user:', user.id);
+    
+    let { data: profile, error: profileError } = await supabase
       .from("profiles")
       .select("*")
       .eq("user_id", user.id)
       .maybeSingle();
 
+    if (profileError) {
+      console.error('Profile query error:', profileError);
+    }
+
+    console.log('Profile found:', profile ? 'YES' : 'NO');
+
     if (!profile) {
-      return new Response(
-        JSON.stringify({ error: "Profile not found" }),
-        {
-          status: 404,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        }
-      );
+      console.log('Profile not found - creating new profile for user:', user.id);
+      
+      // Create profile automatically if it doesn't exist
+      const { data: newProfile, error: createError } = await supabase
+        .from("profiles")
+        .insert({
+          user_id: user.id,
+          email: user.email,
+          full_name: user.user_metadata?.full_name || user.email?.split('@')[0] || 'User',
+          subscription_tier: 'trial',
+          total_search_credits: 5,
+        })
+        .select()
+        .single();
+
+      if (createError || !newProfile) {
+        console.error('Failed to create profile:', createError);
+        return new Response(
+          JSON.stringify({ 
+            error: "Profile not found and could not be created",
+            details: createError?.message 
+          }),
+          {
+            status: 404,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          }
+        );
+      }
+
+      console.log('New profile created:', newProfile.id);
+      // Use the newly created profile
+      profile = newProfile;
     }
 
     const body: CheckoutRequest = await req.json();
