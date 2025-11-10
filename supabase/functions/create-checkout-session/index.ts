@@ -82,7 +82,7 @@ Deno.serve(async (req: Request) => {
           email: user.email,
           full_name: user.user_metadata?.full_name || user.email?.split('@')[0] || 'User',
           subscription_tier: 'trial',
-          total_search_credits: 5,
+          available_search_credits: 5,
         })
         .select()
         .single();
