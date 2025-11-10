@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
+import { Platform } from 'react-native';
 import { useFrameworkReady } from '@/hooks/useFrameworkReady';
 import { useAuthStore } from '@/store/authStore';
 import { authService } from '@/services/authService';
 import { sessionService } from '@/services/sessionService';
 import { notificationService } from '@/services/notificationService';
 import { nativeModulesService } from '@/services/nativeModulesService';
+import Purchases, { LOG_LEVEL } from 'react-native-purchases';
+import Constants from 'expo-constants';
 import i18n from '@/lib/i18n';
 import Toast from 'react-native-toast-message';
 
@@ -14,6 +17,7 @@ export default function RootLayout() {
   useFrameworkReady();
   const [isNavigationReady, setIsNavigationReady] = useState(false);
   const [nativeModulesReady, setNativeModulesReady] = useState(false);
+  const [revenueCatReady, setRevenueCatReady] = useState(false);
 
   const router = useRouter();
   const segments = useSegments();
@@ -33,6 +37,54 @@ export default function RootLayout() {
         setNativeModulesReady(true); // Continue even if initialization fails
       });
   }, []);
+
+  // Initialize RevenueCat SDK (after native modules, NOT in Expo Go)
+  useEffect(() => {
+    if (!nativeModulesReady) {
+      console.log('RootLayout: Waiting for native modules before RevenueCat init...');
+      return;
+    }
+
+    // Check if running in Expo Go (where RevenueCat won't work)
+    const isExpoGo = Constants.appOwnership === 'expo';
+    if (isExpoGo) {
+      console.log('🟡 Expo Go detected - RevenueCat disabled, using Stripe');
+      setRevenueCatReady(false);
+      return;
+    }
+
+    console.log('RootLayout: Initializing RevenueCat SDK...');
+
+    const apiKey = Platform.select({
+      ios: Constants.expoConfig?.extra?.revenueCatIosKey,
+      android: Constants.expoConfig?.extra?.revenueCatAndroidKey,
+    });
+
+    if (!apiKey || apiKey === '' || apiKey.includes('xxx')) {
+      console.warn('⚠️ RevenueCat API key not configured - using Stripe fallback');
+      console.warn('   For native IAP, set TRUXEL_REVENUECAT_IOS_KEY in .env');
+      setRevenueCatReady(false);
+      return;
+    }
+
+    try {
+      // Set log level (DEBUG for development, INFO for production)
+      Purchases.setLogLevel(__DEV__ ? LOG_LEVEL.DEBUG : LOG_LEVEL.INFO);
+      
+      // Configure SDK with API key
+      Purchases.configure({ apiKey });
+      
+      console.log('✅ RevenueCat SDK initialized successfully');
+      console.log('   API Key:', apiKey.substring(0, 12) + '...');
+      console.log('   Platform:', Platform.OS);
+      
+      setRevenueCatReady(true);
+    } catch (error) {
+      console.error('❌ RevenueCat SDK initialization failed:', error);
+      console.error('   Will fallback to Stripe for payments');
+      setRevenueCatReady(false);
+    }
+  }, [nativeModulesReady]);
 
   useEffect(() => {
     if (!nativeModulesReady) {

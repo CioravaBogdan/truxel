@@ -2,8 +2,10 @@ import { supabase } from '@/lib/supabase';
 import { Language, Profile } from '@/types/database.types';
 import { User } from '@supabase/supabase-js';
 import { autoDetectDistanceUnit } from '@/utils/distance';
+import { autoDetectCurrency } from '@/utils/currency';
 import * as Localization from 'expo-localization';
 import Constants from 'expo-constants';
+import { initRevenueCat, logoutRevenueCat } from '@/lib/revenueCat';
 
 export interface SignUpData {
   email: string;
@@ -23,9 +25,10 @@ export const authService = {
     if (authError) throw authError;
     if (!authData.user) throw new Error('User creation failed');
 
-    // Auto-detect distance unit based on device locale
+    // Auto-detect distance unit and currency based on device locale
     const deviceLocale = Localization.getLocales()[0]?.languageTag || 'en';
     const distanceUnit = autoDetectDistanceUnit(deviceLocale);
+    const currency = autoDetectCurrency(deviceLocale);
 
     const { error: profileError } = await supabase
       .from('profiles')
@@ -39,7 +42,8 @@ export const authService = {
         subscription_status: 'active',
         trial_searches_used: 0,
         monthly_searches_used: 0,
-        preferred_distance_unit: distanceUnit, // Auto-detect km or mi based on locale
+        preferred_distance_unit: distanceUnit, // Auto-detect km or mi (US/CA/UK = mi)
+        preferred_currency: currency, // Auto-detect EUR or USD (US/CA/MX = USD)
       });
 
     if (profileError) throw profileError;
@@ -54,10 +58,19 @@ export const authService = {
     });
 
     if (error) throw error;
+    
+    // Initialize RevenueCat after successful login
+    if (data?.user) {
+      await initRevenueCat(data.user.id);
+    }
+    
     return data;
   },
 
   async signOut() {
+    // Logout from RevenueCat first
+    await logoutRevenueCat();
+    
     const { error } = await supabase.auth.signOut();
     if (error) throw error;
   },

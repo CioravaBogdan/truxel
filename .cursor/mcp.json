@@ -1,0 +1,7 @@
+{
+  "mcpServers": {
+    "revenuecat": {
+      "url": "http://localhost:52325/revenuecat-sse?origin=cHJvamtleV8wLjE0MjY0OTQyNjk="
+    }
+  }
+}

@@ -1,0 +1,17 @@
+# Supabase Edge Functions Configuration
+# https://supabase.com/docs/guides/functions/deploy
+
+[functions.stripe-webhook]
+verify_jwt = false  # Public webhook - Stripe provides signature verification
+
+[functions.create-checkout-session]
+verify_jwt = true  # Requires user authentication
+
+[functions.manage-subscription]
+verify_jwt = true  # Requires user authentication
+
+[functions.stripe-redirect]
+verify_jwt = false  # Browser redirect after Stripe payment - no JWT available
+
+[functions.validate-coupon]
+verify_jwt = true  # Requires user authentication
