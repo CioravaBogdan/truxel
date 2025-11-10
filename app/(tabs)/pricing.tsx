@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   Alert,
   TextInput,
+  Platform,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -16,6 +17,7 @@ import { Button } from '@/components/Button';
 import { ChatSupportModal } from '@/components/ChatSupportModal';
 import { useAuthStore } from '@/store/authStore';
 import { stripeService } from '@/services/stripeService';
+import Constants from 'expo-constants';
 import Toast from 'react-native-toast-message';
 import {
   CreditCard,
@@ -31,6 +33,19 @@ import {
 } from 'lucide-react-native';
 import { SubscriptionTierData, AdditionalSearchPack } from '@/types/database.types';
 import * as WebBrowser from 'expo-web-browser';
+
+// Import RevenueCat for native builds
+import { 
+  getOfferings as getRevenueCatOfferings,
+  purchasePackage as purchaseRevenueCatPackage,
+  restorePurchases as restoreRevenueCatPurchases,
+  getCustomerInfo,
+  getUserTier,
+  type OfferingPackage 
+} from '@/services/revenueCatService';
+
+// Check if running in native build (not Expo Go)
+const isNativeBuild = Constants.appOwnership !== 'expo' && (Platform.OS === 'ios' || Platform.OS === 'android');
 
 type TierCommunityMeta = {
   daily?: number;
