@@ -36,13 +36,15 @@ function initializeWebSDK(userId: string): InstanceType<typeof PurchasesWebClass
     return webPurchasesInstance;
   }
   
-  const apiKey = Constants.expoConfig?.extra?.revenueCatIosKey; // Use iOS key for web too
+  const apiKey = Constants.expoConfig?.extra?.revenueCatWebKey; // Web Billing API key
   
   if (!apiKey) {
-    throw new Error('RevenueCat API key not configured');
+    throw new Error('RevenueCat Web API key not configured. Set TRUXEL_REVENUECAT_WEB_KEY in .env');
   }
   
   console.log('🌐 Initializing RevenueCat Web SDK...');
+  console.log('🔑 Using Web API key:', apiKey.substring(0, 10) + '...');
+  
   webPurchasesInstance = PurchasesWebClass.configure({
     apiKey,
     appUserId: userId
@@ -82,67 +84,135 @@ export interface TruxelOfferings {
 export async function getOfferings(userId?: string): Promise<TruxelOfferings> {
   try {
     console.log(`🌍 Platform: ${Platform.OS} | isWeb: ${isWeb}`);
-    
+
     // Detect user currency (EUR or USD)
     const deviceLocale = Localization.getLocales()[0]?.languageTag || 'en';
     const userCurrency = autoDetectCurrency(deviceLocale);
     console.log(`💰 User currency detected: ${userCurrency} (locale: ${deviceLocale})`);
-    
+
     let offerings;
-    
+
     if (isWeb) {
       // Web: Use purchases-js SDK (Stripe backend)
       if (!userId) {
         console.warn('⚠️ User ID required for web payments');
-        return { 
-          subscriptions: [], 
+        return {
+          subscriptions: [],
           searchPacks: [],
           userCurrency
         };
       }
-      
+
+      console.log('🌐 Initializing web SDK for user:', userId);
       const webSDK = initializeWebSDK(userId);
+      console.log('🌐 Fetching offerings from web SDK...');
       offerings = await webSDK.getOfferings();
+      console.log('🌐 Offerings received:', offerings);
     } else {
       // Mobile: Use react-native-purchases (native IAP)
+      console.log('📱 Fetching offerings from mobile SDK...');
       offerings = await PurchasesMobile.getOfferings();
+      console.log('📱 Offerings received:', offerings);
     }
-    
+
     // Get main subscription offering
     const defaultOffering = offerings.current;
-    
+
     // Get search packs offering
     const searchPacksOffering = offerings.all['search_packs'];
-    
+
+    console.log('📦 Available offerings:', {
+      hasCurrentOffering: !!defaultOffering,
+      currentOfferingId: defaultOffering?.identifier,
+      allOfferingIds: Object.keys(offerings.all || {}),
+      hasSearchPacks: !!searchPacksOffering
+    });
+
     if (!defaultOffering) {
-      console.warn('⚠️ No current offering found');
-      return { 
-        subscriptions: [], 
+      console.warn('⚠️ No current offering found in RevenueCat Dashboard');
+      console.warn('   Please create an offering and set it as current in RevenueCat Dashboard');
+      return {
+        subscriptions: [],
         searchPacks: [],
         userCurrency
       };
     }
-    
+
+    // Log all available packages BEFORE filtering
+    console.log('📦 Available packages in current offering:',
+      defaultOffering.availablePackages.map((pkg: any) => ({
+        id: pkg.identifier,
+        currency: pkg.product?.currencyCode || 'N/A',
+        price: pkg.product?.priceString || 'N/A'
+      }))
+    );
+
+    if (searchPacksOffering) {
+      console.log('📦 Available search packs:',
+        searchPacksOffering.availablePackages.map((pkg: any) => ({
+          id: pkg.identifier,
+          currency: pkg.product?.currencyCode || 'N/A',
+          price: pkg.product?.priceString || 'N/A'
+        }))
+      );
+    }
+
     // Filter packages by currency
-    const subscriptions = defaultOffering.availablePackages.filter((pkg: any) =>
-      pkg.product.currencyCode === userCurrency
-    ) || [];
-    
-    const searchPacks = searchPacksOffering?.availablePackages.filter((pkg: any) =>
-      pkg.product.currencyCode === userCurrency
-    ) || [];
-    
-    console.log(`📦 Found ${subscriptions.length} subscriptions and ${searchPacks.length} search packs for ${userCurrency}`);
-    
+    let subscriptions = defaultOffering.availablePackages.filter((pkg: any) => {
+      const pkgCurrency = pkg.product?.currencyCode;
+      const matches = pkgCurrency === userCurrency;
+      if (!matches) {
+        console.log(`⏭️ Skipping package ${pkg.identifier} (currency: ${pkgCurrency}, wanted: ${userCurrency})`);
+      }
+      return matches;
+    }) || [];
+
+    let searchPacks = searchPacksOffering?.availablePackages.filter((pkg: any) => {
+      const pkgCurrency = pkg.product?.currencyCode;
+      const matches = pkgCurrency === userCurrency;
+      if (!matches) {
+        console.log(`⏭️ Skipping search pack ${pkg.identifier} (currency: ${pkgCurrency}, wanted: ${userCurrency})`);
+      }
+      return matches;
+    }) || [];
+
+    console.log(`✅ Filtered to ${subscriptions.length} subscriptions and ${searchPacks.length} search packs for ${userCurrency}`);
+
+    // FALLBACK: If no packages found for user currency, show ALL packages
+    if (subscriptions.length === 0 && defaultOffering.availablePackages.length > 0) {
+      console.warn('⚠️ No subscriptions found for currency:', userCurrency);
+      console.warn('   Showing ALL available currencies as fallback');
+      subscriptions = defaultOffering.availablePackages;
+    }
+
+    if (searchPacks.length === 0 && searchPacksOffering?.availablePackages.length > 0) {
+      console.warn('⚠️ No search packs found for currency:', userCurrency);
+      console.warn('   Showing ALL available currencies as fallback');
+      searchPacks = searchPacksOffering.availablePackages;
+    }
+
+    if (subscriptions.length === 0 && searchPacks.length === 0) {
+      console.warn('⚠️ No packages found at all!');
+      console.warn('   Check RevenueCat Dashboard to ensure:');
+      console.warn('   1. Products are created in Stripe/App Store/Play Store');
+      console.warn('   2. Products are added to Offerings');
+      console.warn('   3. An Offering is set as "Current"');
+    }
+
     return {
       subscriptions: subscriptions.map(formatPackage),
       searchPacks: searchPacks.map(formatPackage),
       userCurrency
     };
-  } catch (error) {
+  } catch (error: any) {
     console.error('❌ Error fetching offerings:', error);
-    return { 
-      subscriptions: [], 
+    console.error('   Error details:', {
+      message: error?.message,
+      code: error?.code,
+      stack: error?.stack
+    });
+    return {
+      subscriptions: [],
       searchPacks: [],
       userCurrency: 'EUR' // Default fallback
     };

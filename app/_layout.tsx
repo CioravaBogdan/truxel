@@ -38,22 +38,32 @@ export default function RootLayout() {
       });
   }, []);
 
-  // Initialize RevenueCat SDK (after native modules, NOT in Expo Go)
+  // Initialize RevenueCat SDK (after native modules)
   useEffect(() => {
     if (!nativeModulesReady) {
       console.log('RootLayout: Waiting for native modules before RevenueCat init...');
       return;
     }
 
-    // Check if running in Expo Go (where RevenueCat won't work)
+    // Check if running in Expo Go (where RevenueCat won't work on mobile)
     const isExpoGo = Constants.appOwnership === 'expo';
+
+    // Web platform ALWAYS supports RevenueCat (via purchases-js)
+    if (Platform.OS === 'web') {
+      console.log('🌐 Web platform detected - RevenueCat will initialize on-demand');
+      console.log('   Web SDK uses:', Constants.expoConfig?.extra?.revenueCatWebKey?.substring(0, 12) + '...');
+      setRevenueCatReady(true); // Web SDK initializes lazily in revenueCatService
+      return;
+    }
+
+    // Mobile (iOS/Android) requires native builds (not Expo Go)
     if (isExpoGo) {
-      console.log('🟡 Expo Go detected - RevenueCat disabled, using Stripe');
+      console.log('🟡 Expo Go detected - RevenueCat disabled for mobile, web payments still work');
       setRevenueCatReady(false);
       return;
     }
 
-    console.log('RootLayout: Initializing RevenueCat SDK...');
+    console.log('RootLayout: Initializing RevenueCat SDK for mobile...');
 
     const apiKey = Platform.select({
       ios: Constants.expoConfig?.extra?.revenueCatIosKey,
@@ -61,8 +71,8 @@ export default function RootLayout() {
     });
 
     if (!apiKey || apiKey === '' || apiKey.includes('xxx')) {
-      console.warn('⚠️ RevenueCat API key not configured - using Stripe fallback');
-      console.warn('   For native IAP, set TRUXEL_REVENUECAT_IOS_KEY in .env');
+      console.warn('⚠️ RevenueCat API key not configured for', Platform.OS);
+      console.warn('   Set TRUXEL_REVENUECAT_IOS_KEY or TRUXEL_REVENUECAT_ANDROID_KEY in .env');
       setRevenueCatReady(false);
       return;
     }
@@ -70,18 +80,18 @@ export default function RootLayout() {
     try {
       // Set log level (DEBUG for development, INFO for production)
       Purchases.setLogLevel(__DEV__ ? LOG_LEVEL.DEBUG : LOG_LEVEL.INFO);
-      
+
       // Configure SDK with API key
       Purchases.configure({ apiKey });
-      
-      console.log('✅ RevenueCat SDK initialized successfully');
+
+      console.log('✅ RevenueCat mobile SDK initialized successfully');
       console.log('   API Key:', apiKey.substring(0, 12) + '...');
       console.log('   Platform:', Platform.OS);
-      
+
       setRevenueCatReady(true);
     } catch (error) {
       console.error('❌ RevenueCat SDK initialization failed:', error);
-      console.error('   Will fallback to Stripe for payments');
+      console.error('   Mobile payments will not work');
       setRevenueCatReady(false);
     }
   }, [nativeModulesReady]);

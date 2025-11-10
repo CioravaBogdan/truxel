@@ -45,8 +45,8 @@ import {
 } from '@/services/revenueCatService';
 import type { CustomerInfo } from 'react-native-purchases';
 
-// Check if running in native build (not Expo Go)
-const isNativeBuild = Constants.appOwnership !== 'expo' && (Platform.OS === 'ios' || Platform.OS === 'android');
+// TRUXEL: Use ONLY RevenueCat for all platforms (iOS, Android, Web)
+const USE_REVENUECAT_ONLY = true;
 
 type TierCommunityMeta = {
   daily?: number;
@@ -172,17 +172,22 @@ export default function PricingScreen() {
   }, [t]);
 
   const loadRevenueCatOfferings = useCallback(async () => {
+    if (!profile?.user_id) {
+      console.error('❌ No user_id available for RevenueCat');
+      return;
+    }
+    
     try {
       setIsLoading(true);
-      console.log('📦 Loading RevenueCat offerings for native build...');
+      console.log('📦 Loading RevenueCat offerings for user:', profile.user_id);
       
-      const offerings = await getRevenueCatOfferings();
+      const offerings = await getRevenueCatOfferings(profile.user_id);
       setRcSubscriptions(offerings.subscriptions);
       setRcSearchPacks(offerings.searchPacks);
       setUserCurrency(offerings.userCurrency);
       
-      const info = await getCustomerInfo();
-      setRcCustomerInfo(info);
+      const info = await getCustomerInfo(profile.user_id);
+      setRcCustomerInfo(info as any);
       
       console.log('✅ RevenueCat offerings loaded:', {
         subscriptions: offerings.subscriptions.length,
@@ -201,18 +206,12 @@ export default function PricingScreen() {
     } finally {
       setIsLoading(false);
     }
-  }, [t]);
+  }, [t, profile?.user_id]);
 
   useEffect(() => {
-    console.log('PricingScreen mounted, isNativeBuild:', isNativeBuild);
+    console.log('📦 PricingScreen mounted - Loading RevenueCat offerings (Universal)');
+    loadRevenueCatOfferings();
     
-    if (isNativeBuild) {
-      console.log('🍎 Native build detected - loading RevenueCat offerings');
-      loadRevenueCatOfferings();
-    } else {
-      console.log('🌐 Expo Go/Web detected - loading Stripe pricing');
-      loadPricingData();
-    }
     
     checkSubscriptionStatus();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -385,7 +384,7 @@ export default function PricingScreen() {
   };
 
   const handleRevenueCatPurchase = async (pkg: OfferingPackage) => {
-    if (!profile) {
+    if (!profile?.user_id) {
       Toast.show({
         type: 'error',
         text1: t('common.error'),
@@ -396,10 +395,10 @@ export default function PricingScreen() {
 
     try {
       setPurchasingPackage(pkg.identifier);
-      console.log('🛒 RevenueCat purchase:', pkg.identifier);
+      console.log('🛒 RevenueCat purchase:', pkg.identifier, 'for user:', profile.user_id);
       
-      const info = await purchaseRevenueCatPackage(pkg);
-      setRcCustomerInfo(info);
+      const info = await purchaseRevenueCatPackage(pkg, profile.user_id);
+      setRcCustomerInfo(info as any);
       
       const newTier = getUserTier(info);
       console.log('✅ Purchase successful! New tier:', newTier);
@@ -431,12 +430,21 @@ export default function PricingScreen() {
   };
 
   const handleRestorePurchases = async () => {
+    if (!profile?.user_id) {
+      Toast.show({
+        type: 'error',
+        text1: t('common.error'),
+        text2: 'Please login to restore purchases',
+      });
+      return;
+    }
+    
     try {
       setIsLoading(true);
-      console.log('🔄 Restoring RevenueCat purchases...');
+      console.log('🔄 Restoring RevenueCat purchases for user:', profile.user_id);
       
-      const info = await restoreRevenueCatPurchases();
-      setRcCustomerInfo(info);
+      const info = await restoreRevenueCatPurchases(profile.user_id);
+      setRcCustomerInfo(info as any);
       
       const tier = getUserTier(info);
       console.log('✅ Purchases restored! Tier:', tier);
@@ -825,8 +833,8 @@ export default function PricingScreen() {
           </Card>
         )}
 
-        {/* Coupon Code Section - Only show for Stripe (not RevenueCat) */}
-        {!isNativeBuild && (
+        {/* Coupon Code Section - HIDDEN (RevenueCat doesn't support coupons in native IAP) */}
+        {false && (
           <Card style={styles.couponCard}>
             <View style={styles.couponHeader}>
               <Tag size={24} color="#2563EB" />
@@ -874,8 +882,8 @@ export default function PricingScreen() {
           </Card>
         )}
 
-        {/* RevenueCat Native Subscriptions */}
-        {isNativeBuild && rcSubscriptions.length > 0 && (
+        {/* RevenueCat Universal Subscriptions (iOS, Android, Web) */}
+        {rcSubscriptions.length > 0 && (
           <View style={styles.tiersContainer}>
             {rcSubscriptions.map((pkg) => {
               // Extract tier name from package identifier (e.g., "rc_monthly_standard" -> "standard")
@@ -932,8 +940,8 @@ export default function PricingScreen() {
           </View>
         )}
 
-        {/* Stripe Subscriptions (Expo Go / Web fallback) */}
-        {!isNativeBuild && tiers.length > 0 && (
+        {/* Stripe Subscriptions - HIDDEN (Using RevenueCat only) */}
+        {false && tiers.length > 0 && (
           <View style={styles.tiersContainer}>
             {tiers.map((tier) => (
             <Card
@@ -1064,8 +1072,8 @@ export default function PricingScreen() {
           </View>
         )}
 
-        {/* RevenueCat Search Packs */}
-        {isNativeBuild && rcSearchPacks.length > 0 && (
+        {/* RevenueCat Search Packs (Universal) */}
+        {rcSearchPacks.length > 0 && (
           <>
             <View style={styles.divider} />
 
@@ -1108,8 +1116,8 @@ export default function PricingScreen() {
           </>
         )}
 
-        {/* Stripe Search Packs (Expo Go / Web fallback) */}
-        {!isNativeBuild && searchPacks.length > 0 && (
+        {/* Stripe Search Packs - HIDDEN (Using RevenueCat only) */}
+        {false && searchPacks.length > 0 && (
           <>
             <View style={styles.divider} />
 

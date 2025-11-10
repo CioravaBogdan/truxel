@@ -92,6 +92,8 @@ export default {
       // RevenueCat API Keys (get from RevenueCat Dashboard)
       revenueCatIosKey: process.env.TRUXEL_REVENUECAT_IOS_KEY || '',
       revenueCatAndroidKey: process.env.TRUXEL_REVENUECAT_ANDROID_KEY || '',
+      revenueCatWebKey: process.env.TRUXEL_REVENUECAT_WEB_KEY || '',
+      revenueCatWebAppId: process.env.TRUXEL_REVENUECAT_WEB_APP_ID || '',
       // N8N Webhook URLs (for analytics and automation)
       n8nSearchWebhook: process.env.TRUXEL_N8N_SEARCH_WEBHOOK,
       n8nCityWebhook: process.env.TRUXEL_N8N_CITY_WEBHOOK,
