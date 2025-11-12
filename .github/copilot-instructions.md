@@ -81,8 +81,10 @@ SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIs
 - **Supabase Project**: `upxocyomsfhqoflwibwn` | Dashboard: https://supabase.com/dashboard/project/upxocyomsfhqoflwibwn
 - **RevenueCat Project**: `proj56445e28` | Dashboard: https://app.revenuecat.com/
 
-**📋 Products & Pricing:**
-For complete product IDs, Stripe Price IDs, RevenueCat package mappings, see: [`PRODUCTS_MAPPING_COMPLETE.md`](../PRODUCTS_MAPPING_COMPLETE.md)
+**📋 Complete Documentation:**
+For complete product IDs, Stripe Price IDs, RevenueCat package mappings, App Store Connect status, see: [`APPLE_IAP_COMPLETE_STATUS.md`](../APPLE_IAP_COMPLETE_STATUS.md)
+
+**Single Source of Truth**: All RevenueCat configuration, App Store Connect status, product mappings are in `APPLE_IAP_COMPLETE_STATUS.md`. Ignore older documentation files.
 
 ### Environment Variables
 Always use these exact credentials for this project:

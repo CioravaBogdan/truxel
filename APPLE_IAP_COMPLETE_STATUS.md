@@ -172,38 +172,76 @@ This is **NORMAL** and can take 2-24 hours after agreement activation.
    - **Products**: 4 products (Standard, Pro, Fleet Manager, Search Pack)
 
 #### Entitlements (Tier Access)
-1. **standard_access** (`entl7ed8e41f98`)
-   - Products attached: ✅ iOS + Web Billing + Stripe
+1. **standard_access** (Standard Tier Access)
+   - **Created**: Nov 10, 2025
+   - **Products attached**: 5 products ✅
+     - Standard Plan USD ($29.99) - Stripe `price_1SRq8vPd7H7rZiTmqkNNJIlZ`
+     - Standard Plan EUR (€29.99) - Stripe `price_1SL14lPd7H7rZiTmkgHF1iCZ`
+     - Standard Tier - Stripe `prod_THaEncye4n7tEi`
+     - Standard Plan - iOS `truxel_2999_1month`
+     - Standard Tier - Web Billing `prod_THaEncye4n7tEi`
    
-2. **pro_access** (`entlf4b2dd2463`)
-   - Products attached: ✅ iOS + Web Billing + Stripe
+2. **pro_access** (Pro Tier Access - Advanced Features)
+   - **Created**: Nov 10, 2025
+   - **Products attached**: 5 products ✅
+     - Pro Plan USD ($49.99) - Stripe `price_1SRq8MPd7H7rZiTmtx8muOmd`
+     - Pro Plan EUR (€49.99) - Stripe `price_1SL14rPd7H7rZiTmKnpBjJaS`
+     - Pro Tier - Stripe `prod_THaFkFFzFDOebz`
+     - Pro Plan - iOS `truxel_4999_1month`
+     - Pro Tier - Web Billing `prod_THaFkFFzFDOebz`
    
-3. **fleet_manager_access** (`entlc25fa36d63`)
-   - Products attached: ✅ iOS + Web Billing + Stripe
+3. **fleet_manager_access** (Fleet Manager Access - Freight Forwarders)
+   - **Created**: Nov 10, 2025
+   - **Products attached**: 5 products ✅
+     - Fleet Manager USD ($29.99) - Stripe `price_1SRq6ePd7H7rZiTmAywE2Chw`
+     - Fleet Manager EUR (€29.99) - Stripe `price_1SRpzzPd7H7rZiTmOQrenjIN`
+     - Fleet Manager - Stripe `prod_TOdGKK8sjlXpvB`
+     - Fleet Manager - iOS `truxel_2999_fleet_1month`
+     - Fleet Manager - Web Billing `prod_TOdGKK8sjlXpvB`
+
+4. **search_credits** (Additional Search Credits)
+   - **Created**: Nov 10, 2025
+   - **Products attached**: 5 products ✅
+     - 25 Search Credits USD ($24.99) - Stripe `price_1SRq7WPd7H7rZiTme1YFLtQL`
+     - 25 Search Credits EUR (€24.99) - Stripe `price_1SL14yPd7H7rZiTmGgsbAgq8`
+     - Search Pack Add-on - Stripe `prod_THaFpplWmNkSUP`
+     - 25 Search Credits - iOS `truxel_2499_onetime`
+     - Search Pack Add-on - Web Billing `prod_THaFpplWmNkSUP`
    
-4. **pro_freighter_access** (`entl74bb1a8c86`) - NEW
-   - Products attached: ✅ iOS + Web Billing + Stripe
+5. **pro_freighter_access** (Pro Freighter Access - Premium Freight Forwarder Features) - **NEW**
+   - **Created**: Nov 12, 2025
+   - **Products attached**: ⚠️ **0 products - NEEDS CONFIGURATION**
+   - **Action Required**: Attach products in RevenueCat Dashboard:
+     - Pro Frighter - Stripe `prod_TPPA0AZxwJnvzB` (needs price creation)
+     - Pro Frighter - iOS `truxel_4999_frighter_1month`
+     - Pro Frighter - Web Billing `prod_TPPA0AZxwJnvzB`
 
 #### Offerings (Package Groups)
 1. **Default Offering** (`ofrnga83aac4b57`)
+   - **RevenueCat ID**: `ofrnga83aac4b57`
    - **Is Current**: TRUE ✅
    - **Display Name**: "Truxel Subscription Plans"
    - **Lookup Key**: `default`
+   - **Created**: Nov 10, 2025 at 08:19 AM UTC
    - **Packages**: 8 packages total
-     - Standard Plan - USD (`pkgea35aabd7f6`)
-     - Standard Plan - EUR (`pkge57f2e21be0`)
-     - Pro Plan - USD (`pkgee2d3e166e8`)
-     - Pro Plan - EUR (`pkgeb6799caaab`)
-     - Fleet Manager Plan - USD (`pkge1cde937c68`)
-     - Fleet Manager Plan - EUR (`pkge28da7823dc`)
-     - Pro Freighter - USD (`pkgebc3fd7ce43`)
-     - Pro Freighter - EUR (`pkgea1d3a62cbb`)
+     1. **Standard Plan - USD** (`$rc_custom_standard_usd`) - pkgea35aabd7f6
+     2. **Standard Plan - EUR** (`$rc_monthly`) - pkge57f2e21be0
+     3. **Pro Plan - EUR** (`$rc_custom_pro_eur`) - pkgeb6799caaab
+     4. **Pro Plan - USD** (`$rc_custom_pro_usd`) - pkgee2d3e166e8
+     5. **Fleet Manager Plan - EUR** (`$rc_custom_fleet_manager_eur`) - pkge28da7823dc
+     6. **Fleet Manager Plan - USD** (`$rc_custom_fleet_manager_usd`) - pkge1cde937c68
+     7. **Pro Freighter - USD** (`$rc_custom_pro_freighter_usd`) - pkgebc3fd7ce43
+     8. **Pro Freighter - EUR** (`$rc_custom_pro_freighter_eur`) - pkgea1d3a62cbb
 
 2. **Search Packs Offering** (`ofrngb8f954a02b`)
+   - **RevenueCat ID**: `ofrngb8f954a02b`
    - **Is Current**: FALSE
    - **Display Name**: "Search Credit Packs"
    - **Lookup Key**: `search_packs`
-   - **Packages**: 1 package (Search Pack 25 Credits)
+   - **Created**: Nov 10, 2025 at 08:19 AM UTC
+   - **Packages**: 2 packages total
+     1. **25 Search Credits - USD** (`$rc_custom_search_pack_25_usd`)
+     2. **25 Search Credits - EUR** (`$rc_custom_search_pack_25_eur`)
 
 #### Package Details
 Each package has **BOTH** iOS product AND Web Billing product attached:
@@ -252,17 +290,38 @@ This dual-product pattern enables:
 3. **Mexico Tax Questionnaire** - ✅ Complete (Nov 12, 2025)
 
 #### Sandbox Testers
-- **Email**: office@infant.ro
-- **Name**: Ciorava Bogdan
-- **Country**: Romania
-- **Status**: ✅ Active
-- **Last Purchase**: None (never tested)
-
 #### In-App Purchases Status
-| Product ID | Type | Price | Status | Localization | Review Status |
-|------------|------|-------|--------|--------------|---------------|
-| `truxel_2999_1month` | Subscription | $29.99/mo | ✅ Ready to Submit | ✅ English | Not submitted |
-| `truxel_4999_1month` | Subscription | $49.99/mo | ✅ Ready to Submit | ✅ English | Not submitted |
+
+**📋 Subscriptions Section:**
+
+| Order | Reference Name | Product ID | Duration | Status |
+|-------|----------------|------------|----------|--------|
+| 1 | Monthly $29.99, Standard | `truxel_2999_1month` | 1 month | 🟡 Ready to Submit |
+| 2 | Monthly, $49.99, Pro | `truxel_4999_1month` | 1 month | 🟡 Ready to Submit |
+| 3 | Monthly $29.99, Fleet Manager | `truxel_2999_fleet_1month` | 1 month | 🟡 Ready to Submit |
+| 4 | Monthly, $49.99, Pro Frighter | `truxel_4999_frighter_1month` | 1 month | 🟡 Ready to Submit |
+
+**Subscription Group**: `default` (Group ID: 21828706)  
+**Total Subscriptions**: 4
+
+**📋 In-App Purchases Section (Drafts):**
+
+| Reference Name | Product ID | Type | Status |
+|----------------|------------|------|--------|
+| 25 Searches | `truxel_2499_onetime` | Consumable | 🟡 Ready to Submit |
+
+**Note**: All products have "Ready to Submit" status, meaning:
+- ✅ Product metadata completed (English localization)
+- ✅ Pricing configured ($29.99 or $49.99)
+- ⏳ **Must be submitted with first app version** for Apple review
+- ⏳ After submission, will appear in Subscriptions section (not drafts)
+
+**RevenueCat Status for iOS Products**:
+- All 5 products show **"Could not check"** status
+- This is **NORMAL** - RevenueCat cannot verify until:
+  1. Products submitted for review with app binary
+  2. Apple approves products
+  3. Products become available in StoreKit$49.99/mo | ✅ Ready to Submit | ✅ English | Not submitted |
 | `truxel_2999_fleet_1month` | Subscription | $29.99/mo | ✅ Ready to Submit | ✅ English | Not submitted |
 | `truxel_4999_frighter_1month` | Subscription | $49.99/mo | ✅ Ready to Submit | ✅ English | Not submitted |
 | `truxel_2499_onetime` | Consumable | $24.99 | ❌ Not created | ❌ Missing | Not created |
@@ -471,15 +530,28 @@ console.log('📱 RAW Offerings object:', JSON.stringify(offerings, null, 2));
 
 1. **✅ DONE - Paid Apps Agreement**: Accepted and active
 2. **✅ DONE - Banking Information**: Completed
-3. **✅ DONE - Tax Forms**: All 3 forms submitted
-4. **✅ DONE - Product Metadata**: All 4 subscriptions localized
-5. **⏳ PENDING - EAS Build**: Continue build in terminal (press "Y" for Apple login)
-
-### SHORT-TERM (2-24 hours)
-
-6. **⏳ WAIT - Apple Processing**: Apple syncing products to StoreKit
-   - No action required, just wait
-   - Check every few hours by reopening TestFlight app
+8. **🛠️ CRITICAL - Pro Freighter Products Configuration**:
+   
+   **Step A: Create Stripe Prices**
+   - Go to Stripe Dashboard → Products
+   - Find product `prod_TPPC0IMPpggkFD`
+   - Click "Add another price"
+   - Create **recurring monthly** price:
+     - USD: $49.99/month
+     - EUR: €49.99/month
+   - Copy price IDs
+   - Update Supabase `subscription_tiers` table
+   
+   **Step B: Attach Products to Entitlement**
+   - Go to RevenueCat Dashboard → Entitlements
+   - Find `pro_freighter_access` (currently shows 0 products)
+   - Click "Add products"
+   - Attach:
+     - Pro Frighter - Stripe `prod_TPPA0AZxwJnvzB`
+     - Pro Frighter - iOS `truxel_4999_frighter_1month`
+     - Pro Frighter - Web Billing `prod_TPPA0AZxwJnvzB`
+   - Save changes
+   - Verify entitlement shows 3+ productsght app
 
 7. **🧪 TEST - Sandbox Purchase**:
    - iPhone Settings → App Store → Sandbox Account
