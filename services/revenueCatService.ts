@@ -126,8 +126,22 @@ export async function getOfferings(userId?: string): Promise<TruxelOfferings> {
       }
 
       console.log('📱 Fetching offerings from mobile SDK...');
+      
+      // 🔍 EXTENDED DEBUG: Log SDK configuration
+      const isConfigured = await PurchasesMobile.isConfigured();
+      console.log('📱 SDK Configured:', isConfigured);
+      
+      if (!isConfigured) {
+        console.error('❌ RevenueCat SDK not configured! Check app.config.js and .env');
+        return {
+          subscriptions: [],
+          searchPacks: [],
+          userCurrency
+        };
+      }
+      
       offerings = await PurchasesMobile.getOfferings();
-      console.log('📱 Offerings received:', offerings);
+      console.log('📱 RAW Offerings object:', JSON.stringify(offerings, null, 2));
     }
 
     // Get main subscription offering
