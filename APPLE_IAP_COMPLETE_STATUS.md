@@ -63,14 +63,13 @@ This is **NORMAL** and can take 2-24 hours after agreement activation.
 
 #### Pro Freighter Tier (NEW - November 12, 2025)
 - **Stripe Product ID**: `prod_TPPC0IMPpggkFD` ✅ Created
-- **Prices**: ✅ **BOTH CREATED** (Confirmed from Stripe Dashboard screenshots)
-  - USD: ✅ `price_1SSaM49r7H7rZi...` ($49.99/month recurring) - **DEFAULT PRICE**
-  - EUR: ✅ Created (€49.99/month recurring) - Visible in "Currencies" section
-  - ⚠️ **Price IDs need to be copied from Stripe Dashboard** (partial ID visible in screenshot)
+- **Prices**: ✅ **BOTH CREATED & ADDED TO SUPABASE**
+  - EUR: ✅ `price_1SScuJPd7H7rZi1TmrSeHK11` (€49.99/month recurring) ✅ **IN SUPABASE**
+  - USD: ⚠️ `price_1SSaM4Pd7H7rZi...` ($49.99/month recurring - **DEFAULT PRICE**) - ⚠️ **NEEDS COMPLETE ID**
 - **Features**: 50 searches/month, LinkedIn contacts, AI matching, advanced research, 50 posts/day, 1500 posts/month, priority support
 - **RevenueCat Product ID**: `proda41f024322` (Stripe app)
 - **RevenueCat Product ID**: `prod3c1ac30d5e` (Web Billing app)
-- **Database**: ⚠️ Inserted tier but **price IDs not yet updated in Supabase**
+- **Database**: ⚠️ EUR price added, **USD price needs correction** (currently has placeholder)
 
 **Action Required**: 
 1. Go to Stripe Dashboard → Product `prod_TPPC0IMPpggkFD`

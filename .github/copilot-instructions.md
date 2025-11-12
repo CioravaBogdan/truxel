@@ -69,6 +69,13 @@ STRIPE_SECRET_KEY: sk_live_51SIVE9Pd7H7rZiTmLr67SKkfwaXWCEOr3KJXYCT2HZ0CgZqHNg73
 STRIPE_PUBLISHABLE_KEY: pk_live_51SIVE9Pd7H7rZiTmyJq94pcMvi44xfBBUD2uvYodYDvBtolNaxGeRS8CwbLLMXClgUwHBz8tdPNMpGQGDXRQ40oU00johXo4OU
 ```
 
+**⚠️ CRITICAL - Stripe has multiple projects on this account:**
+- **Truxel project** exists alongside other projects
+- **ALWAYS filter by product when using Stripe MCP tools**
+- Use `product` parameter in `mcp_stripe_list_prices` to avoid confusion
+- Product IDs start with `prod_` (e.g., `prod_TPPC0IMPpggkFD` for Pro Freighter)
+- Never assume first result is correct - verify product name/ID
+
 **For Supabase MCP tools:**
 ```
 SUPABASE_PROJECT_REF: upxocyomsfhqoflwibwn
