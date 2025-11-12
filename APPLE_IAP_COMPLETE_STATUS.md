@@ -62,27 +62,14 @@ This is **NORMAL** and can take 2-24 hours after agreement activation.
 - **RevenueCat Product ID**: `prod8ed25cc856` (Web Billing app)
 
 #### Pro Freighter Tier (NEW - November 12, 2025)
-- **Stripe Product ID**: `prod_TPPC0IMPpggkFD` ✅ Created
+- **Stripe Product ID**: `prod_TPPA0AZxwJnvzB` ✅ Created (Nov 12, 2025 at 09:28 UTC)
 - **Prices**: ✅ **BOTH CREATED & ADDED TO SUPABASE**
-  - EUR: ✅ `price_1SScuJPd7H7rZi1TmrSeHK11` (€49.99/month recurring) ✅ **IN SUPABASE**
-  - USD: ⚠️ `price_1SSaM4Pd7H7rZi...` ($49.99/month recurring - **DEFAULT PRICE**) - ⚠️ **NEEDS COMPLETE ID**
+  - EUR: ✅ `price_1SSeuIPd7H7rZiTmrvSm4KII` (€49.99/month recurring) ✅ **IN SUPABASE**
+  - USD: ✅ `price_1SSaM4Pd7H7rZiTmGAwBzJRa` ($49.99/month recurring - **DEFAULT PRICE**) ✅ **IN SUPABASE**
 - **Features**: 50 searches/month, LinkedIn contacts, AI matching, advanced research, 50 posts/day, 1500 posts/month, priority support
 - **RevenueCat Product ID**: `proda41f024322` (Stripe app)
 - **RevenueCat Product ID**: `prod3c1ac30d5e` (Web Billing app)
-- **Database**: ⚠️ EUR price added, **USD price needs correction** (currently has placeholder)
-
-**Action Required**: 
-1. Go to Stripe Dashboard → Product `prod_TPPC0IMPpggkFD`
-2. Click on USD price ($49.99/month) → Copy full price ID (starts with `price_1SSaM4...`)
-3. Click on EUR price (€49.99/month) → Copy full price ID
-4. Update Supabase:
-   ```sql
-   UPDATE subscription_tiers 
-   SET 
-     stripe_price_id = '<EUR_PRICE_ID>',
-     stripe_price_id_usd = '<USD_PRICE_ID>'
-   WHERE tier_name = 'pro_freighter';
-   ```
+- **Database**: ✅ **COMPLETE** - Both EUR and USD prices updated in Supabase
 
 #### Search Pack (25 Credits)
 - **Stripe Product ID**: `prod_THaFpplWmNkSUP`
