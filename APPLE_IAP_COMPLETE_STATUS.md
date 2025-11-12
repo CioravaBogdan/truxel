@@ -63,13 +63,18 @@ This is **NORMAL** and can take 2-24 hours after agreement activation.
 
 #### Pro Freighter Tier (NEW - November 12, 2025)
 - **Stripe Product ID**: `prod_TPPC0IMPpggkFD` ✅ Created
-- **Prices**: ⚠️ **NEEDS MANUAL CREATION IN STRIPE DASHBOARD**
-  - USD: TBD ($49.99/month recurring)
-  - EUR: TBD (€49.99/month recurring)
+- **Prices**: ⚠️ **PARTIALLY COMPLETE - NEEDS EUR PRICE**
+  - USD: ✅ Created ($49.99/month recurring) - Visible in Stripe Dashboard
+  - EUR: ❌ **NEEDS MANUAL CREATION** (€49.99/month recurring)
 - **Features**: 50 searches/month, LinkedIn contacts, AI matching, advanced research, 50 posts/day, 1500 posts/month, priority support
 - **RevenueCat Product ID**: `proda41f024322` (Stripe app)
 - **RevenueCat Product ID**: `prod3c1ac30d5e` (Web Billing app)
 - **Database**: ✅ Inserted in subscription_tiers and subscription_limits
+
+**Action Required**: 
+- Go to Stripe Dashboard → Product `prod_TPPC0IMPpggkFD` → Click "Add another price"
+- Create EUR price: €49.99/month recurring
+- Copy EUR price ID and update Supabase `subscription_tiers.stripe_price_id`
 
 #### Search Pack (25 Credits)
 - **Stripe Product ID**: `prod_THaFpplWmNkSUP`
@@ -551,15 +556,21 @@ console.log('📱 RAW Offerings object:', JSON.stringify(offerings, null, 2));
 
 ### MEDIUM-TERM (This Week)
 
-8. **🛠️ FIX - Pro Freighter Stripe Prices**:
-   - Go to Stripe Dashboard → Products
-   - Find product `prod_TPPC0IMPpggkFD`
+8. **🛠️ FIX - Pro Freighter EUR Price**:
+   - Go to Stripe Dashboard → Products → "Pro Frighter" (`prod_TPPC0IMPpggkFD`)
+   - Current status: ✅ USD price exists ($49.99/month)
    - Click "Add another price"
-   - Create **recurring monthly** price:
-     - USD: $49.99/month
-     - EUR: €49.99/month
-   - Copy price IDs
-   - Update Supabase `subscription_tiers` table
+   - Create **recurring monthly** EUR price:
+     - Currency: EUR
+     - Amount: €49.99/month
+     - Billing period: Monthly
+   - Copy EUR price ID (format: `price_xxxxx`)
+   - Update Supabase:
+     ```sql
+     UPDATE subscription_tiers 
+     SET stripe_price_id = '<EUR_PRICE_ID>'
+     WHERE tier_name = 'pro_freighter';
+     ```
 
 9. **📱 CREATE - Search Pack Consumable**:
    - App Store Connect → Truxel → In-App Purchases
