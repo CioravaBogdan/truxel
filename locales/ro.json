@@ -502,5 +502,79 @@
       "account_help": "Am nevoie de ajutor cu contul meu",
       "subscription_help": "Am nevoie de ajutor cu abonamentul meu"
     }
+  },
+  "web": {
+    "nav": {
+      "features": "Funcționalități",
+      "pricing": "Prețuri",
+      "about": "Despre",
+      "contact": "Contact",
+      "login": "Autentificare",
+      "signup": "Înregistrare"
+    },
+    "hero": {
+      "title": "Găsește Marfă și Conectează-te cu Companii de Transport Instant",
+      "subtitle": "Prima platformă logistică bazată pe GPS care conectează șoferi, expeditori și transportatori în timp real",
+      "cta_primary": "Începe Gratuit",
+      "trust_badge": "Peste 10.000 de șoferi și companii de logistică din Europa au încredere în noi"
+    },
+    "cta": {
+      "learn_more": "Află Mai Multe"
+    },
+    "features": {
+      "gps_title": "Căutare GPS",
+      "gps_desc": "Găsește companii din apropiere instant folosind locația în timp real",
+      "instant_contact_title": "Contact Instant",
+      "instant_contact_desc": "Conectează-te prin WhatsApp, email sau telefon cu un tap",
+      "community_title": "Comunitate Șoferi",
+      "community_desc": "Postează disponibilitatea ta și găsește marfă de la alți șoferi",
+      "leads_title": "Companii de Transport",
+      "leads_desc": "Descoperă companii de transport și parteneri logistici",
+      "templates_title": "Șabloane Rapide",
+      "templates_desc": "Folosește mesaje pre-construite pentru a contacta companii mai rapid",
+      "linkedin_title": "Integrare LinkedIn",
+      "linkedin_desc": "Găsește factori de decizie și informații de contact instant",
+      "ai_title": "Matchmaking AI",
+      "ai_desc": "Recomandări inteligente bazate pe rute și preferințe",
+      "notifications_title": "Notificări Inteligente",
+      "notifications_desc": "Primește alerte când companii postează marfă aproape de tine",
+      "multilang_title": "Multi-Limbă",
+      "multilang_desc": "Disponibil în Engleză, Română, Poloneză, Turcă, Spaniolă și altele"
+    },
+    "footer": {
+      "tagline": "Viitorul rețelelor logistice",
+      "product": "Produs",
+      "company": "Companie",
+      "legal": "Legal",
+      "privacy": "Politica de Confidențialitate",
+      "terms": "Termeni și Condiții",
+      "refund": "Politica de Rambursare",
+      "cookies": "Politica Cookie-uri",
+      "rights": "Toate drepturile rezervate."
+    },
+    "gdpr": {
+      "message": "Folosim cookie-uri pentru a îmbunătăți experiența ta. Continuând, ești de acord cu utilizarea cookie-urilor.",
+      "learn_more": "Află mai multe",
+      "accept": "Acceptă Toate",
+      "decline": "Refuză"
+    },
+    "faq": {
+      "q1": "Truxel este gratuit?",
+      "a1": "Da, oferim o probă gratuită cu 5 căutări pe lună.",
+      "q2": "Cum funcționează căutarea GPS?",
+      "a2": "Folosim locația dispozitivului tău pentru a găsi companii și marfă din apropiere.",
+      "q3": "Pot posta propriile mele marfă?",
+      "a3": "Da! Planurile Pro și Fleet Manager includ postare în comunitate.",
+      "q4": "Sunt datele mele sigure?",
+      "a4": "Absolut. Folosim criptare de nivel industrial și respectăm GDPR.",
+      "q5": "Care țări sunt suportate?",
+      "a5": "Acoperim toate țările din Uniunea Europeană plus UK, Turcia și altele.",
+      "q6": "Pot anula oricând?",
+      "a6": "Da, poți anula abonamentul oricând fără penalizări.",
+      "q7": "Aveți aplicație mobilă?",
+      "a7": "Da! Descarcă Truxel pentru iOS și Android.",
+      "q8": "Cum contactez suportul?",
+      "a8": "Folosește butonul de chat sau trimite-ne email la office@truxel.app"
+    }
   }
 }

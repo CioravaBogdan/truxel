@@ -521,5 +521,79 @@
       "account_help": "I need help with my account",
       "subscription_help": "I need help with my subscription"
     }
+  },
+  "web": {
+    "nav": {
+      "features": "Features",
+      "pricing": "Pricing",
+      "about": "About",
+      "contact": "Contact",
+      "login": "Login",
+      "signup": "Sign Up"
+    },
+    "hero": {
+      "title": "Find Loads & Connect with Freight Companies Instantly",
+      "subtitle": "The first GPS-powered logistics platform connecting drivers, freight forwarders, and shippers in real-time",
+      "cta_primary": "Get Started Free",
+      "trust_badge": "Trusted by 10,000+ drivers and logistics companies across Europe"
+    },
+    "cta": {
+      "learn_more": "Learn More"
+    },
+    "features": {
+      "gps_title": "GPS-Based Search",
+      "gps_desc": "Find nearby companies instantly using real-time location",
+      "instant_contact_title": "Instant Contact",
+      "instant_contact_desc": "Connect via WhatsApp, email, or phone in one tap",
+      "community_title": "Driver Community",
+      "community_desc": "Post your availability and find loads from other drivers",
+      "leads_title": "Company Leads",
+      "leads_desc": "Discover freight companies and logistics partners",
+      "templates_title": "Quick Templates",
+      "templates_desc": "Use pre-built messages to contact companies faster",
+      "linkedin_title": "LinkedIn Integration",
+      "linkedin_desc": "Find decision-makers and contact info instantly",
+      "ai_title": "AI Matching",
+      "ai_desc": "Smart recommendations based on your routes and preferences",
+      "notifications_title": "Smart Notifications",
+      "notifications_desc": "Get alerts when companies post loads near you",
+      "multilang_title": "Multi-Language",
+      "multilang_desc": "Available in English, Romanian, Polish, Turkish, Spanish, and more"
+    },
+    "footer": {
+      "tagline": "The future of logistics networking",
+      "product": "Product",
+      "company": "Company",
+      "legal": "Legal",
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service",
+      "refund": "Refund Policy",
+      "cookies": "Cookie Policy",
+      "rights": "All rights reserved."
+    },
+    "gdpr": {
+      "message": "We use cookies to improve your experience. By continuing, you agree to our use of cookies.",
+      "learn_more": "Learn more",
+      "accept": "Accept All",
+      "decline": "Decline"
+    },
+    "faq": {
+      "q1": "Is Truxel free to use?",
+      "a1": "Yes, we offer a free trial with 5 searches per month.",
+      "q2": "How does GPS search work?",
+      "a2": "We use your device location to find nearby companies and loads.",
+      "q3": "Can I post my own loads?",
+      "a3": "Yes! Pro and Fleet Manager plans include community posting.",
+      "q4": "Is my data secure?",
+      "a4": "Absolutely. We use industry-standard encryption and comply with GDPR.",
+      "q5": "Which countries are supported?",
+      "a5": "We cover all European Union countries plus UK, Turkey, and more.",
+      "q6": "Can I cancel anytime?",
+      "a6": "Yes, you can cancel your subscription at any time with no penalties.",
+      "q7": "Do you offer a mobile app?",
+      "a7": "Yes! Download Truxel for iOS and Android.",
+      "q8": "How do I contact support?",
+      "a8": "Use the chat button or email us at office@truxel.app"
+    }
   }
 }

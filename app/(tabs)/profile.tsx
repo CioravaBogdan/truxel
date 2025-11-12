@@ -9,6 +9,7 @@ import {
   TextInput,
   ActivityIndicator,
   Image,
+  Platform,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -361,35 +362,61 @@ export default function ProfileScreen() {
   };
 
   const handleLogout = () => {
-    Alert.alert(
-      t('common.logout'),
-      t('auth.logout_confirm'),
-      [
-        {
-          text: t('common.cancel'),
-          style: 'cancel',
-        },
-        {
-          text: t('common.confirm'),
-          onPress: async () => {
-            setIsLoading(true);
-            try {
-              await authService.signOut();
-              reset();
-            } catch (error: any) {
-              Toast.show({
-                type: 'error',
-                text1: t('common.error'),
-                text2: error.message,
-              });
-            } finally {
-              setIsLoading(false);
-            }
+    // Platform check: Web uses window.confirm, Native uses Alert.alert
+    if (Platform.OS === 'web') {
+      const confirmed = window.confirm(
+        `${t('common.logout')}\n\n${t('auth.logout_confirm')}`
+      );
+      
+      if (confirmed) {
+        setIsLoading(true);
+        authService.signOut()
+          .then(() => {
+            reset();
+          })
+          .catch((error: any) => {
+            Toast.show({
+              type: 'error',
+              text1: t('common.error'),
+              text2: error.message,
+            });
+          })
+          .finally(() => {
+            setIsLoading(false);
+          });
+      }
+    } else {
+      // Native: Use Alert.alert as before
+      Alert.alert(
+        t('common.logout'),
+        t('auth.logout_confirm'),
+        [
+          {
+            text: t('common.cancel'),
+            style: 'cancel',
           },
-          style: 'destructive',
-        },
-      ]
-    );
+          {
+            text: t('common.confirm'),
+            onPress: async () => {
+              setIsLoading(true);
+              try {
+                await authService.signOut();
+                reset();
+              } catch (error: any) {
+                Toast.show({
+                  type: 'error',
+                  text1: t('common.error'),
+                  text2: error.message,
+                });
+              } finally {
+                setIsLoading(false);
+              }
+            },
+            style: 'destructive',
+          },
+        ]
+      );
+    }
   };
 
   if (!profile) {
