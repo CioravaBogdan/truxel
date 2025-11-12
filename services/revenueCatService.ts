@@ -110,6 +110,21 @@ export async function getOfferings(userId?: string): Promise<TruxelOfferings> {
       console.log('🌐 Offerings received:', offerings);
     } else {
       // Mobile: Use react-native-purchases (native IAP)
+      // Check if SDK is configured (not Expo Go)
+      const Constants = require('expo-constants').default;
+      const isExpoGo = Constants.appOwnership === 'expo' ||
+                       Constants.executionEnvironment === 'storeClient';
+
+      if (isExpoGo) {
+        console.warn('⚠️ Expo Go detected - RevenueCat SDK not available');
+        console.warn('   Build with EAS (eas build) or native (npx expo run:ios) to use RevenueCat');
+        return {
+          subscriptions: [],
+          searchPacks: [],
+          userCurrency
+        };
+      }
+
       console.log('📱 Fetching offerings from mobile SDK...');
       offerings = await PurchasesMobile.getOfferings();
       console.log('📱 Offerings received:', offerings);
@@ -251,15 +266,15 @@ export async function getOfferings(userId?: string): Promise<TruxelOfferings> {
 export async function purchasePackage(pkg: OfferingPackage, userId?: string): Promise<CustomerInfo> {
   try {
     console.log(`🛒 Purchasing package: ${pkg.identifier} on ${Platform.OS}`);
-    
+
     let customerInfo: CustomerInfo;
-    
+
     if (isWeb) {
       // Web: Use purchases-js SDK
       if (!userId) {
         throw new Error('User ID required for web payments');
       }
-      
+
       const webSDK = initializeWebSDK(userId);
       const result = await webSDK.purchase({
         rcPackage: pkg.revenueCatPackage as PackageWeb
@@ -267,6 +282,15 @@ export async function purchasePackage(pkg: OfferingPackage, userId?: string): Pr
       customerInfo = result.customerInfo;
     } else {
       // Mobile: Use react-native-purchases
+      // Check if SDK is configured (not Expo Go)
+      const Constants = require('expo-constants').default;
+      const isExpoGo = Constants.appOwnership === 'expo' ||
+                       Constants.executionEnvironment === 'storeClient';
+
+      if (isExpoGo) {
+        throw new Error('RevenueCat not available in Expo Go. Build with EAS or native.');
+      }
+
       const result = await PurchasesMobile.purchasePackage(pkg.revenueCatPackage as PurchasesPackage);
       customerInfo = result.customerInfo;
     }
@@ -296,9 +320,9 @@ export async function purchasePackage(pkg: OfferingPackage, userId?: string): Pr
 export async function restorePurchases(userId?: string): Promise<CustomerInfo> {
   try {
     console.log(`🔄 Restoring purchases on ${Platform.OS}...`);
-    
+
     let customerInfo: CustomerInfo;
-    
+
     if (isWeb) {
       // Web: Restore is automatic on getCustomerInfo
       if (!userId) {
@@ -308,6 +332,15 @@ export async function restorePurchases(userId?: string): Promise<CustomerInfo> {
       customerInfo = await webSDK.getCustomerInfo();
     } else {
       // Mobile: Use react-native-purchases
+      // Check if SDK is configured (not Expo Go)
+      const Constants = require('expo-constants').default;
+      const isExpoGo = Constants.appOwnership === 'expo' ||
+                       Constants.executionEnvironment === 'storeClient';
+
+      if (isExpoGo) {
+        throw new Error('RevenueCat not available in Expo Go. Build with EAS or native.');
+      }
+
       customerInfo = await PurchasesMobile.restorePurchases();
     }
     
@@ -329,7 +362,7 @@ export async function restorePurchases(userId?: string): Promise<CustomerInfo> {
 export async function getCustomerInfo(userId?: string): Promise<CustomerInfo> {
   try {
     let customerInfo: CustomerInfo;
-    
+
     if (isWeb) {
       if (!userId) {
         throw new Error('User ID required for web');
@@ -337,6 +370,16 @@ export async function getCustomerInfo(userId?: string): Promise<CustomerInfo> {
       const webSDK = initializeWebSDK(userId);
       customerInfo = await webSDK.getCustomerInfo();
     } else {
+      // Mobile: Use react-native-purchases
+      // Check if SDK is configured (not Expo Go)
+      const Constants = require('expo-constants').default;
+      const isExpoGo = Constants.appOwnership === 'expo' ||
+                       Constants.executionEnvironment === 'storeClient';
+
+      if (isExpoGo) {
+        throw new Error('RevenueCat not available in Expo Go. Build with EAS or native.');
+      }
+
       customerInfo = await PurchasesMobile.getCustomerInfo();
     }
     

@@ -45,8 +45,17 @@ export default function RootLayout() {
       return;
     }
 
+    // Log environment info for debugging
+    console.log('🔍 RevenueCat Init Check:', {
+      platform: Platform.OS,
+      appOwnership: Constants.appOwnership,
+      executionEnvironment: Constants.executionEnvironment,
+      isDevice: Constants.isDevice
+    });
+
     // Check if running in Expo Go (where RevenueCat won't work on mobile)
-    const isExpoGo = Constants.appOwnership === 'expo';
+    const isExpoGo = Constants.appOwnership === 'expo' ||
+                     Constants.executionEnvironment === 'storeClient';
 
     // Web platform ALWAYS supports RevenueCat (via purchases-js)
     if (Platform.OS === 'web') {
@@ -58,7 +67,10 @@ export default function RootLayout() {
 
     // Mobile (iOS/Android) requires native builds (not Expo Go)
     if (isExpoGo) {
-      console.log('🟡 Expo Go detected - RevenueCat disabled for mobile, web payments still work');
+      console.log('🟡 Expo Go detected - RevenueCat disabled for mobile');
+      console.log('   appOwnership:', Constants.appOwnership);
+      console.log('   executionEnvironment:', Constants.executionEnvironment);
+      console.log('   For RevenueCat to work, build with EAS or npx expo run:ios');
       setRevenueCatReady(false);
       return;
     }
