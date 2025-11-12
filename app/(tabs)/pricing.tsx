@@ -185,6 +185,7 @@ export default function PricingScreen() {
   // ✅ Helper: Extract clean tier name from package identifier
   const getTierName = (identifier: string): string => {
     const mapping: Record<string, string> = {
+      // Web/Stripe package identifiers
       '$rc_monthly': 'standard',
       '$rc_custom_standard_usd': 'standard',
       '$rc_custom_standard_eur': 'standard',
@@ -195,18 +196,45 @@ export default function PricingScreen() {
       '$rc_custom_fleet_manager_eur': 'fleet_manager',
       '$rc_custom_pro_freighter_usd': 'pro_freighter',
       '$rc_custom_pro_freighter_eur': 'pro_freighter',
+
+      // iOS package identifiers (from App Store Connect)
+      'truxel_2999_1month': 'standard',
+      'truxel_4999_1month': 'pro',
+      'truxel_2999_fleet_1month': 'fleet_manager',
+      'truxel_4999_profreighter_1month': 'pro_freighter',
+      'truxel_2499_onetime': 'search_pack', // Search Pack addon (one-time purchase)
+
+      // Android package identifiers (when ready)
+      'truxel_standard_monthly': 'standard',
+      'truxel_pro_monthly': 'pro',
+      'truxel_fleet_manager_monthly': 'fleet_manager',
+      'truxel_pro_freighter_monthly': 'pro_freighter',
+      'truxel_search_pack_25': 'search_pack',
     };
-    
+
     const cleanId = identifier.toLowerCase();
-    if (mapping[cleanId]) return mapping[cleanId];
-    
+
+    // Check exact match first
+    if (mapping[cleanId]) {
+      console.log(`📋 Tier mapping: ${identifier} → ${mapping[cleanId]}`);
+      return mapping[cleanId];
+    }
+
     // Fallback: extract from identifier (e.g., "fleet_manager" from custom name)
-    if (cleanId.includes('pro_freighter') || cleanId.includes('profreighter')) return 'pro_freighter';
-    if (cleanId.includes('fleet')) return 'fleet_manager';
-    if (cleanId.includes('pro')) return 'pro';
-    if (cleanId.includes('standard')) return 'standard';
-    
-    return 'standard'; // Default fallback
+    let tierName = 'standard'; // Default
+
+    if (cleanId.includes('pro_freighter') || cleanId.includes('profreighter')) {
+      tierName = 'pro_freighter';
+    } else if (cleanId.includes('fleet')) {
+      tierName = 'fleet_manager';
+    } else if (cleanId.includes('4999') || cleanId.includes('49.99') || cleanId.includes('pro')) {
+      tierName = 'pro';
+    } else if (cleanId.includes('2999') || cleanId.includes('29.99') || cleanId.includes('standard')) {
+      tierName = 'standard';
+    }
+
+    console.log(`⚠️ Tier fallback used: ${identifier} → ${tierName}`);
+    return tierName;
   };
 
   // ✅ Helper: Get features for tier name (string key, not object)
@@ -228,12 +256,21 @@ export default function PricingScreen() {
         features.push(t('pricing.advanced_research'));
       } else if (tierName === 'fleet_manager') {
         features.push(`30 ${t('pricing.searches_per_month')}`);
+        features.push(t('pricing.max_results', { count: 10 }));
         features.push('Manage multiple drivers and routes');
+        features.push('Fleet tracking and logistics');
       } else if (tierName === 'pro_freighter') {
         features.push(`50 ${t('pricing.searches_per_month')}`);
+        features.push(t('pricing.max_results', { count: 20 }));
         features.push(t('pricing.linkedin_contacts'));
         features.push(t('pricing.ai_matching'));
         features.push(t('pricing.advanced_research'));
+      } else if (tierName === 'search_pack') {
+        // Search Pack is one-time purchase, not subscription
+        features.push('25 additional company searches');
+        features.push('Never expires');
+        features.push('Works with any plan');
+        return features; // Return early, no community meta
       }
       
       // Add community features
@@ -813,8 +850,14 @@ export default function PricingScreen() {
         return <Zap size={32} color="#2563EB" />;
       case 'pro':
         return <Sparkles size={32} color="#7C3AED" />;
+      case 'fleet_manager':
+        return <Users size={32} color="#059669" />; // Green for fleet management
+      case 'pro_freighter':
+        return <TrendingUp size={32} color="#DC2626" />; // Red/Premium for Pro Freighter
       case 'premium':
         return <Shield size={32} color="#DC2626" />;
+      case 'search_pack':
+        return <Check size={32} color="#10B981" />; // Green checkmark for addon
       default:
         return <CreditCard size={32} color="#64748B" />;
     }
