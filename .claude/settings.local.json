@@ -5,7 +5,13 @@
       "Bash(find:*)",
       "Bash(npx supabase:*)",
       "Bash(npm install:*)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(npx expo-env-info)",
+      "Bash(curl:*)",
+      "Bash(npm run web:*)",
+      "Bash(timeout 10 bash:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ],
     "deny": [],
     "ask": []

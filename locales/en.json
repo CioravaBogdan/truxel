@@ -284,6 +284,8 @@
     "tier_standard": "Standard",
     "tier_pro": "Pro",
     "tier_premium": "Premium",
+    "tier_fleet_manager": "Fleet Manager",
+    "tier_pro_freighter": "Pro Freighter",
     "searches_per_month": "searches/month",
     "max_results": "Up to {{count}} results per search",
     "linkedin_contacts": "LinkedIn contact profiles",

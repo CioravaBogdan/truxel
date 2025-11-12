@@ -77,23 +77,12 @@ SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIs
 ```
 
 **⚠️ CRITICAL - Account Identification:**
-- **Stripe Truxel Account**: `acct_1SIVE9Pd7H7rZiTm` (separate account from KidBooksmith)
-  - Email: office@infant.ro (shared company email)
-  - Dashboard: https://dashboard.stripe.com/
-  - Products: Currently empty (new project - logistics/leads products to be created)
-  - DO NOT confuse with KidBooksmith products (DISCOVER/MAGIC/CINEMA for children's books)
-  
-- **Supabase Truxel Project**: `upxocyomsfhqoflwibwn`
-  - Database contains: `leads`, `searches`, `profiles` tables
-  - Dashboard: https://supabase.com/dashboard/project/upxocyomsfhqoflwibwn
+- **Stripe Account**: `acct_1SIVE9Pd7H7rZiTm` | Dashboard: https://dashboard.stripe.com/
+- **Supabase Project**: `upxocyomsfhqoflwibwn` | Dashboard: https://supabase.com/dashboard/project/upxocyomsfhqoflwibwn
+- **RevenueCat Project**: `proj56445e28` | Dashboard: https://app.revenuecat.com/
 
-**⚠️ VERIFICATION CHECKLIST:**
-Before using any Stripe or Supabase MCP tool, verify you're operating on the Truxel project:
-- ✅ Stripe: Account ID is `acct_1SIVE9Pd7H7rZiTm`
-- ✅ Stripe: Products list should be empty OR contain Truxel logistics products (NOT children's books)
-- ✅ Supabase: Project ref is `upxocyomsfhqoflwibwn`
-- ✅ Supabase: Database has `leads` table (logistics data, NOT book-related tables)
-- ❌ NEVER use KidBooksmith credentials (different project, different Stripe account)
+**📋 Products & Pricing:**
+For complete product IDs, Stripe Price IDs, RevenueCat package mappings, see: [`PRODUCTS_MAPPING_COMPLETE.md`](../PRODUCTS_MAPPING_COMPLETE.md)
 
 ### Environment Variables
 Always use these exact credentials for this project:
@@ -259,18 +248,20 @@ const { data, error } = await supabase.functions.invoke('function-name', {
 });
 ```
 
-### Stripe Patterns
-**Client-side (Mobile):**
+### RevenueCat Payment Patterns
+**Universal Payment System** (iOS, Android, Web):
 ```tsx
-import Constants from 'expo-constants';
+import { getRevenueCatOfferings, purchaseRevenueCatPackage } from '@/services/revenueCatService';
 
-const publishableKey = Constants.expoConfig?.extra?.stripePublishableKey;
+// Load offerings (auto-detects platform)
+const { subscriptions, searchPacks } = await getRevenueCatOfferings(userId);
+
+// Purchase (handles native IAP or Stripe Checkout)
+await purchaseRevenueCatPackage(selectedPackage, userId);
 ```
 
-**Server-side (Edge Functions):**
-```tsx
-const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY')!);
-```
+**Platform Detection**: Automatic via `Platform.OS === 'web'`
+**Products**: See [`PRODUCTS_MAPPING_COMPLETE.md`](../PRODUCTS_MAPPING_COMPLETE.md) for all Stripe/iOS product IDs
 
 ### Supabase RPC Functions (PostgreSQL Functions)
 **Usage Pattern:**
@@ -451,10 +442,11 @@ npx supabase gen types typescript --local > types/database.types.ts
 ```
 
 ### Using MCP Tools
-**ALWAYS specify Truxel credentials when using global MCP servers:**
-- Use `stripe` MCP server with Truxel secret key (sk_live_51SIVE9...)
-- Use `supabase-infant` MCP server with project ref `upxocyomsfhqoflwibwn`
-- Never mix credentials from other projects (KidBooksmith, InfantCare, etc.)
+**ALWAYS verify Truxel project context:**
+- Stripe: Account ID `acct_1SIVE9Pd7H7rZiTm`
+- Supabase: Project ref `upxocyomsfhqoflwibwn`
+- RevenueCat: Project ID `proj56445e28`
+- See [`PRODUCTS_MAPPING_COMPLETE.md`](../PRODUCTS_MAPPING_COMPLETE.md) for product IDs
 
 ## AI Performance & Expectations
 
@@ -555,37 +547,13 @@ export default function RootLayout() {
 
 ## Subscription Tiers & Pricing
 
-### Active Subscription Plans (Truxel Logistics)
-**⚠️ NOTE**: Products to be created in Stripe Dashboard for Truxel logistics app:
+**Active Plans**: Standard (€29.99/mo), Pro (€49.99/mo), Fleet Manager (€29.99/mo), Search Packs (€24.99)
 
-1. **Trial** - FREE
-   - 5 total searches
-   - 1 post/month (Community)
-   - Basic features
-
-2. **Standard** - €29.99/month
-   - 15 searches/month
-   - 5 posts/month
-   - Standard support
-
-3. **Pro** - €49.99/month
-   - 30 searches/month
-   - 15 posts/month
-   - LinkedIn integration
-   - AI matching
-
-4. **Premium** - €99.99/month
-   - 100 searches/month
-   - Unlimited posts
-   - Priority support
-   - Advanced features
-
-### One-time Search Packs
-- 10 searches - €4.99
-- 25 searches - €9.99
-- 50 searches - €17.99
-
-**Database**: See `subscription_tiers` and `additional_search_packs` tables in Supabase
+**Complete Mapping**: See [`PRODUCTS_MAPPING_COMPLETE.md`](../PRODUCTS_MAPPING_COMPLETE.md) for:
+- Stripe Product IDs & Price IDs
+- RevenueCat Product IDs & Package IDs
+- iOS Product Identifiers
+- Current status & issues
 
 ## Debugging Tips
 
@@ -600,10 +568,11 @@ If you see "Attempted to navigate before mounting the Root Layout component":
 2. Check `lib/supabase.ts` initialization
 3. Test auth endpoints in Supabase Dashboard
 
-### Stripe Webhook Issues
-1. Verify `STRIPE_WEBHOOK_SECRET` in `supabase/.env.local`
-2. Check webhook signature validation in `stripe-webhook/index.ts`
-3. Test with Stripe CLI: `stripe listen --forward-to localhost:54321/functions/v1/stripe-webhook`
+### RevenueCat/Stripe Integration Issues
+1. Verify products exist in Stripe Dashboard (not just RevenueCat)
+2. Check packages have products attached in RevenueCat
+3. Test webhook: `supabase/functions/revenuecat-webhook` (ACTIVE v2)
+4. See [`PRODUCTS_MAPPING_COMPLETE.md`](../PRODUCTS_MAPPING_COMPLETE.md) for troubleshooting guide
 
 ## Git Workflow
 **Protected Files** (never commit):

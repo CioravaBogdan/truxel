@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Alert,
-  TextInput,
   Platform,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
@@ -16,8 +15,6 @@ import { Card } from '@/components/Card';
 import { Button } from '@/components/Button';
 import { ChatSupportModal } from '@/components/ChatSupportModal';
 import { useAuthStore } from '@/store/authStore';
-import { stripeService } from '@/services/stripeService';
-import Constants from 'expo-constants';
 import Toast from 'react-native-toast-message';
 import {
   CreditCard,
@@ -29,12 +26,9 @@ import {
   TrendingUp,
   TrendingDown,
   XCircle,
-  Tag,
 } from 'lucide-react-native';
-import { SubscriptionTierData, AdditionalSearchPack } from '@/types/database.types';
-import * as WebBrowser from 'expo-web-browser';
 
-// Import RevenueCat for native builds
+// Import RevenueCat - universal payment system for iOS, Android, Web
 import { 
   getOfferings as getRevenueCatOfferings,
   purchasePackage as purchaseRevenueCatPackage,
@@ -44,9 +38,6 @@ import {
   type OfferingPackage 
 } from '@/services/revenueCatService';
 import type { CustomerInfo } from 'react-native-purchases';
-
-// TRUXEL: Use ONLY RevenueCat for all platforms (iOS, Android, Web)
-const USE_REVENUECAT_ONLY = true;
 
 type TierCommunityMeta = {
   daily?: number;
@@ -68,17 +59,6 @@ const TIER_COMMUNITY_META: Record<string, TierCommunityMeta> = {
     priority: true,
     supportKey: 'pricing.support_priority',
   },
-  fleet_manager: {
-    daily: 30,
-    monthly: 900,
-    supportKey: 'pricing.support_standard',
-  },
-  pro_freighter: {
-    daily: 50,
-    monthly: 1500,
-    priority: true,
-    supportKey: 'pricing.support_priority',
-  },
   premium: {
     unlimited: true,
     priority: true,
@@ -93,25 +73,13 @@ export default function PricingScreen() {
   const session = authStore?.session;
   const refreshProfile = authStore?.refreshProfile;
   
-  // Stripe state (for Expo Go / web fallback)
-  const [tiers, setTiers] = useState<SubscriptionTierData[]>([]);
-  const [searchPacks, setSearchPacks] = useState<AdditionalSearchPack[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [processingPriceId, setProcessingPriceId] = useState<string | null>(null);
-  const [actionLoading, setActionLoading] = useState<string | null>(null);
-  
-  // RevenueCat state (for native builds)
+  // RevenueCat state - universal payment system
   const [rcSubscriptions, setRcSubscriptions] = useState<OfferingPackage[]>([]);
   const [rcSearchPacks, setRcSearchPacks] = useState<OfferingPackage[]>([]);
-  const [rcCustomerInfo, setRcCustomerInfo] = useState<CustomerInfo | null>(null);
+  const [rcCustomerInfo, setRcCustomerInfo] = useState<any>(null); // CustomerInfo type
   const [userCurrency, setUserCurrency] = useState<'EUR' | 'USD'>('EUR');
   const [purchasingPackage, setPurchasingPackage] = useState<string | null>(null);
-  
-  // Coupon state (Stripe only - not used in RevenueCat native IAP)
-  const [couponCode, setCouponCode] = useState('');
-  const [validatingCoupon, setValidatingCoupon] = useState(false);
-  const [validatedCoupon, setValidatedCoupon] = useState<any>(null);
-  const [couponError, setCouponError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   
   // Support modal state
   const [showSupportModal, setShowSupportModal] = useState(false);
@@ -150,195 +118,23 @@ export default function PricingScreen() {
     }
   }, [refreshProfile, t]);
 
-  const loadPricingData = useCallback(async () => {
-    try {
-      setIsLoading(true);
-      console.log('Loading pricing data...');
-      console.log('Calling getAvailableSubscriptionTiers...');
-
-      const tiersData = await stripeService.getAvailableSubscriptionTiers();
-      console.log('Tiers received:', JSON.stringify(tiersData));
-
-      console.log('Calling getAvailableSearchPacks...');
-      const packsData = await stripeService.getAvailableSearchPacks();
-      console.log('Packs received:', JSON.stringify(packsData));
-
-      setTiers(tiersData || []);
-      setSearchPacks(packsData || []);
-    } catch (error: any) {
-      console.error('Pricing error:', error);
-      console.error('Error message:', error?.message);
-      console.error('Error code:', error?.code);
-      Toast.show({
-        type: 'error',
-        text1: t('common.error'),
-        text2: error.message || 'Failed to load pricing',
-      });
-      setTiers([]);
-      setSearchPacks([]);
-    } finally {
-      console.log('Loading complete - setting isLoading to false');
-      setIsLoading(false);
-    }
-  }, [t]);
-
-  // ✅ Helper: Extract clean tier name from package identifier
-  const getTierName = (identifier: string): string => {
-    const mapping: Record<string, string> = {
-      '$rc_monthly': 'standard',
-      '$rc_custom_standard_usd': 'standard',
-      '$rc_custom_standard_eur': 'standard',
-      '$rc_custom_pro_usd': 'pro',
-      '$rc_custom_pro_eur': 'pro',
-      '$rc_annual': 'pro',
-      '$rc_custom_fleet_manager_usd': 'fleet_manager',
-      '$rc_custom_fleet_manager_eur': 'fleet_manager',
-      '$rc_custom_pro_freighter_usd': 'pro_freighter',
-      '$rc_custom_pro_freighter_eur': 'pro_freighter',
-    };
-    
-    const cleanId = identifier.toLowerCase();
-    if (mapping[cleanId]) return mapping[cleanId];
-    
-    // Fallback: extract from identifier (e.g., "fleet_manager" from custom name)
-    if (cleanId.includes('pro_freighter') || cleanId.includes('profreighter')) return 'pro_freighter';
-    if (cleanId.includes('fleet')) return 'fleet_manager';
-    if (cleanId.includes('pro')) return 'pro';
-    if (cleanId.includes('standard')) return 'standard';
-    
-    return 'standard'; // Default fallback
-  };
-
-  // ✅ Helper: Get features for tier name (string key, not object)
-  const getTierFeaturesByName = (tierName: string): string[] => {
-    const tier = tiers.find((t) => t.tier_name === tierName);
-    if (!tier) {
-      // Fallback features for RevenueCat tiers without Stripe data
-      const communityMeta = TIER_COMMUNITY_META[tierName];
-      const features: string[] = [];
-      
-      if (tierName === 'standard') {
-        features.push(`30 ${t('pricing.searches_per_month')}`);
-        features.push(t('pricing.max_results', { count: 10 }));
-        features.push(t('pricing.linkedin_contacts'));
-      } else if (tierName === 'pro') {
-        features.push(`50 ${t('pricing.searches_per_month')}`);
-        features.push(t('pricing.linkedin_contacts'));
-        features.push(t('pricing.ai_matching'));
-        features.push(t('pricing.advanced_research'));
-      } else if (tierName === 'fleet_manager') {
-        features.push(`30 ${t('pricing.searches_per_month')}`);
-        features.push('Manage multiple drivers and routes');
-      } else if (tierName === 'pro_freighter') {
-        features.push(`50 ${t('pricing.searches_per_month')}`);
-        features.push(t('pricing.linkedin_contacts'));
-        features.push(t('pricing.ai_matching'));
-        features.push(t('pricing.advanced_research'));
-      }
-      
-      // Add community features
-      if (communityMeta) {
-        features.push(t('pricing.community_contacts'));
-        if (communityMeta.unlimited) {
-          features.push(t('pricing.community_unlimited_posts'));
-        } else if (communityMeta.daily && communityMeta.monthly) {
-          features.push(
-            t('pricing.community_posts_limit', {
-              daily: communityMeta.daily,
-              monthly: communityMeta.monthly,
-            })
-          );
-        }
-        if (communityMeta.priority) {
-          features.push(t('pricing.community_priority'));
-        }
-        features.push(t(communityMeta.supportKey));
-      }
-      
-      return features;
-    }
-    
-    return getTierFeatures(tier); // Use existing function for Stripe tiers
-  };
-
   const loadRevenueCatOfferings = useCallback(async () => {
-    if (!profile?.user_id) {
-      console.error('❌ No user_id available for RevenueCat');
-      return;
-    }
-    
     try {
       setIsLoading(true);
-      console.log('📦 Loading RevenueCat offerings for user:', profile.user_id);
+      console.log('📦 Loading RevenueCat offerings for native build...');
       
-      const offerings = await getRevenueCatOfferings(profile.user_id);
-      
-      // ✅ FIX: Filter to show ONLY user's currency (no duplicates)
-      // 🔍 DEBUG: Log ALL package identifiers BEFORE filtering
-      console.log('🔍 ALL subscriptions BEFORE filter:', offerings.subscriptions.map(p => ({
-        id: p.identifier,
-        currency: p.product.currencyCode,
-        price: p.product.priceString
-      })));
-      
-      const userSubscriptions = offerings.subscriptions.filter(
-        (pkg) => pkg.product.currencyCode === offerings.userCurrency
-      );
-      const userSearchPacks = offerings.searchPacks.filter(
-        (pkg) => pkg.product.currencyCode === offerings.userCurrency
-      );
-      
-      // 🔍 DEBUG: Log AFTER currency filter (before tier dedup)
-      console.log('🔍 AFTER currency filter (BEFORE tier dedup):', userSubscriptions.map(p => ({
-        id: p.identifier,
-        tierName: getTierName(p.identifier),
-        currency: p.product.currencyCode
-      })));
-      
-      // ✅ DEDUPLICATE: If multiple packages map to same tier, keep only first one
-      const seenTiers = new Set<string>();
-      const dedupedSubscriptions = userSubscriptions.filter((pkg) => {
-        const tierName = getTierName(pkg.identifier);
-        if (seenTiers.has(tierName)) {
-          console.log(`🗑️ Removing duplicate tier: ${tierName} (package: ${pkg.identifier})`);
-          return false; // Skip duplicate
-        }
-        seenTiers.add(tierName);
-        return true; // Keep first occurrence
-      });
-      
-      console.log('🔍 AFTER tier deduplication:', dedupedSubscriptions.map(p => ({
-        id: p.identifier,
-        tierName: getTierName(p.identifier)
-      })));
-      
-      // ✅ DEDUPLICATE search packs by identifier
-      const seenSearchPacks = new Set<string>();
-      const dedupedSearchPacks = userSearchPacks.filter((pkg) => {
-        const packName = pkg.identifier;
-        if (seenSearchPacks.has(packName)) {
-          console.log(`🗑️ Removing duplicate search pack: ${packName}`);
-          return false;
-        }
-        seenSearchPacks.add(packName);
-        return true;
-      });
-      
-      console.log('🔍 Search packs after dedup:', dedupedSearchPacks.map(p => p.identifier));
-      
-      setRcSubscriptions(dedupedSubscriptions);
-      setRcSearchPacks(dedupedSearchPacks);
+      const offerings = await getRevenueCatOfferings();
+      setRcSubscriptions(offerings.subscriptions);
+      setRcSearchPacks(offerings.searchPacks);
       setUserCurrency(offerings.userCurrency);
       
-      const info = await getCustomerInfo(profile.user_id);
-      setRcCustomerInfo(info as any);
+      const info = await getCustomerInfo();
+      setRcCustomerInfo(info);
       
       console.log('✅ RevenueCat offerings loaded:', {
-        subscriptions: dedupedSubscriptions.length,
-        searchPacks: dedupedSearchPacks.length,
-        currency: offerings.userCurrency,
-        currencyFiltered: `${offerings.subscriptions.length - userSubscriptions.length} packages removed`,
-        tierDeduped: `${userSubscriptions.length - dedupedSubscriptions.length} duplicate tiers removed`
+        subscriptions: offerings.subscriptions.length,
+        searchPacks: offerings.searchPacks.length,
+        currency: offerings.userCurrency
       });
     } catch (error: any) {
       console.error('❌ RevenueCat error:', error);
@@ -352,16 +148,14 @@ export default function PricingScreen() {
     } finally {
       setIsLoading(false);
     }
-  }, [t, profile?.user_id]);
+  }, [t]);
 
   useEffect(() => {
-    console.log('📦 PricingScreen mounted - Loading RevenueCat offerings (Universal)');
+    console.log('📦 PricingScreen mounted - loading RevenueCat offerings');
     loadRevenueCatOfferings();
-    
-    
     checkSubscriptionStatus();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loadRevenueCatOfferings, loadPricingData, checkSubscriptionStatus]);
+  }, [loadRevenueCatOfferings, checkSubscriptionStatus]);
 
   useEffect(() => {
     const checkInterval = setInterval(() => {
@@ -371,166 +165,8 @@ export default function PricingScreen() {
     return () => clearInterval(checkInterval);
   }, [checkSubscriptionStatus]);
 
-  const handleValidateCoupon = async () => {
-    if (!couponCode.trim()) {
-      Toast.show({
-        type: 'error',
-        text1: t('common.error'),
-        text2: 'Please enter a coupon code',
-      });
-      return;
-    }
-
-    if (!session?.access_token) {
-      Toast.show({
-        type: 'error',
-        text1: t('common.error'),
-        text2: 'Not authenticated',
-      });
-      return;
-    }
-
-    try {
-      setValidatingCoupon(true);
-      setCouponError(null);
-      console.log('Validating coupon:', couponCode);
-
-      const result = await stripeService.validateCoupon(
-        couponCode,
-        session.access_token
-      );
-
-      if (result.valid && result.coupon) {
-        setValidatedCoupon(result.coupon);
-        setCouponError(null);
-        Toast.show({
-          type: 'success',
-          text1: 'Coupon Applied!',
-          text2: result.coupon.discount_text,
-        });
-      } else {
-        setValidatedCoupon(null);
-        setCouponError(result.error || 'Invalid coupon code');
-        Toast.show({
-          type: 'error',
-          text1: 'Invalid Coupon',
-          text2: result.error || 'This coupon code is not valid',
-        });
-      }
-    } catch (error: any) {
-      console.error('Coupon validation error:', error);
-      setValidatedCoupon(null);
-      setCouponError(error.message || 'Failed to validate coupon');
-      Toast.show({
-        type: 'error',
-        text1: t('common.error'),
-        text2: error.message || 'Failed to validate coupon',
-      });
-    } finally {
-      setValidatingCoupon(false);
-    }
-  };
-
-  const handleRemoveCoupon = () => {
-    setCouponCode('');
-    setValidatedCoupon(null);
-    setCouponError(null);
-  };
-
-  const handleSubscribe = async (tier: any) => {
-    if (!tier.stripe_price_id) {
-      Toast.show({
-        type: 'error',
-        text1: t('common.error'),
-        text2: 'Pricing not configured',
-      });
-      return;
-    }
-
-    if (!session?.access_token) {
-      Toast.show({
-        type: 'error',
-        text1: t('common.error'),
-        text2: 'Not authenticated',
-      });
-      return;
-    }
-
-    try {
-      setProcessingPriceId(tier.stripe_price_id);
-      console.log('handleSubscribe: Creating checkout session for', tier.tier_name);
-
-      const { url } = await stripeService.createCheckoutSession(
-        tier.stripe_price_id,
-        'subscription',
-        'truxel://subscription-success',
-        'truxel://subscription-cancelled',
-        session.access_token,
-        validatedCoupon?.id // Pass coupon code if validated
-      );
-
-      console.log('handleSubscribe: Opening checkout URL:', url);
-      await WebBrowser.openBrowserAsync(url);
-    } catch (error: any) {
-      console.error('handleSubscribe error:', error);
-      Toast.show({
-        type: 'error',
-        text1: t('common.error'),
-        text2: error.message,
-      });
-    } finally {
-      setProcessingPriceId(null);
-    }
-  };
-
-  const handleBuySearchPack = async (pack: AdditionalSearchPack) => {
-    if (!pack.stripe_price_id) {
-      Toast.show({
-        type: 'error',
-        text1: t('common.error'),
-        text2: 'Pricing not configured',
-      });
-      return;
-    }
-
-    if (!session?.access_token) {
-      Toast.show({
-        type: 'error',
-        text1: t('common.error'),
-        text2: 'Not authenticated',
-      });
-      return;
-    }
-
-    try {
-      setProcessingPriceId(pack.stripe_price_id);
-      console.log('handleBuySearchPack: Creating checkout session for', pack.pack_name);
-
-      const { url } = await stripeService.createCheckoutSession(
-        pack.stripe_price_id,
-        'search_pack',
-        'truxel://purchase-success',
-        'truxel://purchase-cancelled',
-        session.access_token,
-        validatedCoupon?.id // Pass coupon code if validated
-      );
-
-      console.log('handleBuySearchPack: Opening checkout URL:', url);
-      await WebBrowser.openBrowserAsync(url);
-    } catch (error: any) {
-      console.error('handleBuySearchPack error:', error);
-      Toast.show({
-        type: 'error',
-        text1: t('common.error'),
-        text2: error.message,
-      });
-    } finally {
-      setProcessingPriceId(null);
-    }
-  };
-
   const handleRevenueCatPurchase = async (pkg: OfferingPackage) => {
-    if (!profile?.user_id) {
+    if (!profile) {
       Toast.show({
         type: 'error',
         text1: t('common.error'),
@@ -541,10 +177,10 @@ export default function PricingScreen() {
 
     try {
       setPurchasingPackage(pkg.identifier);
-      console.log('🛒 RevenueCat purchase:', pkg.identifier, 'for user:', profile.user_id);
+      console.log('🛒 RevenueCat purchase:', pkg.identifier);
       
-      const info = await purchaseRevenueCatPackage(pkg, profile.user_id);
-      setRcCustomerInfo(info as any);
+      const info = await purchaseRevenueCatPackage(pkg);
+      setRcCustomerInfo(info);
       
       const newTier = getUserTier(info);
       console.log('✅ Purchase successful! New tier:', newTier);
@@ -576,21 +212,12 @@ export default function PricingScreen() {
   };
 
   const handleRestorePurchases = async () => {
-    if (!profile?.user_id) {
-      Toast.show({
-        type: 'error',
-        text1: t('common.error'),
-        text2: 'Please login to restore purchases',
-      });
-      return;
-    }
-    
     try {
       setIsLoading(true);
-      console.log('🔄 Restoring RevenueCat purchases for user:', profile.user_id);
+      console.log('🔄 Restoring RevenueCat purchases...');
       
-      const info = await restoreRevenueCatPurchases(profile.user_id);
-      setRcCustomerInfo(info as any);
+      const info = await restoreRevenueCatPurchases();
+      setRcCustomerInfo(info);
       
       const tier = getUserTier(info);
       console.log('✅ Purchases restored! Tier:', tier);
@@ -615,19 +242,9 @@ export default function PricingScreen() {
     }
   };
 
-  const handleUpgrade = async (tier: SubscriptionTierData) => {
-    if (!tier.stripe_price_id) return;
-
-    if (!session?.access_token) {
-      Toast.show({
-        type: 'error',
-        text1: t('common.error'),
-        text2: 'Not authenticated',
-      });
-      return;
-    }
-
-    Alert.alert(
+  // Helper functions remain unchanged
+  const getTierIcon = (tierName: string) => {
+    switch (tierName) {
       t('subscription.upgrade_confirm_title'),
       t('subscription.upgrade_confirm_message', {
         tier: tier.tier_name.toUpperCase(),
@@ -807,6 +424,7 @@ export default function PricingScreen() {
     }
   };
 
+  // Helper functions remain unchanged
   const getTierIcon = (tierName: string) => {
     switch (tierName) {
       case 'standard':
@@ -979,8 +597,8 @@ export default function PricingScreen() {
           </Card>
         )}
 
-        {/* Coupon Code Section - HIDDEN (RevenueCat doesn't support coupons in native IAP) */}
-        {false && (
+        {/* Coupon Code Section - Only show for Stripe (not RevenueCat) */}
+        {!isNativeBuild && (
           <Card style={styles.couponCard}>
             <View style={styles.couponHeader}>
               <Tag size={24} color="#2563EB" />
@@ -1028,14 +646,13 @@ export default function PricingScreen() {
           </Card>
         )}
 
-        {/* RevenueCat Universal Subscriptions (iOS, Android, Web) */}
-        {rcSubscriptions.length > 0 && (
+        {/* RevenueCat Native Subscriptions */}
+        {isNativeBuild && rcSubscriptions.length > 0 && (
           <View style={styles.tiersContainer}>
             {rcSubscriptions.map((pkg) => {
-              // ✅ Use helper function to extract clean tier name
-              const tierName = getTierName(pkg.identifier);
+              // Extract tier name from package identifier (e.g., "rc_monthly_standard" -> "standard")
+              const tierName = pkg.identifier.split('_').pop() || '';
               const isActive = profile?.subscription_tier === tierName;
-              const features = getTierFeaturesByName(tierName); // ✅ Get features by tier name
               
               return (
                 <Card
@@ -1059,10 +676,6 @@ export default function PricingScreen() {
                     <Text style={styles.tierName}>
                       {t(`pricing.tier_${tierName}`)}
                     </Text>
-                    {/* 🔍 DEBUG: Show package identifier */}
-                    <Text style={{ fontSize: 10, color: '#999', marginTop: 4 }}>
-                      ID: {pkg.identifier}
-                    </Text>
                     <Text style={styles.tierPrice}>
                       {pkg.product.priceString}
                       <Text style={styles.tierPriceUnit}>
@@ -1071,14 +684,11 @@ export default function PricingScreen() {
                     </Text>
                   </View>
 
-                  {/* ✅ Display feature list for each tier */}
                   <View style={styles.featuresContainer}>
-                    {features.map((feature, index) => (
-                      <View key={index} style={styles.featureRow}>
-                        <Check size={20} color="#10B981" />
-                        <Text style={styles.featureText}>{feature}</Text>
-                      </View>
-                    ))}
+                    <View style={styles.featureRow}>
+                      <Check size={20} color="#10B981" />
+                      <Text style={styles.featureText}>{pkg.product.description}</Text>
+                    </View>
                   </View>
 
                   <Button
@@ -1094,8 +704,8 @@ export default function PricingScreen() {
           </View>
         )}
 
-        {/* Stripe Subscriptions - HIDDEN (Using RevenueCat only) */}
-        {false && tiers.length > 0 && (
+        {/* Stripe Subscriptions (Expo Go / Web fallback) */}
+        {!isNativeBuild && tiers.length > 0 && (
           <View style={styles.tiersContainer}>
             {tiers.map((tier) => (
             <Card
@@ -1226,8 +836,8 @@ export default function PricingScreen() {
           </View>
         )}
 
-        {/* RevenueCat Search Packs (Universal) */}
-        {rcSearchPacks.length > 0 && (
+        {/* RevenueCat Search Packs */}
+        {isNativeBuild && rcSearchPacks.length > 0 && (
           <>
             <View style={styles.divider} />
 
@@ -1270,8 +880,8 @@ export default function PricingScreen() {
           </>
         )}
 
-        {/* Stripe Search Packs - HIDDEN (Using RevenueCat only) */}
-        {false && searchPacks.length > 0 && (
+        {/* Stripe Search Packs (Expo Go / Web fallback) */}
+        {!isNativeBuild && searchPacks.length > 0 && (
           <>
             <View style={styles.divider} />
 

@@ -138,12 +138,19 @@ export async function getOfferings(userId?: string): Promise<TruxelOfferings> {
       };
     }
 
+    // 🔍 DEBUG: Log RAW package structure
+    console.log('🔍 RAW PACKAGE STRUCTURE (first package):', 
+      JSON.stringify(defaultOffering.availablePackages[0], null, 2)
+    );
+    
     // Log all available packages BEFORE filtering
     console.log('📦 Available packages in current offering:',
       defaultOffering.availablePackages.map((pkg: any) => ({
         id: pkg.identifier,
-        currency: pkg.product?.currencyCode || 'N/A',
-        price: pkg.product?.priceString || 'N/A'
+        hasRcBillingProduct: 'rcBillingProduct' in pkg,
+        rawProduct: pkg.rcBillingProduct || pkg.product,
+        currency: pkg.product?.currencyCode || pkg.rcBillingProduct?.currentPrice?.currency || 'N/A',
+        price: pkg.product?.priceString || pkg.rcBillingProduct?.currentPrice?.formattedPrice || 'N/A'
       }))
     );
 
@@ -157,9 +164,22 @@ export async function getOfferings(userId?: string): Promise<TruxelOfferings> {
       );
     }
 
+    // Helper: Extract currency from package (works for both web and mobile)
+    const getCurrency = (pkg: any): string | undefined => {
+      // Web package structure
+      if (pkg.rcBillingProduct?.currentPrice?.currency) {
+        return pkg.rcBillingProduct.currentPrice.currency;
+      }
+      // Mobile package structure
+      if (pkg.product?.currencyCode) {
+        return pkg.product.currencyCode;
+      }
+      return undefined;
+    };
+
     // Filter packages by currency
     let subscriptions = defaultOffering.availablePackages.filter((pkg: any) => {
-      const pkgCurrency = pkg.product?.currencyCode;
+      const pkgCurrency = getCurrency(pkg);
       const matches = pkgCurrency === userCurrency;
       if (!matches) {
         console.log(`⏭️ Skipping package ${pkg.identifier} (currency: ${pkgCurrency}, wanted: ${userCurrency})`);
@@ -168,7 +188,7 @@ export async function getOfferings(userId?: string): Promise<TruxelOfferings> {
     }) || [];
 
     let searchPacks = searchPacksOffering?.availablePackages.filter((pkg: any) => {
-      const pkgCurrency = pkg.product?.currencyCode;
+      const pkgCurrency = getCurrency(pkg);
       const matches = pkgCurrency === userCurrency;
       if (!matches) {
         console.log(`⏭️ Skipping search pack ${pkg.identifier} (currency: ${pkgCurrency}, wanted: ${userCurrency})`);
