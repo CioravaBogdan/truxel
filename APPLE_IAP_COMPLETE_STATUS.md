@@ -209,10 +209,10 @@ This is **NORMAL** and can take 2-24 hours after agreement activation.
      - Search Pack Add-on - Web Billing `prod_THaFpplWmNkSUP`
    
 5. **pro_freighter_access** (Pro Freighter Access - Premium Freight Forwarder Features) - **NEW**
-   - **Created**: Nov 12, 2025
-   - **Products attached**: ⚠️ **0 products - NEEDS CONFIGURATION**
-   - **Action Required**: Attach products in RevenueCat Dashboard:
-     - Pro Frighter - Stripe `prod_TPPA0AZxwJnvzB` (needs price creation)
+   - **RevenueCat ID**: `entl74bb1a8c86`
+   - **Created**: Nov 12, 2025 at 09:32 AM UTC
+   - **Products attached**: ✅ **3 products** (Nov 12, 2025)
+     - Pro Frighter - Stripe `prod_TPPA0AZxwJnvzB`
      - Pro Frighter - iOS `truxel_4999_frighter_1month`
      - Pro Frighter - Web Billing `prod_TPPA0AZxwJnvzB`
 
@@ -530,9 +530,7 @@ console.log('📱 RAW Offerings object:', JSON.stringify(offerings, null, 2));
 
 1. **✅ DONE - Paid Apps Agreement**: Accepted and active
 2. **✅ DONE - Banking Information**: Completed
-8. **🛠️ CRITICAL - Pro Freighter Products Configuration**:
-   
-   **Step A: Create Stripe Prices**
+8. **🛠️ FIX - Pro Freighter Stripe Prices**:
    - Go to Stripe Dashboard → Products
    - Find product `prod_TPPC0IMPpggkFD`
    - Click "Add another price"
@@ -540,18 +538,7 @@ console.log('📱 RAW Offerings object:', JSON.stringify(offerings, null, 2));
      - USD: $49.99/month
      - EUR: €49.99/month
    - Copy price IDs
-   - Update Supabase `subscription_tiers` table
-   
-   **Step B: Attach Products to Entitlement**
-   - Go to RevenueCat Dashboard → Entitlements
-   - Find `pro_freighter_access` (currently shows 0 products)
-   - Click "Add products"
-   - Attach:
-     - Pro Frighter - Stripe `prod_TPPA0AZxwJnvzB`
-     - Pro Frighter - iOS `truxel_4999_frighter_1month`
-     - Pro Frighter - Web Billing `prod_TPPA0AZxwJnvzB`
-   - Save changes
-   - Verify entitlement shows 3+ productsght app
+   - Update Supabase `subscription_tiers` tableght app
 
 7. **🧪 TEST - Sandbox Purchase**:
    - iPhone Settings → App Store → Sandbox Account
