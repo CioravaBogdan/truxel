@@ -313,5 +313,138 @@
     "post_descriptions": {
       "custom": "{{origin}} → {{dest}} rotası için uygun"
     }
+  },
+  "support": {
+    "title": "Destek ile İletişim",
+    "description": "Yardıma mı ihtiyacınız var? Bize bir mesaj gönderin, ekibimiz en kısa sürede size geri dönecek.",
+    "need_help_choosing": "Plan seçmek için yardıma mı ihtiyacınız var?",
+    "quick_questions": "Hızlı sorular",
+    "write_custom_message": "Özel mesaj yaz",
+    "your_message": "Mesajınız",
+    "message_placeholder": "Mesajınızı yazın...",
+    "back_to_templates": "Şablonlara geri dön",
+    "send_message": "Mesaj Gönder",
+    "message_sent": "Mesaj Gönderildi!",
+    "message_sent_description": "Kısa sürede yanıt alacaksınız.",
+    "message_received": "Mesajınızı aldık ve kısa sürede yanıt vereceğiz.",
+    "error_empty_message": "Lütfen bir mesaj girin",
+    "error_not_logged_in": "Destekle iletişim kurmak için giriş yapmalısınız",
+    "error_sending": "Mesaj gönderilemedi",
+    "no_messages_yet": "Henüz mesaj yok",
+    "start_conversation": "Destek ekibimizle sohbete başlamak için bir mesaj gönderin",
+    "templates": {
+      "pricing_question": "Fiyatlandırma ve planlar hakkında sorum var",
+      "feature_request": "Yeni bir özellik önermek istiyorum",
+      "bug_report": "Bir hata veya teknik sorun buldum",
+      "account_help": "Hesabımla ilgili yardıma ihtiyacım var",
+      "subscription_help": "Aboneliğimle ilgili yardıma ihtiyacım var"
+    }
+  },
+  "web": {
+    "nav": {
+      "features": "Özellikler",
+      "pricing": "Fiyatlandırma",
+      "about": "Hakkımızda",
+      "contact": "İletişim",
+      "login": "Giriş Yap",
+      "signup": "Kaydol"
+    },
+    "hero": {
+      "title": "Yük Bulun ve Nakliye Firmaları ile Anında Bağlantı Kurun",
+      "subtitle": "Sürücüleri, taşıyıcıları ve yük verenleri gerçek zamanlı olarak birleştiren ilk GPS tabanlı lojistik platformu",
+      "cta_primary": "Ücretsiz Başla",
+      "trust_badge": "Avrupa'da 10.000'den fazla sürücü ve lojistik firması bize güveniyor"
+    },
+    "cta": {
+      "learn_more": "Daha Fazla Bilgi"
+    },
+    "features": {
+      "title": "Büyümek İçin İhtiyacınız Olan Her Şey",
+      "subtitle": "Kamyon sürücüleri için tasarlanmış güçlü özellikler",
+      "gps_title": "GPS Tabanlı Arama",
+      "gps_desc": "Gerçek zamanlı konumu kullanarak yakındaki firmaları anında bulun",
+      "instant_contact_title": "Anında İletişim",
+      "instant_contact_desc": "WhatsApp, e-posta veya telefon ile tek dokunuşta bağlanın",
+      "community_title": "Sürücü Topluluğu",
+      "community_desc": "Müsaitliğinizi paylaşın ve diğer sürücülerden yük bulun",
+      "leads_title": "Firma Potansiyelleri",
+      "leads_desc": "Nakliye firmaları ve lojistik ortakları keşfedin",
+      "templates_title": "Hızlı Şablonlar",
+      "templates_desc": "Firmalarla daha hızlı iletişim kurmak için hazır mesajları kullanın",
+      "linkedin_title": "LinkedIn Entegrasyonu",
+      "linkedin_desc": "Karar vericileri ve iletişim bilgilerini anında bulun",
+      "ai_title": "AI Eşleştirme",
+      "ai_desc": "Rotalarınıza ve tercihlerinize dayalı akıllı öneriler",
+      "notifications_title": "Akıllı Bildirimler",
+      "notifications_desc": "Firmalar yakınınızda yük paylaştığında uyarı alın",
+      "multilang_title": "Çoklu Dil",
+      "multilang_desc": "İngilizce, Rumence, Lehçe, Türkçe, İspanyolca ve diğerlerinde mevcut"
+    },
+    "footer": {
+      "tagline": "Lojistik ağlarının geleceği",
+      "product": "Ürün",
+      "company": "Şirket",
+      "legal": "Yasal",
+      "privacy": "Gizlilik Politikası",
+      "terms": "Hizmet Şartları",
+      "refund": "İade Politikası",
+      "cookies": "Çerez Politikası",
+      "rights": "Tüm hakları saklıdır."
+    },
+    "gdpr": {
+      "message": "Deneyiminizi iyileştirmek için çerezler kullanıyoruz. Devam ederek çerez kullanımımızı kabul ediyorsunuz.",
+      "learn_more": "Daha fazla bilgi",
+      "accept": "Hepsini Kabul Et",
+      "decline": "Reddet"
+    },
+    "faq": {
+      "title": "Sıkça Sorulan Sorular",
+      "q1": "Truxel ücretsiz mi?",
+      "a1": "Evet, ayda 5 arama ile ücretsiz deneme sunuyoruz.",
+      "q2": "GPS araması nasıl çalışır?",
+      "a2": "Yakındaki firmaları ve yükleri bulmak için cihazınızın konumunu kullanıyoruz.",
+      "q3": "Kendi yüklerimi paylaşabilir miyim?",
+      "a3": "Evet! Pro ve Fleet Manager planları toplulukta paylaşım içerir.",
+      "q4": "Verilerim güvende mi?",
+      "a4": "Kesinlikle. Endüstri standardı şifreleme kullanıyoruz ve GDPR'ye uyuyoruz.",
+      "q5": "Hangi ülkeler destekleniyor?",
+      "a5": "Tüm Avrupa Birliği ülkelerini ve UK, Türkiye ve diğerlerini kapsıyoruz.",
+      "q6": "İstediğim zaman iptal edebilir miyim?",
+      "a6": "Evet, aboneliğinizi istediğiniz zaman ceza ödemeden iptal edebilirsiniz.",
+      "q7": "Mobil uygulama var mı?",
+      "a7": "Evet! iOS ve Android için Truxel'i indirin.",
+      "q8": "Destekle nasıl iletişim kurarım?",
+      "a8": "Sohbet düğmesini kullanın veya office@truxel.app adresine e-posta gönderin"
+    },
+    "problem_solution": {
+      "problem_title": "Nakliye Simsarlarına Bağımlılığı Bitirin",
+      "problem_desc": "Sahip-operatör olarak yük panoları için beklemeniz veya simsar ücreti ödemeniz gerekmemeli. Özellikle fırsatların gizlendiği ölü bölgelerde, bölgenizdeki yük verenlere doğrudan erişimi hak ediyorsunuz.",
+      "solution_title": "Yük Verenleri Doğrudan Bulun - Kapı Kapı Dolaşmaya Gerek Yok",
+      "solution_desc": "İşiniz, kontrolünüz. Konumunuzun kilometre içindeki yerel yük verenlerini keşfetmek için GPS kullanın. Kişiselleştirilmiş mesajlarla anında ulaşın - soğuk arama yok, tahmin oyunu yok."
+    },
+    "how_it_works": {
+      "title": "Nasıl Çalışır",
+      "subtitle": "4 basit adımda müşteri bulmaya başlayın",
+      "step1_title": "İndirin ve Kaydolun",
+      "step1_desc": "Dakikalar içinde ücretsiz bir hesapla başlayın",
+      "step2_title": "Yerel Yük Verenleri Bulun",
+      "step2_desc": "Firmaları keşfetmek için GPS veya manuel arama kullanın",
+      "step3_title": "İletişim Bilgilerini Alın",
+      "step3_desc": "Telefon, e-posta ve LinkedIn profillerine erişin",
+      "step4_title": "Anında Ulaşın",
+      "step4_desc": "Tek dokunuşla WhatsApp, e-posta veya telefon üzerinden bağlanın"
+    },
+    "social_proof": {
+      "title": "Avrupa'daki Sürücüler Bize Güveniyor",
+      "testimonial1": "Sonunda bölgemdeki doğrudan yük verenleri buldum. Karımı yiyen simsar ücretlerine artık son!",
+      "testimonial1_author": "Mike T., Sahip-Operatör, Teksas",
+      "testimonial2": "Ölü bir bölgede sıkışmıştım ve 20 dakika içinde 3 yerel yük veren buldum. Bu kendi kendini geri ödüyor.",
+      "testimonial2_author": "James R., Bağımsız Sürücü, Ohio",
+      "testimonial3": "Tek dokunuşla mesajlaşma harika. Kamyon durağındayken yük verenlerle iletişim kurabilirim.",
+      "testimonial3_author": "Sarah K., Filo Sahibi, Kaliforniya",
+      "stats_drivers": "Bağımsız Sürücüler İçin Yapıldı",
+      "stats_companies": "Yerel Yük Verenleri Anında Bulun",
+      "stats_countries": "Kuzey Amerika'da Başlatılıyor"
+    }
   }
 }

@@ -541,6 +541,8 @@
       "learn_more": "Learn More"
     },
     "features": {
+      "title": "Everything You Need to Grow",
+      "subtitle": "Powerful features designed for truck drivers",
       "gps_title": "GPS-Based Search",
       "gps_desc": "Find nearby companies instantly using real-time location",
       "instant_contact_title": "Instant Contact",
@@ -578,6 +580,7 @@
       "decline": "Decline"
     },
     "faq": {
+      "title": "Frequently Asked Questions",
       "q1": "Is Truxel free to use?",
       "a1": "Yes, we offer a free trial with 5 searches per month.",
       "q2": "How does GPS search work?",
@@ -594,6 +597,36 @@
       "a7": "Yes! Download Truxel for iOS and Android.",
       "q8": "How do I contact support?",
       "a8": "Use the chat button or email us at office@truxel.app"
+    },
+    "problem_solution": {
+      "problem_title": "Stop Depending on Freight Brokers",
+      "problem_desc": "As an owner-operator, you shouldn't have to wait for load boards or pay broker fees. You deserve direct access to shippers in your area, especially in dead zones where opportunities are hidden.",
+      "solution_title": "Find Shippers Directly - No Door Knocking",
+      "solution_desc": "Your business, your control. Use GPS to discover local shippers within miles of your location. Reach out instantly with personalized messages - no cold calling, no guessing games."
+    },
+    "how_it_works": {
+      "title": "How It Works",
+      "subtitle": "Start finding clients in 4 simple steps",
+      "step1_title": "Download & Register",
+      "step1_desc": "Get started with a free account in minutes",
+      "step2_title": "Find Local Shippers",
+      "step2_desc": "Use GPS or manual search to discover companies",
+      "step3_title": "Get Contact Details",
+      "step3_desc": "Access phone, email, and LinkedIn profiles",
+      "step4_title": "Reach Out Instantly",
+      "step4_desc": "Connect via WhatsApp, email, or phone with one tap"
+    },
+    "social_proof": {
+      "title": "Trusted by Drivers Across Europe",
+      "testimonial1": "Finally found direct shippers in my area. No more broker fees eating my profit!",
+      "testimonial1_author": "Mike T., Owner-Operator, Texas",
+      "testimonial2": "I was stuck in a dead zone and found 3 local shippers within 20 minutes. This pays for itself.",
+      "testimonial2_author": "James R., Independent Driver, Ohio",
+      "testimonial3": "One-tap messaging is brilliant. I can reach out to shippers while I'm at a truck stop.",
+      "testimonial3_author": "Sarah K., Fleet Owner, California",
+      "stats_drivers": "Built for Independent Drivers",
+      "stats_companies": "Find Local Shippers Instantly",
+      "stats_countries": "Launching in North America"
     }
   }
 }

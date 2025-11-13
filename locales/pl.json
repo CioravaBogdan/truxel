@@ -313,5 +313,138 @@
     "post_descriptions": {
       "custom": "Dostępny na trasie {{origin}} → {{dest}}"
     }
+  },
+  "support": {
+    "title": "Kontakt z pomocą techniczną",
+    "description": "Potrzebujesz pomocy? Wyślij nam wiadomość, a nasz zespół odpowie najszybciej jak to możliwe.",
+    "need_help_choosing": "Potrzebujesz pomocy w wyborze planu?",
+    "quick_questions": "Szybkie pytania",
+    "write_custom_message": "Napisz własną wiadomość",
+    "your_message": "Twoja wiadomość",
+    "message_placeholder": "Wpisz swoją wiadomość...",
+    "back_to_templates": "Powrót do szablonów",
+    "send_message": "Wyślij wiadomość",
+    "message_sent": "Wiadomość wysłana!",
+    "message_sent_description": "Odpowiemy wkrótce.",
+    "message_received": "Otrzymaliśmy Twoją wiadomość i odpowiemy wkrótce.",
+    "error_empty_message": "Proszę wprowadzić wiadomość",
+    "error_not_logged_in": "Musisz być zalogowany, aby skontaktować się z pomocą",
+    "error_sending": "Nie udało się wysłać wiadomości",
+    "no_messages_yet": "Brak wiadomości",
+    "start_conversation": "Wyślij wiadomość, aby rozpocząć rozmowę z naszym zespołem pomocy",
+    "templates": {
+      "pricing_question": "Mam pytanie dotyczące cen i planów",
+      "feature_request": "Chciałbym zasugerować nową funkcję",
+      "bug_report": "Znalazłem błąd lub problem techniczny",
+      "account_help": "Potrzebuję pomocy z moim kontem",
+      "subscription_help": "Potrzebuję pomocy z moją subskrypcją"
+    }
+  },
+  "web": {
+    "nav": {
+      "features": "Funkcje",
+      "pricing": "Cennik",
+      "about": "O nas",
+      "contact": "Kontakt",
+      "login": "Zaloguj się",
+      "signup": "Zarejestruj się"
+    },
+    "hero": {
+      "title": "Znajdź Ładunki i Połącz się z Firmami Transportowymi Natychmiast",
+      "subtitle": "Pierwsza platforma logistyczna oparta na GPS łącząca kierowców, spedytorów i nadawców w czasie rzeczywistym",
+      "cta_primary": "Rozpocznij Za Darmo",
+      "trust_badge": "Ponad 10 000 kierowców i firm logistycznych w Europie nam ufa"
+    },
+    "cta": {
+      "learn_more": "Dowiedz Się Więcej"
+    },
+    "features": {
+      "title": "Wszystko Czego Potrzebujesz do Rozwoju",
+      "subtitle": "Potężne funkcje zaprojektowane dla kierowców ciężarówek",
+      "gps_title": "Wyszukiwanie GPS",
+      "gps_desc": "Znajdź pobliskie firmy natychmiast korzystając z lokalizacji w czasie rzeczywistym",
+      "instant_contact_title": "Natychmiastowy Kontakt",
+      "instant_contact_desc": "Połącz się przez WhatsApp, e-mail lub telefon jednym dotknięciem",
+      "community_title": "Społeczność Kierowców",
+      "community_desc": "Publikuj swoją dostępność i znajdź ładunki od innych kierowców",
+      "leads_title": "Leady Firm",
+      "leads_desc": "Odkrywaj firmy transportowe i partnerów logistycznych",
+      "templates_title": "Szybkie Szablony",
+      "templates_desc": "Użyj gotowych wiadomości, aby szybciej kontaktować się z firmami",
+      "linkedin_title": "Integracja LinkedIn",
+      "linkedin_desc": "Znajdź decydentów i dane kontaktowe natychmiast",
+      "ai_title": "Dopasowanie AI",
+      "ai_desc": "Inteligentne rekomendacje oparte na Twoich trasach i preferencjach",
+      "notifications_title": "Inteligentne Powiadomienia",
+      "notifications_desc": "Otrzymuj alerty, gdy firmy publikują ładunki w pobliżu",
+      "multilang_title": "Wiele Języków",
+      "multilang_desc": "Dostępne w języku angielskim, rumuńskim, polskim, tureckim, hiszpańskim i innych"
+    },
+    "footer": {
+      "tagline": "Przyszłość sieci logistycznych",
+      "product": "Produkt",
+      "company": "Firma",
+      "legal": "Prawne",
+      "privacy": "Polityka Prywatności",
+      "terms": "Warunki Usługi",
+      "refund": "Polityka Zwrotów",
+      "cookies": "Polityka Cookies",
+      "rights": "Wszelkie prawa zastrzeżone."
+    },
+    "gdpr": {
+      "message": "Używamy plików cookie, aby poprawić Twoje wrażenia. Kontynuując, zgadzasz się na nasze użycie plików cookie.",
+      "learn_more": "Dowiedz się więcej",
+      "accept": "Zaakceptuj Wszystkie",
+      "decline": "Odrzuć"
+    },
+    "faq": {
+      "title": "Najczęściej Zadawane Pytania",
+      "q1": "Czy Truxel jest darmowy?",
+      "a1": "Tak, oferujemy bezpłatny okres próbny z 5 wyszukiwaniami miesięcznie.",
+      "q2": "Jak działa wyszukiwanie GPS?",
+      "a2": "Używamy lokalizacji Twojego urządzenia, aby znaleźć pobliskie firmy i ładunki.",
+      "q3": "Czy mogę publikować własne ładunki?",
+      "a3": "Tak! Plany Pro i Fleet Manager obejmują publikowanie w społeczności.",
+      "q4": "Czy moje dane są bezpieczne?",
+      "a4": "Absolutnie. Używamy szyfrowania na poziomie przemysłowym i przestrzegamy RODO.",
+      "q5": "Które kraje są obsługiwane?",
+      "a5": "Obejmujemy wszystkie kraje Unii Europejskiej oraz UK, Turcję i inne.",
+      "q6": "Czy mogę anulować w dowolnym momencie?",
+      "a6": "Tak, możesz anulować subskrypcję w dowolnym momencie bez kar.",
+      "q7": "Czy macie aplikację mobilną?",
+      "a7": "Tak! Pobierz Truxel dla iOS i Android.",
+      "q8": "Jak skontaktować się z pomocą?",
+      "a8": "Użyj przycisku czatu lub wyślij nam e-mail na office@truxel.app"
+    },
+    "problem_solution": {
+      "problem_title": "Przestań Być Zależnym od Brokerów Frachtowych",
+      "problem_desc": "Jako właściciel-operator nie powinieneś czekać na tablice ogłoszeń ani płacić prowizji brokerom. Zasługujesz na bezpośredni dostęp do nadawców w Twojej okolicy, szczególnie w martwych strefach, gdzie możliwości są ukryte.",
+      "solution_title": "Znajdź Nadawców Bezpośrednio - Bez Pukania do Drzwi",
+      "solution_desc": "Twoja firma, Twoja kontrola. Użyj GPS, aby odkryć lokalnych nadawców w promieniu kilometrów od Twojej lokalizacji. Skontaktuj się natychmiast ze spersonalizowanymi wiadomościami - bez zimnych telefonów, bez zgadywania."
+    },
+    "how_it_works": {
+      "title": "Jak To Działa",
+      "subtitle": "Zacznij znajdować klientów w 4 prostych krokach",
+      "step1_title": "Pobierz i Zarejestruj Się",
+      "step1_desc": "Zacznij z darmowym kontem w kilka minut",
+      "step2_title": "Znajdź Lokalnych Nadawców",
+      "step2_desc": "Użyj GPS lub ręcznego wyszukiwania, aby odkryć firmy",
+      "step3_title": "Uzyskaj Dane Kontaktowe",
+      "step3_desc": "Dostęp do telefonu, e-maila i profili LinkedIn",
+      "step4_title": "Skontaktuj Się Natychmiast",
+      "step4_desc": "Połącz się przez WhatsApp, e-mail lub telefon jednym dotknięciem"
+    },
+    "social_proof": {
+      "title": "Kierowcy w Całej Europie Nam Ufają",
+      "testimonial1": "W końcu znalazłem bezpośrednich nadawców w mojej okolicy. Koniec z prowizjami brokerów zjadającymi mój zysk!",
+      "testimonial1_author": "Mike T., Właściciel-Operator, Teksas",
+      "testimonial2": "Utknąłem w martwej strefie i znalazłem 3 lokalnych nadawców w ciągu 20 minut. To się samo zwraca.",
+      "testimonial2_author": "James R., Niezależny Kierowca, Ohio",
+      "testimonial3": "Wiadomości jednym dotknięciem są genialne. Mogę kontaktować się z nadawcami, gdy jestem na parkingu dla ciężarówek.",
+      "testimonial3_author": "Sarah K., Właściciel Floty, Kalifornia",
+      "stats_drivers": "Zbudowane dla Niezależnych Kierowców",
+      "stats_companies": "Znajdź Lokalnych Nadawców Natychmiast",
+      "stats_countries": "Uruchomienie w Ameryce Północnej"
+    }
   }
 }

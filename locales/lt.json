@@ -179,5 +179,138 @@
     "post_descriptions": {
       "custom": "Prieinamas maršrutui {{origin}} → {{dest}}"
     }
+  },
+  "support": {
+    "title": "Susisiekite su palaikymu",
+    "description": "Reikia pagalbos? Atsiųskite mums žinutę ir mūsų komanda susisieks su jumis kuo greičiau.",
+    "need_help_choosing": "Reikia pagalbos renkantis planą?",
+    "quick_questions": "Greiti klausimai",
+    "write_custom_message": "Parašykite savo žinutę",
+    "your_message": "Jūsų žinutė",
+    "message_placeholder": "Įveskite savo žinutę...",
+    "back_to_templates": "Grįžti į šablonus",
+    "send_message": "Siųsti žinutę",
+    "message_sent": "Žinutė išsiųsta!",
+    "message_sent_description": "Greitai gausite atsakymą.",
+    "message_received": "Gavome jūsų žinutę ir greitai atsakysime.",
+    "error_empty_message": "Prašome įvesti žinutę",
+    "error_not_logged_in": "Norėdami susisiekti su palaikymu, turite būti prisijungę",
+    "error_sending": "Nepavyko išsiųsti žinutės",
+    "no_messages_yet": "Dar nėra žinučių",
+    "start_conversation": "Išsiųskite žinutę, kad pradėtumėte pokalbį su mūsų palaikymo komanda",
+    "templates": {
+      "pricing_question": "Turiu klausimą apie kainas ir planus",
+      "feature_request": "Norėčiau pasiūlyti naują funkciją",
+      "bug_report": "Radau klaidą ar techninę problemą",
+      "account_help": "Reikia pagalbos su savo paskyra",
+      "subscription_help": "Reikia pagalbos su savo prenumerata"
+    }
+  },
+  "web": {
+    "nav": {
+      "features": "Funkcijos",
+      "pricing": "Kainos",
+      "about": "Apie mus",
+      "contact": "Kontaktai",
+      "login": "Prisijungti",
+      "signup": "Registruotis"
+    },
+    "hero": {
+      "title": "Raskite Krovinius ir Prisijunkite prie Krovinių Įmonių Akimirksniu",
+      "subtitle": "Pirmoji GPS pagrįsta logistikos platforma, jungiant vairuotojus, ekspeduotorius ir siuntėjus realiu laiku",
+      "cta_primary": "Pradėti Nemokamai",
+      "trust_badge": "Mums pasitiki daugiau nei 10 000 vairuotojų ir logistikos įmonių visoje Europoje"
+    },
+    "cta": {
+      "learn_more": "Sužinoti Daugiau"
+    },
+    "features": {
+      "title": "Viskas, Ko Reikia Augimui",
+      "subtitle": "Galingos funkcijos, sukurtos sunkvežimių vairuotojams",
+      "gps_title": "GPS Paieška",
+      "gps_desc": "Akimirksniu raskite netoliese esančias įmones naudodami realaus laiko vietą",
+      "instant_contact_title": "Momentinis Kontaktas",
+      "instant_contact_desc": "Prisijunkite per WhatsApp, el. paštą arba telefoną vienu paspaudimu",
+      "community_title": "Vairuotojų Bendruomenė",
+      "community_desc": "Skelbkite savo prieinamumą ir raskite krovinius iš kitų vairuotojų",
+      "leads_title": "Įmonių Kontaktai",
+      "leads_desc": "Atraskite krovinių įmones ir logistikos partnerius",
+      "templates_title": "Greiti Šablonai",
+      "templates_desc": "Naudokite paruoštas žinutes greičiau susisiekti su įmonėmis",
+      "linkedin_title": "LinkedIn Integracija",
+      "linkedin_desc": "Akimirksniu raskite sprendimų priėmėjus ir kontaktinę informaciją",
+      "ai_title": "AI Derinimas",
+      "ai_desc": "Protingos rekomendacijos pagal jūsų maršrutus ir nuostatas",
+      "notifications_title": "Protingi Pranešimai",
+      "notifications_desc": "Gaukite įspėjimus, kai įmonės paskelbia krovinius netoli jūsų",
+      "multilang_title": "Kelios Kalbos",
+      "multilang_desc": "Prieinama anglų, rumunų, lenkų, turkų, ispanų ir kitomis kalbomis"
+    },
+    "footer": {
+      "tagline": "Logistikos tinklų ateitis",
+      "product": "Produktas",
+      "company": "Įmonė",
+      "legal": "Teisė",
+      "privacy": "Privatumo Politika",
+      "terms": "Paslaugų Sąlygos",
+      "refund": "Grąžinimo Politika",
+      "cookies": "Slapukų Politika",
+      "rights": "Visos teisės saugomos."
+    },
+    "gdpr": {
+      "message": "Naudojame slapukus, kad pagerintume jūsų patirtį. Tęsdami sutinkate su mūsų slapukų naudojimu.",
+      "learn_more": "Sužinoti daugiau",
+      "accept": "Priimti Visus",
+      "decline": "Atmesti"
+    },
+    "faq": {
+      "title": "Dažniausiai Užduodami Klausimai",
+      "q1": "Ar Truxel nemokamas?",
+      "a1": "Taip, siūlome nemokamą bandomąją versiją su 5 paieškoms per mėnesį.",
+      "q2": "Kaip veikia GPS paieška?",
+      "a2": "Naudojame jūsų įrenginio vietą, kad rastume netoliese esančias įmones ir krovinius.",
+      "q3": "Ar galiu skelbti savo krovinius?",
+      "a3": "Taip! Pro ir Fleet Manager planai apima skelbimą bendruomenėje.",
+      "q4": "Ar mano duomenys saugūs?",
+      "a4": "Absoliučiai. Naudojame pramoninės klasės šifravimą ir laikomės BDAR.",
+      "q5": "Kokios šalys palaikomos?",
+      "a5": "Apimame visas Europos Sąjungos šalis bei JK, Turkiją ir kitas.",
+      "q6": "Ar galiu atšaukti bet kada?",
+      "a6": "Taip, galite atšaukti prenumeratą bet kada be baudų.",
+      "q7": "Ar turite mobilią programą?",
+      "a7": "Taip! Atsisiųskite Truxel iOS ir Android.",
+      "q8": "Kaip susisiekti su palaikymu?",
+      "a8": "Naudokite pokalbių mygtuką arba siųskite el. laišką office@truxel.app"
+    },
+    "problem_solution": {
+      "problem_title": "Nustokite Priklausyti nuo Krovinių Tarpininkų",
+      "problem_desc": "Kaip savininkas-operatorius, neturėtumėte laukti krovinių lentų ar mokėti tarpininkų mokesčių. Nusipelnėte tiesioginės prieigos prie siuntėjų savo rajone, ypač mirusiose zonose, kur galimybės paslėptos.",
+      "solution_title": "Raskite Siuntėjus Tiesiogiai - Be Beldimo į Duris",
+      "solution_desc": "Jūsų verslas, jūsų kontrolė. Naudokite GPS, kad atrastumėte vietinius siuntėjus jūsų vietovės kilometre. Susisiekite akimirksniu su asmeninėmis žinutėmis - be šaltų skambučių, be spėliojimų."
+    },
+    "how_it_works": {
+      "title": "Kaip Tai Veikia",
+      "subtitle": "Pradėkite rasti klientus 4 paprastais žingsniais",
+      "step1_title": "Atsisiųskite ir Registruokitės",
+      "step1_desc": "Pradėkite su nemokama paskyra per kelias minutes",
+      "step2_title": "Raskite Vietinius Siuntėjus",
+      "step2_desc": "Naudokite GPS arba rankinę paiešką įmonėms atrasti",
+      "step3_title": "Gaukite Kontaktinę Informaciją",
+      "step3_desc": "Prieiga prie telefono, el. pašto ir LinkedIn profilių",
+      "step4_title": "Susisiekite Akimirksniu",
+      "step4_desc": "Prisijunkite per WhatsApp, el. paštą arba telefoną vienu paspaudimu"
+    },
+    "social_proof": {
+      "title": "Vairuotojai Visoje Europoje Mums Pasitiki",
+      "testimonial1": "Pagaliau radau tiesioginius siuntėjus savo rajone. Daugiau jokių tarpininkų mokesčių, ėdančių mano pelną!",
+      "testimonial1_author": "Mike T., Savininkas-Operatorius, Teksasas",
+      "testimonial2": "Įstrigau mirusioje zonoje ir per 20 minučių radau 3 vietinius siuntėjus. Tai atsipirko.",
+      "testimonial2_author": "James R., Nepriklausomas Vairuotojas, Ohajas",
+      "testimonial3": "Vieno paspaudimo žinutės yra genialios. Galiu susisiekti su siuntėjais, kai esu sunkvežimių stovėjimo aikštelėje.",
+      "testimonial3_author": "Sarah K., Flotės Savininkė, Kalifornija",
+      "stats_drivers": "Sukurta Nepriklausomiems Vairuotojams",
+      "stats_companies": "Raskite Vietinius Siuntėjus Akimirksniu",
+      "stats_countries": "Paleidimas Šiaurės Amerikoje"
+    }
   }
 }

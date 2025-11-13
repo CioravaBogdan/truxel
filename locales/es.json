@@ -179,5 +179,138 @@
     "post_descriptions": {
       "custom": "Disponible para ruta {{origin}} → {{dest}}"
     }
+  },
+  "support": {
+    "title": "Contactar con soporte",
+    "description": "¿Necesitas ayuda? Envíanos un mensaje y nuestro equipo te responderá lo antes posible.",
+    "need_help_choosing": "¿Necesitas ayuda para elegir un plan?",
+    "quick_questions": "Preguntas rápidas",
+    "write_custom_message": "Escribir mensaje personalizado",
+    "your_message": "Tu mensaje",
+    "message_placeholder": "Escribe tu mensaje...",
+    "back_to_templates": "Volver a plantillas",
+    "send_message": "Enviar mensaje",
+    "message_sent": "¡Mensaje enviado!",
+    "message_sent_description": "Recibirás una respuesta pronto.",
+    "message_received": "Hemos recibido tu mensaje y responderemos pronto.",
+    "error_empty_message": "Por favor introduce un mensaje",
+    "error_not_logged_in": "Debes iniciar sesión para contactar con soporte",
+    "error_sending": "Error al enviar el mensaje",
+    "no_messages_yet": "Aún no hay mensajes",
+    "start_conversation": "Envía un mensaje para empezar la conversación con nuestro equipo de soporte",
+    "templates": {
+      "pricing_question": "Tengo una pregunta sobre precios y planes",
+      "feature_request": "Me gustaría sugerir una nueva función",
+      "bug_report": "Encontré un error o problema técnico",
+      "account_help": "Necesito ayuda con mi cuenta",
+      "subscription_help": "Necesito ayuda con mi suscripción"
+    }
+  },
+  "web": {
+    "nav": {
+      "features": "Funciones",
+      "pricing": "Precios",
+      "about": "Nosotros",
+      "contact": "Contacto",
+      "login": "Iniciar sesión",
+      "signup": "Registrarse"
+    },
+    "hero": {
+      "title": "Encuentra Cargas y Conéctate con Empresas de Transporte al Instante",
+      "subtitle": "La primera plataforma logística basada en GPS que conecta conductores, transitarios y cargadores en tiempo real",
+      "cta_primary": "Comenzar Gratis",
+      "trust_badge": "Más de 10.000 conductores y empresas de logística en Europa confían en nosotros"
+    },
+    "cta": {
+      "learn_more": "Saber Más"
+    },
+    "features": {
+      "title": "Todo Lo Que Necesitas Para Crecer",
+      "subtitle": "Funciones potentes diseñadas para conductores de camiones",
+      "gps_title": "Búsqueda GPS",
+      "gps_desc": "Encuentra empresas cercanas al instante usando ubicación en tiempo real",
+      "instant_contact_title": "Contacto Instantáneo",
+      "instant_contact_desc": "Conéctate por WhatsApp, correo o teléfono con un toque",
+      "community_title": "Comunidad de Conductores",
+      "community_desc": "Publica tu disponibilidad y encuentra cargas de otros conductores",
+      "leads_title": "Contactos de Empresas",
+      "leads_desc": "Descubre empresas de transporte y socios logísticos",
+      "templates_title": "Plantillas Rápidas",
+      "templates_desc": "Usa mensajes pre-construidos para contactar empresas más rápido",
+      "linkedin_title": "Integración LinkedIn",
+      "linkedin_desc": "Encuentra tomadores de decisiones e información de contacto al instante",
+      "ai_title": "Emparejamiento IA",
+      "ai_desc": "Recomendaciones inteligentes basadas en tus rutas y preferencias",
+      "notifications_title": "Notificaciones Inteligentes",
+      "notifications_desc": "Recibe alertas cuando empresas publiquen cargas cerca de ti",
+      "multilang_title": "Multi-idioma",
+      "multilang_desc": "Disponible en inglés, rumano, polaco, turco, español y más"
+    },
+    "footer": {
+      "tagline": "El futuro de las redes logísticas",
+      "product": "Producto",
+      "company": "Empresa",
+      "legal": "Legal",
+      "privacy": "Política de Privacidad",
+      "terms": "Términos de Servicio",
+      "refund": "Política de Reembolso",
+      "cookies": "Política de Cookies",
+      "rights": "Todos los derechos reservados."
+    },
+    "gdpr": {
+      "message": "Usamos cookies para mejorar tu experiencia. Al continuar, aceptas nuestro uso de cookies.",
+      "learn_more": "Saber más",
+      "accept": "Aceptar Todo",
+      "decline": "Rechazar"
+    },
+    "faq": {
+      "title": "Preguntas Frecuentes",
+      "q1": "¿Truxel es gratis?",
+      "a1": "Sí, ofrecemos una prueba gratuita con 5 búsquedas al mes.",
+      "q2": "¿Cómo funciona la búsqueda GPS?",
+      "a2": "Usamos la ubicación de tu dispositivo para encontrar empresas y cargas cercanas.",
+      "q3": "¿Puedo publicar mis propias cargas?",
+      "a3": "¡Sí! Los planes Pro y Fleet Manager incluyen publicación en comunidad.",
+      "q4": "¿Mis datos están seguros?",
+      "a4": "Absolutamente. Usamos cifrado de nivel industrial y cumplimos con GDPR.",
+      "q5": "¿Qué países están soportados?",
+      "a5": "Cubrimos todos los países de la Unión Europea más UK, Turquía y más.",
+      "q6": "¿Puedo cancelar en cualquier momento?",
+      "a6": "Sí, puedes cancelar tu suscripción en cualquier momento sin penalizaciones.",
+      "q7": "¿Tienen aplicación móvil?",
+      "a7": "¡Sí! Descarga Truxel para iOS y Android.",
+      "q8": "¿Cómo contacto con soporte?",
+      "a8": "Usa el botón de chat o envíanos un correo a office@truxel.app"
+    },
+    "problem_solution": {
+      "problem_title": "Deja de Depender de Intermediarios de Transporte",
+      "problem_desc": "Como propietario-operador, no deberías tener que esperar tablones de cargas o pagar comisiones a intermediarios. Mereces acceso directo a cargadores en tu área, especialmente en zonas muertas donde las oportunidades están ocultas.",
+      "solution_title": "Encuentra Cargadores Directamente - Sin Tocar Puertas",
+      "solution_desc": "Tu negocio, tu control. Usa GPS para descubrir cargadores locales a kilómetros de tu ubicación. Contacta al instante con mensajes personalizados - sin llamadas en frío, sin adivinanzas."
+    },
+    "how_it_works": {
+      "title": "Cómo Funciona",
+      "subtitle": "Empieza a encontrar clientes en 4 simples pasos",
+      "step1_title": "Descarga y Regístrate",
+      "step1_desc": "Comienza con una cuenta gratuita en minutos",
+      "step2_title": "Encuentra Cargadores Locales",
+      "step2_desc": "Usa GPS o búsqueda manual para descubrir empresas",
+      "step3_title": "Obtén Detalles de Contacto",
+      "step3_desc": "Accede a teléfono, correo y perfiles de LinkedIn",
+      "step4_title": "Contacta al Instante",
+      "step4_desc": "Conéctate por WhatsApp, correo o teléfono con un toque"
+    },
+    "social_proof": {
+      "title": "Conductores en Toda Europa Confían en Nosotros",
+      "testimonial1": "¡Finalmente encontré cargadores directos en mi área. Se acabaron las comisiones de intermediarios comiéndose mis ganancias!",
+      "testimonial1_author": "Mike T., Propietario-Operador, Texas",
+      "testimonial2": "Estaba atascado en una zona muerta y encontré 3 cargadores locales en 20 minutos. Esto se paga solo.",
+      "testimonial2_author": "James R., Conductor Independiente, Ohio",
+      "testimonial3": "Los mensajes con un toque son geniales. Puedo contactar cargadores mientras estoy en una parada de camiones.",
+      "testimonial3_author": "Sarah K., Propietaria de Flota, California",
+      "stats_drivers": "Construido para Conductores Independientes",
+      "stats_companies": "Encuentra Cargadores Locales al Instante",
+      "stats_countries": "Lanzamiento en América del Norte"
+    }
   }
 }
