@@ -265,12 +265,17 @@ import { getRevenueCatOfferings, purchaseRevenueCatPackage } from '@/services/re
 // Load offerings (auto-detects platform)
 const { subscriptions, searchPacks } = await getRevenueCatOfferings(userId);
 
-// Purchase (handles native IAP or Stripe Checkout)
+// Purchase - RevenueCat handles ALL platforms:
+// - iOS → Apple IAP via RevenueCat SDK
+// - Android → Google Play IAP via RevenueCat SDK
+// - Web → Stripe Checkout via RevenueCat Web Billing (uses Stripe in backend)
 await purchaseRevenueCatPackage(selectedPackage, userId);
 ```
 
 **Platform Detection**: Automatic via `Platform.OS === 'web'`
 **Products**: See [`PRODUCTS_MAPPING_COMPLETE.md`](../PRODUCTS_MAPPING_COMPLETE.md) for all Stripe/iOS product IDs
+
+**⚠️ CRITICAL**: Truxel uses **RevenueCat for ALL 3 platforms** (iOS, Android, Web). We do NOT use Stripe directly. RevenueCat Web Billing internally uses Stripe for payment processing, but all purchases go through RevenueCat's unified API.
 
 ### Supabase RPC Functions (PostgreSQL Functions)
 **Usage Pattern:**

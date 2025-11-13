@@ -45,14 +45,14 @@ export default function LandingPage() {
   ];
 
   const faqs = [
-    { q: t('web.faq.q1'), a: t('web.faq.a1') },
-    { q: t('web.faq.q2'), a: t('web.faq.a2') },
-    { q: t('web.faq.q3'), a: t('web.faq.a3') },
-    { q: t('web.faq.q4'), a: t('web.faq.a4') },
-    { q: t('web.faq.q5'), a: t('web.faq.a5') },
-    { q: t('web.faq.q6'), a: t('web.faq.a6') },
-    { q: t('web.faq.q7'), a: t('web.faq.a7') },
-    { q: t('web.faq.q8'), a: t('web.faq.a8') },
+    { q: t('web.faq.q1'), a: t('web.faq.a1'), icon: MapPin },
+    { q: t('web.faq.q2'), a: t('web.faq.a2'), icon: Star },
+    { q: t('web.faq.q3'), a: t('web.faq.a3'), icon: Target },
+    { q: t('web.faq.q4'), a: t('web.faq.a4'), icon: FileText },
+    { q: t('web.faq.q5'), a: t('web.faq.a5'), icon: Users },
+    { q: t('web.faq.q6'), a: t('web.faq.a6'), icon: Globe },
+    { q: t('web.faq.q7'), a: t('web.faq.a7'), icon: TrendingUp },
+    { q: t('web.faq.q8'), a: t('web.faq.a8'), icon: CheckCircle },
   ];
 
   return (
@@ -191,13 +191,17 @@ export default function LandingPage() {
       {/* FAQ */}
       <View style={[styles.section, styles.faq]}>
         <Text style={styles.mainTitle}>{t('web.faq.title')}</Text>
-        <View style={styles.faqList}>
-          {faqs.map((faq, index) => (
-            <View key={index} style={styles.faqItem}>
-              <Text style={styles.faqQuestion}>{faq.q}</Text>
-              <Text style={styles.faqAnswer}>{faq.a}</Text>
-            </View>
-          ))}
+        <View style={styles.faqGrid}>
+          {faqs.map((faq, index) => {
+            const Icon = faq.icon;
+            return (
+              <View key={index} style={styles.faqCard}>
+                <Icon size={32} color="#2563EB" />
+                <Text style={styles.faqQuestion}>{faq.q}</Text>
+                <Text style={styles.faqAnswer}>{faq.a}</Text>
+              </View>
+            );
+          })}
         </View>
       </View>
 
@@ -743,24 +747,42 @@ const styles = StyleSheet.create({
   },
   faq: {
     backgroundColor: '#FFFFFF',
+    position: 'relative',
   },
-  faqList: {
+  faqGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     gap: 24,
   },
-  faqItem: {
-    padding: 24,
-    backgroundColor: '#F8FAFC',
-    borderRadius: 12,
+  faqCard: {
+    flex: 1,
+    minWidth: 250,
+    maxWidth: 380,
+    padding: 32,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 20,
+    borderWidth: 2,
+    borderColor: 'rgba(37, 99, 234, 0.15)',
+    ...(Platform.OS === 'web' && {
+      boxShadow: '0 10px 30px -5px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(37, 99, 234, 0.05)',
+      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+      '@media (max-width: 768px)': {
+        minWidth: '100%',
+        padding: 24,
+      },
+    }),
   },
   faqQuestion: {
     fontSize: 18,
-    fontWeight: '600',
-    color: '#1E293B',
+    fontWeight: '700',
+    color: '#0F172A',
+    marginTop: 20,
     marginBottom: 12,
   },
   faqAnswer: {
     fontSize: 16,
-    color: '#64748B',
+    fontWeight: '500',
+    color: '#475569',
     lineHeight: 24,
   },
   finalCtaContainer: {

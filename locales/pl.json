@@ -350,10 +350,10 @@
       "signup": "Zarejestruj się"
     },
     "hero": {
-      "title": "Znajdź Ładunki i Połącz się z Firmami Transportowymi Natychmiast",
-      "subtitle": "Pierwsza platforma logistyczna oparta na GPS łącząca kierowców, spedytorów i nadawców w czasie rzeczywistym",
-      "cta_primary": "Rozpocznij Za Darmo",
-      "trust_badge": "Ponad 10 000 kierowców i firm logistycznych w Europie nam ufa"
+      "title": "Przejmij Kontrolę Nad Swoim Biznesem Transportowym",
+      "subtitle": "Koniec z czekaniem na brokerów. Znajdź nadawców bezpośrednio w swojej okolicy, nawet w martwych strefach. Wysyłaj spersonalizowane wiadomości przez WhatsApp, e-mail lub dzwoń jednym dotknięciem.",
+      "cta_primary": "Rozpocznij Darmowy Period Próbny",
+      "trust_badge": "Stworzony dla Właścicieli-Operatorów w Ameryce Północnej"
     },
     "cta": {
       "learn_more": "Dowiedz Się Więcej"
@@ -399,22 +399,22 @@
     },
     "faq": {
       "title": "Najczęściej Zadawane Pytania",
-      "q1": "Czy Truxel jest darmowy?",
-      "a1": "Tak, oferujemy bezpłatny okres próbny z 5 wyszukiwaniami miesięcznie.",
-      "q2": "Jak działa wyszukiwanie GPS?",
-      "a2": "Używamy lokalizacji Twojego urządzenia, aby znaleźć pobliskie firmy i ładunki.",
-      "q3": "Czy mogę publikować własne ładunki?",
-      "a3": "Tak! Plany Pro i Fleet Manager obejmują publikowanie w społeczności.",
-      "q4": "Czy moje dane są bezpieczne?",
-      "a4": "Absolutnie. Używamy szyfrowania na poziomie przemysłowym i przestrzegamy RODO.",
-      "q5": "Które kraje są obsługiwane?",
-      "a5": "Obejmujemy wszystkie kraje Unii Europejskiej oraz UK, Turcję i inne.",
-      "q6": "Czy mogę anulować w dowolnym momencie?",
-      "a6": "Tak, możesz anulować subskrypcję w dowolnym momencie bez kar.",
-      "q7": "Czy macie aplikację mobilną?",
-      "a7": "Tak! Pobierz Truxel dla iOS i Android.",
-      "q8": "Jak skontaktować się z pomocą?",
-      "a8": "Użyj przycisku czatu lub wyślij nam e-mail na office@truxel.app"
+      "q1": "Jak działa wyszukiwanie GPS?",
+      "a1": "Po prostu włącz GPS swojego urządzenia, a Truxel automatycznie wyszuka firmy logistyczne w promieniu 5km od Twojej obecnej lokalizacji. Wyniki obejmują nazwę firmy, dane kontaktowe i dokładną lokalizację.",
+      "q2": "Co zawiera darmowy okres próbny?",
+      "a2": "Okres próbny obejmuje 5 wyszukiwań, dostęp do podstawowych informacji o firmach, szablony e-mail i WhatsApp, zarządzanie leadami oraz eksport CSV. Nie wymaga karty kredytowej.",
+      "q3": "Ile wyszukiwań otrzymuję miesięcznie?",
+      "a3": "To zależy od Twojego planu: Trial (5 łącznie), Standard (15/miesiąc), Pro (30/miesiąc). Możesz również w każdej chwili zakupić dodatkowe pakiety wyszukiwań.",
+      "q4": "Czy mogę eksportować moje leady?",
+      "a4": "Tak! Wszystkie plany obejmują funkcjonalność eksportu CSV. Możesz w każdej chwili wyeksportować całą listę leadów ze wszystkimi danymi kontaktowymi i notatkami.",
+      "q5": "Czym jest funkcja Community?",
+      "a5": "Funkcja Community pozwala publikować swoją dostępność lub dostępne trasy i przeglądać posty innych kierowców. To świetny sposób na znalezienie możliwości przewozu ładunków i nawiązanie kontaktu z innymi kierowcami ciężarówek.",
+      "q6": "Czy obsługujecie mój język?",
+      "a6": "Obsługujemy 6 języków: angielski, rumuński, polski, turecki, litewski i hiszpański. Możesz zmienić język w dowolnym momencie w ustawieniach profilu.",
+      "q7": "Jak mogę anulować subskrypcję?",
+      "a7": "Możesz anulować w dowolnym momencie w ustawieniach profilu. Będziesz miał dostęp do końca bieżącego okresu rozliczeniowego, bez dodatkowych opłat.",
+      "q8": "Czy moje dane są bezpieczne?",
+      "a8": "Absolutnie. Używamy szyfrowania na poziomie przemysłowym, bezpiecznych serwerów EU przez Supabase i jesteśmy w pełni zgodni z RODO. Twoje dane nigdy nie są udostępniane osobom trzecim bez Twojej zgody."
     },
     "problem_solution": {
       "problem_title": "Przestań Być Zależnym od Brokerów Frachtowych",
@@ -445,6 +445,12 @@
       "stats_drivers": "Zbudowane dla Niezależnych Kierowców",
       "stats_companies": "Znajdź Lokalnych Nadawców Natychmiast",
       "stats_countries": "Uruchomienie w Ameryce Północnej"
+    },
+    "final_cta": {
+      "title": "Zacznij Znajdować Klientów Dzisiaj",
+      "subtitle": "Dołącz do ponad 1000+ kierowców ciężarówek, którzy rozwijają swój biznes z Truxel",
+      "download_ios": "Pobierz w App Store",
+      "download_android": "Pobierz w Google Play"
     }
   }
 }

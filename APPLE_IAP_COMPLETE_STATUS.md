@@ -32,7 +32,9 @@ This is **NORMAL** and can take 2-24 hours after agreement activation.
 
 ## 🎯 COMPLETE PRODUCT MAPPING
 
-### 1. STRIPE PRODUCTS (Backend - Web Payments)
+### 1. STRIPE PRODUCTS (Backend - RevenueCat Web Billing)
+
+**⚠️ CRITICAL**: These are used by **RevenueCat Web Billing**, NOT direct Stripe integration. All 3 platforms (iOS, Android, Web) use RevenueCat. Web uses RevenueCat's Web Billing feature which internally processes payments via Stripe.
 
 #### Standard Tier
 - **Stripe Product ID**: `prod_THaEncye4n7tEi`

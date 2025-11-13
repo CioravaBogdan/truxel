@@ -513,10 +513,10 @@
       "signup": "Înregistrare"
     },
     "hero": {
-      "title": "Găsește Marfă și Conectează-te cu Companii de Transport Instant",
-      "subtitle": "Prima platformă logistică bazată pe GPS care conectează șoferi, expeditori și transportatori în timp real",
-      "cta_primary": "Începe Gratuit",
-      "trust_badge": "Peste 10.000 de șoferi și companii de logistică din Europa au încredere în noi"
+      "title": "Ia Controlul Afacerii Tale de Transport",
+      "subtitle": "Nu mai aștepta brokerii. Găsește expeditori direct în jurul tău, chiar și în zone moarte. Trimite mesaje personalizate prin WhatsApp, email sau sună cu un singur tap.",
+      "cta_primary": "Începe Perioada de Probă Gratuită",
+      "trust_badge": "Construit pentru Proprietari-Operatori din America de Nord"
     },
     "cta": {
       "learn_more": "Află Mai Multe"
@@ -562,22 +562,22 @@
     },
     "faq": {
       "title": "Întrebări Frecvente",
-      "q1": "Truxel este gratuit?",
-      "a1": "Da, oferim o probă gratuită cu 5 căutări pe lună.",
-      "q2": "Cum funcționează căutarea GPS?",
-      "a2": "Folosim locația dispozitivului tău pentru a găsi companii și marfă din apropiere.",
-      "q3": "Pot posta propriile mele marfă?",
-      "a3": "Da! Planurile Pro și Fleet Manager includ postare în comunitate.",
-      "q4": "Sunt datele mele sigure?",
-      "a4": "Absolut. Folosim criptare de nivel industrial și respectăm GDPR.",
-      "q5": "Care țări sunt suportate?",
-      "a5": "Acoperim toate țările din Uniunea Europeană plus UK, Turcia și altele.",
-      "q6": "Pot anula oricând?",
-      "a6": "Da, poți anula abonamentul oricând fără penalizări.",
-      "q7": "Aveți aplicație mobilă?",
-      "a7": "Da! Descarcă Truxel pentru iOS și Android.",
-      "q8": "Cum contactez suportul?",
-      "a8": "Folosește butonul de chat sau trimite-ne email la office@truxel.app"
+      "q1": "Cum funcționează căutarea GPS?",
+      "a1": "Activează GPS-ul dispozitivului și Truxel va căuta automat companii de logistică într-o rază de 5km de locația ta curentă. Rezultatele includ nume companie, detalii de contact și locație exactă.",
+      "q2": "Ce include perioada de probă gratuită?",
+      "a2": "Perioada de probă include 5 căutări, acces la informații de bază despre companii, șabloane email și WhatsApp, gestionare lead-uri și export CSV. Fără card de credit necesar.",
+      "q3": "Câte căutări primesc pe lună?",
+      "a3": "Depinde de plan: Trial (5 total), Standard (15/lună), Pro (30/lună). Poți achiziționa și pachete suplimentare de căutări oricând.",
+      "q4": "Pot exporta lead-urile mele?",
+      "a4": "Da! Toate planurile includ funcționalitatea de export CSV. Poți exporta întreaga listă de lead-uri cu toate detaliile de contact și notițe oricând.",
+      "q5": "Ce este funcția Community?",
+      "a5": "Funcția Community îți permite să postezi disponibilitatea sau rutele disponibile și să vezi postări de la alți șoferi. E o modalitate excelentă de a găsi oportunități de marfă și de a te conecta cu colegii camionagii.",
+      "q6": "Suportați limba mea?",
+      "a6": "Suportăm 6 limbi: Engleză, Română, Poloneză, Turcă, Lituaniană și Spaniolă. Poți schimba limba oricând în setările profilului.",
+      "q7": "Cum îmi anulez abonamentul?",
+      "a7": "Poți anula oricând din setările profilului. Vei continua să ai acces până la sfârșitul perioadei de facturare curente, fără taxe suplimentare.",
+      "q8": "Sunt datele mele sigure?",
+      "a8": "Absolut. Folosim criptare de nivel industrial, servere securizate EU prin Supabase și suntem complet conform GDPR. Datele tale nu sunt niciodată partajate cu terțe părți fără consimțământul tău."
     },
     "problem_solution": {
       "problem_title": "Oprește Dependența de Brokeri de Marfă",
@@ -608,6 +608,12 @@
       "stats_drivers": "Construit pentru Șoferi Independenți",
       "stats_companies": "Găsește Expeditori Locali Instant",
       "stats_countries": "Se Lansează în America de Nord"
+    },
+    "final_cta": {
+      "title": "Începe să Găsești Clienți Astăzi",
+      "subtitle": "Alătură-te celor 1000+ șoferi care își cresc afacerea cu Truxel",
+      "download_ios": "Descarcă pe App Store",
+      "download_android": "Descarcă pe Google Play"
     }
   }
 }

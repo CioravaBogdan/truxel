@@ -532,10 +532,10 @@
       "signup": "Sign Up"
     },
     "hero": {
-      "title": "Find Loads & Connect with Freight Companies Instantly",
-      "subtitle": "The first GPS-powered logistics platform connecting drivers, freight forwarders, and shippers in real-time",
-      "cta_primary": "Get Started Free",
-      "trust_badge": "Trusted by 10,000+ drivers and logistics companies across Europe"
+      "title": "Take Control of Your Trucking Business",
+      "subtitle": "No more waiting on brokers. Find shippers directly around you, even in dead zones. Send personalized messages via WhatsApp, email, or call with one tap.",
+      "cta_primary": "Start Free Trial",
+      "trust_badge": "Built for Owner-Operators Across North America"
     },
     "cta": {
       "learn_more": "Learn More"
@@ -581,22 +581,22 @@
     },
     "faq": {
       "title": "Frequently Asked Questions",
-      "q1": "Is Truxel free to use?",
-      "a1": "Yes, we offer a free trial with 5 searches per month.",
-      "q2": "How does GPS search work?",
-      "a2": "We use your device location to find nearby companies and loads.",
-      "q3": "Can I post my own loads?",
-      "a3": "Yes! Pro and Fleet Manager plans include community posting.",
-      "q4": "Is my data secure?",
-      "a4": "Absolutely. We use industry-standard encryption and comply with GDPR.",
-      "q5": "Which countries are supported?",
-      "a5": "We cover all European Union countries plus UK, Turkey, and more.",
-      "q6": "Can I cancel anytime?",
-      "a6": "Yes, you can cancel your subscription at any time with no penalties.",
-      "q7": "Do you offer a mobile app?",
-      "a7": "Yes! Download Truxel for iOS and Android.",
-      "q8": "How do I contact support?",
-      "a8": "Use the chat button or email us at office@truxel.app"
+      "q1": "How does the GPS search work?",
+      "a1": "Simply enable your device's GPS, and Truxel will automatically search for logistics companies within a 5km radius of your current location. Results include company name, contact details, and exact location.",
+      "q2": "What's included in the free trial?",
+      "a2": "The free trial includes 5 searches, access to basic company information, email and WhatsApp templates, lead management, and CSV export. No credit card required.",
+      "q3": "How many searches do I get per month?",
+      "a3": "It depends on your plan: Trial (5 total), Standard (15/month), Pro (30/month). You can also purchase additional search packs anytime.",
+      "q4": "Can I export my leads?",
+      "a4": "Yes! All plans include CSV export functionality. You can export your entire lead list with all contact details and notes anytime.",
+      "q5": "What is the Community feature?",
+      "a5": "The Community feature lets you post your availability or available routes, and see posts from other drivers. It's a great way to find cargo opportunities and connect with fellow truckers.",
+      "q6": "Do you support my language?",
+      "a6": "We support 6 languages: English, Romanian, Polish, Turkish, Lithuanian, and Spanish. You can switch languages anytime in your profile settings.",
+      "q7": "How do I cancel my subscription?",
+      "a7": "You can cancel anytime from your profile settings. You'll continue to have access until the end of your current billing period, with no additional charges.",
+      "q8": "Is my data secure?",
+      "a8": "Absolutely. We use industry-standard encryption, secure EU servers via Supabase, and are fully GDPR compliant. Your data is never shared with third parties without your consent."
     },
     "problem_solution": {
       "problem_title": "Stop Depending on Freight Brokers",
@@ -627,6 +627,12 @@
       "stats_drivers": "Built for Independent Drivers",
       "stats_companies": "Find Local Shippers Instantly",
       "stats_countries": "Launching in North America"
+    },
+    "final_cta": {
+      "title": "Start Finding Clients Today",
+      "subtitle": "Join 1000+ truck drivers who are growing their business with Truxel",
+      "download_ios": "Download on App Store",
+      "download_android": "Get it on Google Play"
     }
   }
 }
