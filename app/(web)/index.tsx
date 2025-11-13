@@ -271,9 +271,10 @@ const styles = StyleSheet.create({
   section: {
     maxWidth: 1200,
     marginHorizontal: 'auto',
-    paddingHorizontal: 16,
+    paddingHorizontal: 24,
     paddingVertical: 64,
     width: '100%',
+    alignItems: 'center',
     ...(Platform.OS === 'web' && {
       '@media (max-width: 768px)': {
         paddingHorizontal: 20,
@@ -288,6 +289,7 @@ const styles = StyleSheet.create({
   hero: {
     position: 'relative',
     alignItems: 'center',
+    justifyContent: 'center',
     paddingVertical: 80,
     paddingHorizontal: 20,
     overflow: 'hidden',
@@ -297,6 +299,7 @@ const styles = StyleSheet.create({
       '@media (max-width: 768px)': {
         paddingVertical: 60,
         minHeight: 500,
+        paddingHorizontal: 16,
       },
     }),
   },
@@ -354,11 +357,13 @@ const styles = StyleSheet.create({
     marginBottom: 24,
     letterSpacing: -1.5,
     color: '#0f172a',
+    alignSelf: 'center',
+    width: '100%',
     ...(Platform.OS === 'web' && {
       lineHeight: 64,
       '@media (max-width: 768px)': {
-        fontSize: 36,
-        lineHeight: 42,
+        fontSize: 40,
+        lineHeight: 48,
         letterSpacing: -1,
       },
       '@media (max-width: 480px)': {
@@ -372,14 +377,18 @@ const styles = StyleSheet.create({
     color: '#334155',
     textAlign: 'center',
     marginBottom: 40,
-    maxWidth: 700,
+    maxWidth: 800,
     fontWeight: '500',
     lineHeight: 32,
+    alignSelf: 'center',
+    width: '100%',
+    paddingHorizontal: 20,
     ...(Platform.OS === 'web' && {
       '@media (max-width: 768px)': {
         fontSize: 18,
         lineHeight: 28,
         marginBottom: 32,
+        maxWidth: '100%',
       },
       '@media (max-width: 480px)': {
         fontSize: 16,
