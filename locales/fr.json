@@ -464,5 +464,138 @@
     "getting_location": "Obtention de la localisation...",
     "location_error": "Échec de l'obtention de la localisation",
     "enable_location": "Activez la géolocalisation pour cette fonctionnalité"
+  },
+  "support": {
+    "title": "Contacter le support",
+    "description": "Besoin d'aide ? Envoyez-nous un message et notre équipe vous répondra dès que possible.",
+    "need_help_choosing": "Besoin d'aide pour choisir un plan ?",
+    "quick_questions": "Questions rapides",
+    "write_custom_message": "Écrire un message personnalisé",
+    "your_message": "Votre message",
+    "message_placeholder": "Tapez votre message...",
+    "back_to_templates": "Retour aux modèles",
+    "send_message": "Envoyer le message",
+    "message_sent": "Message envoyé !",
+    "message_sent_description": "Vous recevrez une réponse prochainement.",
+    "message_received": "Nous avons reçu votre message et vous répondrons prochainement.",
+    "error_empty_message": "Veuillez entrer un message",
+    "error_not_logged_in": "Vous devez être connecté pour contacter le support",
+    "error_sending": "Échec de l'envoi du message",
+    "no_messages_yet": "Pas encore de messages",
+    "start_conversation": "Envoyez un message pour commencer la conversation avec notre équipe de support",
+    "templates": {
+      "pricing_question": "J'ai une question sur les prix et les plans",
+      "feature_request": "J'aimerais suggérer une nouvelle fonctionnalité",
+      "bug_report": "J'ai trouvé un bug ou un problème technique",
+      "account_help": "J'ai besoin d'aide avec mon compte",
+      "subscription_help": "J'ai besoin d'aide avec mon abonnement"
+    }
+  },
+  "web": {
+    "nav": {
+      "features": "Fonctionnalités",
+      "pricing": "Tarifs",
+      "about": "À propos",
+      "contact": "Contact",
+      "login": "Connexion",
+      "signup": "S'inscrire"
+    },
+    "hero": {
+      "title": "Trouvez des Chargements et Connectez-vous aux Entreprises de Transport Instantanément",
+      "subtitle": "La première plateforme logistique basée sur GPS qui connecte conducteurs, transitaires et expéditeurs en temps réel",
+      "cta_primary": "Commencer Gratuitement",
+      "trust_badge": "Plus de 10 000 conducteurs et entreprises logistiques à travers l'Europe nous font confiance"
+    },
+    "cta": {
+      "learn_more": "En Savoir Plus"
+    },
+    "features": {
+      "title": "Tout Ce Dont Vous Avez Besoin Pour Grandir",
+      "subtitle": "Fonctionnalités puissantes conçues pour les chauffeurs routiers",
+      "gps_title": "Recherche GPS",
+      "gps_desc": "Trouvez des entreprises à proximité instantanément en utilisant la localisation en temps réel",
+      "instant_contact_title": "Contact Instantané",
+      "instant_contact_desc": "Connectez-vous via WhatsApp, email ou téléphone en un clic",
+      "community_title": "Communauté de Conducteurs",
+      "community_desc": "Publiez votre disponibilité et trouvez des chargements d'autres conducteurs",
+      "leads_title": "Contacts d'Entreprises",
+      "leads_desc": "Découvrez des entreprises de transport et des partenaires logistiques",
+      "templates_title": "Modèles Rapides",
+      "templates_desc": "Utilisez des messages pré-construits pour contacter les entreprises plus rapidement",
+      "linkedin_title": "Intégration LinkedIn",
+      "linkedin_desc": "Trouvez les décideurs et les informations de contact instantanément",
+      "ai_title": "Correspondance IA",
+      "ai_desc": "Recommandations intelligentes basées sur vos itinéraires et préférences",
+      "notifications_title": "Notifications Intelligentes",
+      "notifications_desc": "Recevez des alertes lorsque des entreprises publient des chargements près de vous",
+      "multilang_title": "Multi-langues",
+      "multilang_desc": "Disponible en anglais, roumain, polonais, turc, espagnol et plus"
+    },
+    "footer": {
+      "tagline": "L'avenir des réseaux logistiques",
+      "product": "Produit",
+      "company": "Entreprise",
+      "legal": "Légal",
+      "privacy": "Politique de Confidentialité",
+      "terms": "Conditions de Service",
+      "refund": "Politique de Remboursement",
+      "cookies": "Politique des Cookies",
+      "rights": "Tous droits réservés."
+    },
+    "gdpr": {
+      "message": "Nous utilisons des cookies pour améliorer votre expérience. En continuant, vous acceptez notre utilisation des cookies.",
+      "learn_more": "En savoir plus",
+      "accept": "Tout Accepter",
+      "decline": "Refuser"
+    },
+    "faq": {
+      "title": "Questions Fréquemment Posées",
+      "q1": "Truxel est-il gratuit ?",
+      "a1": "Oui, nous offrons un essai gratuit avec 5 recherches par mois.",
+      "q2": "Comment fonctionne la recherche GPS ?",
+      "a2": "Nous utilisons la localisation de votre appareil pour trouver des entreprises et des chargements à proximité.",
+      "q3": "Puis-je publier mes propres chargements ?",
+      "a3": "Oui ! Les plans Pro et Fleet Manager incluent la publication dans la communauté.",
+      "q4": "Mes données sont-elles sécurisées ?",
+      "a4": "Absolument. Nous utilisons un chiffrement de niveau industriel et respectons le RGPD.",
+      "q5": "Quels pays sont pris en charge ?",
+      "a5": "Nous couvrons tous les pays de l'Union européenne ainsi que le Royaume-Uni, la Turquie et d'autres.",
+      "q6": "Puis-je annuler à tout moment ?",
+      "a6": "Oui, vous pouvez annuler votre abonnement à tout moment sans pénalités.",
+      "q7": "Avez-vous une application mobile ?",
+      "a7": "Oui ! Téléchargez Truxel pour iOS et Android.",
+      "q8": "Comment contacter le support ?",
+      "a8": "Utilisez le bouton de chat ou envoyez-nous un email à office@truxel.app"
+    },
+    "problem_solution": {
+      "problem_title": "Arrêtez de Dépendre des Courtiers en Fret",
+      "problem_desc": "En tant que propriétaire-exploitant, vous ne devriez pas avoir à attendre les tableaux de chargement ou à payer des frais de courtage. Vous méritez un accès direct aux expéditeurs dans votre région, surtout dans les zones mortes où les opportunités sont cachées.",
+      "solution_title": "Trouvez les Expéditeurs Directement - Sans Frapper aux Portes",
+      "solution_desc": "Votre entreprise, votre contrôle. Utilisez le GPS pour découvrir des expéditeurs locaux à quelques kilomètres de votre localisation. Contactez instantanément avec des messages personnalisés - pas d'appels à froid, pas de devinettes."
+    },
+    "how_it_works": {
+      "title": "Comment Ça Marche",
+      "subtitle": "Commencez à trouver des clients en 4 étapes simples",
+      "step1_title": "Téléchargez et Inscrivez-vous",
+      "step1_desc": "Commencez avec un compte gratuit en quelques minutes",
+      "step2_title": "Trouvez des Expéditeurs Locaux",
+      "step2_desc": "Utilisez le GPS ou la recherche manuelle pour découvrir des entreprises",
+      "step3_title": "Obtenez les Coordonnées",
+      "step3_desc": "Accédez au téléphone, email et profils LinkedIn",
+      "step4_title": "Contactez Instantanément",
+      "step4_desc": "Connectez-vous via WhatsApp, email ou téléphone en un clic"
+    },
+    "social_proof": {
+      "title": "Les Conducteurs à Travers l'Europe Nous Font Confiance",
+      "testimonial1": "J'ai enfin trouvé des expéditeurs directs dans ma région. Fini les frais de courtage qui grignotent mes bénéfices !",
+      "testimonial1_author": "Mike T., Propriétaire-Exploitant, Texas",
+      "testimonial2": "J'étais coincé dans une zone morte et j'ai trouvé 3 expéditeurs locaux en 20 minutes. Ça se paie tout seul.",
+      "testimonial2_author": "James R., Conducteur Indépendant, Ohio",
+      "testimonial3": "Les messages en un clic sont géniaux. Je peux contacter les expéditeurs pendant que je suis à une halte routière.",
+      "testimonial3_author": "Sarah K., Propriétaire de Flotte, Californie",
+      "stats_drivers": "Conçu pour les Conducteurs Indépendants",
+      "stats_companies": "Trouvez des Expéditeurs Locaux Instantanément",
+      "stats_countries": "Lancement en Amérique du Nord"
+    }
   }
 }

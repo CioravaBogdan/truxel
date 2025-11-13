@@ -464,5 +464,138 @@
     "getting_location": "Standort wird abgerufen...",
     "location_error": "Fehler beim Abrufen des Standorts",
     "enable_location": "Aktivieren Sie die Standortdienste für diese Funktion"
+  },
+  "support": {
+    "title": "Support kontaktieren",
+    "description": "Benötigen Sie Hilfe? Senden Sie uns eine Nachricht und unser Team wird sich so schnell wie möglich bei Ihnen melden.",
+    "need_help_choosing": "Benötigen Sie Hilfe bei der Auswahl eines Plans?",
+    "quick_questions": "Schnelle Fragen",
+    "write_custom_message": "Eigene Nachricht schreiben",
+    "your_message": "Ihre Nachricht",
+    "message_placeholder": "Geben Sie Ihre Nachricht ein...",
+    "back_to_templates": "Zurück zu Vorlagen",
+    "send_message": "Nachricht senden",
+    "message_sent": "Nachricht gesendet!",
+    "message_sent_description": "Sie erhalten in Kürze eine Antwort.",
+    "message_received": "Wir haben Ihre Nachricht erhalten und werden in Kürze antworten.",
+    "error_empty_message": "Bitte geben Sie eine Nachricht ein",
+    "error_not_logged_in": "Sie müssen angemeldet sein, um den Support zu kontaktieren",
+    "error_sending": "Nachricht konnte nicht gesendet werden",
+    "no_messages_yet": "Noch keine Nachrichten",
+    "start_conversation": "Senden Sie eine Nachricht, um die Konversation mit unserem Support-Team zu beginnen",
+    "templates": {
+      "pricing_question": "Ich habe eine Frage zu Preisen und Plänen",
+      "feature_request": "Ich möchte eine neue Funktion vorschlagen",
+      "bug_report": "Ich habe einen Bug oder ein technisches Problem gefunden",
+      "account_help": "Ich benötige Hilfe mit meinem Konto",
+      "subscription_help": "Ich benötige Hilfe mit meinem Abonnement"
+    }
+  },
+  "web": {
+    "nav": {
+      "features": "Funktionen",
+      "pricing": "Preise",
+      "about": "Über uns",
+      "contact": "Kontakt",
+      "login": "Anmelden",
+      "signup": "Registrieren"
+    },
+    "hero": {
+      "title": "Finden Sie Fracht und Verbinden Sie sich Sofort mit Transportunternehmen",
+      "subtitle": "Die erste GPS-basierte Logistikplattform, die Fahrer, Spediteure und Verlader in Echtzeit verbindet",
+      "cta_primary": "Kostenlos Starten",
+      "trust_badge": "Über 10.000 Fahrer und Logistikunternehmen in ganz Europa vertrauen uns"
+    },
+    "cta": {
+      "learn_more": "Mehr Erfahren"
+    },
+    "features": {
+      "title": "Alles Was Sie Zum Wachsen Benötigen",
+      "subtitle": "Leistungsstarke Funktionen für LKW-Fahrer entwickelt",
+      "gps_title": "GPS-Suche",
+      "gps_desc": "Finden Sie Unternehmen in der Nähe sofort mit Echtzeit-Standort",
+      "instant_contact_title": "Sofortkontakt",
+      "instant_contact_desc": "Verbinden Sie sich per WhatsApp, E-Mail oder Telefon mit einem Tippen",
+      "community_title": "Fahrer-Community",
+      "community_desc": "Posten Sie Ihre Verfügbarkeit und finden Sie Fracht von anderen Fahrern",
+      "leads_title": "Unternehmenskontakte",
+      "leads_desc": "Entdecken Sie Transportunternehmen und Logistikpartner",
+      "templates_title": "Schnelle Vorlagen",
+      "templates_desc": "Verwenden Sie vorgefertigte Nachrichten, um Unternehmen schneller zu kontaktieren",
+      "linkedin_title": "LinkedIn-Integration",
+      "linkedin_desc": "Finden Sie Entscheidungsträger und Kontaktinformationen sofort",
+      "ai_title": "KI-Matching",
+      "ai_desc": "Intelligente Empfehlungen basierend auf Ihren Routen und Präferenzen",
+      "notifications_title": "Intelligente Benachrichtigungen",
+      "notifications_desc": "Erhalten Sie Benachrichtigungen, wenn Unternehmen Fracht in Ihrer Nähe posten",
+      "multilang_title": "Mehrsprachig",
+      "multilang_desc": "Verfügbar in Englisch, Rumänisch, Polnisch, Türkisch, Spanisch und mehr"
+    },
+    "footer": {
+      "tagline": "Die Zukunft logistischer Netzwerke",
+      "product": "Produkt",
+      "company": "Unternehmen",
+      "legal": "Rechtliches",
+      "privacy": "Datenschutzerklärung",
+      "terms": "Nutzungsbedingungen",
+      "refund": "Rückerstattungsrichtlinie",
+      "cookies": "Cookie-Richtlinie",
+      "rights": "Alle Rechte vorbehalten."
+    },
+    "gdpr": {
+      "message": "Wir verwenden Cookies, um Ihre Erfahrung zu verbessern. Durch Fortfahren stimmen Sie unserer Verwendung von Cookies zu.",
+      "learn_more": "Mehr erfahren",
+      "accept": "Alle Akzeptieren",
+      "decline": "Ablehnen"
+    },
+    "faq": {
+      "title": "Häufig Gestellte Fragen",
+      "q1": "Ist Truxel kostenlos?",
+      "a1": "Ja, wir bieten eine kostenlose Testversion mit 5 Suchen pro Monat.",
+      "q2": "Wie funktioniert die GPS-Suche?",
+      "a2": "Wir verwenden den Standort Ihres Geräts, um Unternehmen und Fracht in der Nähe zu finden.",
+      "q3": "Kann ich meine eigene Fracht posten?",
+      "a3": "Ja! Die Pro- und Fleet Manager-Pläne beinhalten Community-Posting.",
+      "q4": "Sind meine Daten sicher?",
+      "a4": "Absolut. Wir verwenden Verschlüsselung auf Industriestandard und entsprechen der DSGVO.",
+      "q5": "Welche Länder werden unterstützt?",
+      "a5": "Wir decken alle Länder der Europäischen Union plus UK, Türkei und mehr ab.",
+      "q6": "Kann ich jederzeit kündigen?",
+      "a6": "Ja, Sie können Ihr Abonnement jederzeit ohne Strafen kündigen.",
+      "q7": "Haben Sie eine mobile App?",
+      "a7": "Ja! Laden Sie Truxel für iOS und Android herunter.",
+      "q8": "Wie kontaktiere ich den Support?",
+      "a8": "Verwenden Sie den Chat-Button oder senden Sie uns eine E-Mail an office@truxel.app"
+    },
+    "problem_solution": {
+      "problem_title": "Hören Sie Auf, Von Frachtmaklern Abhängig Zu Sein",
+      "problem_desc": "Als Eigentümer-Betreiber sollten Sie nicht auf Frachtbörsen warten oder Maklergebühren zahlen müssen. Sie verdienen direkten Zugang zu Verladern in Ihrer Region, besonders in toten Zonen, wo Möglichkeiten verborgen sind.",
+      "solution_title": "Finden Sie Verlader Direkt - Ohne An Türen Zu Klopfen",
+      "solution_desc": "Ihr Geschäft, Ihre Kontrolle. Verwenden Sie GPS, um lokale Verlader im Umkreis von Kilometern zu Ihrem Standort zu entdecken. Kontaktieren Sie sofort mit personalisierten Nachrichten - keine Kaltakquise, kein Rätselraten."
+    },
+    "how_it_works": {
+      "title": "Wie Es Funktioniert",
+      "subtitle": "Beginnen Sie in 4 einfachen Schritten Kunden zu finden",
+      "step1_title": "Herunterladen und Registrieren",
+      "step1_desc": "Beginnen Sie mit einem kostenlosen Konto in Minuten",
+      "step2_title": "Lokale Verlader Finden",
+      "step2_desc": "Verwenden Sie GPS oder manuelle Suche, um Unternehmen zu entdecken",
+      "step3_title": "Kontaktdetails Erhalten",
+      "step3_desc": "Zugriff auf Telefon, E-Mail und LinkedIn-Profile",
+      "step4_title": "Sofort Kontaktieren",
+      "step4_desc": "Verbinden Sie sich per WhatsApp, E-Mail oder Telefon mit einem Tippen"
+    },
+    "social_proof": {
+      "title": "Fahrer In Ganz Europa Vertrauen Uns",
+      "testimonial1": "Endlich habe ich direkte Verlader in meiner Region gefunden. Keine Maklergebühren mehr, die meinen Gewinn auffressen!",
+      "testimonial1_author": "Mike T., Eigentümer-Betreiber, Texas",
+      "testimonial2": "Ich steckte in einer toten Zone fest und fand 3 lokale Verlader in 20 Minuten. Das zahlt sich von selbst.",
+      "testimonial2_author": "James R., Unabhängiger Fahrer, Ohio",
+      "testimonial3": "Nachrichten mit einem Tippen sind brillant. Ich kann Verlader kontaktieren, während ich an einer Raststätte bin.",
+      "testimonial3_author": "Sarah K., Flottenbesitzerin, Kalifornien",
+      "stats_drivers": "Für Unabhängige Fahrer Gebaut",
+      "stats_companies": "Finden Sie Lokale Verlader Sofort",
+      "stats_countries": "Start in Nordamerika"
+    }
   }
 }

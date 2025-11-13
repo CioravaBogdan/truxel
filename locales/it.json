@@ -464,5 +464,138 @@
     "getting_location": "Ottenimento posizione...",
     "location_error": "Errore nell'ottenimento della posizione",
     "enable_location": "Attiva i servizi di localizzazione per questa funzione"
+  },
+  "support": {
+    "title": "Contatta il supporto",
+    "description": "Hai bisogno di aiuto? Inviaci un messaggio e il nostro team ti risponderà il prima possibile.",
+    "need_help_choosing": "Hai bisogno di aiuto nella scelta di un piano?",
+    "quick_questions": "Domande rapide",
+    "write_custom_message": "Scrivi un messaggio personalizzato",
+    "your_message": "Il tuo messaggio",
+    "message_placeholder": "Digita il tuo messaggio...",
+    "back_to_templates": "Torna ai modelli",
+    "send_message": "Invia messaggio",
+    "message_sent": "Messaggio inviato!",
+    "message_sent_description": "Riceverai una risposta a breve.",
+    "message_received": "Abbiamo ricevuto il tuo messaggio e risponderemo a breve.",
+    "error_empty_message": "Per favore inserisci un messaggio",
+    "error_not_logged_in": "Devi essere connesso per contattare il supporto",
+    "error_sending": "Impossibile inviare il messaggio",
+    "no_messages_yet": "Ancora nessun messaggio",
+    "start_conversation": "Invia un messaggio per iniziare la conversazione con il nostro team di supporto",
+    "templates": {
+      "pricing_question": "Ho una domanda su prezzi e piani",
+      "feature_request": "Vorrei suggerire una nuova funzionalità",
+      "bug_report": "Ho trovato un bug o un problema tecnico",
+      "account_help": "Ho bisogno di aiuto con il mio account",
+      "subscription_help": "Ho bisogno di aiuto con il mio abbonamento"
+    }
+  },
+  "web": {
+    "nav": {
+      "features": "Funzionalità",
+      "pricing": "Prezzi",
+      "about": "Chi siamo",
+      "contact": "Contatti",
+      "login": "Accedi",
+      "signup": "Registrati"
+    },
+    "hero": {
+      "title": "Trova Carichi e Connettiti Istantaneamente con Aziende di Trasporto",
+      "subtitle": "La prima piattaforma logistica basata su GPS che connette autisti, spedizionieri e caricatori in tempo reale",
+      "cta_primary": "Inizia Gratis",
+      "trust_badge": "Oltre 10.000 autisti e aziende logistiche in tutta Europa si fidano di noi"
+    },
+    "cta": {
+      "learn_more": "Scopri Di Più"
+    },
+    "features": {
+      "title": "Tutto Ciò Di Cui Hai Bisogno Per Crescere",
+      "subtitle": "Funzionalità potenti progettate per autisti di camion",
+      "gps_title": "Ricerca GPS",
+      "gps_desc": "Trova aziende nelle vicinanze istantaneamente usando la posizione in tempo reale",
+      "instant_contact_title": "Contatto Istantaneo",
+      "instant_contact_desc": "Connettiti tramite WhatsApp, email o telefono con un tocco",
+      "community_title": "Comunità di Autisti",
+      "community_desc": "Pubblica la tua disponibilità e trova carichi da altri autisti",
+      "leads_title": "Contatti Aziendali",
+      "leads_desc": "Scopri aziende di trasporto e partner logistici",
+      "templates_title": "Modelli Rapidi",
+      "templates_desc": "Usa messaggi pre-costruiti per contattare le aziende più velocemente",
+      "linkedin_title": "Integrazione LinkedIn",
+      "linkedin_desc": "Trova decisori e informazioni di contatto istantaneamente",
+      "ai_title": "Abbinamento AI",
+      "ai_desc": "Raccomandazioni intelligenti basate sui tuoi percorsi e preferenze",
+      "notifications_title": "Notifiche Intelligenti",
+      "notifications_desc": "Ricevi avvisi quando le aziende pubblicano carichi vicino a te",
+      "multilang_title": "Multilingua",
+      "multilang_desc": "Disponibile in inglese, rumeno, polacco, turco, spagnolo e altro"
+    },
+    "footer": {
+      "tagline": "Il futuro delle reti logistiche",
+      "product": "Prodotto",
+      "company": "Azienda",
+      "legal": "Legale",
+      "privacy": "Informativa sulla Privacy",
+      "terms": "Termini di Servizio",
+      "refund": "Politica di Rimborso",
+      "cookies": "Politica sui Cookie",
+      "rights": "Tutti i diritti riservati."
+    },
+    "gdpr": {
+      "message": "Utilizziamo i cookie per migliorare la tua esperienza. Continuando, accetti il nostro utilizzo dei cookie.",
+      "learn_more": "Scopri di più",
+      "accept": "Accetta Tutto",
+      "decline": "Rifiuta"
+    },
+    "faq": {
+      "title": "Domande Frequenti",
+      "q1": "Truxel è gratuito?",
+      "a1": "Sì, offriamo una prova gratuita con 5 ricerche al mese.",
+      "q2": "Come funziona la ricerca GPS?",
+      "a2": "Utilizziamo la posizione del tuo dispositivo per trovare aziende e carichi nelle vicinanze.",
+      "q3": "Posso pubblicare i miei carichi?",
+      "a3": "Sì! I piani Pro e Fleet Manager includono la pubblicazione nella comunità.",
+      "q4": "I miei dati sono sicuri?",
+      "a4": "Assolutamente. Utilizziamo la crittografia di livello industriale e rispettiamo il GDPR.",
+      "q5": "Quali paesi sono supportati?",
+      "a5": "Copriamo tutti i paesi dell'Unione Europea oltre a UK, Turchia e altri.",
+      "q6": "Posso annullare in qualsiasi momento?",
+      "a6": "Sì, puoi annullare il tuo abbonamento in qualsiasi momento senza penalità.",
+      "q7": "Avete un'app mobile?",
+      "a7": "Sì! Scarica Truxel per iOS e Android.",
+      "q8": "Come contatto il supporto?",
+      "a8": "Usa il pulsante chat o inviaci un'email a office@truxel.app"
+    },
+    "problem_solution": {
+      "problem_title": "Smetti Di Dipendere Dai Broker Di Trasporto",
+      "problem_desc": "Come proprietario-operatore, non dovresti dover aspettare le bacheche di carico o pagare commissioni ai broker. Meriti accesso diretto ai caricatori nella tua zona, specialmente nelle zone morte dove le opportunità sono nascoste.",
+      "solution_title": "Trova I Caricatori Direttamente - Senza Bussare Alle Porte",
+      "solution_desc": "La tua attività, il tuo controllo. Usa il GPS per scoprire caricatori locali a pochi chilometri dalla tua posizione. Contatta istantaneamente con messaggi personalizzati - niente chiamate a freddo, niente supposizioni."
+    },
+    "how_it_works": {
+      "title": "Come Funziona",
+      "subtitle": "Inizia a trovare clienti in 4 semplici passaggi",
+      "step1_title": "Scarica e Registrati",
+      "step1_desc": "Inizia con un account gratuito in pochi minuti",
+      "step2_title": "Trova Caricatori Locali",
+      "step2_desc": "Usa GPS o ricerca manuale per scoprire aziende",
+      "step3_title": "Ottieni Dettagli Di Contatto",
+      "step3_desc": "Accedi a telefono, email e profili LinkedIn",
+      "step4_title": "Contatta Istantaneamente",
+      "step4_desc": "Connettiti tramite WhatsApp, email o telefono con un tocco"
+    },
+    "social_proof": {
+      "title": "Gli Autisti In Tutta Europa Si Fidano Di Noi",
+      "testimonial1": "Finalmente ho trovato caricatori diretti nella mia zona. Basta commissioni di broker che mangiano il mio profitto!",
+      "testimonial1_author": "Mike T., Proprietario-Operatore, Texas",
+      "testimonial2": "Ero bloccato in una zona morta e ho trovato 3 caricatori locali in 20 minuti. Si ripaga da solo.",
+      "testimonial2_author": "James R., Autista Indipendente, Ohio",
+      "testimonial3": "I messaggi con un tocco sono brillanti. Posso contattare i caricatori mentre sono in un'area di sosta per camion.",
+      "testimonial3_author": "Sarah K., Proprietaria di Flotta, California",
+      "stats_drivers": "Costruito per Autisti Indipendenti",
+      "stats_companies": "Trova Caricatori Locali Istantaneamente",
+      "stats_countries": "Lancio in Nord America"
+    }
   }
 }
