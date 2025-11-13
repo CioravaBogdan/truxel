@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, Platform } from 'react-native';
-import { useRouter } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { Menu, X, Globe } from 'lucide-react-native';
 
@@ -29,13 +29,13 @@ export function WebHeader() {
     <View style={styles.header}>
       <View style={styles.container}>
         {/* Logo - Left */}
-        <TouchableOpacity onPress={() => router.push('/')} style={styles.logoContainer}>
+        <Link href="/" style={styles.logoContainer}>
           <Image 
             source={require('@/assets/images/360x120.png')}
             style={styles.logoImage}
             resizeMode="contain"
           />
-        </TouchableOpacity>
+        </Link>
         
         {/* Navigation Links - Center */}
         <View style={styles.desktopNav}>
