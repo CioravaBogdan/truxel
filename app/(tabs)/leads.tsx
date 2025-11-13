@@ -590,12 +590,22 @@ Shared from Truxel
           <TouchableOpacity
             style={styles.socialButton}
             onPress={async () => {
-              const { Linking } = await import('react-native');
-              // Prefer google_url_place, fallback to lat/lng
-              const url = (lead as any).google_url_place 
-                ? (lead as any).google_url_place
-                : `https://www.google.com/maps/search/?api=1&query=${lead.latitude},${lead.longitude}`;
-              Linking.openURL(url);
+              try {
+                const { Linking } = await import('react-native');
+                // Prefer google_url_place, fallback to lat/lng
+                const url = (lead as any).google_url_place 
+                  ? (lead as any).google_url_place
+                  : `https://www.google.com/maps/search/?api=1&query=${lead.latitude},${lead.longitude}`;
+                
+                console.log('[Maps Button] Opening URL:', url);
+                await Linking.openURL(url);
+              } catch (error) {
+                console.error('[Maps Button] Error:', error);
+                Toast.show({
+                  type: 'error',
+                  text1: 'Could not open Maps',
+                });
+              }
             }}
           >
             <MapPin size={16} color="#EA4335" />
@@ -623,14 +633,8 @@ Shared from Truxel
             void useLeadsStore.getState().loadSavedPosts(user.id);
           }
         }}
+        onAddToMyBook={() => handleAddToMyBook(post)}
       />
-      <TouchableOpacity 
-        style={styles.addToMyBookButton}
-        onPress={() => handleAddToMyBook(post)}
-      >
-        <BookMarked size={18} color="white" />
-        <Text style={styles.addToMyBookText}>{t('leads.add_to_mybook')}</Text>
-      </TouchableOpacity>
     </View>
   );
 
@@ -1167,29 +1171,6 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   hotLeadCardWrapper: {
-    position: 'relative',
     marginBottom: 12,
-  },
-  addToMyBookButton: {
-    position: 'absolute',
-    bottom: 16,
-    right: 16,
-    backgroundColor: '#10B981',
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-    borderRadius: 8,
-    gap: 6,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  addToMyBookText: {
-    color: 'white',
-    fontSize: 13,
-    fontWeight: '600',
   },
 });

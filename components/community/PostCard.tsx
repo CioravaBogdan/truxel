@@ -93,9 +93,10 @@ interface PostCardProps {
   post: CommunityPost;
   onPress?: () => void;
   onUnsave?: () => void; // Callback after unsaving (for Hot Leads refresh)
+  onAddToMyBook?: () => void; // Callback for converting to My Book lead
 }
 
-export default function PostCard({ post, onPress, onUnsave }: PostCardProps) {
+export default function PostCard({ post, onPress, onUnsave, onAddToMyBook }: PostCardProps) {
   const { t, i18n } = useTranslation();
   const router = useRouter();
   const { user, profile, session, refreshProfile } = useAuthStore();
@@ -611,17 +612,32 @@ export default function PostCard({ post, onPress, onUnsave }: PostCardProps) {
             </TouchableOpacity>
           </View>
         ) : (
-          <TouchableOpacity 
-            style={styles.saveIconButton} 
-            onPress={handleSave} 
-            accessibilityLabel={isSaved ? t('community.unsave') : t('common.save')}
-          >
-            <Bookmark 
-              size={18} 
-              color={isSaved ? '#F59E0B' : '#6B7280'} 
-              fill={isSaved ? '#F59E0B' : 'none'} 
-            />
-          </TouchableOpacity>
+          <View style={styles.actionsRow}>
+            {/* Add to My Book Button */}
+            {onAddToMyBook && (
+              <TouchableOpacity 
+                style={styles.addToMyBookButton} 
+                onPress={onAddToMyBook}
+                accessibilityLabel={t('leads.add_to_mybook')}
+              >
+                <Package size={16} color="#FFF" />
+                <Text style={styles.addToMyBookText}>{t('leads.add_to_mybook')}</Text>
+              </TouchableOpacity>
+            )}
+            
+            {/* Bookmark Icon */}
+            <TouchableOpacity 
+              style={styles.saveIconButton} 
+              onPress={handleSave} 
+              accessibilityLabel={isSaved ? t('community.unsave') : t('common.save')}
+            >
+              <Bookmark 
+                size={18} 
+                color={isSaved ? '#F59E0B' : '#6B7280'} 
+                fill={isSaved ? '#F59E0B' : 'none'} 
+              />
+            </TouchableOpacity>
+          </View>
         )}
       </View>
 
@@ -1094,6 +1110,30 @@ const styles = StyleSheet.create({
     backgroundColor: '#F3F4F6',
     padding: 8,
     borderRadius: 8,
+  },
+  actionsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  addToMyBookButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    backgroundColor: '#F59E0B', // Orange background
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 8,
+    shadowColor: '#F59E0B',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  addToMyBookText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#FFFFFF',
   },
   contactRow: {
     flexDirection: 'row',
