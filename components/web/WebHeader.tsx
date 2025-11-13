@@ -1,29 +1,48 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-import { Menu, X } from 'lucide-react-native';
+import { Menu, X, Globe } from 'lucide-react-native';
+
+const LANGUAGES = [
+  { code: 'en', label: 'EN' },
+  { code: 'ro', label: 'RO' },
+  { code: 'pl', label: 'PL' },
+  { code: 'tr', label: 'TR' },
+  { code: 'lt', label: 'LT' },
+  { code: 'es', label: 'ES' },
+  { code: 'uk', label: 'UK' },
+  { code: 'fr', label: 'FR' },
+  { code: 'de', label: 'DE' },
+  { code: 'it', label: 'IT' },
+];
 
 export function WebHeader() {
   const router = useRouter();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [langMenuOpen, setLangMenuOpen] = useState(false);
 
   if (Platform.OS !== 'web') return null;
 
   return (
     <View style={styles.header}>
       <View style={styles.container}>
-        <TouchableOpacity onPress={() => router.push('/(web)/index')} style={styles.logo}>
-          <Text style={styles.logoText}>TRUXEL</Text>
+        {/* Logo - Left */}
+        <TouchableOpacity onPress={() => router.push('/')} style={styles.logoContainer}>
+          <Image 
+            source={require('@/assets/images/360x120.png')}
+            style={styles.logoImage}
+            resizeMode="contain"
+          />
         </TouchableOpacity>
         
-        {/* Desktop Navigation */}
+        {/* Navigation Links - Center */}
         <View style={styles.desktopNav}>
           <TouchableOpacity onPress={() => router.push('/(web)/features')}>
             <Text style={styles.navLink}>{t('web.nav.features')}</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => router.push('/(tabs)/pricing')}>
+          <TouchableOpacity onPress={() => router.push('/(web)/pricing')}>
             <Text style={styles.navLink}>{t('web.nav.pricing')}</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => router.push('/(web)/about')}>
@@ -32,7 +51,48 @@ export function WebHeader() {
           <TouchableOpacity onPress={() => router.push('/(web)/contact')}>
             <Text style={styles.navLink}>{t('web.nav.contact')}</Text>
           </TouchableOpacity>
-          
+        </View>
+
+        {/* Auth Buttons + Language - Right */}
+        <View style={styles.authButtons}>
+          {/* Language Selector */}
+          <View style={styles.langSelector}>
+            <TouchableOpacity
+              style={styles.langButton}
+              onPress={() => setLangMenuOpen(!langMenuOpen)}
+            >
+              <Globe size={20} color="#64748B" />
+              <Text style={styles.langButtonText}>{i18n.language.toUpperCase()}</Text>
+            </TouchableOpacity>
+            
+            {langMenuOpen && (
+              <View style={styles.langDropdown}>
+                {LANGUAGES.map((lang) => (
+                  <TouchableOpacity
+                    key={lang.code}
+                    style={[
+                      styles.langOption,
+                      i18n.language === lang.code && styles.langOptionActive,
+                    ]}
+                    onPress={() => {
+                      i18n.changeLanguage(lang.code);
+                      setLangMenuOpen(false);
+                    }}
+                  >
+                    <Text
+                      style={[
+                        styles.langOptionText,
+                        i18n.language === lang.code && styles.langOptionTextActive,
+                      ]}
+                    >
+                      {lang.label}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            )}
+          </View>
+
           <TouchableOpacity 
             style={styles.loginButton}
             onPress={() => router.push('/(auth)/login')}
@@ -76,7 +136,7 @@ export function WebHeader() {
           <TouchableOpacity 
             style={styles.mobileMenuItem}
             onPress={() => {
-              router.push('/(tabs)/pricing');
+              router.push('/(web)/pricing');
               setMobileMenuOpen(false);
             }}
           >
@@ -150,13 +210,31 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     width: '100%',
     ...(Platform.OS === 'web' && {
-      '@media (max-width: 768px)': {
+      '@media (max-width: 968px)': {
         paddingHorizontal: 16,
       },
     }),
   },
   logo: {
     paddingVertical: 8,
+    flex: 0,
+  },
+  logoContainer: {
+    paddingVertical: 8,
+    flex: 0,
+    ...(Platform.OS === 'web' && {
+      cursor: 'pointer',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }),
+  },
+  logoImage: {
+    width: 180,
+    height: 60,
+    ...(Platform.OS === 'web' && {
+      pointerEvents: 'none', // Make image non-blocking for clicks
+    }),
   },
   logoText: {
     fontSize: 24,
@@ -168,11 +246,84 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 32,
+    flex: 1,
+    justifyContent: 'center',
     ...(Platform.OS === 'web' && {
       '@media (max-width: 968px)': {
         display: 'none',
       },
     }),
+  },
+  authButtons: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 16,
+    flex: 0,
+    ...(Platform.OS === 'web' && {
+      '@media (max-width: 968px)': {
+        display: 'none',
+      },
+    }),
+  },
+  langSelector: {
+    position: 'relative',
+  },
+  langButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    backgroundColor: '#F8FAFC',
+    ...(Platform.OS === 'web' && {
+      cursor: 'pointer',
+      transition: 'all 0.2s ease',
+      ':hover': {
+        backgroundColor: '#E2E8F0',
+      },
+    }),
+  },
+  langButtonText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#475569',
+  },
+  langDropdown: {
+    position: 'absolute',
+    top: 48,
+    right: 0,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 8,
+    paddingVertical: 8,
+    minWidth: 120,
+    zIndex: 1000,
+    ...(Platform.OS === 'web' && {
+      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+    }),
+  },
+  langOption: {
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    ...(Platform.OS === 'web' && {
+      cursor: 'pointer',
+      transition: 'background-color 0.2s ease',
+      ':hover': {
+        backgroundColor: '#F8FAFC',
+      },
+    }),
+  },
+  langOptionActive: {
+    backgroundColor: '#EFF6FF',
+  },
+  langOptionText: {
+    fontSize: 14,
+    fontWeight: '500',
+    color: '#475569',
+  },
+  langOptionTextActive: {
+    color: '#2563EB',
+    fontWeight: '600',
   },
   hamburger: {
     padding: 8,

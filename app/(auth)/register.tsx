@@ -207,7 +207,7 @@ export default function RegisterScreen() {
 
           <Button
             title={t('auth.have_account')}
-            onPress={() => router.back()}
+            onPress={() => router.push('/(auth)/login')}
             variant="ghost"
           />
         </View>
