@@ -10,6 +10,7 @@ import {
   Alert,
   Modal,
   Platform,
+  Linking,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -541,10 +542,7 @@ Shared from Truxel
         {lead.linkedin_profile_url && (
           <TouchableOpacity
             style={styles.socialButton}
-            onPress={async () => {
-              const { Linking } = await import('react-native');
-              Linking.openURL(lead.linkedin_profile_url!);
-            }}
+            onPress={() => Linking.openURL(lead.linkedin_profile_url!)}
           >
             <Globe size={16} color="#0A66C2" />
             <Text style={[styles.socialButtonText, { color: '#0A66C2' }]}>LinkedIn</Text>
@@ -553,10 +551,7 @@ Shared from Truxel
         {lead.facebook && (
           <TouchableOpacity
             style={styles.socialButton}
-            onPress={async () => {
-              const { Linking } = await import('react-native');
-              Linking.openURL(lead.facebook!);
-            }}
+            onPress={() => Linking.openURL(lead.facebook!)}
           >
             <Globe size={16} color="#1877F2" />
             <Text style={[styles.socialButtonText, { color: '#1877F2' }]}>Facebook</Text>
@@ -565,10 +560,7 @@ Shared from Truxel
         {lead.instagram && (
           <TouchableOpacity
             style={styles.socialButton}
-            onPress={async () => {
-              const { Linking } = await import('react-native');
-              Linking.openURL(lead.instagram!);
-            }}
+            onPress={() => Linking.openURL(lead.instagram!)}
           >
             <Globe size={16} color="#E4405F" />
             <Text style={[styles.socialButtonText, { color: '#E4405F' }]}>Instagram</Text>
@@ -577,10 +569,7 @@ Shared from Truxel
         {lead.website && (
           <TouchableOpacity
             style={styles.socialButton}
-            onPress={async () => {
-              const { Linking } = await import('react-native');
-              Linking.openURL(lead.website!);
-            }}
+            onPress={() => Linking.openURL(lead.website!)}
           >
             <Globe size={16} color="#10B981" />
             <Text style={[styles.socialButtonText, { color: '#10B981' }]}>Website</Text>
@@ -589,16 +578,15 @@ Shared from Truxel
         {((lead as any).google_url_place || (lead.latitude && lead.longitude)) && (
           <TouchableOpacity
             style={styles.socialButton}
-            onPress={async () => {
+            onPress={() => {
               try {
-                const { Linking } = await import('react-native');
                 // Prefer google_url_place, fallback to lat/lng
                 const url = (lead as any).google_url_place 
                   ? (lead as any).google_url_place
                   : `https://www.google.com/maps/search/?api=1&query=${lead.latitude},${lead.longitude}`;
                 
                 console.log('[Maps Button] Opening URL:', url);
-                await Linking.openURL(url);
+                Linking.openURL(url);
               } catch (error) {
                 console.error('[Maps Button] Error:', error);
                 Toast.show({
