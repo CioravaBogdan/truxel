@@ -4,15 +4,15 @@ export default {
     slug: "truxel",
     version: "1.0.0",
     orientation: "portrait",
-    icon: "./assets/images/icon.png",
+    icon: "./assets/Truxel_Brand/App Store 1024 x 1024.png",
     scheme: "truxel",
     userInterfaceStyle: "automatic",
     newArchEnabled: true,
     owner: "cioravabogdan",
     splash: {
-      image: "./assets/images/icon.png",
+      image: "./assets/Truxel_Brand/App Store 1024 x 1024.png",
       resizeMode: "contain",
-      backgroundColor: "#ffffff"
+      backgroundColor: "#FF6B35"
     },
     ios: {
       supportsTablet: true,
@@ -55,13 +55,13 @@ export default {
       // Android Adaptive Icon
       adaptiveIcon: {
         foregroundImage: "./assets/Truxel_Brand/androind launcher 192x192.png",
-        backgroundColor: "#ffffff"
+        backgroundColor: "#FF6B35"
       }
     },
     web: {
       bundler: "metro",
       output: "single",
-      favicon: "./assets/images/favicon.png"
+      favicon: "./assets/Truxel_Brand/iPhone App icon 180 × 180.png"
     },
     plugins: [
       "expo-router",
@@ -73,8 +73,8 @@ export default {
       [
         "expo-notifications",
         {
-          icon: "./assets/images/icon.png",
-          color: "#ffffff"
+          icon: "./assets/Truxel_Brand/iPhone Notificxation 60x60.png",
+          color: "#FF6B35"
         }
       ]
     ],
