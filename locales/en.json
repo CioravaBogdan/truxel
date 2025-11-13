@@ -633,6 +633,77 @@
       "subtitle": "Join 1000+ truck drivers who are growing their business with Truxel",
       "download_ios": "Download on App Store",
       "download_android": "Get it on Google Play"
+    },
+    "pricing": {
+      "hero_badge": "Free trial included",
+      "hero_title": "Find loads. Secure contracts. Grow your logistics business.",
+      "hero_subtitle": "Built for owner-operators, fleet managers, and freight forwarders who want direct access to shippers without paying broker fees.",
+      "hero_feature1": "Instant onboarding. No credit card required.",
+      "hero_feature2": "Cancel anytime. Keep your data forever.",
+      "hero_feature3": "5 free searches to test the platform.",
+      "hero_cta": "Start Free Trial",
+      "currency_label": "Show prices in",
+      "currency_eur": "EUR (€)",
+      "currency_usd": "USD ($)",
+      "per_month": "per month",
+      "cta": "Get Started",
+      "cta_popular": "Most Popular",
+      "faq_title": "Pricing & plan questions",
+      "faq_which_plan": "Which Truxel plan fits my operation?",
+      "faq_which_plan_answer": "Standard gives independent drivers 30 monthly company searches and daily posts to stay booked.\n\nPro adds LinkedIn contacts, AI matching, and advanced research for growing teams.\n\nFleet Manager unlocks 30 daily posts, 30 simultaneous listings, and 72-hour visibility for dispatch teams.\n\nPro Freighter delivers everything plus analytics, priority support, and 50 daily posts for serious forwarders.",
+      "faq_change_plans": "Can I change plans later?",
+      "faq_change_plans_answer": "Yes! You can upgrade or downgrade anytime from your account settings. Changes take effect immediately for upgrades, or at the end of your billing period for downgrades.",
+      "faq_payments": "How do payments work?",
+      "faq_payments_answer": "We accept all major credit cards and process payments securely through Stripe. You'll be billed monthly on the date you subscribe. All transactions are encrypted and we never store your card details.",
+      "faq_searches_vs_posts": "What's the difference between searches and posts?",
+      "faq_searches_vs_posts_answer": "Searches help you find potential customers (shippers and freight forwarders) in specific locations with full contact details. Posts let you advertise your availability or available loads to the community so others can find you. Both are essential for growing your network.",
+      "faq_cancel_access": "Do I keep access if I cancel?",
+      "faq_cancel_access_answer": "Yes, you'll retain full access to your subscription until the end of your current billing period. All your saved contacts, notes, and search history remain accessible even after cancellation.",
+      "cards": {
+        "standard": {
+          "title": "Standard",
+          "tagline": "Built for independent drivers",
+          "feature_searches_30": "30 company searches every month",
+          "feature_posts_5_30": "5 posts per day (30 each month)",
+          "feature_filters": "Advanced filters to find the right shippers",
+          "feature_saved": "Unlimited saved leads and follow-ups"
+        },
+        "pro": {
+          "title": "Pro",
+          "tagline": "Scale your sales outreach",
+          "feature_searches_50": "50 searches with extended results",
+          "feature_posts_10_100": "10 posts per day (100 each month)",
+          "feature_linkedin": "LinkedIn contact profiles for decision-makers",
+          "feature_ai": "AI-powered route matching and company scoring",
+          "feature_research": "Deep company research by industry and lane",
+          "feature_priority": "Priority placement inside the community feed",
+          "feature_export": "Export leads and notes to CSV in one tap"
+        },
+        "fleet": {
+          "title": "Fleet Manager",
+          "tagline": "Dispatch at scale",
+          "feature_searches_30": "30 targeted searches every month",
+          "feature_posts_30_900": "30 posts per day (900 each month)",
+          "feature_concurrent_30": "30 active posts live at the same time",
+          "feature_duration_72": "Posts stay visible 72 hours to maximize reach",
+          "feature_workflows": "Freight-forwarder workflows for team collaboration",
+          "feature_templates_100": "Save up to 100 routes and templates"
+        },
+        "freighter": {
+          "title": "Pro Freighter",
+          "tagline": "Enterprise freight operations",
+          "feature_searches_50": "50 premium searches every month",
+          "feature_posts_50_1500": "50 posts per day (1500 each month)",
+          "feature_linkedin": "Full decision-maker contact data",
+          "feature_ai_dispatch": "AI dispatch intelligence with smart reminders",
+          "feature_research_multi": "Advanced research for multi-country operations",
+          "feature_concurrent_50": "50 simultaneous posts across teams",
+          "feature_duration_72_refresh": "72-hour visibility with auto-refresh",
+          "feature_analytics": "Performance analytics and weekly insights",
+          "feature_support_priority": "Priority support with dedicated concierge",
+          "feature_templates_200": "Store 200 templates and saved routes"
+        }
+      }
     }
   }
 }

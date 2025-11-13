@@ -42,7 +42,7 @@ export function WebHeader() {
           <TouchableOpacity onPress={() => router.push('/(web)/features')}>
             <Text style={styles.navLink}>{t('web.nav.features')}</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => router.push('/(web)/pricing')}>
+          <TouchableOpacity onPress={() => router.push('/(web)/pricing_web')}>
             <Text style={styles.navLink}>{t('web.nav.pricing')}</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => router.push('/(web)/about')}>
@@ -136,7 +136,7 @@ export function WebHeader() {
           <TouchableOpacity 
             style={styles.mobileMenuItem}
             onPress={() => {
-              router.push('/(web)/pricing');
+              router.push('/(web)/pricing_web');
               setMobileMenuOpen(false);
             }}
           >
@@ -426,3 +426,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
+

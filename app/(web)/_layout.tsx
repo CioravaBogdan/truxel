@@ -11,7 +11,7 @@ export default function WebLayout() {
         <Stack screenOptions={{ headerShown: false }}>
           <Stack.Screen name="index" />
           <Stack.Screen name="features" />
-          <Stack.Screen name="pricing" />
+          <Stack.Screen name="pricing_web" />
           <Stack.Screen name="about" />
           <Stack.Screen name="contact" />
           <Stack.Screen name="privacy" />

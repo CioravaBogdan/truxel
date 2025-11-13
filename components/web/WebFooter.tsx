@@ -24,7 +24,7 @@ export function WebFooter() {
           <TouchableOpacity onPress={() => router.push('/(web)/features')}>
             <Text style={styles.link}>{t('web.nav.features')}</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => router.push('/(web)/pricing')}>
+          <TouchableOpacity onPress={() => router.push('/(web)/pricing_web')}>
             <Text style={styles.link}>{t('web.nav.pricing')}</Text>
           </TouchableOpacity>
         </View>
@@ -127,3 +127,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
+
