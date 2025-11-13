@@ -70,8 +70,7 @@
     "pricing": "Тарифи",
     "profile": "Профіль",
     "community": "Спільнота"
-  }
-,
+  },
   "home": {
     "welcome": "Ласкаво просимо до Truxel",
     "welcome_back": "З поверненням, {{name}}!",
@@ -172,8 +171,7 @@
     "delete_lead_confirm": "Ви впевнені, що хочете видалити це лідування?",
     "delete_lead_success": "Лідування успішно видалено",
     "delete_lead_error": "Не вдалося видалити лідування"
-  }
-,
+  },
   "subscription": {
     "title": "Підписка",
     "my_subscription": "Моя підписка",
@@ -231,8 +229,7 @@
     "no_billing_history": "Історії платежів немає",
     "invoice": "Рахунок-фактура",
     "download_invoice": "Завантажити рахунок"
-  }
-,
+  },
   "profile": {
     "title": "Профіль",
     "my_profile": "Мій профіль",
@@ -285,8 +282,7 @@
     "no_notifications": "Сповіщень немає",
     "mark_as_read": "Позначити як прочитане",
     "mark_all_as_read": "Позначити всі як прочитані"
-  }
-,
+  },
   "pricing": {
     "title": "Тарифи",
     "plans": "Тарифні плани",
@@ -320,8 +316,7 @@
     "network": "Проблема з мережею. Перевірте підключення до інтернету.",
     "not_found": "Не знайдено",
     "unauthorized": "Неавторизовано. Увійдіть, щоб продовжити."
-  }
-,
+  },
   "community": {
     "title": "Спільнота",
     "feed": "Стрічка",
@@ -506,7 +501,12 @@
       "title": "Знайдіть Вантажі та Зв'яжіться з Транспортними Компаніями Миттєво",
       "subtitle": "Перша GPS-платформа для логістики, що з'єднує водіїв, експедиторів та вантажовідправників у реальному часі",
       "cta_primary": "Почати Безкоштовно",
-      "trust_badge": "Понад 10 000 водіїв та логістичних компаній по всій Європі довіряють нам"
+      "trust_badge": "Понад 10 000 водіїв та логістичних компаній по всій Європі довіряють нам",
+      "trust_features": {
+        "no_broker_fees": "No Broker Fees",
+        "dead_zones": "Find Shippers in Dead Zones",
+        "instant_contact": "Instant Contact Methods"
+      }
     },
     "cta": {
       "learn_more": "Дізнатися Більше"
@@ -597,7 +597,98 @@
       "testimonial3_author": "Sarah K., Власниця Автопарку, Каліфорнія",
       "stats_drivers": "Створено для Незалежних Водіїв",
       "stats_companies": "Знаходьте Місцевих Вантажовідправників Миттєво",
-      "stats_countries": "Запуск у Північній Америці"
+      "stats_countries": "Запуск у Північній Америці",
+      "stat_values": {
+        "drivers": "1000+",
+        "companies": "5000+",
+        "countries": "6"
+      }
+    },
+    "final_cta": {
+      "badge": "Built for Owner-Operators",
+      "stats": {
+        "success_rate": {
+          "value": "98%",
+          "label": "Success Rate"
+        },
+        "support": {
+          "value": "24/7",
+          "label": "Support"
+        },
+        "rating": {
+          "value": "5★",
+          "label": "Rating"
+        }
+      }
+    },
+    "features_page": {
+      "hero_title": "Powerful Features for Truck Drivers",
+      "hero_subtitle": "Everything you need to find clients, manage leads, and grow your logistics business",
+      "core": {
+        "title": "Core Features",
+        "subtitle": "Available on all plans, including the free trial",
+        "details": {
+          "gps": [
+            "Automatic location detection",
+            "5km search radius",
+            "Real-time GPS tracking",
+            "Search anywhere you drive"
+          ],
+          "community": [
+            "Post driver availability",
+            "Find available routes",
+            "Connect with fellow truckers",
+            "Real-time community feed"
+          ],
+          "leads": [
+            "Unlimited lead storage",
+            "Status tracking (New, Contacted, Won, Lost)",
+            "Add custom notes",
+            "CSV export functionality"
+          ],
+          "templates": [
+            "Pre-filled email templates",
+            "WhatsApp message templates",
+            "Auto-populate your contact info",
+            "Professional messaging"
+          ]
+        }
+      },
+      "how": {
+        "title": "How It Works",
+        "subtitle": "Start finding clients in 4 simple steps",
+        "steps": {
+          "step1": {
+            "title": "Download & Sign Up",
+            "desc": "Install Truxel from App Store or Google Play. Create your free account and get 5 trial searches."
+          },
+          "step2": {
+            "title": "Enable GPS & Search",
+            "desc": "Turn on your location and let Truxel find companies within 5km automatically."
+          },
+          "step3": {
+            "title": "View Results",
+            "desc": "Browse company details, contact information, and exact locations on the map."
+          },
+          "step4": {
+            "title": "Make Contact",
+            "desc": "Reach out via email, WhatsApp, or phone using our pre-filled templates."
+          }
+        }
+      },
+      "pro": {
+        "badge": "PRO PLAN",
+        "title": "Advanced Features",
+        "subtitle": "Unlock powerful tools with Pro tier subscription"
+      },
+      "additional": {
+        "title": "Additional Features"
+      },
+      "cta": {
+        "title": "Ready to Get Started?",
+        "subtitle": "Download Truxel today and start finding clients instantly with 5 free trial searches",
+        "secondary": "View Pricing"
+      }
     }
   }
 }

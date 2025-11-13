@@ -269,17 +269,17 @@
     "email_subject_load": "{{route}} hattı fırsatı",
     "email_body_driver": "Merhaba {{theirName}},\n\nBen {{myCompany}} firmasından {{myName}}. {{origin}} bölgesindeki uygunluğunuz için iletişime geçiyorum.\n\n{{contactLine}}\nSaygılarımla,\n{{myName}}",
     "email_body_load": "Merhaba {{theirName}},\n\nBen {{myCompany}} firmasından {{myName}}. {{route}} hattınızla ilgileniyorum.\n\n{{contactLine}}\nSaygılarımla,\n{{myName}}",
-  "whatsapp_choose_title": "WhatsApp uygulamasını seçin",
-  "whatsapp_choose_message": "İletişim için hangi WhatsApp uygulamasını kullanmak istersiniz?",
-  "whatsapp_app_regular": "WhatsApp",
-  "whatsapp_app_business": "WhatsApp Business",
-  "whatsapp_business_ios_title": "WhatsApp Business hakkında bilgi",
-  "whatsapp_business_ios_message": "iOS'ta her iki uygulama yüklüyse Apple her zaman önce kişisel WhatsApp'ı açar. Bu Meta/Apple kaynaklı bir platform kısıtlamasıdır. Doğrudan WhatsApp Business'a geçmek istiyorsanız kişisel WhatsApp uygulamasını kaldırmanız gerekir.",
-  "whatsapp_unavailable_title": "WhatsApp açılamıyor",
-  "whatsapp_unavailable_message": "Seçtiğiniz WhatsApp uygulamasını açamadık. Tercihi değiştirebilir veya tekrar deneyebilirsiniz.",
-  "whatsapp_change_preference": "Tercihi değiştir",
-  "whatsapp_invalid_number_title": "Uluslararası numara gerekli",
-  "whatsapp_invalid_number_message": "WhatsApp üzerinden iletişim kurmadan önce telefon numarasına ülke kodunu ekleyin (ör. +90...).",
+    "whatsapp_choose_title": "WhatsApp uygulamasını seçin",
+    "whatsapp_choose_message": "İletişim için hangi WhatsApp uygulamasını kullanmak istersiniz?",
+    "whatsapp_app_regular": "WhatsApp",
+    "whatsapp_app_business": "WhatsApp Business",
+    "whatsapp_business_ios_title": "WhatsApp Business hakkında bilgi",
+    "whatsapp_business_ios_message": "iOS'ta her iki uygulama yüklüyse Apple her zaman önce kişisel WhatsApp'ı açar. Bu Meta/Apple kaynaklı bir platform kısıtlamasıdır. Doğrudan WhatsApp Business'a geçmek istiyorsanız kişisel WhatsApp uygulamasını kaldırmanız gerekir.",
+    "whatsapp_unavailable_title": "WhatsApp açılamıyor",
+    "whatsapp_unavailable_message": "Seçtiğiniz WhatsApp uygulamasını açamadık. Tercihi değiştirebilir veya tekrar deneyebilirsiniz.",
+    "whatsapp_change_preference": "Tercihi değiştir",
+    "whatsapp_invalid_number_title": "Uluslararası numara gerekli",
+    "whatsapp_invalid_number_message": "WhatsApp üzerinden iletişim kurmadan önce telefon numarasına ülke kodunu ekleyin (ör. +90...).",
     "upgrade_required": "Yükseltme gerekli",
     "upgrade_required_message": "İletişim bilgilerini görmek için aktif bir aboneliğe ihtiyacınız var.",
     "load_timing_warning_title": "📦 Aktif Yüklerle Daha İyi Sonuçlar",
@@ -291,8 +291,8 @@
       "tier_name": "Growth Planı",
       "tier_price": "€29.99 / ay",
       "tier_description": "Yük verenlerle sürekli bağlantıya ihtiyaç duyan büyüyen filolar için.",
-    "feature_contacts": "Her topluluk gönderisinde tam iletişim bilgileri",
-    "feature_posts": "Günde 5, ayda 30 gönderiye kadar",
+      "feature_contacts": "Her topluluk gönderisinde tam iletişim bilgileri",
+      "feature_posts": "Günde 5, ayda 30 gönderiye kadar",
       "feature_support": "Öncelikli destek ve kaydedilmiş filtreler",
       "secondary_cta": "Daha fazlasına mı ihtiyacınız var? Üst planlar AI eşleştirme, analiz ve LinkedIn dışa aktarmayı içerir.",
       "upgrade_now": "Şimdi yükselt",
@@ -353,7 +353,12 @@
       "title": "Yük Bulun ve Nakliye Firmaları ile Anında Bağlantı Kurun",
       "subtitle": "Sürücüleri, taşıyıcıları ve yük verenleri gerçek zamanlı olarak birleştiren ilk GPS tabanlı lojistik platformu",
       "cta_primary": "Ücretsiz Başla",
-      "trust_badge": "Avrupa'da 10.000'den fazla sürücü ve lojistik firması bize güveniyor"
+      "trust_badge": "Avrupa'da 10.000'den fazla sürücü ve lojistik firması bize güveniyor",
+      "trust_features": {
+        "no_broker_fees": "No Broker Fees",
+        "dead_zones": "Find Shippers in Dead Zones",
+        "instant_contact": "Instant Contact Methods"
+      }
     },
     "cta": {
       "learn_more": "Daha Fazla Bilgi"
@@ -444,7 +449,98 @@
       "testimonial3_author": "Sarah K., Filo Sahibi, Kaliforniya",
       "stats_drivers": "Bağımsız Sürücüler İçin Yapıldı",
       "stats_companies": "Yerel Yük Verenleri Anında Bulun",
-      "stats_countries": "Kuzey Amerika'da Başlatılıyor"
+      "stats_countries": "Kuzey Amerika'da Başlatılıyor",
+      "stat_values": {
+        "drivers": "1000+",
+        "companies": "5000+",
+        "countries": "6"
+      }
+    },
+    "final_cta": {
+      "badge": "Built for Owner-Operators",
+      "stats": {
+        "success_rate": {
+          "value": "98%",
+          "label": "Success Rate"
+        },
+        "support": {
+          "value": "24/7",
+          "label": "Support"
+        },
+        "rating": {
+          "value": "5★",
+          "label": "Rating"
+        }
+      }
+    },
+    "features_page": {
+      "hero_title": "Powerful Features for Truck Drivers",
+      "hero_subtitle": "Everything you need to find clients, manage leads, and grow your logistics business",
+      "core": {
+        "title": "Core Features",
+        "subtitle": "Available on all plans, including the free trial",
+        "details": {
+          "gps": [
+            "Automatic location detection",
+            "5km search radius",
+            "Real-time GPS tracking",
+            "Search anywhere you drive"
+          ],
+          "community": [
+            "Post driver availability",
+            "Find available routes",
+            "Connect with fellow truckers",
+            "Real-time community feed"
+          ],
+          "leads": [
+            "Unlimited lead storage",
+            "Status tracking (New, Contacted, Won, Lost)",
+            "Add custom notes",
+            "CSV export functionality"
+          ],
+          "templates": [
+            "Pre-filled email templates",
+            "WhatsApp message templates",
+            "Auto-populate your contact info",
+            "Professional messaging"
+          ]
+        }
+      },
+      "how": {
+        "title": "How It Works",
+        "subtitle": "Start finding clients in 4 simple steps",
+        "steps": {
+          "step1": {
+            "title": "Download & Sign Up",
+            "desc": "Install Truxel from App Store or Google Play. Create your free account and get 5 trial searches."
+          },
+          "step2": {
+            "title": "Enable GPS & Search",
+            "desc": "Turn on your location and let Truxel find companies within 5km automatically."
+          },
+          "step3": {
+            "title": "View Results",
+            "desc": "Browse company details, contact information, and exact locations on the map."
+          },
+          "step4": {
+            "title": "Make Contact",
+            "desc": "Reach out via email, WhatsApp, or phone using our pre-filled templates."
+          }
+        }
+      },
+      "pro": {
+        "badge": "PRO PLAN",
+        "title": "Advanced Features",
+        "subtitle": "Unlock powerful tools with Pro tier subscription"
+      },
+      "additional": {
+        "title": "Additional Features"
+      },
+      "cta": {
+        "title": "Ready to Get Started?",
+        "subtitle": "Download Truxel today and start finding clients instantly with 5 free trial searches",
+        "secondary": "View Pricing"
+      }
     }
   }
 }

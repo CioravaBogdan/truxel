@@ -185,11 +185,28 @@ export default function LeadsScreen() {
 
   // Delete lead from My Book (unsave converted post)
   const handleDeleteFromMyBook = async (lead: Lead) => {
-    if (!user || !lead.source_id) return;
+    if (!user) return;
+    
+    const userLeadId = (lead as any).user_lead_id;
+    
+    console.log('[handleDeleteFromMyBook]', { 
+      leadId: lead.id, 
+      userLeadId,
+      hasUserLeadId: !!userLeadId 
+    });
+    
+    if (!userLeadId) {
+      console.error('[handleDeleteFromMyBook] Missing user_lead_id!', lead);
+      Toast.show({
+        type: 'error',
+        text1: 'Error: Missing user_lead_id',
+      });
+      return;
+    }
     
     try {
-      // Unsave the community post (this will remove the converted lead)
-      await leadsService.deleteLead(lead.id);
+      // Unsave the lead using user_lead_id from junction table
+      await leadsService.deleteLead(userLeadId, user.id);
       
       // Reload My Book leads
       await useLeadsStore.getState().loadConvertedLeads(user.id);
@@ -475,6 +492,7 @@ Shared from Truxel
           </View>
         </View>
 
+      {/* Primary Actions Row: Email, WhatsApp, Phone, Share */}
       <View style={styles.leadActions}>
         {lead.email && (
           <TouchableOpacity
@@ -516,6 +534,74 @@ Shared from Truxel
         >
           <Share2 size={20} color="#8B5CF6" />
         </TouchableOpacity>
+      </View>
+
+      {/* Secondary Actions Row: Social Media + Google Maps */}
+      <View style={styles.socialActions}>
+        {lead.linkedin_profile_url && (
+          <TouchableOpacity
+            style={styles.socialButton}
+            onPress={async () => {
+              const { Linking } = await import('react-native');
+              Linking.openURL(lead.linkedin_profile_url!);
+            }}
+          >
+            <Globe size={16} color="#0A66C2" />
+            <Text style={[styles.socialButtonText, { color: '#0A66C2' }]}>LinkedIn</Text>
+          </TouchableOpacity>
+        )}
+        {lead.facebook && (
+          <TouchableOpacity
+            style={styles.socialButton}
+            onPress={async () => {
+              const { Linking } = await import('react-native');
+              Linking.openURL(lead.facebook!);
+            }}
+          >
+            <Globe size={16} color="#1877F2" />
+            <Text style={[styles.socialButtonText, { color: '#1877F2' }]}>Facebook</Text>
+          </TouchableOpacity>
+        )}
+        {lead.instagram && (
+          <TouchableOpacity
+            style={styles.socialButton}
+            onPress={async () => {
+              const { Linking } = await import('react-native');
+              Linking.openURL(lead.instagram!);
+            }}
+          >
+            <Globe size={16} color="#E4405F" />
+            <Text style={[styles.socialButtonText, { color: '#E4405F' }]}>Instagram</Text>
+          </TouchableOpacity>
+        )}
+        {lead.website && (
+          <TouchableOpacity
+            style={styles.socialButton}
+            onPress={async () => {
+              const { Linking } = await import('react-native');
+              Linking.openURL(lead.website!);
+            }}
+          >
+            <Globe size={16} color="#10B981" />
+            <Text style={[styles.socialButtonText, { color: '#10B981' }]}>Website</Text>
+          </TouchableOpacity>
+        )}
+        {((lead as any).google_url_place || (lead.latitude && lead.longitude)) && (
+          <TouchableOpacity
+            style={styles.socialButton}
+            onPress={async () => {
+              const { Linking } = await import('react-native');
+              // Prefer google_url_place, fallback to lat/lng
+              const url = (lead as any).google_url_place 
+                ? (lead as any).google_url_place
+                : `https://www.google.com/maps/search/?api=1&query=${lead.latitude},${lead.longitude}`;
+              Linking.openURL(url);
+            }}
+          >
+            <MapPin size={16} color="#EA4335" />
+            <Text style={[styles.socialButtonText, { color: '#EA4335' }]}>Maps</Text>
+          </TouchableOpacity>
+        )}
       </View>
 
         {lead.user_notes && (
@@ -900,6 +986,27 @@ const styles = StyleSheet.create({
     backgroundColor: '#F1F5F9',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  socialActions: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 6,
+    marginBottom: 8,
+  },
+  socialButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 6,
+    paddingHorizontal: 10,
+    borderRadius: 8,
+    backgroundColor: '#F8FAFC',
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    gap: 4,
+  },
+  socialButtonText: {
+    fontSize: 12,
+    fontWeight: '500',
   },
   leadNotes: {
     fontSize: 14,

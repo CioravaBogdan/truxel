@@ -33,6 +33,12 @@ export default function LandingPage() {
   const router = useRouter();
   const { t } = useTranslation();
 
+  const trustFeatureKeys = [
+    'web.hero.trust_features.no_broker_fees',
+    'web.hero.trust_features.dead_zones',
+    'web.hero.trust_features.instant_contact',
+  ];
+
   const features = [
     { icon: MapPin, title: t('web.features.gps_title'), desc: t('web.features.gps_desc') },
     { icon: Zap, title: t('web.features.instant_contact_title'), desc: t('web.features.instant_contact_desc') },
@@ -53,6 +59,36 @@ export default function LandingPage() {
     { q: t('web.faq.q6'), a: t('web.faq.a6'), icon: Globe },
     { q: t('web.faq.q7'), a: t('web.faq.a7'), icon: TrendingUp },
     { q: t('web.faq.q8'), a: t('web.faq.a8'), icon: CheckCircle },
+  ];
+
+  const socialProofStats = [
+    {
+      valueKey: 'web.social_proof.stat_values.drivers',
+      labelKey: 'web.social_proof.stats_drivers',
+    },
+    {
+      valueKey: 'web.social_proof.stat_values.companies',
+      labelKey: 'web.social_proof.stats_companies',
+    },
+    {
+      valueKey: 'web.social_proof.stat_values.countries',
+      labelKey: 'web.social_proof.stats_countries',
+    },
+  ];
+
+  const finalCtaStats = [
+    {
+      valueKey: 'web.final_cta.stats.success_rate.value',
+      labelKey: 'web.final_cta.stats.success_rate.label',
+    },
+    {
+      valueKey: 'web.final_cta.stats.support.value',
+      labelKey: 'web.final_cta.stats.support.label',
+    },
+    {
+      valueKey: 'web.final_cta.stats.rating.value',
+      labelKey: 'web.final_cta.stats.rating.label',
+    },
   ];
 
   return (
@@ -96,18 +132,12 @@ export default function LandingPage() {
           </View>
           <Text style={styles.trustTitle}>{t('web.hero.trust_badge')}</Text>
           <View style={styles.trustFeatures}>
-            <View style={styles.trustFeatureItem}>
-              <CheckCircle size={20} color="#0fb988" />
-              <Text style={styles.trustFeatureText}>No Broker Fees</Text>
-            </View>
-            <View style={styles.trustFeatureItem}>
-              <CheckCircle size={20} color="#0fb988" />
-              <Text style={styles.trustFeatureText}>Find Shippers in Dead Zones</Text>
-            </View>
-            <View style={styles.trustFeatureItem}>
-              <CheckCircle size={20} color="#0fb988" />
-              <Text style={styles.trustFeatureText}>Instant Contact Methods</Text>
-            </View>
+            {trustFeatureKeys.map((key) => (
+              <View key={key} style={styles.trustFeatureItem}>
+                <CheckCircle size={20} color="#0fb988" />
+                <Text style={styles.trustFeatureText}>{t(key)}</Text>
+              </View>
+            ))}
           </View>
         </View>
       </View>
@@ -173,18 +203,12 @@ export default function LandingPage() {
           ))}
         </View>
         <View style={styles.stats}>
-          <View style={styles.statItem}>
-            <Text style={styles.statNumber}>1000+</Text>
-            <Text style={styles.statLabel}>{t('web.social_proof.stats_drivers')}</Text>
-          </View>
-          <View style={styles.statItem}>
-            <Text style={styles.statNumber}>5000+</Text>
-            <Text style={styles.statLabel}>{t('web.social_proof.stats_companies')}</Text>
-          </View>
-          <View style={styles.statItem}>
-            <Text style={styles.statNumber}>6</Text>
-            <Text style={styles.statLabel}>{t('web.social_proof.stats_countries')}</Text>
-          </View>
+          {socialProofStats.map((stat) => (
+            <View key={stat.labelKey} style={styles.statItem}>
+              <Text style={styles.statNumber}>{t(stat.valueKey)}</Text>
+              <Text style={styles.statLabel}>{t(stat.labelKey)}</Text>
+            </View>
+          ))}
         </View>
       </View>
 
@@ -214,7 +238,7 @@ export default function LandingPage() {
         <View style={[styles.section, styles.finalCta]}>
           <View style={styles.finalCtaContent}>
             <View style={styles.finalCtaBadge}>
-              <Text style={styles.finalCtaBadgeText}>Built for Owner-Operators</Text>
+              <Text style={styles.finalCtaBadgeText}>{t('web.final_cta.badge')}</Text>
             </View>
             <Text style={styles.finalCtaTitle}>{t('web.final_cta.title')}</Text>
             <Text style={styles.finalCtaSubtitle}>{t('web.final_cta.subtitle')}</Text>
@@ -241,18 +265,12 @@ export default function LandingPage() {
               </TouchableOpacity>
             </View>
             <View style={styles.finalCtaStats}>
-              <View style={styles.finalCtaStat}>
-                <Text style={styles.finalCtaStatNumber}>98%</Text>
-                <Text style={styles.finalCtaStatLabel}>Success Rate</Text>
-              </View>
-              <View style={styles.finalCtaStat}>
-                <Text style={styles.finalCtaStatNumber}>24/7</Text>
-                <Text style={styles.finalCtaStatLabel}>Support</Text>
-              </View>
-              <View style={styles.finalCtaStat}>
-                <Text style={styles.finalCtaStatNumber}>5★</Text>
-                <Text style={styles.finalCtaStatLabel}>Rating</Text>
-              </View>
+              {finalCtaStats.map((stat) => (
+                <View key={stat.labelKey} style={styles.finalCtaStat}>
+                  <Text style={styles.finalCtaStatNumber}>{t(stat.valueKey)}</Text>
+                  <Text style={styles.finalCtaStatLabel}>{t(stat.labelKey)}</Text>
+                </View>
+              ))}
             </View>
           </View>
         </View>

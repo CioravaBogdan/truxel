@@ -1,12 +1,24 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Linking, TextInput } from 'react-native';
+import React, { useMemo, useState } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  Linking,
+  TextInput,
+  Platform,
+} from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { Mail, Phone, MapPin, Clock } from 'lucide-react-native';
+import { Mail, Phone, MapPin, Clock, MessageCircle, Sparkles } from 'lucide-react-native';
 import { Button } from '@/components/Button';
 import Toast from 'react-native-toast-message';
 import { WebFooter } from '@/components/web/WebFooter';
 
+const BRAND_ORANGE = '#FF6B35';
+
 export default function ContactPage() {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -15,38 +27,99 @@ export default function ContactPage() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const contactCards = useMemo(
+    () => [
+      {
+        icon: Mail,
+        title: t('web.contact.cards.email.title'),
+        value: 'office@truxel.io',
+        description: t('web.contact.cards.email.subtitle'),
+        action: () => Linking.openURL('mailto:office@truxel.io'),
+      },
+      {
+        icon: Phone,
+        title: t('web.contact.cards.phone.title'),
+        value: '+40 750 492 985',
+        description: t('web.contact.cards.phone.subtitle'),
+        action: () => Linking.openURL('tel:+40750492985'),
+      },
+      {
+        icon: MessageCircle,
+        title: t('web.contact.cards.whatsapp.title'),
+        value: '+40 750 492 985',
+        description: t('web.contact.cards.whatsapp.subtitle'),
+        action: () => Linking.openURL('https://wa.me/40750492985'),
+      },
+      {
+        icon: Clock,
+        title: t('web.contact.cards.hours.title'),
+        value: t('web.contact.cards.hours.value'),
+        description: t('web.contact.cards.hours.subtitle'),
+      },
+      {
+        icon: MapPin,
+        title: t('web.contact.cards.location.title'),
+        value: t('web.contact.cards.location.value'),
+        description: t('web.contact.cards.location.subtitle'),
+      },
+    ],
+    [t],
+  );
+
+  const audiences = useMemo(
+    () => [
+      {
+        badge: t('web.contact.audience.drivers.badge'),
+        title: t('web.contact.audience.drivers.title'),
+        bullets: [
+          t('web.contact.audience.drivers.point1'),
+          t('web.contact.audience.drivers.point2'),
+          t('web.contact.audience.drivers.point3'),
+        ],
+      },
+      {
+        badge: t('web.contact.audience.shippers.badge'),
+        title: t('web.contact.audience.shippers.title'),
+        bullets: [
+          t('web.contact.audience.shippers.point1'),
+          t('web.contact.audience.shippers.point2'),
+          t('web.contact.audience.shippers.point3'),
+        ],
+      },
+    ],
+    [t],
+  );
+
   const handleSubmit = async () => {
-    // Validate
-    if (!formData.name || !formData.email || !formData.subject || !formData.message) {
-      Toast.show({ type: 'error', text1: 'Error', text2: 'Please fill in all fields' });
+    const trimmedName = formData.name.trim();
+    const trimmedEmail = formData.email.trim();
+    const trimmedSubject = formData.subject.trim();
+    const trimmedMessage = formData.message.trim();
+
+    if (!trimmedName || !trimmedEmail || !trimmedSubject || !trimmedMessage) {
+      Toast.show({ type: 'error', text1: t('web.contact.toast.error_title'), text2: t('web.contact.toast.error_fields') });
       return;
     }
 
-    if (!formData.email.includes('@')) {
-      Toast.show({ type: 'error', text1: 'Error', text2: 'Please enter a valid email address' });
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
+      Toast.show({ type: 'error', text1: t('web.contact.toast.error_title'), text2: t('web.contact.toast.error_email') });
       return;
     }
 
     setIsSubmitting(true);
 
     try {
-      // For now, just open email client with pre-filled data
-      const emailBody = `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`;
-      const mailtoUrl = `mailto:office@truxel.io?subject=${encodeURIComponent(formData.subject)}&body=${encodeURIComponent(emailBody)}`;
+      const emailBody = `${t('web.contact.form.name_label')}: ${trimmedName}\n${t('web.contact.form.email_label')}: ${trimmedEmail}\n\n${t('web.contact.form.message_label')}\n${trimmedMessage}`;
+      const mailtoUrl = `mailto:office@truxel.io?subject=${encodeURIComponent(trimmedSubject)}&body=${encodeURIComponent(emailBody)}`;
 
       await Linking.openURL(mailtoUrl);
 
-      // Reset form
-      setFormData({
-        name: '',
-        email: '',
-        subject: '',
-        message: '',
-      });
+      setFormData({ name: '', email: '', subject: '', message: '' });
 
-      Toast.show({ type: 'success', text1: 'Success', text2: 'Your email client has been opened. Please send the email to complete your message.' });
-    } catch (error) {
-      Toast.show({ type: 'error', text1: 'Error', text2: 'Could not open email client. Please email us directly at office@truxel.io' });
+      Toast.show({ type: 'success', text1: t('web.contact.toast.success_title'), text2: t('web.contact.toast.success_message') });
+    } catch (err) {
+      console.error('Failed to open mail client', err);
+      Toast.show({ type: 'error', text1: t('web.contact.toast.error_title'), text2: t('web.contact.toast.error_open') });
     } finally {
       setIsSubmitting(false);
     }
@@ -54,110 +127,103 @@ export default function ContactPage() {
 
   return (
     <ScrollView style={styles.container}>
-      {/* Hero */}
       <View style={styles.hero}>
+        <View style={styles.heroOverlay} />
         <View style={styles.section}>
-          <Text style={styles.heroTitle}>Contact Us</Text>
-          <Text style={styles.heroSubtitle}>
-            Have questions? We&apos;d love to hear from you. Get in touch with our team.
-          </Text>
+          <View style={styles.heroContent}>
+            <View style={styles.heroBadge}>
+              <Sparkles size={18} color={BRAND_ORANGE} />
+              <Text style={styles.heroBadgeText}>{t('web.contact.hero_badge')}</Text>
+            </View>
+            <Text style={styles.heroTitle}>{t('web.contact.hero_title')}</Text>
+            <Text style={styles.heroSubtitle}>{t('web.contact.hero_subtitle')}</Text>
+          </View>
         </View>
       </View>
 
-      {/* Contact Methods */}
-      <View style={[styles.section, styles.contactSection]}>
+      <View style={[styles.section, styles.cardsSection]}>
+        <Text style={styles.sectionEyebrow}>{t('web.contact.cards_badge')}</Text>
+        <Text style={styles.sectionTitle}>{t('web.contact.cards_title')}</Text>
+        <Text style={styles.sectionSubtitle}>{t('web.contact.cards_subtitle')}</Text>
+
         <View style={styles.contactGrid}>
-          <TouchableOpacity
-            style={styles.contactCard}
-            onPress={() => Linking.openURL('mailto:office@truxel.io')}
-          >
-            <Mail size={32} color="#2563EB" />
-            <Text style={styles.contactCardTitle}>Email</Text>
-            <Text style={styles.contactCardText}>office@truxel.io</Text>
-            <Text style={styles.contactCardDesc}>
-              We&apos;ll respond within 24-48 hours
-            </Text>
-          </TouchableOpacity>
+          {contactCards.map((card) => {
+            const Icon = card.icon;
+            const clickable = typeof card.action === 'function';
+            const content = (
+              <View style={[styles.contactCard, clickable && styles.contactCardInteractive]}>
+                <View style={styles.contactIcon}>
+                  <Icon size={22} color={BRAND_ORANGE} />
+                </View>
+                <Text style={styles.contactTitle}>{card.title}</Text>
+                <Text style={styles.contactValue}>{card.value}</Text>
+                <Text style={styles.contactDesc}>{card.description}</Text>
+              </View>
+            );
 
-          <TouchableOpacity
-            style={styles.contactCard}
-            onPress={() => Linking.openURL('tel:+40750492985')}
-          >
-            <Phone size={32} color="#2563EB" />
-            <Text style={styles.contactCardTitle}>Phone</Text>
-            <Text style={styles.contactCardText}>+40 750 492 985</Text>
-            <Text style={styles.contactCardDesc}>
-              Mon-Fri, 9:00-18:00 EET
-            </Text>
-          </TouchableOpacity>
+            if (!clickable) {
+              return <View key={card.title}>{content}</View>;
+            }
 
-          <View style={styles.contactCard}>
-            <MapPin size={32} color="#2563EB" />
-            <Text style={styles.contactCardTitle}>Location</Text>
-            <Text style={styles.contactCardText}>Bucharest, Romania</Text>
-            <Text style={styles.contactCardDesc}>
-              European Union
-            </Text>
-          </View>
-
-          <View style={styles.contactCard}>
-            <Clock size={32} color="#2563EB" />
-            <Text style={styles.contactCardTitle}>Support Hours</Text>
-            <Text style={styles.contactCardText}>Monday - Friday</Text>
-            <Text style={styles.contactCardDesc}>
-              9:00 AM - 6:00 PM EET
-            </Text>
-          </View>
+            return (
+              <TouchableOpacity key={card.title} activeOpacity={0.85} onPress={card.action}>
+                {content}
+              </TouchableOpacity>
+            );
+          })}
         </View>
       </View>
 
-      {/* Contact Form */}
       <View style={[styles.section, styles.formSection]}>
-        <Text style={styles.sectionTitle}>Send Us a Message</Text>
-        <Text style={styles.sectionSubtitle}>
-          Fill out the form below and we&apos;ll get back to you as soon as possible.
-        </Text>
+        <View style={styles.formHeader}>
+          <Text style={styles.sectionEyebrow}>{t('web.contact.form_badge')}</Text>
+          <Text style={styles.sectionTitle}>{t('web.contact.form_title')}</Text>
+          <Text style={styles.sectionSubtitle}>{t('web.contact.form_subtitle')}</Text>
+        </View>
 
-        <View style={styles.form}>
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Your Name *</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="John Doe"
-              value={formData.name}
-              onChangeText={(text) => setFormData({ ...formData, name: text })}
-            />
+        <View style={styles.form}> 
+          <View style={styles.inputRow}>
+            <View style={styles.inputGroup}>
+              <Text style={styles.label}>{t('web.contact.form.name_label')}</Text>
+              <TextInput
+                style={styles.input}
+                placeholder={t('web.contact.form.name_placeholder')}
+                value={formData.name}
+                onChangeText={(text) => setFormData((prev) => ({ ...prev, name: text }))}
+                autoComplete="name"
+              />
+            </View>
+            <View style={styles.inputGroup}>
+              <Text style={styles.label}>{t('web.contact.form.email_label')}</Text>
+              <TextInput
+                style={styles.input}
+                placeholder={t('web.contact.form.email_placeholder')}
+                value={formData.email}
+                onChangeText={(text) => setFormData((prev) => ({ ...prev, email: text }))}
+                keyboardType="email-address"
+                autoCapitalize="none"
+                autoComplete="email"
+              />
+            </View>
           </View>
 
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Email Address *</Text>
+            <Text style={styles.label}>{t('web.contact.form.subject_label')}</Text>
             <TextInput
               style={styles.input}
-              placeholder="john@example.com"
-              value={formData.email}
-              onChangeText={(text) => setFormData({ ...formData, email: text })}
-              keyboardType="email-address"
-              autoCapitalize="none"
-            />
-          </View>
-
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Subject *</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="How can we help?"
+              placeholder={t('web.contact.form.subject_placeholder')}
               value={formData.subject}
-              onChangeText={(text) => setFormData({ ...formData, subject: text })}
+              onChangeText={(text) => setFormData((prev) => ({ ...prev, subject: text }))}
             />
           </View>
 
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Message *</Text>
+            <Text style={styles.label}>{t('web.contact.form.message_label')}</Text>
             <TextInput
               style={[styles.input, styles.textArea]}
-              placeholder="Tell us more about your inquiry..."
+              placeholder={t('web.contact.form.message_placeholder')}
               value={formData.message}
-              onChangeText={(text) => setFormData({ ...formData, message: text })}
+              onChangeText={(text) => setFormData((prev) => ({ ...prev, message: text }))}
               multiline
               numberOfLines={6}
               textAlignVertical="top"
@@ -165,56 +231,52 @@ export default function ContactPage() {
           </View>
 
           <Button
-            title={isSubmitting ? 'Sending...' : 'Send Message'}
+            title={isSubmitting ? t('web.contact.form_button_loading') : t('web.contact.form_button')}
             onPress={handleSubmit}
             loading={isSubmitting}
           />
         </View>
       </View>
 
-      {/* FAQ Quick Links */}
-      <View style={[styles.section, styles.faqSection]}>
-        <Text style={styles.sectionTitle}>Looking for Quick Answers?</Text>
-        <Text style={styles.sectionText}>
-          Before contacting us, you might find your answer in our FAQ section on the home page, or check out these common topics:
-        </Text>
+      <View style={[styles.section, styles.audienceSection]}>
+        <Text style={styles.sectionEyebrow}>{t('web.contact.audience_badge')}</Text>
+        <Text style={styles.sectionTitle}>{t('web.contact.audience_title')}</Text>
+        <Text style={styles.sectionSubtitle}>{t('web.contact.audience_subtitle')}</Text>
 
-        <View style={styles.topicsList}>
-          <View style={styles.topicItem}>
-            <Text style={styles.topicTitle}>• How to use GPS search</Text>
-          </View>
-          <View style={styles.topicItem}>
-            <Text style={styles.topicTitle}>• Subscription plans and pricing</Text>
-          </View>
-          <View style={styles.topicItem}>
-            <Text style={styles.topicTitle}>• Cancellation and refunds</Text>
-          </View>
-          <View style={styles.topicItem}>
-            <Text style={styles.topicTitle}>• Data privacy and security</Text>
-          </View>
-          <View style={styles.topicItem}>
-            <Text style={styles.topicTitle}>• Community feature usage</Text>
-          </View>
-          <View style={styles.topicItem}>
-            <Text style={styles.topicTitle}>• Export and manage leads</Text>
-          </View>
+        <View style={styles.audienceGrid}>
+          {audiences.map((audience) => (
+            <View key={audience.title} style={styles.audienceCard}>
+              <Text style={styles.audienceBadge}>{audience.badge}</Text>
+              <Text style={styles.audienceTitle}>{audience.title}</Text>
+              <View style={styles.audienceList}>
+                {audience.bullets.map((bullet) => (
+                  <Text key={bullet} style={styles.audienceItem}>• {bullet}</Text>
+                ))}
+              </View>
+            </View>
+          ))}
         </View>
       </View>
 
-      {/* Business Inquiries */}
-      <View style={[styles.section, styles.businessSection]}>
-        <Text style={styles.sectionTitle}>Business Partnerships</Text>
-        <Text style={styles.sectionText}>
-          Interested in partnering with Truxel? We&apos;re always looking for opportunities to collaborate with:
-          {'\n\n'}
-          • Logistics companies{'\n'}
-          • Fleet management services{'\n'}
-          • Transportation associations{'\n'}
-          • Technology providers{'\n'}
-          • Marketing and media partners{'\n'}
-          {'\n'}
-          Email us at office@truxel.io with &quot;Partnership Inquiry&quot; in the subject line.
-        </Text>
+      <View style={[styles.section, styles.bottomCtaSection]}>
+        <View style={styles.bottomCtaCard}>
+          <Text style={styles.bottomCtaTitle}>{t('web.contact.bottom_cta_title')}</Text>
+          <Text style={styles.bottomCtaSubtitle}>{t('web.contact.bottom_cta_subtitle')}</Text>
+          <View style={styles.bottomActions}>
+            <TouchableOpacity
+              style={styles.bottomPrimary}
+              onPress={() => Linking.openURL('https://cal.com/truxel/demo')}
+            >
+              <Text style={styles.bottomPrimaryText}>{t('web.contact.bottom_cta_primary')}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.bottomSecondary}
+              onPress={() => Linking.openURL('mailto:office@truxel.io?subject=Partnership%20Inquiry')}
+            >
+              <Text style={styles.bottomSecondaryText}>{t('web.contact.bottom_cta_secondary')}</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
 
       <WebFooter />
@@ -222,37 +284,111 @@ export default function ContactPage() {
   );
 }
 
-const styles = StyleSheet.create({
+const rawStyles = {
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#0B1120',
   },
   section: {
     maxWidth: 1200,
     marginHorizontal: 'auto',
-    paddingHorizontal: 16,
-    paddingVertical: 64,
+    paddingHorizontal: 24,
+    paddingVertical: 80,
     width: '100%',
+    ...(Platform.OS === 'web' && {
+      '@media (max-width: 992px)': {
+        paddingHorizontal: 32,
+        paddingVertical: 64,
+      },
+      '@media (max-width: 600px)': {
+        paddingHorizontal: 20,
+        paddingVertical: 48,
+      },
+    }),
   },
   hero: {
-    backgroundColor: '#F8FAFC',
+    position: 'relative',
+    backgroundColor: '#0B1120',
+    overflow: 'hidden',
+  },
+  heroOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    ...(Platform.OS === 'web' && {
+      backgroundImage: 'linear-gradient(135deg, rgba(9, 9, 11, 0.95) 0%, rgba(15, 23, 42, 0.92) 35%, rgba(15, 23, 42, 0.85) 100%)',
+    }),
+  },
+  heroContent: {
+    position: 'relative',
+    zIndex: 1,
+    gap: 24,
+    maxWidth: 760,
+  },
+  heroBadge: {
+    alignSelf: 'flex-start',
+    flexDirection: 'row',
     alignItems: 'center',
+    gap: 10,
+    paddingVertical: 8,
+    paddingHorizontal: 18,
+    borderRadius: 999,
+    backgroundColor: 'rgba(255, 255, 255, 0.06)',
+  },
+  heroBadgeText: {
+    fontSize: 14,
+    fontWeight: '700',
+    letterSpacing: 0.4,
+    color: '#FFFFFF',
   },
   heroTitle: {
-    fontSize: 48,
-    fontWeight: '700',
-    color: '#1E293B',
-    marginBottom: 16,
-    textAlign: 'center',
+    fontSize: 44,
+    fontWeight: '900',
+    color: '#FFFFFF',
+    lineHeight: 52,
+    ...(Platform.OS === 'web' && {
+      '@media (max-width: 768px)': {
+        fontSize: 34,
+        lineHeight: 42,
+      },
+    }),
   },
   heroSubtitle: {
-    fontSize: 20,
-    color: '#64748B',
-    textAlign: 'center',
-    maxWidth: 600,
+    fontSize: 18,
+    color: 'rgba(255,255,255,0.8)',
+    lineHeight: 28,
+    maxWidth: 640,
   },
-  contactSection: {
-    backgroundColor: '#FFFFFF',
+  sectionEyebrow: {
+    color: BRAND_ORANGE,
+    textTransform: 'uppercase',
+    fontWeight: '700',
+    letterSpacing: 1.4,
+    marginBottom: 12,
+    fontSize: 13,
+  },
+  sectionTitle: {
+    fontSize: 36,
+    fontWeight: '900',
+    color: '#F8FAFC',
+    marginBottom: 12,
+    ...(Platform.OS === 'web' && {
+      '@media (max-width: 768px)': {
+        fontSize: 30,
+      },
+    }),
+  },
+  sectionSubtitle: {
+    fontSize: 18,
+    color: '#94A3B8',
+    lineHeight: 28,
+    maxWidth: 720,
+    marginBottom: 32,
+  },
+  cardsSection: {
+    backgroundColor: '#080C16',
   },
   contactGrid: {
     flexDirection: 'row',
@@ -261,95 +397,193 @@ const styles = StyleSheet.create({
   },
   contactCard: {
     flex: 1,
-    minWidth: 250,
-    padding: 32,
-    backgroundColor: '#F8FAFC',
-    borderRadius: 12,
-    alignItems: 'center',
-  },
-  contactCardTitle: {
-    fontSize: 20,
-    fontWeight: '600',
-    color: '#1E293B',
-    marginTop: 16,
-    marginBottom: 8,
-  },
-  contactCardText: {
-    fontSize: 18,
-    color: '#2563EB',
-    fontWeight: '500',
-    marginBottom: 8,
-  },
-  contactCardDesc: {
-    fontSize: 14,
-    color: '#64748B',
-    textAlign: 'center',
-  },
-  formSection: {
-    backgroundColor: '#F8FAFC',
-  },
-  sectionTitle: {
-    fontSize: 36,
-    fontWeight: '700',
-    color: '#1E293B',
-    marginBottom: 16,
-    textAlign: 'center',
-  },
-  sectionSubtitle: {
-    fontSize: 18,
-    color: '#64748B',
-    textAlign: 'center',
-    marginBottom: 48,
-  },
-  form: {
-    maxWidth: 600,
-    marginHorizontal: 'auto',
-    width: '100%',
-  },
-  inputGroup: {
-    marginBottom: 24,
-  },
-  label: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#1E293B',
-    marginBottom: 8,
-  },
-  input: {
-    backgroundColor: '#FFFFFF',
+    minWidth: 240,
+    backgroundColor: '#0F172A',
+    borderRadius: 20,
+    padding: 28,
     borderWidth: 1,
-    borderColor: '#CBD5E1',
-    borderRadius: 8,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    fontSize: 16,
-    color: '#1E293B',
-  },
-  textArea: {
-    minHeight: 150,
-    paddingTop: 12,
-  },
-  faqSection: {
-    backgroundColor: '#FFFFFF',
-  },
-  sectionText: {
-    fontSize: 16,
-    color: '#64748B',
-    lineHeight: 24,
-    marginBottom: 24,
-  },
-  topicsList: {
+    borderColor: 'rgba(148, 163, 184, 0.12)',
     gap: 12,
   },
-  topicItem: {
-    paddingVertical: 8,
+  contactCardInteractive: {
+    ...(Platform.OS === 'web' && {
+      transition: 'transform 0.2s ease, border-color 0.2s ease',
+      ':hover': {
+        transform: 'translateY(-4px)',
+        borderColor: 'rgba(255, 107, 53, 0.35)',
+      },
+    }),
   },
-  topicTitle: {
+  contactIcon: {
+    width: 44,
+    height: 44,
+    borderRadius: 16,
+    backgroundColor: 'rgba(255, 107, 53, 0.15)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  contactTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#F8FAFC',
+  },
+  contactValue: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#FFFFFF',
+  },
+  contactDesc: {
+    fontSize: 15,
+    color: '#CBD5F5',
+    lineHeight: 22,
+  },
+  formSection: {
+    backgroundColor: '#0B1120',
+  },
+  formHeader: {
+    marginBottom: 24,
+  },
+  form: {
+    backgroundColor: '#080C16',
+    borderRadius: 24,
+    padding: 36,
+    borderWidth: 1,
+    borderColor: 'rgba(148, 163, 184, 0.1)',
+    gap: 24,
+  },
+  inputRow: {
+    flexDirection: 'row',
+    gap: 24,
+    flexWrap: 'wrap',
+  },
+  inputGroup: {
+    flex: 1,
+    minWidth: 220,
+    gap: 8,
+  },
+  label: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: '#E2E8F0',
+  },
+  input: {
+    backgroundColor: '#0F172A',
+    borderWidth: 1,
+    borderColor: 'rgba(148, 163, 184, 0.16)',
+    borderRadius: 14,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
     fontSize: 16,
-    color: '#1E293B',
-    fontWeight: '500',
+    color: '#F8FAFC',
   },
-  businessSection: {
-    backgroundColor: '#F8FAFC',
+  textArea: {
+    minHeight: 160,
   },
-});
+  audienceSection: {
+    backgroundColor: '#080C16',
+  },
+  audienceGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 24,
+  },
+  audienceCard: {
+    flex: 1,
+    minWidth: 260,
+    backgroundColor: '#0F172A',
+    borderRadius: 24,
+    padding: 28,
+    borderWidth: 1,
+    borderColor: 'rgba(148, 163, 184, 0.12)',
+    gap: 12,
+  },
+  audienceBadge: {
+    alignSelf: 'flex-start',
+    fontSize: 12,
+    fontWeight: '700',
+    letterSpacing: 1,
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    borderRadius: 999,
+    backgroundColor: 'rgba(255, 107, 53, 0.18)',
+    color: BRAND_ORANGE,
+    textTransform: 'uppercase',
+  },
+  audienceTitle: {
+    fontSize: 22,
+    fontWeight: '800',
+    color: '#F8FAFC',
+  },
+  audienceList: {
+    gap: 8,
+    marginTop: 8,
+  },
+  audienceItem: {
+    fontSize: 15,
+    color: '#CBD5F5',
+    lineHeight: 22,
+  },
+  bottomCtaSection: {
+    backgroundColor: '#0B1120',
+  },
+  bottomCtaCard: {
+    backgroundColor: '#111C33',
+    borderRadius: 32,
+    padding: 48,
+    alignItems: 'center',
+    gap: 18,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.08)',
+  },
+  bottomCtaTitle: {
+    fontSize: 32,
+    fontWeight: '900',
+    color: '#FFFFFF',
+    textAlign: 'center',
+  },
+  bottomCtaSubtitle: {
+    fontSize: 17,
+    color: 'rgba(255,255,255,0.75)',
+    textAlign: 'center',
+    lineHeight: 26,
+    maxWidth: 620,
+  },
+  bottomActions: {
+    flexDirection: 'row',
+    gap: 16,
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    marginTop: 12,
+  },
+  bottomPrimary: {
+    paddingVertical: 16,
+    paddingHorizontal: 32,
+    borderRadius: 14,
+    backgroundColor: BRAND_ORANGE,
+    ...(Platform.OS === 'web' && {
+      cursor: 'pointer',
+    }),
+  },
+  bottomPrimaryText: {
+    fontSize: 16,
+    fontWeight: '800',
+    color: '#FFFFFF',
+  },
+  bottomSecondary: {
+    paddingVertical: 16,
+    paddingHorizontal: 32,
+    borderRadius: 14,
+    borderWidth: 2,
+    borderColor: 'rgba(255,255,255,0.35)',
+    ...(Platform.OS === 'web' && {
+      cursor: 'pointer',
+    }),
+  },
+  bottomSecondaryText: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#FFFFFF',
+  },
+} as const;
+
+const styles = StyleSheet.create(rawStyles as Record<string, any>);

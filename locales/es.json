@@ -1,8 +1,62 @@
 {
-  "common": {"login": "Iniciar sesión", "register": "Registrarse", "logout": "Cerrar sesión", "email": "Correo electrónico", "password": "Contraseña", "confirm_password": "Confirmar contraseña", "full_name": "Nombre completo", "phone_number": "Número de teléfono", "company_name": "Nombre de la empresa", "save": "Guardar", "cancel": "Cancelar", "delete": "Eliminar", "edit": "Editar", "share": "Compartir", "loading": "Cargando...", "error": "Error", "success": "Éxito", "search": "Buscar", "filter": "Filtrar", "sort": "Ordenar", "confirm": "Confirmar", "back": "Atrás", "close": "Cerrar"},
-  "auth": {"welcome": "Bienvenido a Truxel", "sign_in": "Iniciar sesión", "sign_up": "Registrarse", "forgot_password": "¿Olvidaste tu contraseña?", "reset_password": "Restablecer contraseña", "no_account": "¿No tienes cuenta?", "have_account": "¿Ya tienes cuenta?", "email_required": "El correo electrónico es obligatorio", "password_required": "La contraseña es obligatoria", "invalid_email": "Dirección de correo electrónico inválida", "password_too_short": "La contraseña debe tener al menos 6 caracteres", "passwords_dont_match": "Las contraseñas no coinciden", "login_success": "Inicio de sesión exitoso", "register_success": "Registro exitoso", "logout_confirm": "¿Estás seguro de que quieres cerrar sesión?"},
-  "tabs": {"home": "Inicio", "search": "Buscar", "leads": "Mis clientes potenciales", "profile": "Perfil"},
-  "home": {"welcome": "Bienvenido, {{name}}", "searches_remaining": "{{count}} búsquedas restantes", "recent_leads": "Clientes potenciales recientes", "start_search": "Iniciar nueva búsqueda", "upgrade": "Actualizar plan", "total_leads": "Total de clientes potenciales", "leads_contacted": "Contactados", "active_searches": "Búsquedas activas"},
+  "common": {
+    "login": "Iniciar sesión",
+    "register": "Registrarse",
+    "logout": "Cerrar sesión",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "confirm_password": "Confirmar contraseña",
+    "full_name": "Nombre completo",
+    "phone_number": "Número de teléfono",
+    "company_name": "Nombre de la empresa",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "share": "Compartir",
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "sort": "Ordenar",
+    "confirm": "Confirmar",
+    "back": "Atrás",
+    "close": "Cerrar"
+  },
+  "auth": {
+    "welcome": "Bienvenido a Truxel",
+    "sign_in": "Iniciar sesión",
+    "sign_up": "Registrarse",
+    "forgot_password": "¿Olvidaste tu contraseña?",
+    "reset_password": "Restablecer contraseña",
+    "no_account": "¿No tienes cuenta?",
+    "have_account": "¿Ya tienes cuenta?",
+    "email_required": "El correo electrónico es obligatorio",
+    "password_required": "La contraseña es obligatoria",
+    "invalid_email": "Dirección de correo electrónico inválida",
+    "password_too_short": "La contraseña debe tener al menos 6 caracteres",
+    "passwords_dont_match": "Las contraseñas no coinciden",
+    "login_success": "Inicio de sesión exitoso",
+    "register_success": "Registro exitoso",
+    "logout_confirm": "¿Estás seguro de que quieres cerrar sesión?"
+  },
+  "tabs": {
+    "home": "Inicio",
+    "search": "Buscar",
+    "leads": "Mis clientes potenciales",
+    "profile": "Perfil"
+  },
+  "home": {
+    "welcome": "Bienvenido, {{name}}",
+    "searches_remaining": "{{count}} búsquedas restantes",
+    "recent_leads": "Clientes potenciales recientes",
+    "start_search": "Iniciar nueva búsqueda",
+    "upgrade": "Actualizar plan",
+    "total_leads": "Total de clientes potenciales",
+    "leads_contacted": "Contactados",
+    "active_searches": "Búsquedas activas"
+  },
   "search": {
     "title": "Encontrar empresas",
     "location_method": "Elegir método de ubicación",
@@ -28,8 +82,74 @@
     "search_started": "Búsqueda iniciada. Te notificaremos cuando los resultados estén listos.",
     "search_failed": "La búsqueda falló. Por favor, inténtalo de nuevo."
   },
-  "leads": {"title": "Mis clientes potenciales", "no_leads": "No se encontraron clientes potenciales", "search_results": "Resultados de búsqueda", "hot_leads": "Clientes calientes", "my_book": "Mi libro", "filter_drivers": "Conductores", "filter_forwarding": "Reenvío", "add_to_mybook": "Añadir a mi libro", "converted_successfully": "Añadido a mi libro exitosamente", "no_search_results": "Aún no hay resultados de búsqueda", "no_hot_leads": "Aún no hay publicaciones guardadas", "no_mybook_leads": "Tu libro está vacío", "save_posts_hint": "Guarda publicaciones de la Comunidad para verlas aquí", "convert_hint": "Convierte Clientes calientes para construir tu pipeline permanente", "removed_from_mybook": "Eliminado de Mi Libro", "filter_all": "Todos", "filter_email": "Tiene correo", "filter_phone": "Tiene teléfono", "filter_whatsapp": "Tiene WhatsApp", "filter_linkedin": "Tiene LinkedIn", "status_new": "Nuevo", "status_contacted": "Contactado", "status_in_progress": "En progreso", "status_won": "Ganado", "status_lost": "Perdido", "sort_distance": "Por distancia", "sort_name": "Alfabético", "sort_date": "Más reciente", "export_csv": "Exportar a CSV", "lead_details": "Detalles del cliente potencial", "contact_info": "Información de contacto", "location": "Ubicación", "status": "Estado", "notes": "Notas", "add_note": "Añadir una nota...", "send_email": "Enviar correo", "send_whatsapp": "Enviar WhatsApp", "call": "Llamar", "view_linkedin": "Ver LinkedIn", "view_facebook": "Ver Facebook", "view_website": "Visitar sitio web", "get_directions": "Obtener indicaciones", "lead_saved": "Cliente potencial guardado exitosamente", "lead_updated": "Cliente potencial actualizado exitosamente", "lead_deleted": "Cliente potencial eliminado exitosamente"},
-  "subscription": {"title": "Suscripción", "current_plan": "Plan actual", "trial": "Prueba gratuita", "standard": "Plan estándar", "premium": "Plan premium", "trial_desc": "5 búsquedas en total", "standard_desc": "15 búsquedas por mes", "premium_desc": "100 búsquedas por mes", "price_month": "€{{price}}/mes", "searches_used": "{{used}} de {{total}} búsquedas usadas", "renews_on": "Se renueva el {{date}}", "upgrade_to": "Actualizar a {{plan}}", "buy_search_pack": "Comprar paquete de búsquedas", "search_pack_10": "10 búsquedas adicionales", "search_pack_price": "€24.99", "purchase_success": "Compra exitosa!", "purchase_failed": "La compra falló. Por favor, inténtalo de nuevo.", "manage_subscription": "Gestionar suscripción", "cancel_subscription": "Cancelar suscripción"},
+  "leads": {
+    "title": "Mis clientes potenciales",
+    "no_leads": "No se encontraron clientes potenciales",
+    "search_results": "Resultados de búsqueda",
+    "hot_leads": "Clientes calientes",
+    "my_book": "Mi libro",
+    "filter_drivers": "Conductores",
+    "filter_forwarding": "Reenvío",
+    "add_to_mybook": "Añadir a mi libro",
+    "converted_successfully": "Añadido a mi libro exitosamente",
+    "no_search_results": "Aún no hay resultados de búsqueda",
+    "no_hot_leads": "Aún no hay publicaciones guardadas",
+    "no_mybook_leads": "Tu libro está vacío",
+    "save_posts_hint": "Guarda publicaciones de la Comunidad para verlas aquí",
+    "convert_hint": "Convierte Clientes calientes para construir tu pipeline permanente",
+    "removed_from_mybook": "Eliminado de Mi Libro",
+    "filter_all": "Todos",
+    "filter_email": "Tiene correo",
+    "filter_phone": "Tiene teléfono",
+    "filter_whatsapp": "Tiene WhatsApp",
+    "filter_linkedin": "Tiene LinkedIn",
+    "status_new": "Nuevo",
+    "status_contacted": "Contactado",
+    "status_in_progress": "En progreso",
+    "status_won": "Ganado",
+    "status_lost": "Perdido",
+    "sort_distance": "Por distancia",
+    "sort_name": "Alfabético",
+    "sort_date": "Más reciente",
+    "export_csv": "Exportar a CSV",
+    "lead_details": "Detalles del cliente potencial",
+    "contact_info": "Información de contacto",
+    "location": "Ubicación",
+    "status": "Estado",
+    "notes": "Notas",
+    "add_note": "Añadir una nota...",
+    "send_email": "Enviar correo",
+    "send_whatsapp": "Enviar WhatsApp",
+    "call": "Llamar",
+    "view_linkedin": "Ver LinkedIn",
+    "view_facebook": "Ver Facebook",
+    "view_website": "Visitar sitio web",
+    "get_directions": "Obtener indicaciones",
+    "lead_saved": "Cliente potencial guardado exitosamente",
+    "lead_updated": "Cliente potencial actualizado exitosamente",
+    "lead_deleted": "Cliente potencial eliminado exitosamente"
+  },
+  "subscription": {
+    "title": "Suscripción",
+    "current_plan": "Plan actual",
+    "trial": "Prueba gratuita",
+    "standard": "Plan estándar",
+    "premium": "Plan premium",
+    "trial_desc": "5 búsquedas en total",
+    "standard_desc": "15 búsquedas por mes",
+    "premium_desc": "100 búsquedas por mes",
+    "price_month": "€{{price}}/mes",
+    "searches_used": "{{used}} de {{total}} búsquedas usadas",
+    "renews_on": "Se renueva el {{date}}",
+    "upgrade_to": "Actualizar a {{plan}}",
+    "buy_search_pack": "Comprar paquete de búsquedas",
+    "search_pack_10": "10 búsquedas adicionales",
+    "search_pack_price": "€24.99",
+    "purchase_success": "Compra exitosa!",
+    "purchase_failed": "La compra falló. Por favor, inténtalo de nuevo.",
+    "manage_subscription": "Gestionar suscripción",
+    "cancel_subscription": "Cancelar suscripción"
+  },
   "profile": {
     "title": "Perfil",
     "account_info": "Información de cuenta",
@@ -54,8 +174,17 @@
     "phone_number_placeholder": "612345678",
     "phone_number_invalid": "El número parece demasiado corto. Revísalo e inténtalo de nuevo."
   },
-  "templates": {"email_subject": "Oportunidad de asociación logística - {{company}}", "email_body": "Hola {{contactName}},\n\nSoy {{userName}} de {{userCompany}}. Soy conductor de camión actualmente en {{location}} y estoy buscando oportunidades de carga.\n\nCreo que podríamos trabajar juntos en soluciones logísticas. Por favor, contáctame:\n\nTeléfono: {{userPhone}}\nCorreo: {{userEmail}}\n\nSaludos cordiales,\n{{userName}}", "whatsapp_message": "Hola {{contactName}}, soy {{userName}} de {{userCompany}}. Soy conductor de camión en {{location}} buscando carga. ¿Podemos hablar sobre oportunidades logísticas? Contacto: {{userPhone}}"},
-  "notifications": {"search_complete": "Búsqueda completada", "search_complete_body": "Se encontraron {{count}} empresas en {{location}}", "permission_required": "Se requiere permiso de notificación", "permission_message": "Habilita las notificaciones para recibir alertas cuando se completen tus búsquedas"},
+  "templates": {
+    "email_subject": "Oportunidad de asociación logística - {{company}}",
+    "email_body": "Hola {{contactName}},\n\nSoy {{userName}} de {{userCompany}}. Soy conductor de camión actualmente en {{location}} y estoy buscando oportunidades de carga.\n\nCreo que podríamos trabajar juntos en soluciones logísticas. Por favor, contáctame:\n\nTeléfono: {{userPhone}}\nCorreo: {{userEmail}}\n\nSaludos cordiales,\n{{userName}}",
+    "whatsapp_message": "Hola {{contactName}}, soy {{userName}} de {{userCompany}}. Soy conductor de camión en {{location}} buscando carga. ¿Podemos hablar sobre oportunidades logísticas? Contacto: {{userPhone}}"
+  },
+  "notifications": {
+    "search_complete": "Búsqueda completada",
+    "search_complete_body": "Se encontraron {{count}} empresas en {{location}}",
+    "permission_required": "Se requiere permiso de notificación",
+    "permission_message": "Habilita las notificaciones para recibir alertas cuando se completen tus búsquedas"
+  },
   "pricing": {
     "title": "Elige tu plan",
     "subtitle": "Selecciona el plan perfecto para tu negocio",
@@ -83,7 +212,12 @@
     "buy_now": "Comprar ahora",
     "footer_note": "Todos los planes incluyen información básica de la empresa, contactos y ubicación. Cancela en cualquier momento."
   },
-  "errors": {"network_error": "Error de red. Por favor, verifica tu conexión.", "something_went_wrong": "Algo salió mal. Por favor, inténtalo de nuevo.", "session_expired": "Sesión expirada. Por favor, inicia sesión de nuevo.", "insufficient_permissions": "Permisos insuficientes"},
+  "errors": {
+    "network_error": "Error de red. Por favor, verifica tu conexión.",
+    "something_went_wrong": "Algo salió mal. Por favor, inténtalo de nuevo.",
+    "session_expired": "Sesión expirada. Por favor, inicia sesión de nuevo.",
+    "insufficient_permissions": "Permisos insuficientes"
+  },
   "directions": {
     "north": "Norte",
     "northeast": "Noreste",
@@ -134,18 +268,18 @@
     "email_subject_driver": "Disponibilidad en {{origin}}",
     "email_subject_load": "Ruta {{route}}",
     "email_body_driver": "Hola {{theirName}},\n\nSoy {{myName}} de {{myCompany}}. Te contacto por tu disponibilidad en la zona de {{origin}}.\n\n{{contactLine}}\nSaludos,\n{{myName}}",
-  "email_body_load": "Hola {{theirName}},\n\nSoy {{myName}} de {{myCompany}}. Estoy interesado en tu ruta {{route}}.\n\n{{contactLine}}\nSaludos,\n{{myName}}",
-  "whatsapp_choose_title": "Elige la aplicación de WhatsApp",
-  "whatsapp_choose_message": "¿Qué aplicación de WhatsApp quieres usar para contactar?",
-  "whatsapp_app_regular": "WhatsApp",
-  "whatsapp_app_business": "WhatsApp Business",
-  "whatsapp_business_ios_title": "Aviso sobre WhatsApp Business",
-  "whatsapp_business_ios_message": "En iOS, Apple siempre abre primero el WhatsApp personal cuando ambas aplicaciones están instaladas. Es una limitación de la plataforma impuesta por Meta/Apple. Para abrir directamente WhatsApp Business debes desinstalar la aplicación personal de WhatsApp.",
-  "whatsapp_unavailable_title": "No se puede abrir WhatsApp",
-  "whatsapp_unavailable_message": "No pudimos abrir la aplicación de WhatsApp seleccionada. Puedes cambiar la preferencia o intentarlo de nuevo.",
-  "whatsapp_change_preference": "Cambiar preferencia",
-  "whatsapp_invalid_number_title": "Se requiere número internacional",
-  "whatsapp_invalid_number_message": "Agrega el código de país (por ejemplo, +34...) al número antes de contactar por WhatsApp.",
+    "email_body_load": "Hola {{theirName}},\n\nSoy {{myName}} de {{myCompany}}. Estoy interesado en tu ruta {{route}}.\n\n{{contactLine}}\nSaludos,\n{{myName}}",
+    "whatsapp_choose_title": "Elige la aplicación de WhatsApp",
+    "whatsapp_choose_message": "¿Qué aplicación de WhatsApp quieres usar para contactar?",
+    "whatsapp_app_regular": "WhatsApp",
+    "whatsapp_app_business": "WhatsApp Business",
+    "whatsapp_business_ios_title": "Aviso sobre WhatsApp Business",
+    "whatsapp_business_ios_message": "En iOS, Apple siempre abre primero el WhatsApp personal cuando ambas aplicaciones están instaladas. Es una limitación de la plataforma impuesta por Meta/Apple. Para abrir directamente WhatsApp Business debes desinstalar la aplicación personal de WhatsApp.",
+    "whatsapp_unavailable_title": "No se puede abrir WhatsApp",
+    "whatsapp_unavailable_message": "No pudimos abrir la aplicación de WhatsApp seleccionada. Puedes cambiar la preferencia o intentarlo de nuevo.",
+    "whatsapp_change_preference": "Cambiar preferencia",
+    "whatsapp_invalid_number_title": "Se requiere número internacional",
+    "whatsapp_invalid_number_message": "Agrega el código de país (por ejemplo, +34...) al número antes de contactar por WhatsApp.",
     "upgrade_required": "Actualización necesaria",
     "upgrade_required_message": "Necesitas una suscripción activa para ver los contactos.",
     "load_timing_warning_title": "📦 Mejores Resultados con Cargas Activas",
@@ -157,8 +291,8 @@
       "tier_name": "Plan Growth",
       "tier_price": "€29.99 / mes",
       "tier_description": "Pensado para flotas en crecimiento que necesitan conexiones constantes con cargadores.",
-    "feature_contacts": "Datos de contacto completos en cada publicación",
-    "feature_posts": "Hasta 5 publicaciones al día y 30 al mes",
+      "feature_contacts": "Datos de contacto completos en cada publicación",
+      "feature_posts": "Hasta 5 publicaciones al día y 30 al mes",
       "feature_support": "Soporte prioritario y filtros guardados",
       "secondary_cta": "¿Necesitas más? Los planes superiores incluyen IA matching, analíticas y exportación a LinkedIn.",
       "upgrade_now": "Actualizar ahora",
@@ -219,7 +353,12 @@
       "title": "Encuentra Cargas y Conéctate con Empresas de Transporte al Instante",
       "subtitle": "La primera plataforma logística basada en GPS que conecta conductores, transitarios y cargadores en tiempo real",
       "cta_primary": "Comenzar Gratis",
-      "trust_badge": "Más de 10.000 conductores y empresas de logística en Europa confían en nosotros"
+      "trust_badge": "Más de 10.000 conductores y empresas de logística en Europa confían en nosotros",
+      "trust_features": {
+        "no_broker_fees": "No Broker Fees",
+        "dead_zones": "Find Shippers in Dead Zones",
+        "instant_contact": "Instant Contact Methods"
+      }
     },
     "cta": {
       "learn_more": "Saber Más"
@@ -310,7 +449,98 @@
       "testimonial3_author": "Sarah K., Propietaria de Flota, California",
       "stats_drivers": "Construido para Conductores Independientes",
       "stats_companies": "Encuentra Cargadores Locales al Instante",
-      "stats_countries": "Lanzamiento en América del Norte"
+      "stats_countries": "Lanzamiento en América del Norte",
+      "stat_values": {
+        "drivers": "1000+",
+        "companies": "5000+",
+        "countries": "6"
+      }
+    },
+    "final_cta": {
+      "badge": "Built for Owner-Operators",
+      "stats": {
+        "success_rate": {
+          "value": "98%",
+          "label": "Success Rate"
+        },
+        "support": {
+          "value": "24/7",
+          "label": "Support"
+        },
+        "rating": {
+          "value": "5★",
+          "label": "Rating"
+        }
+      }
+    },
+    "features_page": {
+      "hero_title": "Powerful Features for Truck Drivers",
+      "hero_subtitle": "Everything you need to find clients, manage leads, and grow your logistics business",
+      "core": {
+        "title": "Core Features",
+        "subtitle": "Available on all plans, including the free trial",
+        "details": {
+          "gps": [
+            "Automatic location detection",
+            "5km search radius",
+            "Real-time GPS tracking",
+            "Search anywhere you drive"
+          ],
+          "community": [
+            "Post driver availability",
+            "Find available routes",
+            "Connect with fellow truckers",
+            "Real-time community feed"
+          ],
+          "leads": [
+            "Unlimited lead storage",
+            "Status tracking (New, Contacted, Won, Lost)",
+            "Add custom notes",
+            "CSV export functionality"
+          ],
+          "templates": [
+            "Pre-filled email templates",
+            "WhatsApp message templates",
+            "Auto-populate your contact info",
+            "Professional messaging"
+          ]
+        }
+      },
+      "how": {
+        "title": "How It Works",
+        "subtitle": "Start finding clients in 4 simple steps",
+        "steps": {
+          "step1": {
+            "title": "Download & Sign Up",
+            "desc": "Install Truxel from App Store or Google Play. Create your free account and get 5 trial searches."
+          },
+          "step2": {
+            "title": "Enable GPS & Search",
+            "desc": "Turn on your location and let Truxel find companies within 5km automatically."
+          },
+          "step3": {
+            "title": "View Results",
+            "desc": "Browse company details, contact information, and exact locations on the map."
+          },
+          "step4": {
+            "title": "Make Contact",
+            "desc": "Reach out via email, WhatsApp, or phone using our pre-filled templates."
+          }
+        }
+      },
+      "pro": {
+        "badge": "PRO PLAN",
+        "title": "Advanced Features",
+        "subtitle": "Unlock powerful tools with Pro tier subscription"
+      },
+      "additional": {
+        "title": "Additional Features"
+      },
+      "cta": {
+        "title": "Ready to Get Started?",
+        "subtitle": "Download Truxel today and start finding clients instantly with 5 free trial searches",
+        "secondary": "View Pricing"
+      }
     }
   }
 }

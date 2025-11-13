@@ -1,4 +1,4 @@
-﻿{
+{
   "common": {
     "login": "Autentificare",
     "register": "Înregistrare",
@@ -217,9 +217,9 @@
     "unit_mi": "Mile (mi)",
     "preferred_industries": "Industrii Preferate",
     "industries_desc": "Selectează până la {{count}}/5 industrii cu care vrei să lucrezi",
-  "phone_number_helper": "Alege prefixul țării și apoi introdu restul numărului fără zero-ul din față.",
-  "phone_number_placeholder": "712345678",
-  "phone_number_invalid": "Numărul pare prea scurt. Verifică-l și încearcă din nou.",
+    "phone_number_helper": "Alege prefixul țării și apoi introdu restul numărului fără zero-ul din față.",
+    "phone_number_placeholder": "712345678",
+    "phone_number_invalid": "Numărul pare prea scurt. Verifică-l și încearcă din nou.",
     "max_industries": "Maxim 5 industrii",
     "max_industries_desc": "Poți selecta maximum 5 industrii",
     "name_required": "Numele este obligatoriu",
@@ -385,8 +385,8 @@
       "tier_name": "Plan Growth",
       "tier_price": "€29.99 / lună",
       "tier_description": "Creat pentru firme în creștere care au nevoie de acces constant la încărcători.",
-    "feature_contacts": "Acces complet la datele de contact pentru toate postările",
-    "feature_posts": "Până la 5 postări pe zi și 30 pe lună",
+      "feature_contacts": "Acces complet la datele de contact pentru toate postările",
+      "feature_posts": "Până la 5 postări pe zi și 30 pe lună",
       "feature_support": "Suport prioritar și filtre salvate",
       "secondary_cta": "Ai nevoie de mai mult? Planurile superioare includ AI matching, analytics și export LinkedIn.",
       "upgrade_now": "Upgrade acum",
@@ -419,22 +419,22 @@
     "whatsapp_change_preference": "Schimbă preferința",
     "whatsapp_invalid_number_title": "Număr internațional necesar",
     "whatsapp_invalid_number_message": "Adaugă prefixul internațional (de exemplu +40...) la numărul de telefon înainte de a contacta pe WhatsApp.",
-  "contact_whatsapp": "WhatsApp",
-  "contact_call": "Sună",
-  "contact_email": "Email",
-  "email_contact_line": "Mă poți contacta la {{phone}}.",
-  "whatsapp_driver_available": "Salut {{theirName}}, sunt {{myName}} de la {{myCompany}}. Te contactez pentru disponibilitatea ta în zona {{origin}}.",
-  "whatsapp_load_available": "Salut {{theirName}}, sunt {{myName}} de la {{myCompany}}. Sunt interesat de marfa {{load}}.",
-  "email_subject_driver": "Disponibilitate în zona {{origin}}",
-  "email_subject_load": "Marfă {{load}}",
-  "email_body_driver": "Bună {{theirName}},\n\nSunt {{myName}} de la {{myCompany}}. Te contactez pentru disponibilitatea ta în zona {{origin}}.\n\n{{contactLine}}\nCu respect,\n{{myName}}",
-  "email_body_load": "Bună {{theirName}},\n\nSunt {{myName}} de la {{myCompany}}. Sunt interesat de marfa {{load}}.\n\n{{contactLine}}\nCu respect,\n{{myName}}",
-  "whatsapp_choose_title": "Alege aplicația WhatsApp",
-  "whatsapp_choose_message": "Ce aplicație WhatsApp vrei să folosești pentru contact?",
-  "whatsapp_app_regular": "WhatsApp",
-  "whatsapp_app_business": "WhatsApp Business",
-  "whatsapp_business_ios_title": "Atenție la WhatsApp Business",
-  "whatsapp_business_ios_message": "Pe iOS, Apple deschide mereu WhatsApp-ul personal atunci când ambele aplicații sunt instalate. Este o limitare impusă de Meta/Apple. Dacă vrei să intri direct în WhatsApp Business, trebuie să dezinstalezi aplicația WhatsApp personal.",
+    "contact_whatsapp": "WhatsApp",
+    "contact_call": "Sună",
+    "contact_email": "Email",
+    "email_contact_line": "Mă poți contacta la {{phone}}.",
+    "whatsapp_driver_available": "Salut {{theirName}}, sunt {{myName}} de la {{myCompany}}. Te contactez pentru disponibilitatea ta în zona {{origin}}.",
+    "whatsapp_load_available": "Salut {{theirName}}, sunt {{myName}} de la {{myCompany}}. Sunt interesat de marfa {{load}}.",
+    "email_subject_driver": "Disponibilitate în zona {{origin}}",
+    "email_subject_load": "Marfă {{load}}",
+    "email_body_driver": "Bună {{theirName}},\n\nSunt {{myName}} de la {{myCompany}}. Te contactez pentru disponibilitatea ta în zona {{origin}}.\n\n{{contactLine}}\nCu respect,\n{{myName}}",
+    "email_body_load": "Bună {{theirName}},\n\nSunt {{myName}} de la {{myCompany}}. Sunt interesat de marfa {{load}}.\n\n{{contactLine}}\nCu respect,\n{{myName}}",
+    "whatsapp_choose_title": "Alege aplicația WhatsApp",
+    "whatsapp_choose_message": "Ce aplicație WhatsApp vrei să folosești pentru contact?",
+    "whatsapp_app_regular": "WhatsApp",
+    "whatsapp_app_business": "WhatsApp Business",
+    "whatsapp_business_ios_title": "Atenție la WhatsApp Business",
+    "whatsapp_business_ios_message": "Pe iOS, Apple deschide mereu WhatsApp-ul personal atunci când ambele aplicații sunt instalate. Este o limitare impusă de Meta/Apple. Dacă vrei să intri direct în WhatsApp Business, trebuie să dezinstalezi aplicația WhatsApp personal.",
     "templates": {
       "availability": {
         "local": "Disponibil local",
@@ -516,7 +516,12 @@
       "title": "Ia Controlul Afacerii Tale de Transport",
       "subtitle": "Nu mai aștepta brokerii. Găsește expeditori direct în jurul tău, chiar și în zone moarte. Trimite mesaje personalizate prin WhatsApp, email sau sună cu un singur tap.",
       "cta_primary": "Începe Perioada de Probă Gratuită",
-      "trust_badge": "Construit pentru Proprietari-Operatori din America de Nord"
+      "trust_badge": "Construit pentru Proprietari-Operatori din America de Nord",
+      "trust_features": {
+        "no_broker_fees": "No Broker Fees",
+        "dead_zones": "Find Shippers in Dead Zones",
+        "instant_contact": "Instant Contact Methods"
+      }
     },
     "cta": {
       "learn_more": "Află Mai Multe"
@@ -607,13 +612,102 @@
       "testimonial3_author": "Sarah K., Proprietar Flotă, California",
       "stats_drivers": "Construit pentru Șoferi Independenți",
       "stats_companies": "Găsește Expeditori Locali Instant",
-      "stats_countries": "Se Lansează în America de Nord"
+      "stats_countries": "Se Lansează în America de Nord",
+      "stat_values": {
+        "drivers": "1000+",
+        "companies": "5000+",
+        "countries": "6"
+      }
     },
     "final_cta": {
       "title": "Începe să Găsești Clienți Astăzi",
       "subtitle": "Alătură-te celor 1000+ șoferi care își cresc afacerea cu Truxel",
       "download_ios": "Descarcă pe App Store",
-      "download_android": "Descarcă pe Google Play"
+      "download_android": "Descarcă pe Google Play",
+      "badge": "Built for Owner-Operators",
+      "stats": {
+        "success_rate": {
+          "value": "98%",
+          "label": "Success Rate"
+        },
+        "support": {
+          "value": "24/7",
+          "label": "Support"
+        },
+        "rating": {
+          "value": "5★",
+          "label": "Rating"
+        }
+      }
+    },
+    "features_page": {
+      "hero_title": "Powerful Features for Truck Drivers",
+      "hero_subtitle": "Everything you need to find clients, manage leads, and grow your logistics business",
+      "core": {
+        "title": "Core Features",
+        "subtitle": "Available on all plans, including the free trial",
+        "details": {
+          "gps": [
+            "Automatic location detection",
+            "5km search radius",
+            "Real-time GPS tracking",
+            "Search anywhere you drive"
+          ],
+          "community": [
+            "Post driver availability",
+            "Find available routes",
+            "Connect with fellow truckers",
+            "Real-time community feed"
+          ],
+          "leads": [
+            "Unlimited lead storage",
+            "Status tracking (New, Contacted, Won, Lost)",
+            "Add custom notes",
+            "CSV export functionality"
+          ],
+          "templates": [
+            "Pre-filled email templates",
+            "WhatsApp message templates",
+            "Auto-populate your contact info",
+            "Professional messaging"
+          ]
+        }
+      },
+      "how": {
+        "title": "How It Works",
+        "subtitle": "Start finding clients in 4 simple steps",
+        "steps": {
+          "step1": {
+            "title": "Download & Sign Up",
+            "desc": "Install Truxel from App Store or Google Play. Create your free account and get 5 trial searches."
+          },
+          "step2": {
+            "title": "Enable GPS & Search",
+            "desc": "Turn on your location and let Truxel find companies within 5km automatically."
+          },
+          "step3": {
+            "title": "View Results",
+            "desc": "Browse company details, contact information, and exact locations on the map."
+          },
+          "step4": {
+            "title": "Make Contact",
+            "desc": "Reach out via email, WhatsApp, or phone using our pre-filled templates."
+          }
+        }
+      },
+      "pro": {
+        "badge": "PRO PLAN",
+        "title": "Advanced Features",
+        "subtitle": "Unlock powerful tools with Pro tier subscription"
+      },
+      "additional": {
+        "title": "Additional Features"
+      },
+      "cta": {
+        "title": "Ready to Get Started?",
+        "subtitle": "Download Truxel today and start finding clients instantly with 5 free trial searches",
+        "secondary": "View Pricing"
+      }
     }
   }
 }

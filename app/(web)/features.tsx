@@ -12,50 +12,41 @@ export default function FeaturesPage() {
   const { t } = useTranslation();
   const router = useRouter();
 
+  type CoreFeatureKey = 'gps' | 'community' | 'leads' | 'templates';
+  type HowStepKey = 'step1' | 'step2' | 'step3' | 'step4';
+
+  const coreFeatureDetails = t('web.features_page.core.details', {
+    returnObjects: true,
+  }) as Record<CoreFeatureKey, string[]>;
+
+  const howSteps = t('web.features_page.how.steps', {
+    returnObjects: true,
+  }) as Record<HowStepKey, { title: string; desc: string }>;
+
   const coreFeatures = [
     {
       icon: MapPin,
       title: t('web.features.gps_title'),
       desc: t('web.features.gps_desc'),
-      details: [
-        'Automatic location detection',
-        '5km search radius',
-        'Real-time GPS tracking',
-        'Search anywhere you drive',
-      ],
+      details: coreFeatureDetails.gps,
     },
     {
       icon: Users,
       title: t('web.features.community_title'),
       desc: t('web.features.community_desc'),
-      details: [
-        'Post driver availability',
-        'Find available routes',
-        'Connect with fellow truckers',
-        'Real-time community feed',
-      ],
+      details: coreFeatureDetails.community,
     },
     {
       icon: FileText,
       title: t('web.features.leads_title'),
       desc: t('web.features.leads_desc'),
-      details: [
-        'Unlimited lead storage',
-        'Status tracking (New, Contacted, Won, Lost)',
-        'Add custom notes',
-        'CSV export functionality',
-      ],
+      details: coreFeatureDetails.leads,
     },
     {
       icon: MessageSquare,
       title: t('web.features.templates_title'),
       desc: t('web.features.templates_desc'),
-      details: [
-        'Pre-filled email templates',
-        'WhatsApp message templates',
-        'Auto-populate your contact info',
-        'Professional messaging',
-      ],
+      details: coreFeatureDetails.templates,
     },
   ];
 
@@ -89,26 +80,26 @@ export default function FeaturesPage() {
     {
       step: 1,
       icon: Download,
-      title: 'Download & Sign Up',
-      desc: 'Install Truxel from App Store or Google Play. Create your free account and get 5 trial searches.',
+      title: howSteps.step1.title,
+      desc: howSteps.step1.desc,
     },
     {
       step: 2,
       icon: Search,
-      title: 'Enable GPS & Search',
-      desc: 'Turn on your location and let Truxel find companies within 5km automatically.',
+      title: howSteps.step2.title,
+      desc: howSteps.step2.desc,
     },
     {
       step: 3,
       icon: Map,
-      title: 'View Results',
-      desc: 'Browse company details, contact information, and exact locations on the map.',
+      title: howSteps.step3.title,
+      desc: howSteps.step3.desc,
     },
     {
       step: 4,
       icon: Phone,
-      title: 'Make Contact',
-      desc: 'Reach out via email, WhatsApp, or phone using our pre-filled templates.',
+      title: howSteps.step4.title,
+      desc: howSteps.step4.desc,
     },
   ];
 
@@ -117,18 +108,16 @@ export default function FeaturesPage() {
       {/* Hero */}
       <View style={styles.hero}>
         <View style={styles.section}>
-          <Text style={styles.heroTitle}>Powerful Features for Truck Drivers</Text>
-          <Text style={styles.heroSubtitle}>
-            Everything you need to find clients, manage leads, and grow your logistics business
-          </Text>
+          <Text style={styles.heroTitle}>{t('web.features_page.hero_title')}</Text>
+          <Text style={styles.heroSubtitle}>{t('web.features_page.hero_subtitle')}</Text>
         </View>
       </View>
 
       {/* Core Features */}
       <View style={[styles.section, styles.coreFeaturesSection]}>
-        <Text style={styles.sectionTitle}>Core Features</Text>
+        <Text style={styles.sectionTitle}>{t('web.features_page.core.title')}</Text>
         <Text style={styles.sectionSubtitle}>
-          Available on all plans, including the free trial
+          {t('web.features_page.core.subtitle')}
         </Text>
 
         <View style={styles.featuresGrid}>
@@ -155,9 +144,9 @@ export default function FeaturesPage() {
 
       {/* How It Works */}
       <View style={[styles.section, styles.howItWorksSection]}>
-        <Text style={styles.sectionTitle}>How It Works</Text>
+        <Text style={styles.sectionTitle}>{t('web.features_page.how.title')}</Text>
         <Text style={styles.sectionSubtitle}>
-          Start finding clients in 4 simple steps
+          {t('web.features_page.how.subtitle')}
         </Text>
 
         <View style={styles.stepsContainer}>
@@ -182,11 +171,11 @@ export default function FeaturesPage() {
       {/* Pro Features */}
       <View style={[styles.section, styles.proFeaturesSection]}>
         <View style={styles.proBadge}>
-          <Text style={styles.proBadgeText}>PRO PLAN</Text>
+          <Text style={styles.proBadgeText}>{t('web.features_page.pro.badge')}</Text>
         </View>
-        <Text style={styles.sectionTitle}>Advanced Features</Text>
+        <Text style={styles.sectionTitle}>{t('web.features_page.pro.title')}</Text>
         <Text style={styles.sectionSubtitle}>
-          Unlock powerful tools with Pro tier subscription
+          {t('web.features_page.pro.subtitle')}
         </Text>
 
         <View style={styles.proFeaturesGrid}>
@@ -205,7 +194,7 @@ export default function FeaturesPage() {
 
       {/* Additional Features */}
       <View style={[styles.section, styles.additionalSection]}>
-        <Text style={styles.sectionTitle}>Additional Features</Text>
+        <Text style={styles.sectionTitle}>{t('web.features_page.additional.title')}</Text>
 
         <View style={styles.additionalGrid}>
           {additionalFeatures.map((feature, index) => {
@@ -225,22 +214,22 @@ export default function FeaturesPage() {
 
       {/* CTA */}
       <View style={[styles.section, styles.ctaSection]}>
-        <Text style={styles.ctaTitle}>Ready to Get Started?</Text>
+        <Text style={styles.ctaTitle}>{t('web.features_page.cta.title')}</Text>
         <Text style={styles.ctaText}>
-          Download Truxel today and start finding clients instantly with 5 free trial searches
+          {t('web.features_page.cta.subtitle')}
         </Text>
         <View style={styles.ctaButtons}>
           <TouchableOpacity
             style={styles.primaryButton}
             onPress={() => router.push('/(auth)/register')}
           >
-            <Text style={styles.primaryButtonText}>Start Free Trial</Text>
+            <Text style={styles.primaryButtonText}>{t('web.hero.cta_primary')}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.secondaryButton}
             onPress={() => router.push('/(web)/pricing')}
           >
-            <Text style={styles.secondaryButtonText}>View Pricing</Text>
+            <Text style={styles.secondaryButtonText}>{t('web.features_page.cta.secondary')}</Text>
           </TouchableOpacity>
         </View>
       </View>

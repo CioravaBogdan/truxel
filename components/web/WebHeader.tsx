@@ -227,6 +227,11 @@ const styles = StyleSheet.create({
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
+      transition: 'transform 0.2s ease, opacity 0.2s ease',
+      ':hover': {
+        opacity: 0.8,
+        transform: 'scale(1.02)',
+      },
     }),
   },
   logoImage: {

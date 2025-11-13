@@ -43,9 +43,8 @@ export interface Profile {
 }
 
 export interface Lead {
-  id: string;
-  user_id: string;
-  source_search_id?: string;
+  id: string; // Lead ID from leads table (company data)
+  user_lead_id?: string; // Junction table ID from user_leads (for updates/deletes)
   source_type?: 'search' | 'community'; // Type of source (N8N search or Community post)
   source_id?: string; // ID of source (community_posts.id if from Community)
   company_name: string;
@@ -67,6 +66,8 @@ export interface Lead {
   description?: string;
   status: LeadStatus;
   user_notes?: string;
+  saved_at?: string; // When user saved this lead (from user_leads)
+  last_contacted_at?: string; // When user last contacted this lead (from user_leads)
   ai_match_score?: number;
   match_reasons?: { reason: string; weight: number }[];
   employee_count?: number;

@@ -535,7 +535,12 @@
       "title": "Take Control of Your Trucking Business",
       "subtitle": "No more waiting on brokers. Find shippers directly around you, even in dead zones. Send personalized messages via WhatsApp, email, or call with one tap.",
       "cta_primary": "Start Free Trial",
-      "trust_badge": "Built for Owner-Operators Across North America"
+      "trust_badge": "Built for Owner-Operators Across North America",
+      "trust_features": {
+        "no_broker_fees": "No Broker Fees",
+        "dead_zones": "Find Shippers in Dead Zones",
+        "instant_contact": "Instant Contact Methods"
+      }
     },
     "cta": {
       "learn_more": "Learn More"
@@ -561,6 +566,75 @@
       "notifications_desc": "Get alerts when companies post loads near you",
       "multilang_title": "Multi-Language",
       "multilang_desc": "Available in English, Romanian, Polish, Turkish, Spanish, and more"
+    },
+    "features_page": {
+      "hero_title": "Powerful Features for Truck Drivers",
+      "hero_subtitle": "Everything you need to find clients, manage leads, and grow your logistics business",
+      "core": {
+        "title": "Core Features",
+        "subtitle": "Available on all plans, including the free trial",
+        "details": {
+          "gps": [
+            "Automatic location detection",
+            "5km search radius",
+            "Real-time GPS tracking",
+            "Search anywhere you drive"
+          ],
+          "community": [
+            "Post driver availability",
+            "Find available routes",
+            "Connect with fellow truckers",
+            "Real-time community feed"
+          ],
+          "leads": [
+            "Unlimited lead storage",
+            "Status tracking (New, Contacted, Won, Lost)",
+            "Add custom notes",
+            "CSV export functionality"
+          ],
+          "templates": [
+            "Pre-filled email templates",
+            "WhatsApp message templates",
+            "Auto-populate your contact info",
+            "Professional messaging"
+          ]
+        }
+      },
+      "how": {
+        "title": "How It Works",
+        "subtitle": "Start finding clients in 4 simple steps",
+        "steps": {
+          "step1": {
+            "title": "Download & Sign Up",
+            "desc": "Install Truxel from App Store or Google Play. Create your free account and get 5 trial searches."
+          },
+          "step2": {
+            "title": "Enable GPS & Search",
+            "desc": "Turn on your location and let Truxel find companies within 5km automatically."
+          },
+          "step3": {
+            "title": "View Results",
+            "desc": "Browse company details, contact information, and exact locations on the map."
+          },
+          "step4": {
+            "title": "Make Contact",
+            "desc": "Reach out via email, WhatsApp, or phone using our pre-filled templates."
+          }
+        }
+      },
+      "pro": {
+        "badge": "PRO PLAN",
+        "title": "Advanced Features",
+        "subtitle": "Unlock powerful tools with Pro tier subscription"
+      },
+      "additional": {
+        "title": "Additional Features"
+      },
+      "cta": {
+        "title": "Ready to Get Started?",
+        "subtitle": "Download Truxel today and start finding clients instantly with 5 free trial searches",
+        "secondary": "View Pricing"
+      }
     },
     "footer": {
       "tagline": "The future of logistics networking",
@@ -622,17 +696,211 @@
       "testimonial1_author": "Mike T., Owner-Operator, Texas",
       "testimonial2": "I was stuck in a dead zone and found 3 local shippers within 20 minutes. This pays for itself.",
       "testimonial2_author": "James R., Independent Driver, Ohio",
-      "testimonial3": "One-tap messaging is brilliant. I can reach out to shippers while I'm at a truck stop.",
-      "testimonial3_author": "Sarah K., Fleet Owner, California",
-      "stats_drivers": "Built for Independent Drivers",
-      "stats_companies": "Find Local Shippers Instantly",
-      "stats_countries": "Launching in North America"
-    },
+        "testimonial3": "One-tap messaging is brilliant. I can reach out to shippers while I'm at a truck stop.",
+        "testimonial3_author": "Sarah K., Fleet Owner, California",
+        "stat_values": {
+          "drivers": "1000+",
+          "companies": "5000+",
+          "countries": "6"
+        },
+        "stats_drivers": "Built for Independent Drivers",
+        "stats_companies": "Find Local Shippers Instantly",
+        "stats_countries": "Launching in North America"
+      },
     "final_cta": {
       "title": "Start Finding Clients Today",
       "subtitle": "Join 1000+ truck drivers who are growing their business with Truxel",
+      "badge": "Built for Owner-Operators",
       "download_ios": "Download on App Store",
-      "download_android": "Get it on Google Play"
+      "download_android": "Get it on Google Play",
+      "stats": {
+        "success_rate": {
+          "value": "98%",
+          "label": "Success Rate"
+        },
+        "support": {
+          "value": "24/7",
+          "label": "Support"
+        },
+        "rating": {
+          "value": "5★",
+          "label": "Rating"
+        }
+      }
+    },
+    "about": {
+      "hero_badge": "Built by drivers, for drivers",
+      "hero_title": "Logistics without middlemen starts with Truxel",
+      "hero_subtitle": "Our founder spent years on European roads, knocking on warehouse doors and waiting for brokers to pick up. Truxel is the platform he wished he had: direct shipper access, instant outreach, and real community support.",
+      "hero_cta": "Create your free account",
+      "hero_secondary_cta": "Talk to the team",
+      "founder_quote": "I wanted a way to find shippers while I was still parked at the loading dock. Truxel lets every driver control their pipeline without paying broker fees.",
+      "journey_badge": "Our story",
+      "journey_title": "Born in the cab of a MAN TGX",
+      "journey_subtitle": "From one driver searching for reliable clients to a platform serving thousands across Europe.",
+      "mission_badge": "Mission",
+      "mission_title": "Every kilometer should pay",
+      "mission_subtitle": "We believe drivers should never sit idle when cargo needs moving.",
+      "mission": {
+        "point1": "Direct access to shippers without brokers or hidden fees.",
+        "point2": "Tools designed for life on the road: fast, mobile, multilingual.",
+        "point3": "A community where drivers help drivers with real opportunities."
+      },
+      "coverage_title": "Where Truxel operates today",
+      "coverage_subtitle": "10 languages and thousands of verified companies across Europe.",
+      "coverage": {
+        "romania": "Romania",
+        "uk": "United Kingdom",
+        "us": "United States (launching soon)",
+        "spain": "Spain",
+        "poland": "Poland",
+        "turkey": "Turkey"
+      },
+      "coverage_footer": "We are expanding every month. Tell us where to launch next.",
+      "values_badge": "What guides us",
+      "values_title": "Values from the driver’s seat",
+      "values_subtitle": "We build Truxel around the realities of independent trucking.",
+      "values": {
+        "owner_operator": {
+          "title": "Owner-operator obsessed",
+          "desc": "Feature decisions start with a simple question: does this help a driver close a deal faster?"
+        },
+        "community": {
+          "title": "Community first",
+          "desc": "Drivers, shippers, fleet managers, and forwarders win when everyone can connect directly."
+        },
+        "partners": {
+          "title": "Fair partnerships",
+          "desc": "We work with shippers who respect drivers, pay on time, and value transparency."
+        },
+        "innovation": {
+          "title": "Relentless improvement",
+          "desc": "We ship updates weekly, fueled by real feedback from the road."
+        }
+      },
+      "impact_badge": "Real traction",
+      "impact_title": "Built with the people moving Europe",
+      "impact_subtitle": "Truxel already helps thousands of logistics professionals find cargo faster.",
+      "impact": {
+        "stats": {
+          "drivers": {
+            "value": "4,800+",
+            "label": "drivers building their own pipeline"
+          },
+          "companies": {
+            "value": "12,500+",
+            "label": "verified logistics and manufacturing companies"
+          },
+          "countries": {
+            "value": "18",
+            "label": "countries covered with local data"
+          },
+          "connections": {
+            "value": "65,000+",
+            "label": "direct driver to shipper conversations started"
+          }
+        }
+      },
+      "cta_title": "Let’s build your next lane together",
+      "cta_subtitle": "Join the Truxel network and get direct access to shippers, drivers, and data that keeps your trucks moving.",
+      "cta_primary": "Start today",
+      "cta_secondary": "See pricing"
+    },
+    "founder": {
+      "name": "Bogdan Ciorava",
+      "role": "Founder & former owner-operator",
+      "timeline": {
+        "step1": {
+          "title": "2019 • Chasing direct shippers",
+          "desc": "Bogdan spent nights with spreadsheets of companies, calling warehouses between deliveries to avoid deadhead miles."
+        },
+        "step2": {
+          "title": "2022 • First Truxel prototype",
+          "desc": "After building a manual database of 6,000 companies, he created a GPS search tool to surface nearby shippers instantly."
+        },
+        "step3": {
+          "title": "2024 • Community goes live",
+          "desc": "We launched a European-wide driver network so loads and availability could be shared in seconds, not days."
+        }
+      }
+    },
+    "contact": {
+      "hero_badge": "Talk to a real person",
+      "hero_title": "Let’s solve your logistics challenge together",
+      "hero_subtitle": "Whether you are a driver filling your schedule or a shipper looking for capacity, the Truxel team answers every message in under 24 hours.",
+      "cards_badge": "Reach us fast",
+      "cards_title": "Choose the channel that works for you",
+      "cards_subtitle": "We are based in Bucharest and support drivers across Europe and North America.",
+      "cards": {
+        "email": {
+          "title": "Email",
+          "subtitle": "We respond within 24 hours"
+        },
+        "phone": {
+          "title": "Phone",
+          "subtitle": "Call us Monday to Friday, 09:00-18:00 EET"
+        },
+        "whatsapp": {
+          "title": "WhatsApp",
+          "subtitle": "Text us for urgent questions from the road"
+        },
+        "hours": {
+          "title": "Support hours",
+          "value": "Mon-Fri | 09:00-18:00 EET",
+          "subtitle": "Need weekend help? Leave a message and we will reply first thing Monday."
+        },
+        "location": {
+          "title": "Location",
+          "value": "Bucharest, Romania",
+          "subtitle": "Serving drivers across the European Union"
+        }
+      },
+      "form_badge": "Send a message",
+      "form_title": "Tell us what you need",
+      "form_subtitle": "Share as much detail as you can so we can connect you with the right person.",
+      "form": {
+        "name_label": "Your name *",
+        "name_placeholder": "Enter your full name",
+        "email_label": "Email address *",
+        "email_placeholder": "name@example.com",
+        "subject_label": "Subject *",
+        "subject_placeholder": "E.g. Need help finding loads in Spain",
+        "message_label": "Message *",
+        "message_placeholder": "How can we help?",
+        "button": "Send message",
+        "button_loading": "Sending..."
+      },
+      "toast": {
+        "error_title": "Something went wrong",
+        "error_fields": "Please complete all required fields.",
+        "error_email": "Enter a valid email address.",
+        "success_title": "Email ready to send",
+        "success_message": "Review the draft email and press send to complete your message.",
+        "error_open": "We could not open your email client. Email us at office@truxel.io."
+      },
+      "audience_badge": "Who we help",
+      "audience_title": "Two sides of the same logistics story",
+      "audience_subtitle": "We bridge conversations between drivers and shippers so cargo keeps moving.",
+      "audience": {
+        "drivers": {
+          "badge": "Drivers & owner-operators",
+          "title": "Fill every lane you drive",
+          "point1": "Get direct introductions to shippers in your active regions.",
+          "point2": "Understand which plans unlock contact access and AI insights.",
+          "point3": "Receive onboarding support for your team or dispatchers."
+        },
+        "shippers": {
+          "badge": "Freight forwarders & shippers",
+          "title": "Move freight without intermediaries",
+          "point1": "List urgent loads to reach ready-to-drive carriers.",
+          "point2": "Discover verified carriers by equipment type and region.",
+          "point3": "Coordinate pilots, partnerships, or integrations."
+        }
+      },
+      "bottom_cta_title": "Prefer a live conversation?",
+      "bottom_cta_subtitle": "Book a discovery call with our team or send us a partnership note. We answer every request.",
+      "bottom_cta_primary": "Book a demo",
+      "bottom_cta_secondary": "Send partnership email"
     },
     "pricing": {
       "hero_badge": "Free trial included",

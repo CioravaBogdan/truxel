@@ -3,28 +3,107 @@ import { Lead, LeadStatus } from '@/types/database.types';
 import type { CommunityPost } from '@/types/community.types';
 
 export const leadsService = {
+  /**
+   * Get all leads saved by a user (using user_leads junction table)
+   * Returns leads with user-specific metadata (status, notes, saved_at)
+   */
   async getLeads(userId: string): Promise<Lead[]> {
     const { data, error } = await supabase
-      .from('leads')
-      .select('*')
+      .from('user_leads')
+      .select(`
+        id,
+        status,
+        user_notes,
+        saved_at,
+        last_contacted_at,
+        source_type,
+        source_id,
+        lead:leads!inner (
+          id,
+          company_name,
+          contact_person_name,
+          email,
+          phone,
+          whatsapp,
+          linkedin,
+          linkedin_profile_url,
+          facebook,
+          instagram,
+          website,
+          industry,
+          address,
+          city,
+          country,
+          latitude,
+          longitude,
+          description,
+          ai_match_score,
+          match_reasons,
+          employee_count,
+          founded_year,
+          annual_revenue,
+          social_links,
+          google_place_id,
+          google_url_place,
+          google_url_photo,
+          google_rating,
+          created_at,
+          updated_at
+        )
+      `)
       .eq('user_id', userId)
-      .order('created_at', { ascending: false });
+      .order('saved_at', { ascending: false });
 
     if (error) throw error;
-    return data || [];
+    
+    // Flatten the nested structure for backward compatibility
+    return data?.map((ul: any) => ({
+      id: ul.lead.id, // Lead ID from leads table
+      user_lead_id: ul.id, // Junction table ID (for updates/deletes)
+      ...ul.lead,
+      status: ul.status,
+      user_notes: ul.user_notes,
+      saved_at: ul.saved_at,
+      last_contacted_at: ul.last_contacted_at,
+      source_type: ul.source_type,
+      source_id: ul.source_id,
+    })) || [];
   },
 
+  /**
+   * Get leads saved from a specific search
+   * Uses user_leads junction table with source_search_id filter
+   */
   async getLeadsBySearch(searchId: string): Promise<Lead[]> {
     const { data, error } = await supabase
-      .from('leads')
-      .select('*')
+      .from('user_leads')
+      .select(`
+        id,
+        user_id,
+        status,
+        user_notes,
+        saved_at,
+        lead:leads!inner (*)
+      `)
       .eq('source_search_id', searchId)
-      .order('created_at', { ascending: false });
+      .order('saved_at', { ascending: false });
 
     if (error) throw error;
-    return data || [];
+    
+    return data?.map((ul: any) => ({
+      id: ul.lead.id,
+      user_lead_id: ul.id,
+      ...ul.lead,
+      status: ul.status,
+      user_notes: ul.user_notes,
+      saved_at: ul.saved_at,
+    })) || [];
   },
 
+  /**
+   * Get a single lead by ID (from leads table - shared company data)
+   * Note: This returns the lead without user-specific metadata
+   */
   async getLead(id: string): Promise<Lead | null> {
     const { data, error } = await supabase
       .from('leads')
@@ -36,17 +115,82 @@ export const leadsService = {
     return data;
   },
 
-  async createLead(lead: Omit<Lead, 'id' | 'created_at' | 'updated_at'>): Promise<Lead> {
-    const { data, error } = await supabase
+  /**
+   * Create/save a lead for a user using junction table
+   * 1. Insert or get existing lead in leads table (company data)
+   * 2. Create user_leads entry (user's relationship to lead)
+   */
+  async createLead(
+    lead: Omit<Lead, 'id' | 'created_at' | 'updated_at'>, 
+    userId: string
+  ): Promise<Lead> {
+    // Step 1: Insert lead (or get existing if duplicate phone)
+    const { data: leadData, error: leadError } = await supabase
       .from('leads')
-      .insert(lead)
+      .upsert({
+        company_name: lead.company_name,
+        contact_person_name: lead.contact_person_name,
+        email: lead.email,
+        phone: lead.phone,
+        whatsapp: lead.whatsapp,
+        linkedin: lead.linkedin,
+        linkedin_profile_url: lead.linkedin_profile_url,
+        facebook: lead.facebook,
+        instagram: lead.instagram,
+        website: lead.website,
+        industry: lead.industry,
+        address: lead.address,
+        city: lead.city,
+        country: lead.country,
+        latitude: lead.latitude,
+        longitude: lead.longitude,
+        description: lead.description,
+        ai_match_score: lead.ai_match_score,
+        match_reasons: lead.match_reasons,
+        employee_count: lead.employee_count,
+        founded_year: lead.founded_year,
+        annual_revenue: lead.annual_revenue,
+        social_links: lead.social_links,
+      }, {
+        onConflict: 'phone', // Deduplicate by phone
+        ignoreDuplicates: false,
+      })
       .select()
       .single();
 
-    if (error) throw error;
-    return data;
+    if (leadError) throw leadError;
+
+    // Step 2: Create user_leads entry (user's relationship to this lead)
+    const { data: userLeadData, error: userLeadError } = await supabase
+      .from('user_leads')
+      .insert({
+        user_id: userId,
+        lead_id: leadData.id,
+        status: (lead as any).status || 'new',
+        user_notes: (lead as any).user_notes || null,
+        source_type: (lead as any).source_type || 'search',
+        source_id: (lead as any).source_id || null,
+        source_search_id: (lead as any).source_search_id || null,
+      })
+      .select()
+      .single();
+
+    if (userLeadError) throw userLeadError;
+
+    // Return combined lead data
+    return {
+      ...leadData,
+      user_lead_id: userLeadData.id,
+      status: userLeadData.status,
+      user_notes: userLeadData.user_notes,
+      saved_at: userLeadData.saved_at,
+    };
   },
 
+  /**
+   * Update lead data (company info in leads table)
+   * Note: This updates the shared lead data, not user-specific metadata
+   */
   async updateLead(id: string, updates: Partial<Lead>): Promise<Lead> {
     const { data, error } = await supabase
       .from('leads')
@@ -59,19 +203,48 @@ export const leadsService = {
     return data;
   },
 
-  async updateLeadStatus(id: string, status: LeadStatus): Promise<Lead> {
-    return this.updateLead(id, { status });
-  },
-
-  async updateLeadNotes(id: string, notes: string): Promise<Lead> {
-    return this.updateLead(id, { user_notes: notes });
-  },
-
-  async deleteLead(id: string): Promise<void> {
+  /**
+   * Update user-specific lead status (in user_leads junction table)
+   * @param userLeadId - ID from user_leads table (not leads.id!)
+   */
+  async updateLeadStatus(userLeadId: string, status: LeadStatus, userId: string): Promise<void> {
     const { error } = await supabase
-      .from('leads')
+      .from('user_leads')
+      .update({ 
+        status,
+        last_contacted_at: status === 'contacted' ? new Date().toISOString() : undefined
+      })
+      .eq('id', userLeadId)
+      .eq('user_id', userId); // Security: ensure user owns this relationship
+
+    if (error) throw error;
+  },
+
+  /**
+   * Update user-specific lead notes (in user_leads junction table)
+   * @param userLeadId - ID from user_leads table (not leads.id!)
+   */
+  async updateLeadNotes(userLeadId: string, notes: string, userId: string): Promise<void> {
+    const { error } = await supabase
+      .from('user_leads')
+      .update({ user_notes: notes })
+      .eq('id', userLeadId)
+      .eq('user_id', userId); // Security: ensure user owns this relationship
+
+    if (error) throw error;
+  },
+
+  /**
+   * Delete (unsave) a lead for a user
+   * Removes the user_leads entry, but keeps the lead in leads table
+   * @param userLeadId - ID from user_leads table (not leads.id!)
+   */
+  async deleteLead(userLeadId: string, userId: string): Promise<void> {
+    const { error } = await supabase
+      .from('user_leads')
       .delete()
-      .eq('id', id);
+      .eq('id', userLeadId)
+      .eq('user_id', userId); // Security: ensure user owns this relationship
 
     if (error) throw error;
   },
@@ -82,19 +255,35 @@ export const leadsService = {
    */
   async getConvertedLeads(userId: string): Promise<Lead[]> {
     const { data, error } = await supabase
-      .from('leads')
-      .select('*')
+      .from('user_leads')
+      .select(`
+        id,
+        status,
+        user_notes,
+        saved_at,
+        source_type,
+        lead:leads!inner (*)
+      `)
       .eq('user_id', userId)
       .eq('source_type', 'community')
-      .order('created_at', { ascending: false });
+      .order('saved_at', { ascending: false });
 
     if (error) throw error;
-    return data || [];
+    
+    return data?.map((ul: any) => ({
+      id: ul.lead.id,
+      user_lead_id: ul.id,
+      ...ul.lead,
+      status: ul.status,
+      user_notes: ul.user_notes,
+      saved_at: ul.saved_at,
+      source_type: ul.source_type,
+    })) || [];
   },
 
   /**
    * Check if a lead with similar contact info already exists for this user
-   * Checks for duplicate phone OR (duplicate email AND company name)
+   * Uses user_leads junction table to check if user already saved this lead
    */
   async isDuplicateLead(
     userId: string, 
@@ -102,31 +291,50 @@ export const leadsService = {
     email: string | null, 
     companyName: string
   ): Promise<boolean> {
-    // Build query conditions
-    let query = supabase
-      .from('leads')
-      .select('id', { count: 'exact', head: true })
-      .eq('user_id', userId);
-
     // Check for duplicate phone (if provided)
     if (phone) {
-      const { count: phoneCount } = await query.eq('phone', phone);
-      if (phoneCount && phoneCount > 0) {
-        return true; // Duplicate found by phone
+      // First, find leads with this phone
+      const { data: leadsWithPhone } = await supabase
+        .from('leads')
+        .select('id')
+        .eq('phone', phone);
+      
+      if (leadsWithPhone && leadsWithPhone.length > 0) {
+        const leadIds = leadsWithPhone.map(l => l.id);
+        
+        // Check if user already saved any of these leads
+        const { count: phoneCount } = await supabase
+          .from('user_leads')
+          .select('id', { count: 'exact', head: true })
+          .eq('user_id', userId)
+          .in('lead_id', leadIds);
+        
+        if (phoneCount && phoneCount > 0) {
+          return true; // User already saved a lead with this phone
+        }
       }
     }
 
     // Check for duplicate email + company name (if both provided)
     if (email && companyName) {
-      const { count: emailCount } = await supabase
+      const { data: existingLeads } = await supabase
         .from('leads')
-        .select('id', { count: 'exact', head: true })
-        .eq('user_id', userId)
+        .select('id')
         .eq('email', email)
         .eq('company_name', companyName);
       
-      if (emailCount && emailCount > 0) {
-        return true; // Duplicate found by email + company
+      if (existingLeads && existingLeads.length > 0) {
+        const leadIds = existingLeads.map(l => l.id);
+        
+        const { count: emailCount } = await supabase
+          .from('user_leads')
+          .select('id', { count: 'exact', head: true })
+          .eq('user_id', userId)
+          .in('lead_id', leadIds);
+        
+        if (emailCount && emailCount > 0) {
+          return true; // User already saved a lead with this email + company
+        }
       }
     }
 
@@ -135,7 +343,7 @@ export const leadsService = {
 
   /**
    * Convert a Community post to a permanent lead in My Book
-   * Creates a new lead record with source_type='community' and source_id=post.id
+   * Creates lead in leads table + user_leads entry
    */
   async convertPostToLead(post: CommunityPost, userId: string): Promise<Lead> {
     // Extract clean city name from formatted text (e.g., "Podu Turcului - 98km..." → "Podu Turcului")
@@ -152,33 +360,75 @@ export const leadsService = {
       throw new Error('DUPLICATE_LEAD'); // Special error code for UI handling
     }
     
-    // Map CommunityPost fields to Lead fields
-    const leadData = {
-      user_id: userId,
-      source_type: 'community',
-      source_id: post.id,
-      company_name: companyName,
-      contact_person_name: post.profile?.full_name || null,
-      email: email,
-      phone: phone,
-      whatsapp: post.contact_whatsapp ? phone : null,
-      city: cleanCityName, // Use clean city name without distance info
-      country: post.origin_country,
-      latitude: post.origin_lat ? parseFloat(post.origin_lat.toString()) : null,
-      longitude: post.origin_lng ? parseFloat(post.origin_lng.toString()) : null,
-      description: `Converted from Community ${post.post_type === 'DRIVER_AVAILABLE' ? 'Driver' : 'Load'} post`,
-      status: 'new' as LeadStatus,
-      user_notes: `Origin: ${cleanCityName}${post.dest_city ? ` → Destination: ${post.dest_city}` : ''}`,
-    };
-
-    const { data, error } = await supabase
+    // Step 1: Check if lead already exists in leads table (by phone or email)
+    let leadData: any;
+    
+    const { data: existingLeads, error: searchError } = await supabase
       .from('leads')
-      .insert(leadData)
+      .select('*')
+      .or(`phone.eq.${phone},email.eq.${email}`)
+      .limit(1);
+    
+    if (searchError) throw searchError;
+    
+    if (existingLeads && existingLeads.length > 0) {
+      // Lead already exists - reuse it
+      leadData = existingLeads[0];
+    } else {
+      // Create new lead
+      const lat = post.origin_lat ? parseFloat(post.origin_lat.toString()) : null;
+      const lng = post.origin_lng ? parseFloat(post.origin_lng.toString()) : null;
+      
+      const { data: newLead, error: createError } = await supabase
+        .from('leads')
+        .insert({
+          user_id: userId, // ✅ Add user_id for backward compatibility
+          company_name: companyName,
+          contact_person_name: post.profile?.full_name || null,
+          email: email,
+          phone: phone,
+          whatsapp: post.contact_whatsapp ? phone : null,
+          city: cleanCityName,
+          country: post.origin_country,
+          latitude: lat,
+          longitude: lng,
+          // Generate Google Maps URL if we have coordinates
+          google_url_place: (lat && lng) 
+            ? `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`
+            : null,
+          description: `Converted from Community ${post.post_type === 'DRIVER_AVAILABLE' ? 'Driver' : 'Load'} post`,
+        })
+        .select()
+        .single();
+      
+      if (createError) throw createError;
+      leadData = newLead;
+    }
+
+    // Step 2: Create user_leads entry
+    const { data: userLeadData, error: userLeadError } = await supabase
+      .from('user_leads')
+      .insert({
+        user_id: userId,
+        lead_id: leadData.id,
+        status: 'new',
+        user_notes: `Origin: ${cleanCityName}${post.dest_city ? ` → Destination: ${post.dest_city}` : ''}`,
+        source_type: 'community',
+        source_id: post.id,
+      })
       .select()
       .single();
 
-    if (error) throw error;
-    return data;
+    if (userLeadError) throw userLeadError;
+
+    // Return combined data
+    return {
+      ...leadData,
+      user_lead_id: userLeadData.id,
+      status: userLeadData.status,
+      user_notes: userLeadData.user_notes,
+      saved_at: userLeadData.saved_at,
+    };
   },
 
   async exportLeadsToCSV(leads: Lead[]): Promise<string> {

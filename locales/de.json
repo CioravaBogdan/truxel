@@ -70,8 +70,7 @@
     "pricing": "Preise",
     "profile": "Profil",
     "community": "Community"
-  }
-,
+  },
   "home": {
     "welcome": "Willkommen bei Truxel",
     "welcome_back": "Willkommen zurück, {{name}}!",
@@ -230,8 +229,7 @@
     "no_billing_history": "Keine Abrechnungshistorie",
     "invoice": "Rechnung",
     "download_invoice": "Rechnung herunterladen"
-  }
-,
+  },
   "profile": {
     "title": "Profil",
     "my_profile": "Mein Profil",
@@ -318,8 +316,7 @@
     "network": "Netzwerkproblem. Überprüfen Sie Ihre Internetverbindung.",
     "not_found": "Nicht gefunden",
     "unauthorized": "Nicht autorisiert. Melden Sie sich an, um fortzufahren."
-  }
-,
+  },
   "community": {
     "title": "Community",
     "feed": "Feed",
@@ -504,7 +501,12 @@
       "title": "Finden Sie Fracht und Verbinden Sie sich Sofort mit Transportunternehmen",
       "subtitle": "Die erste GPS-basierte Logistikplattform, die Fahrer, Spediteure und Verlader in Echtzeit verbindet",
       "cta_primary": "Kostenlos Starten",
-      "trust_badge": "Über 10.000 Fahrer und Logistikunternehmen in ganz Europa vertrauen uns"
+      "trust_badge": "Über 10.000 Fahrer und Logistikunternehmen in ganz Europa vertrauen uns",
+      "trust_features": {
+        "no_broker_fees": "No Broker Fees",
+        "dead_zones": "Find Shippers in Dead Zones",
+        "instant_contact": "Instant Contact Methods"
+      }
     },
     "cta": {
       "learn_more": "Mehr Erfahren"
@@ -595,7 +597,98 @@
       "testimonial3_author": "Sarah K., Flottenbesitzerin, Kalifornien",
       "stats_drivers": "Für Unabhängige Fahrer Gebaut",
       "stats_companies": "Finden Sie Lokale Verlader Sofort",
-      "stats_countries": "Start in Nordamerika"
+      "stats_countries": "Start in Nordamerika",
+      "stat_values": {
+        "drivers": "1000+",
+        "companies": "5000+",
+        "countries": "6"
+      }
+    },
+    "final_cta": {
+      "badge": "Built for Owner-Operators",
+      "stats": {
+        "success_rate": {
+          "value": "98%",
+          "label": "Success Rate"
+        },
+        "support": {
+          "value": "24/7",
+          "label": "Support"
+        },
+        "rating": {
+          "value": "5★",
+          "label": "Rating"
+        }
+      }
+    },
+    "features_page": {
+      "hero_title": "Powerful Features for Truck Drivers",
+      "hero_subtitle": "Everything you need to find clients, manage leads, and grow your logistics business",
+      "core": {
+        "title": "Core Features",
+        "subtitle": "Available on all plans, including the free trial",
+        "details": {
+          "gps": [
+            "Automatic location detection",
+            "5km search radius",
+            "Real-time GPS tracking",
+            "Search anywhere you drive"
+          ],
+          "community": [
+            "Post driver availability",
+            "Find available routes",
+            "Connect with fellow truckers",
+            "Real-time community feed"
+          ],
+          "leads": [
+            "Unlimited lead storage",
+            "Status tracking (New, Contacted, Won, Lost)",
+            "Add custom notes",
+            "CSV export functionality"
+          ],
+          "templates": [
+            "Pre-filled email templates",
+            "WhatsApp message templates",
+            "Auto-populate your contact info",
+            "Professional messaging"
+          ]
+        }
+      },
+      "how": {
+        "title": "How It Works",
+        "subtitle": "Start finding clients in 4 simple steps",
+        "steps": {
+          "step1": {
+            "title": "Download & Sign Up",
+            "desc": "Install Truxel from App Store or Google Play. Create your free account and get 5 trial searches."
+          },
+          "step2": {
+            "title": "Enable GPS & Search",
+            "desc": "Turn on your location and let Truxel find companies within 5km automatically."
+          },
+          "step3": {
+            "title": "View Results",
+            "desc": "Browse company details, contact information, and exact locations on the map."
+          },
+          "step4": {
+            "title": "Make Contact",
+            "desc": "Reach out via email, WhatsApp, or phone using our pre-filled templates."
+          }
+        }
+      },
+      "pro": {
+        "badge": "PRO PLAN",
+        "title": "Advanced Features",
+        "subtitle": "Unlock powerful tools with Pro tier subscription"
+      },
+      "additional": {
+        "title": "Additional Features"
+      },
+      "cta": {
+        "title": "Ready to Get Started?",
+        "subtitle": "Download Truxel today and start finding clients instantly with 5 free trial searches",
+        "secondary": "View Pricing"
+      }
     }
   }
 }

@@ -1,164 +1,234 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Linking } from 'react-native';
+import React, { useMemo } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Platform } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { Truck, Target, Heart, Users, MapPin, Zap } from 'lucide-react-native';
+import { useRouter } from 'expo-router';
+import {
+  Truck,
+  Target,
+  Users,
+  Sparkles,
+  LineChart,
+  MapPin,
+  Handshake,
+  Quote,
+} from 'lucide-react-native';
 import { WebFooter } from '@/components/web/WebFooter';
+
+const BRAND_ORANGE = '#FF6B35';
 
 export default function AboutUs() {
   const { t } = useTranslation();
+  const router = useRouter();
 
-  const values = [
-    { icon: Target, title: 'Efficiency', desc: 'Save time with GPS-powered instant search' },
-    { icon: Heart, title: 'Driver-First', desc: 'Built by truckers, for truckers' },
-    { icon: Users, title: 'Community', desc: 'Connect drivers and businesses together' },
-    { icon: Zap, title: 'Innovation', desc: 'Leveraging technology to simplify logistics' },
-  ];
+  const timelineItems = useMemo(
+    () => [
+      { icon: Truck, titleKey: 'web.founder.timeline.step1.title', descKey: 'web.founder.timeline.step1.desc' },
+      { icon: LineChart, titleKey: 'web.founder.timeline.step2.title', descKey: 'web.founder.timeline.step2.desc' },
+      { icon: Sparkles, titleKey: 'web.founder.timeline.step3.title', descKey: 'web.founder.timeline.step3.desc' },
+    ],
+    [],
+  );
+
+  const missionPoints = useMemo(
+    () => [
+      'web.about.mission.point1',
+      'web.about.mission.point2',
+      'web.about.mission.point3',
+    ],
+    [],
+  );
+
+  const valueCards = useMemo(
+    () => [
+      { icon: Target, titleKey: 'web.about.values.owner_operator.title', descKey: 'web.about.values.owner_operator.desc' },
+      { icon: Users, titleKey: 'web.about.values.community.title', descKey: 'web.about.values.community.desc' },
+      { icon: Handshake, titleKey: 'web.about.values.partners.title', descKey: 'web.about.values.partners.desc' },
+      { icon: Sparkles, titleKey: 'web.about.values.innovation.title', descKey: 'web.about.values.innovation.desc' },
+    ],
+    [],
+  );
+
+  const impactStats = useMemo(
+    () => [
+      {
+        value: t('web.about.impact.stats.drivers.value'),
+        label: t('web.about.impact.stats.drivers.label'),
+      },
+      {
+        value: t('web.about.impact.stats.companies.value'),
+        label: t('web.about.impact.stats.companies.label'),
+      },
+      {
+        value: t('web.about.impact.stats.countries.value'),
+        label: t('web.about.impact.stats.countries.label'),
+      },
+      {
+        value: t('web.about.impact.stats.connections.value'),
+        label: t('web.about.impact.stats.connections.label'),
+      },
+    ],
+    [t],
+  );
+
+  const coverageCountries = useMemo(
+    () => [
+      t('web.about.coverage.romania'),
+      t('web.about.coverage.uk'),
+      t('web.about.coverage.us'),
+      t('web.about.coverage.spain'),
+      t('web.about.coverage.poland'),
+      t('web.about.coverage.turkey'),
+    ],
+    [t],
+  );
 
   return (
     <ScrollView style={styles.container}>
-      {/* Hero */}
       <View style={styles.hero}>
+        <View style={styles.heroOverlay} />
         <View style={styles.section}>
-          <Truck size={64} color="#2563EB" />
-          <Text style={styles.heroTitle}>About Truxel</Text>
-          <Text style={styles.heroSubtitle}>
-            Connecting truck drivers with logistics opportunities across Europe
-          </Text>
+          <View style={styles.heroContent}>
+            <View style={styles.heroBadge}>
+              <Truck size={18} color={BRAND_ORANGE} />
+              <Text style={styles.heroBadgeText}>{t('web.about.hero_badge')}</Text>
+            </View>
+            <Text style={styles.heroTitle}>{t('web.about.hero_title')}</Text>
+            <Text style={styles.heroSubtitle}>{t('web.about.hero_subtitle')}</Text>
+
+            <View style={styles.heroButtons}>
+              <TouchableOpacity
+                style={styles.heroPrimary}
+                onPress={() => router.push('/(auth)/register')}
+              >
+                <Text style={styles.heroPrimaryText}>{t('web.about.hero_cta')}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.heroSecondary}
+                onPress={() => router.push('/(web)/contact')}
+              >
+                <Text style={styles.heroSecondaryText}>{t('web.about.hero_secondary_cta')}</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.quoteCard}>
+              <Quote size={24} color={BRAND_ORANGE} />
+              <Text style={styles.quoteText}>{t('web.about.founder_quote')}</Text>
+              <Text style={styles.quoteAuthor}>{t('web.founder.name')}</Text>
+              <Text style={styles.quoteRole}>{t('web.founder.role')}</Text>
+            </View>
+          </View>
         </View>
       </View>
 
-      {/* Mission */}
-      <View style={[styles.section, styles.missionSection]}>
-        <Text style={styles.sectionTitle}>Our Mission</Text>
-        <Text style={styles.sectionText}>
-          Truxel was born from a simple observation: truck drivers spend too much time searching for clients and not enough time driving. We believe technology should make logistics easier, not harder.
-          {'\n\n'}
-          Our mission is to empower truck drivers with instant access to business opportunities wherever they are, using nothing more than their smartphone and GPS location.
-        </Text>
-      </View>
-
-      {/* Story */}
       <View style={[styles.section, styles.storySection]}>
-        <Text style={styles.sectionTitle}>Our Story</Text>
-        <Text style={styles.sectionText}>
-          Founded in 2024, Truxel emerged from real-world experience in the logistics industry. We saw firsthand how difficult it was for independent truck drivers to find clients consistently.
-          {'\n\n'}
-          Traditional methods - cold calling, visiting industrial areas, relying on word-of-mouth - are time-consuming and inefficient. We knew there had to be a better way.
-          {'\n\n'}
-          By combining GPS technology, comprehensive business databases, and mobile-first design, we created a tool that puts thousands of potential clients at drivers&apos; fingertips.
-        </Text>
-      </View>
+        <Text style={styles.sectionEyebrow}>{t('web.about.journey_badge')}</Text>
+        <Text style={styles.sectionTitle}>{t('web.about.journey_title')}</Text>
+        <Text style={styles.sectionSubtitle}>{t('web.about.journey_subtitle')}</Text>
 
-      {/* Values */}
-      <View style={[styles.section, styles.valuesSection]}>
-        <Text style={styles.sectionTitle}>Our Values</Text>
-        <View style={styles.valuesGrid}>
-          {values.map((value, index) => {
-            const Icon = value.icon;
+        <View style={styles.timelineGrid}>
+          {timelineItems.map((item) => {
+            const Icon = item.icon;
             return (
-              <View key={index} style={styles.valueCard}>
-                <Icon size={40} color="#2563EB" />
-                <Text style={styles.valueTitle}>{value.title}</Text>
-                <Text style={styles.valueDesc}>{value.desc}</Text>
+              <View key={item.titleKey} style={styles.timelineCard}>
+                <View style={styles.timelineIcon}>
+                  <Icon size={24} color={BRAND_ORANGE} />
+                </View>
+                <Text style={styles.timelineTitle}>{t(item.titleKey)}</Text>
+                <Text style={styles.timelineDesc}>{t(item.descKey)}</Text>
               </View>
             );
           })}
         </View>
       </View>
 
-      {/* Coverage */}
-      <View style={[styles.section, styles.coverageSection]}>
-        <Text style={styles.sectionTitle}>Where We Operate</Text>
-        <Text style={styles.sectionText}>
-          Truxel currently operates across 6 European countries:
-        </Text>
-        <View style={styles.countriesList}>
-          <View style={styles.countryItem}>
-            <MapPin size={20} color="#2563EB" />
-            <Text style={styles.countryText}>🇷🇴 Romania</Text>
-          </View>
-          <View style={styles.countryItem}>
-            <MapPin size={20} color="#2563EB" />
-            <Text style={styles.countryText}>🇵🇱 Poland</Text>
-          </View>
-          <View style={styles.countryItem}>
-            <MapPin size={20} color="#2563EB" />
-            <Text style={styles.countryText}>🇹🇷 Turkey</Text>
-          </View>
-          <View style={styles.countryItem}>
-            <MapPin size={20} color="#2563EB" />
-            <Text style={styles.countryText}>🇱🇹 Lithuania</Text>
-          </View>
-          <View style={styles.countryItem}>
-            <MapPin size={20} color="#2563EB" />
-            <Text style={styles.countryText}>🇪🇸 Spain</Text>
-          </View>
-          <View style={styles.countryItem}>
-            <MapPin size={20} color="#2563EB" />
-            <Text style={styles.countryText}>🇬🇧 United Kingdom</Text>
+      <View style={[styles.section, styles.missionSection]}>
+        <View style={styles.missionCard}>
+          <Text style={styles.sectionEyebrow}>{t('web.about.mission_badge')}</Text>
+          <Text style={styles.sectionTitle}>{t('web.about.mission_title')}</Text>
+          <Text style={styles.sectionSubtitle}>{t('web.about.mission_subtitle')}</Text>
+
+          <View style={styles.missionList}>
+            {missionPoints.map((key) => (
+              <View key={key} style={styles.missionItem}>
+                <View style={styles.missionBullet}>
+                  <Sparkles size={16} color="#FFFFFF" />
+                </View>
+                <Text style={styles.missionText}>{t(key)}</Text>
+              </View>
+            ))}
           </View>
         </View>
-        <Text style={styles.sectionText}>
-          {'\n'}We&apos;re constantly expanding to new markets. Stay tuned for more countries coming soon!
-        </Text>
+
+        <View style={styles.coverageCard}>
+          <Text style={styles.coverageTitle}>{t('web.about.coverage_title')}</Text>
+          <Text style={styles.coverageSubtitle}>{t('web.about.coverage_subtitle')}</Text>
+          <View style={styles.coverageList}>
+            {coverageCountries.map((country) => (
+              <View key={country} style={styles.coverageItem}>
+                <MapPin size={18} color={BRAND_ORANGE} />
+                <Text style={styles.coverageText}>{country}</Text>
+              </View>
+            ))}
+          </View>
+          <Text style={styles.coverageFooter}>{t('web.about.coverage_footer')}</Text>
+        </View>
       </View>
 
-      {/* Team */}
-      <View style={[styles.section, styles.teamSection]}>
-        <Text style={styles.sectionTitle}>Our Commitment</Text>
-        <Text style={styles.sectionText}>
-          We&apos;re committed to:{'\n\n'}
-          • Providing accurate, up-to-date company information{'\n'}
-          • Protecting your privacy and data security{'\n'}
-          • Offering fair, transparent pricing{'\n'}
-          • Continuously improving based on driver feedback{'\n'}
-          • Supporting the logistics community{'\n'}
-          • Being GDPR compliant and respecting your rights
-        </Text>
+      <View style={[styles.section, styles.valuesSection]}>
+        <Text style={styles.sectionEyebrow}>{t('web.about.values_badge')}</Text>
+        <Text style={styles.sectionTitle}>{t('web.about.values_title')}</Text>
+        <Text style={styles.sectionSubtitle}>{t('web.about.values_subtitle')}</Text>
+
+        <View style={styles.valuesGrid}>
+          {valueCards.map((value) => {
+            const Icon = value.icon;
+            return (
+              <View key={value.titleKey} style={styles.valueCard}>
+                <View style={styles.valueIcon}>
+                  <Icon size={28} color={BRAND_ORANGE} />
+                </View>
+                <Text style={styles.valueTitle}>{t(value.titleKey)}</Text>
+                <Text style={styles.valueDesc}>{t(value.descKey)}</Text>
+              </View>
+            );
+          })}
+        </View>
       </View>
 
-      {/* Stats */}
-      <View style={[styles.section, styles.statsSection]}>
-        <Text style={styles.sectionTitle}>Truxel by Numbers</Text>
+      <View style={[styles.section, styles.impactSection]}>
+        <Text style={styles.sectionEyebrow}>{t('web.about.impact_badge')}</Text>
+        <Text style={styles.sectionTitle}>{t('web.about.impact_title')}</Text>
+        <Text style={styles.sectionSubtitle}>{t('web.about.impact_subtitle')}</Text>
+
         <View style={styles.statsGrid}>
-          <View style={styles.statCard}>
-            <Text style={styles.statNumber}>1,000+</Text>
-            <Text style={styles.statLabel}>Active Drivers</Text>
-          </View>
-          <View style={styles.statCard}>
-            <Text style={styles.statNumber}>5,000+</Text>
-            <Text style={styles.statLabel}>Companies Found</Text>
-          </View>
-          <View style={styles.statCard}>
-            <Text style={styles.statNumber}>6</Text>
-            <Text style={styles.statLabel}>Countries</Text>
-          </View>
-          <View style={styles.statCard}>
-            <Text style={styles.statNumber}>6</Text>
-            <Text style={styles.statLabel}>Languages</Text>
-          </View>
+          {impactStats.map((stat) => (
+            <View key={stat.label} style={styles.statCard}>
+              <Text style={styles.statNumber}>{stat.value}</Text>
+              <Text style={styles.statLabel}>{stat.label}</Text>
+            </View>
+          ))}
         </View>
       </View>
 
-      {/* Contact CTA */}
       <View style={[styles.section, styles.ctaSection]}>
-        <Text style={styles.ctaTitle}>Have Questions?</Text>
-        <Text style={styles.ctaText}>
-          We&apos;d love to hear from you. Whether you&apos;re a driver looking for more information or a business interested in partnerships, get in touch.
-        </Text>
-        <View style={styles.ctaButtons}>
-          <TouchableOpacity
-            style={styles.primaryButton}
-            onPress={() => Linking.openURL('mailto:office@truxel.io')}
-          >
-            <Text style={styles.primaryButtonText}>Email Us</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.secondaryButton}
-            onPress={() => Linking.openURL('tel:+40750492985')}
-          >
-            <Text style={styles.secondaryButtonText}>Call Us</Text>
-          </TouchableOpacity>
+        <View style={styles.ctaContent}>
+          <Text style={styles.ctaTitle}>{t('web.about.cta_title')}</Text>
+          <Text style={styles.ctaSubtitle}>{t('web.about.cta_subtitle')}</Text>
+
+          <View style={styles.heroButtons}>
+            <TouchableOpacity
+              style={[styles.heroPrimary, styles.ctaPrimary]}
+              onPress={() => router.push('/(auth)/register')}
+            >
+              <Text style={styles.heroPrimaryText}>{t('web.about.cta_primary')}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.heroSecondary, styles.ctaSecondary]}
+              onPress={() => router.push('/(web)/pricing_web')}
+            >
+              <Text style={styles.heroSecondaryText}>{t('web.about.cta_secondary')}</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
 
@@ -167,178 +237,386 @@ export default function AboutUs() {
   );
 }
 
-const styles = StyleSheet.create({
+const rawStyles = {
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#0F172A',
   },
   section: {
     maxWidth: 1200,
     marginHorizontal: 'auto',
-    paddingHorizontal: 16,
-    paddingVertical: 64,
+    paddingHorizontal: 24,
+    paddingVertical: 80,
     width: '100%',
+    ...(Platform.OS === 'web' && {
+      '@media (max-width: 992px)': {
+        paddingHorizontal: 32,
+        paddingVertical: 64,
+      },
+      '@media (max-width: 600px)': {
+        paddingHorizontal: 20,
+        paddingVertical: 48,
+      },
+    }),
   },
   hero: {
-    backgroundColor: '#F8FAFC',
+    position: 'relative',
+    backgroundColor: '#0F172A',
+    overflow: 'hidden',
+  },
+  heroOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    ...(Platform.OS === 'web' && {
+      backgroundImage: 'linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(15, 23, 42, 0.8) 40%, rgba(15, 23, 42, 0.6) 100%)',
+    }),
+  },
+  heroContent: {
+    position: 'relative',
+    zIndex: 1,
+    gap: 28,
+  },
+  heroBadge: {
+    alignSelf: 'flex-start',
+    flexDirection: 'row',
     alignItems: 'center',
+    gap: 10,
+    paddingVertical: 8,
+    paddingHorizontal: 18,
+    borderRadius: 999,
+    backgroundColor: 'rgba(255, 255, 255, 0.06)',
+  },
+  heroBadgeText: {
+    fontSize: 14,
+    fontWeight: '700',
+    letterSpacing: 0.4,
+    color: '#FFFFFF',
+    textTransform: 'uppercase',
   },
   heroTitle: {
     fontSize: 48,
-    fontWeight: '700',
-    color: '#1E293B',
-    marginTop: 24,
-    marginBottom: 16,
-    textAlign: 'center',
+    fontWeight: '900',
+    color: '#FFFFFF',
+    lineHeight: 56,
+    maxWidth: 760,
+    ...(Platform.OS === 'web' && {
+      '@media (max-width: 768px)': {
+        fontSize: 34,
+        lineHeight: 42,
+      },
+    }),
   },
   heroSubtitle: {
     fontSize: 20,
-    color: '#64748B',
-    textAlign: 'center',
-    maxWidth: 600,
+    color: 'rgba(255, 255, 255, 0.82)',
+    lineHeight: 32,
+    maxWidth: 720,
   },
-  missionSection: {
-    backgroundColor: '#FFFFFF',
+  heroButtons: {
+    flexDirection: 'row',
+    gap: 16,
+    flexWrap: 'wrap',
+  },
+  heroPrimary: {
+    paddingVertical: 18,
+    paddingHorizontal: 36,
+    borderRadius: 14,
+    backgroundColor: BRAND_ORANGE,
+    ...(Platform.OS === 'web' && {
+      cursor: 'pointer',
+      transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+      ':hover': {
+        transform: 'translateY(-2px)',
+        boxShadow: '0 25px 45px -20px rgba(255, 107, 53, 0.6)',
+      },
+    }),
+  },
+  heroPrimaryText: {
+    fontSize: 16,
+    fontWeight: '800',
+    color: '#FFFFFF',
+    letterSpacing: 0.6,
+  },
+  heroSecondary: {
+    paddingVertical: 18,
+    paddingHorizontal: 36,
+    borderRadius: 14,
+    borderWidth: 2,
+    borderColor: 'rgba(255,255,255,0.25)',
+    backgroundColor: 'rgba(255, 255, 255, 0.04)',
+    ...(Platform.OS === 'web' && {
+      cursor: 'pointer',
+      transition: 'border-color 0.2s ease, transform 0.2s ease',
+      ':hover': {
+        borderColor: '#FFFFFF',
+        transform: 'translateY(-2px)',
+      },
+    }),
+  },
+  heroSecondaryText: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#FFFFFF',
+    letterSpacing: 0.4,
+  },
+  quoteCard: {
+    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+    padding: 24,
+    borderRadius: 20,
+    gap: 12,
+    maxWidth: 640,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.08)',
+  },
+  quoteText: {
+    fontSize: 18,
+    color: '#E2E8F0',
+    lineHeight: 28,
+    fontStyle: 'italic',
+  },
+  quoteAuthor: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#FFFFFF',
+  },
+  quoteRole: {
+    fontSize: 14,
+    color: 'rgba(255,255,255,0.7)',
+  },
+  sectionEyebrow: {
+    color: BRAND_ORANGE,
+    fontWeight: '700',
+    textTransform: 'uppercase',
+    letterSpacing: 1.4,
+    marginBottom: 16,
+    fontSize: 13,
+  },
+  sectionTitle: {
+    fontSize: 40,
+    fontWeight: '900',
+    color: '#0F172A',
+    marginBottom: 12,
+    textAlign: 'left',
+    ...(Platform.OS === 'web' && {
+      '@media (max-width: 768px)': {
+        fontSize: 32,
+      },
+    }),
+  },
+  sectionSubtitle: {
+    fontSize: 18,
+    color: '#475569',
+    lineHeight: 28,
+    maxWidth: 760,
+    marginBottom: 32,
   },
   storySection: {
+    backgroundColor: '#FFFFFF',
+  },
+  timelineGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 24,
+  },
+  timelineCard: {
+    flex: 1,
+    minWidth: 260,
+    padding: 28,
+    borderRadius: 20,
     backgroundColor: '#F8FAFC',
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    gap: 12,
+  },
+  timelineIcon: {
+    width: 48,
+    height: 48,
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(255, 107, 53, 0.12)',
+  },
+  timelineTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#0F172A',
+  },
+  timelineDesc: {
+    fontSize: 16,
+    color: '#475569',
+    lineHeight: 24,
+  },
+  missionSection: {
+    backgroundColor: '#F8FAFC',
+    flexDirection: 'row',
+    gap: 32,
+    flexWrap: 'wrap',
+  },
+  missionCard: {
+    flex: 1,
+    minWidth: 340,
+    backgroundColor: '#FFFFFF',
+    padding: 32,
+    borderRadius: 24,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+  },
+  missionList: {
+    marginTop: 24,
+    gap: 18,
+  },
+  missionItem: {
+    flexDirection: 'row',
+    gap: 14,
+    alignItems: 'flex-start',
+  },
+  missionBullet: {
+    width: 32,
+    height: 32,
+    borderRadius: 12,
+    backgroundColor: BRAND_ORANGE,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  missionText: {
+    fontSize: 16,
+    color: '#475569',
+    lineHeight: 24,
+    flex: 1,
+  },
+  coverageCard: {
+    flex: 1,
+    minWidth: 260,
+    backgroundColor: '#0F172A',
+    padding: 32,
+    borderRadius: 24,
+    gap: 16,
+  },
+  coverageTitle: {
+    fontSize: 24,
+    fontWeight: '800',
+    color: '#FFFFFF',
+  },
+  coverageSubtitle: {
+    fontSize: 16,
+    color: 'rgba(255,255,255,0.8)',
+    lineHeight: 24,
+  },
+  coverageList: {
+    gap: 12,
+    marginTop: 12,
+  },
+  coverageItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  coverageText: {
+    fontSize: 16,
+    color: '#FFFFFF',
+    fontWeight: '600',
+  },
+  coverageFooter: {
+    fontSize: 14,
+    color: 'rgba(255,255,255,0.65)',
+    marginTop: 8,
   },
   valuesSection: {
     backgroundColor: '#FFFFFF',
-  },
-  coverageSection: {
-    backgroundColor: '#F8FAFC',
-  },
-  teamSection: {
-    backgroundColor: '#FFFFFF',
-  },
-  statsSection: {
-    backgroundColor: '#F8FAFC',
-  },
-  ctaSection: {
-    backgroundColor: '#2563EB',
-    alignItems: 'center',
-  },
-  sectionTitle: {
-    fontSize: 36,
-    fontWeight: '700',
-    color: '#1E293B',
-    marginBottom: 24,
-    textAlign: 'center',
-  },
-  sectionText: {
-    fontSize: 18,
-    color: '#64748B',
-    lineHeight: 27,
   },
   valuesGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 24,
-    marginTop: 32,
   },
   valueCard: {
     flex: 1,
     minWidth: 250,
-    padding: 32,
     backgroundColor: '#F8FAFC',
-    borderRadius: 12,
+    borderRadius: 20,
+    padding: 28,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    gap: 12,
+  },
+  valueIcon: {
+    width: 48,
+    height: 48,
+    borderRadius: 16,
     alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(255, 107, 53, 0.12)',
   },
   valueTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: '#1E293B',
-    marginTop: 16,
-    marginBottom: 8,
+    fontSize: 20,
+    fontWeight: '800',
+    color: '#0F172A',
   },
   valueDesc: {
     fontSize: 16,
-    color: '#64748B',
-    textAlign: 'center',
+    color: '#475569',
+    lineHeight: 24,
   },
-  countriesList: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 16,
-    marginTop: 24,
-  },
-  countryItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    backgroundColor: '#FFFFFF',
-    borderRadius: 8,
-  },
-  countryText: {
-    fontSize: 16,
-    color: '#1E293B',
-    fontWeight: '500',
+  impactSection: {
+    backgroundColor: '#F8FAFC',
   },
   statsGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 32,
     justifyContent: 'center',
-    marginTop: 32,
   },
   statCard: {
     alignItems: 'center',
-    minWidth: 200,
+    minWidth: 220,
+    gap: 8,
   },
   statNumber: {
-    fontSize: 48,
-    fontWeight: '700',
-    color: '#2563EB',
-    marginBottom: 8,
+    fontSize: 44,
+    fontWeight: '900',
+    color: '#0F172A',
   },
   statLabel: {
     fontSize: 16,
-    color: '#64748B',
+    color: '#475569',
+    textAlign: 'center',
+    lineHeight: 22,
+  },
+  ctaSection: {
+    backgroundColor: '#0F172A',
+  },
+  ctaContent: {
+    backgroundColor: '#111C33',
+    borderRadius: 32,
+    padding: 48,
+    alignItems: 'center',
+    gap: 20,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.08)',
   },
   ctaTitle: {
     fontSize: 36,
-    fontWeight: '700',
-    color: '#FFFFFF',
-    marginBottom: 16,
-    textAlign: 'center',
-  },
-  ctaText: {
-    fontSize: 18,
+    fontWeight: '900',
     color: '#FFFFFF',
     textAlign: 'center',
-    maxWidth: 600,
-    marginBottom: 32,
   },
-  ctaButtons: {
-    flexDirection: 'row',
-    gap: 16,
-    flexWrap: 'wrap',
-  },
-  primaryButton: {
-    backgroundColor: '#FFFFFF',
-    paddingHorizontal: 32,
-    paddingVertical: 16,
-    borderRadius: 8,
-  },
-  primaryButtonText: {
+  ctaSubtitle: {
     fontSize: 18,
-    fontWeight: '600',
-    color: '#2563EB',
+    color: 'rgba(255,255,255,0.75)',
+    textAlign: 'center',
+    lineHeight: 28,
+    maxWidth: 640,
+    marginBottom: 12,
   },
-  secondaryButton: {
-    backgroundColor: 'transparent',
-    paddingHorizontal: 32,
-    paddingVertical: 16,
-    borderRadius: 8,
-    borderWidth: 2,
-    borderColor: '#FFFFFF',
+  ctaPrimary: {
+    backgroundColor: BRAND_ORANGE,
   },
-  secondaryButtonText: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#FFFFFF',
+  ctaSecondary: {
+    borderColor: 'rgba(255,255,255,0.45)',
   },
-});
+} as const;
+
+const styles = StyleSheet.create(rawStyles as Record<string, any>);

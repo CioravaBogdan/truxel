@@ -275,11 +275,11 @@
     "whatsapp_app_business": "WhatsApp Business",
     "whatsapp_business_ios_title": "Informacja o WhatsApp Business",
     "whatsapp_business_ios_message": "Na iOS Apple zawsze otwiera zwykły WhatsApp, gdy obie aplikacje są zainstalowane. To ograniczenie po stronie Meta/Apple. Aby przechodzić bezpośrednio do WhatsApp Business, musisz odinstalować osobistą wersję WhatsApp.",
-  "whatsapp_unavailable_title": "Nie możemy otworzyć WhatsApp",
-  "whatsapp_unavailable_message": "Nie udało się otworzyć wybranej aplikacji WhatsApp. Możesz zmienić preferencję lub spróbować ponownie.",
-  "whatsapp_change_preference": "Zmień preferencję",
-  "whatsapp_invalid_number_title": "Wymagany numer międzynarodowy",
-  "whatsapp_invalid_number_message": "Dodaj numer kierunkowy kraju (np. +48...) przed kontaktem przez WhatsApp.",
+    "whatsapp_unavailable_title": "Nie możemy otworzyć WhatsApp",
+    "whatsapp_unavailable_message": "Nie udało się otworzyć wybranej aplikacji WhatsApp. Możesz zmienić preferencję lub spróbować ponownie.",
+    "whatsapp_change_preference": "Zmień preferencję",
+    "whatsapp_invalid_number_title": "Wymagany numer międzynarodowy",
+    "whatsapp_invalid_number_message": "Dodaj numer kierunkowy kraju (np. +48...) przed kontaktem przez WhatsApp.",
     "upgrade_required": "Wymagane uaktualnienie",
     "upgrade_required_message": "Potrzebujesz aktywnej subskrypcji, aby zobaczyć kontakty.",
     "load_timing_warning_title": "📦 Lepsze Wyniki z Aktywnym Transportem",
@@ -291,8 +291,8 @@
       "tier_name": "Plan Growth",
       "tier_price": "€29.99 / miesiąc",
       "tier_description": "Dla rozwijających się flot, które potrzebują stałych połączeń ze zleceniodawcami.",
-    "feature_contacts": "Pełne dane kontaktowe przy każdej publikacji",
-    "feature_posts": "Do 5 postów dziennie i 30 miesięcznie",
+      "feature_contacts": "Pełne dane kontaktowe przy każdej publikacji",
+      "feature_posts": "Do 5 postów dziennie i 30 miesięcznie",
       "feature_support": "Priorytetowe wsparcie i zapisane filtry",
       "secondary_cta": "Potrzebujesz więcej? Wyższe plany oferują AI matching, analitykę i eksport do LinkedIn.",
       "upgrade_now": "Ulepsz teraz",
@@ -314,143 +314,280 @@
       "custom": "Dostępny na trasie {{origin}} → {{dest}}"
     }
   },
-  "support": {
-    "title": "Kontakt z pomocą techniczną",
-    "description": "Potrzebujesz pomocy? Wyślij nam wiadomość, a nasz zespół odpowie najszybciej jak to możliwe.",
-    "need_help_choosing": "Potrzebujesz pomocy w wyborze planu?",
-    "quick_questions": "Szybkie pytania",
-    "write_custom_message": "Napisz własną wiadomość",
-    "your_message": "Twoja wiadomość",
-    "message_placeholder": "Wpisz swoją wiadomość...",
-    "back_to_templates": "Powrót do szablonów",
-    "send_message": "Wyślij wiadomość",
-    "message_sent": "Wiadomość wysłana!",
-    "message_sent_description": "Odpowiemy wkrótce.",
-    "message_received": "Otrzymaliśmy Twoją wiadomość i odpowiemy wkrótce.",
-    "error_empty_message": "Proszę wprowadzić wiadomość",
-    "error_not_logged_in": "Musisz być zalogowany, aby skontaktować się z pomocą",
-    "error_sending": "Nie udało się wysłać wiadomości",
-    "no_messages_yet": "Brak wiadomości",
-    "start_conversation": "Wyślij wiadomość, aby rozpocząć rozmowę z naszym zespołem pomocy",
-    "templates": {
-      "pricing_question": "Mam pytanie dotyczące cen i planów",
-      "feature_request": "Chciałbym zasugerować nową funkcję",
-      "bug_report": "Znalazłem błąd lub problem techniczny",
-      "account_help": "Potrzebuję pomocy z moim kontem",
-      "subscription_help": "Potrzebuję pomocy z moją subskrypcją"
-    }
-  },
   "web": {
-    "nav": {
-      "features": "Funkcje",
-      "pricing": "Cennik",
-      "about": "O nas",
-      "contact": "Kontakt",
-      "login": "Zaloguj się",
-      "signup": "Zarejestruj się"
+    "about": {
+      "hero_badge": "Stworzone przez kierowców dla kierowców",
+      "hero_title": "Logistyka bez pośredników zaczyna się od Truxel",
+      "hero_subtitle": "Nasz założyciel spędził lata na europejskich trasach, pukając do magazynów i czekając, aż brokerzy odbiorą telefon. Truxel to platforma, której wtedy potrzebował: bezpośredni dostęp do nadawców, natychmiastowy kontakt i prawdziwa społeczność.",
+      "hero_cta": "Utwórz darmowe konto",
+      "hero_secondary_cta": "Porozmawiaj z zespołem",
+      "founder_quote": "Chciałem znajdować nadawców, zanim zdążyłem wyjechać z rampy. Truxel daje każdemu kierowcy kontrolę nad własnym pipeline’em bez prowizji dla brokerów.",
+      "journey_badge": "Nasza historia",
+      "journey_title": "Urodzone w kabinie MAN-a TGX",
+      "journey_subtitle": "Od jednego kierowcy szukającego solidnych klientów do platformy obsługującej tysiące osób w całej Europie.",
+      "mission_badge": "Misja",
+      "mission_title": "Każdy kilometr ma przynosić zysk",
+      "mission_subtitle": "Wierzymy, że kierowcy nie powinni stać bez ładunku, gdy towar czeka na transport.",
+      "mission": {
+        "point1": "Bezpośredni dostęp do nadawców, bez brokerów i ukrytych opłat.",
+        "point2": "Narzędzia stworzone do pracy w trasie: szybkie, mobilne, wielojęzyczne.",
+        "point3": "Społeczność, w której kierowcy wspierają się prawdziwymi zleceniami."
+      },
+      "coverage_title": "Gdzie działa dziś Truxel",
+      "coverage_subtitle": "10 języków i tysiące zweryfikowanych firm w całej Europie.",
+      "coverage": {
+        "romania": "Rumunia",
+        "uk": "Wielka Brytania",
+        "us": "Stany Zjednoczone (wkrótce)",
+        "spain": "Hiszpania",
+        "poland": "Polska",
+        "turkey": "Turcja"
+      },
+      "coverage_footer": "Rozszerzamy zasięg co miesiąc. Powiedz nam, gdzie mamy wystartować.",
+      "values_badge": "Nasze wartości",
+      "values_title": "Zasady z perspektywy kierowcy",
+      "values_subtitle": "Budujemy Truxel wokół realiów niezależnego transportu.",
+      "values": {
+        "owner_operator": {
+          "title": "Skupieni na owner-operatorach",
+          "desc": "Każdą decyzję zaczynamy od pytania: czy to pomaga kierowcy szybciej zdobyć zlecenie?"
+        },
+        "community": {
+          "title": "Społeczność na pierwszym miejscu",
+          "desc": "Kierowcy, nadawcy, spedytorzy i forwarderzy wygrywają, gdy mogą łączyć się bezpośrednio."
+        },
+        "partners": {
+          "title": "Uczciwe partnerstwa",
+          "desc": "Współpracujemy z nadawcami, którzy szanują kierowców, płacą na czas i stawiają na przejrzystość."
+        },
+        "innovation": {
+          "title": "Nieustanne ulepszanie",
+          "desc": "Wypuszczamy aktualizacje co tydzień, bazując na prawdziwych opiniach z trasy."
+        }
+      },
+      "impact_badge": "Prawdziwe efekty",
+      "impact_title": "Tworzone razem z ludźmi, którzy napędzają Europę",
+      "impact_subtitle": "Truxel pomaga już tysiącom specjalistów logistycznych szybciej znaleźć ładunek.",
+      "impact": {
+        "stats": {
+          "drivers": {
+            "value": "4 800+",
+            "label": "kierowców buduje swój własny pipeline"
+          },
+          "companies": {
+            "value": "12 500+",
+            "label": "zweryfikowanych firm logistycznych i produkcyjnych"
+          },
+          "countries": {
+            "value": "18",
+            "label": "kraje objęte lokalnymi danymi"
+          },
+          "connections": {
+            "value": "65 000+",
+            "label": "bezpośrednie rozmowy kierowca ↔ nadawca"
+          }
+        }
+      },
+      "cta_title": "Zaplanujmy razem Twoją kolejną trasę",
+      "cta_subtitle": "Dołącz do sieci Truxel i zyskaj bezpośredni dostęp do nadawców, kierowców oraz danych utrzymujących Twoje ciężarówki w ruchu.",
+      "cta_primary": "Zacznij dziś",
+      "cta_secondary": "Zobacz ceny"
+    },
+    "founder": {
+      "name": "Bogdan Ciorava",
+      "role": "Założyciel i były owner-operator",
+      "timeline": {
+        "step1": {
+          "title": "2019 • W poszukiwaniu bezpośrednich nadawców",
+          "desc": "Bogdan spędzał noce z arkuszami firm, dzwoniąc do magazynów między kursami, żeby uniknąć pustych kilometrów."
+        },
+        "step2": {
+          "title": "2022 • Pierwszy prototyp Truxel",
+          "desc": "Po ręcznym zebraniu bazy 6 000 firm stworzył narzędzie GPS, które natychmiast pokazuje nadawców w pobliżu."
+        },
+        "step3": {
+          "title": "2024 • Społeczność startuje",
+          "desc": "Uruchomiliśmy europejską sieć kierowców, gdzie ładunki i dostępność pojawiają się w sekundę, a nie w dni."
+        }
+      }
+    },
+    "contact": {
+      "hero_badge": "Porozmawiaj z człowiekiem",
+      "hero_title": "Rozwiążemy Twoje wyzwania logistyczne razem",
+      "hero_subtitle": "Niezależnie czy jesteś kierowcą szukającym zleceń, czy nadawcą z wolnym frachtem – odpowiadamy na każdą wiadomość w mniej niż 24 godziny.",
+      "cards_badge": "Szybki kontakt",
+      "cards_title": "Wybierz kanał, który Ci odpowiada",
+      "cards_subtitle": "Działamy w Bukareszcie i wspieramy kierowców w całej Europie oraz Ameryce Północnej.",
+      "cards": {
+        "email": {
+          "title": "Email",
+          "subtitle": "Odpowiadamy w ciągu 24 godzin"
+        },
+        "phone": {
+          "title": "Telefon",
+          "subtitle": "Dzwoń od poniedziałku do piątku, 09:00-18:00 EET"
+        },
+        "whatsapp": {
+          "title": "WhatsApp",
+          "subtitle": "Napisz, gdy potrzebujesz odpowiedzi prosto z trasy"
+        },
+        "hours": {
+          "title": "Godziny wsparcia",
+          "value": "Pon-Pt | 09:00-18:00 EET",
+          "subtitle": "Potrzebujesz pomocy w weekend? Zostaw wiadomość – oddzwonimy w poniedziałek rano."
+        },
+        "location": {
+          "title": "Lokalizacja",
+          "value": "Bukareszt, Rumunia",
+          "subtitle": "Obsługujemy kierowców w całej Unii Europejskiej"
+        }
+      },
+      "form_badge": "Wyślij wiadomość",
+      "form_title": "Powiedz nam, czego potrzebujesz",
+      "form_subtitle": "Podaj jak najwięcej szczegółów, abyśmy mogli połączyć Cię z właściwą osobą.",
+      "form": {
+        "name_label": "Twoje imię i nazwisko *",
+        "name_placeholder": "Wpisz pełne imię i nazwisko",
+        "email_label": "Adres e-mail *",
+        "email_placeholder": "nazwa@przyklad.com",
+        "subject_label": "Temat *",
+        "subject_placeholder": "Np. Potrzebuję ładunków w Hiszpanii",
+        "message_label": "Wiadomość *",
+        "message_placeholder": "Jak możemy pomóc?",
+        "button": "Wyślij wiadomość",
+        "button_loading": "Wysyłanie..."
+      },
+      "toast": {
+        "error_title": "Coś poszło nie tak",
+        "error_fields": "Uzupełnij wszystkie wymagane pola.",
+        "error_email": "Wpisz poprawny adres e-mail.",
+        "success_title": "Email gotowy do wysłania",
+        "success_message": "Sprawdź szkic i naciśnij Wyślij, aby zakończyć.",
+        "error_open": "Nie udało się otworzyć klienta pocztowego. Napisz bezpośrednio na office@truxel.io."
+      },
+      "audience_badge": "Komu pomagamy",
+      "audience_title": "Dwie strony tej samej logistyki",
+      "audience_subtitle": "Łączymy kierowców i nadawców, aby ładunki nie stały w miejscu.",
+      "audience": {
+        "drivers": {
+          "badge": "Kierowcy i owner-operatorzy",
+          "title": "Wypełnij każdy przejazd",
+          "point1": "Otrzymuj bezpośrednie przedstawienia do nadawców w swoich regionach.",
+          "point2": "Dowiedz się, które plany dają dostęp do kontaktów i insightów AI.",
+          "point3": "Zyskaj wsparcie onboardingowe dla siebie lub zespołu dyspozytorów."
+        },
+        "shippers": {
+          "badge": "Nadawcy i freight forwarderzy",
+          "title": "Przewoź ładunki bez pośredników",
+          "point1": "Publikuj pilne ładunki i docieraj do gotowych kierowców.",
+          "point2": "Odnajduj zweryfikowanych przewoźników wg rodzaju taboru i regionu.",
+          "point3": "Koordynuj pilotaże, partnerstwa i integracje."
+        }
+      },
+      "bottom_cta_title": "Wolisz rozmowę na żywo?",
+      "bottom_cta_subtitle": "Umów rozmowę z naszym zespołem lub wyślij zapytanie partnerskie. Odpowiadamy na każde zgłoszenie.",
+      "bottom_cta_primary": "Umów demo",
+      "bottom_cta_secondary": "Wyślij email partnerski"
     },
     "hero": {
-      "title": "Przejmij Kontrolę Nad Swoim Biznesem Transportowym",
-      "subtitle": "Koniec z czekaniem na brokerów. Znajdź nadawców bezpośrednio w swojej okolicy, nawet w martwych strefach. Wysyłaj spersonalizowane wiadomości przez WhatsApp, e-mail lub dzwoń jednym dotknięciem.",
-      "cta_primary": "Rozpocznij Darmowy Period Próbny",
-      "trust_badge": "Stworzony dla Właścicieli-Operatorów w Ameryce Północnej"
-    },
-    "cta": {
-      "learn_more": "Dowiedz Się Więcej"
-    },
-    "features": {
-      "title": "Wszystko Czego Potrzebujesz do Rozwoju",
-      "subtitle": "Potężne funkcje zaprojektowane dla kierowców ciężarówek",
-      "gps_title": "Wyszukiwanie GPS",
-      "gps_desc": "Znajdź pobliskie firmy natychmiast korzystając z lokalizacji w czasie rzeczywistym",
-      "instant_contact_title": "Natychmiastowy Kontakt",
-      "instant_contact_desc": "Połącz się przez WhatsApp, e-mail lub telefon jednym dotknięciem",
-      "community_title": "Społeczność Kierowców",
-      "community_desc": "Publikuj swoją dostępność i znajdź ładunki od innych kierowców",
-      "leads_title": "Leady Firm",
-      "leads_desc": "Odkrywaj firmy transportowe i partnerów logistycznych",
-      "templates_title": "Szybkie Szablony",
-      "templates_desc": "Użyj gotowych wiadomości, aby szybciej kontaktować się z firmami",
-      "linkedin_title": "Integracja LinkedIn",
-      "linkedin_desc": "Znajdź decydentów i dane kontaktowe natychmiast",
-      "ai_title": "Dopasowanie AI",
-      "ai_desc": "Inteligentne rekomendacje oparte na Twoich trasach i preferencjach",
-      "notifications_title": "Inteligentne Powiadomienia",
-      "notifications_desc": "Otrzymuj alerty, gdy firmy publikują ładunki w pobliżu",
-      "multilang_title": "Wiele Języków",
-      "multilang_desc": "Dostępne w języku angielskim, rumuńskim, polskim, tureckim, hiszpańskim i innych"
-    },
-    "footer": {
-      "tagline": "Przyszłość sieci logistycznych",
-      "product": "Produkt",
-      "company": "Firma",
-      "legal": "Prawne",
-      "privacy": "Polityka Prywatności",
-      "terms": "Warunki Usługi",
-      "refund": "Polityka Zwrotów",
-      "cookies": "Polityka Cookies",
-      "rights": "Wszelkie prawa zastrzeżone."
-    },
-    "gdpr": {
-      "message": "Używamy plików cookie, aby poprawić Twoje wrażenia. Kontynuując, zgadzasz się na nasze użycie plików cookie.",
-      "learn_more": "Dowiedz się więcej",
-      "accept": "Zaakceptuj Wszystkie",
-      "decline": "Odrzuć"
-    },
-    "faq": {
-      "title": "Najczęściej Zadawane Pytania",
-      "q1": "Jak działa wyszukiwanie GPS?",
-      "a1": "Po prostu włącz GPS swojego urządzenia, a Truxel automatycznie wyszuka firmy logistyczne w promieniu 5km od Twojej obecnej lokalizacji. Wyniki obejmują nazwę firmy, dane kontaktowe i dokładną lokalizację.",
-      "q2": "Co zawiera darmowy okres próbny?",
-      "a2": "Okres próbny obejmuje 5 wyszukiwań, dostęp do podstawowych informacji o firmach, szablony e-mail i WhatsApp, zarządzanie leadami oraz eksport CSV. Nie wymaga karty kredytowej.",
-      "q3": "Ile wyszukiwań otrzymuję miesięcznie?",
-      "a3": "To zależy od Twojego planu: Trial (5 łącznie), Standard (15/miesiąc), Pro (30/miesiąc). Możesz również w każdej chwili zakupić dodatkowe pakiety wyszukiwań.",
-      "q4": "Czy mogę eksportować moje leady?",
-      "a4": "Tak! Wszystkie plany obejmują funkcjonalność eksportu CSV. Możesz w każdej chwili wyeksportować całą listę leadów ze wszystkimi danymi kontaktowymi i notatkami.",
-      "q5": "Czym jest funkcja Community?",
-      "a5": "Funkcja Community pozwala publikować swoją dostępność lub dostępne trasy i przeglądać posty innych kierowców. To świetny sposób na znalezienie możliwości przewozu ładunków i nawiązanie kontaktu z innymi kierowcami ciężarówek.",
-      "q6": "Czy obsługujecie mój język?",
-      "a6": "Obsługujemy 6 języków: angielski, rumuński, polski, turecki, litewski i hiszpański. Możesz zmienić język w dowolnym momencie w ustawieniach profilu.",
-      "q7": "Jak mogę anulować subskrypcję?",
-      "a7": "Możesz anulować w dowolnym momencie w ustawieniach profilu. Będziesz miał dostęp do końca bieżącego okresu rozliczeniowego, bez dodatkowych opłat.",
-      "q8": "Czy moje dane są bezpieczne?",
-      "a8": "Absolutnie. Używamy szyfrowania na poziomie przemysłowym, bezpiecznych serwerów EU przez Supabase i jesteśmy w pełni zgodni z RODO. Twoje dane nigdy nie są udostępniane osobom trzecim bez Twojej zgody."
-    },
-    "problem_solution": {
-      "problem_title": "Przestań Być Zależnym od Brokerów Frachtowych",
-      "problem_desc": "Jako właściciel-operator nie powinieneś czekać na tablice ogłoszeń ani płacić prowizji brokerom. Zasługujesz na bezpośredni dostęp do nadawców w Twojej okolicy, szczególnie w martwych strefach, gdzie możliwości są ukryte.",
-      "solution_title": "Znajdź Nadawców Bezpośrednio - Bez Pukania do Drzwi",
-      "solution_desc": "Twoja firma, Twoja kontrola. Użyj GPS, aby odkryć lokalnych nadawców w promieniu kilometrów od Twojej lokalizacji. Skontaktuj się natychmiast ze spersonalizowanymi wiadomościami - bez zimnych telefonów, bez zgadywania."
-    },
-    "how_it_works": {
-      "title": "Jak To Działa",
-      "subtitle": "Zacznij znajdować klientów w 4 prostych krokach",
-      "step1_title": "Pobierz i Zarejestruj Się",
-      "step1_desc": "Zacznij z darmowym kontem w kilka minut",
-      "step2_title": "Znajdź Lokalnych Nadawców",
-      "step2_desc": "Użyj GPS lub ręcznego wyszukiwania, aby odkryć firmy",
-      "step3_title": "Uzyskaj Dane Kontaktowe",
-      "step3_desc": "Dostęp do telefonu, e-maila i profili LinkedIn",
-      "step4_title": "Skontaktuj Się Natychmiast",
-      "step4_desc": "Połącz się przez WhatsApp, e-mail lub telefon jednym dotknięciem"
+      "trust_features": {
+        "no_broker_fees": "No Broker Fees",
+        "dead_zones": "Find Shippers in Dead Zones",
+        "instant_contact": "Instant Contact Methods"
+      }
     },
     "social_proof": {
-      "title": "Kierowcy w Całej Europie Nam Ufają",
-      "testimonial1": "W końcu znalazłem bezpośrednich nadawców w mojej okolicy. Koniec z prowizjami brokerów zjadającymi mój zysk!",
-      "testimonial1_author": "Mike T., Właściciel-Operator, Teksas",
-      "testimonial2": "Utknąłem w martwej strefie i znalazłem 3 lokalnych nadawców w ciągu 20 minut. To się samo zwraca.",
-      "testimonial2_author": "James R., Niezależny Kierowca, Ohio",
-      "testimonial3": "Wiadomości jednym dotknięciem są genialne. Mogę kontaktować się z nadawcami, gdy jestem na parkingu dla ciężarówek.",
-      "testimonial3_author": "Sarah K., Właściciel Floty, Kalifornia",
-      "stats_drivers": "Zbudowane dla Niezależnych Kierowców",
-      "stats_companies": "Znajdź Lokalnych Nadawców Natychmiast",
-      "stats_countries": "Uruchomienie w Ameryce Północnej"
+      "stat_values": {
+        "drivers": "1000+",
+        "companies": "5000+",
+        "countries": "6"
+      }
     },
     "final_cta": {
-      "title": "Zacznij Znajdować Klientów Dzisiaj",
-      "subtitle": "Dołącz do ponad 1000+ kierowców ciężarówek, którzy rozwijają swój biznes z Truxel",
-      "download_ios": "Pobierz w App Store",
-      "download_android": "Pobierz w Google Play"
+      "badge": "Built for Owner-Operators",
+      "stats": {
+        "success_rate": {
+          "value": "98%",
+          "label": "Success Rate"
+        },
+        "support": {
+          "value": "24/7",
+          "label": "Support"
+        },
+        "rating": {
+          "value": "5★",
+          "label": "Rating"
+        }
+      }
+    },
+    "features_page": {
+      "hero_title": "Powerful Features for Truck Drivers",
+      "hero_subtitle": "Everything you need to find clients, manage leads, and grow your logistics business",
+      "core": {
+        "title": "Core Features",
+        "subtitle": "Available on all plans, including the free trial",
+        "details": {
+          "gps": [
+            "Automatic location detection",
+            "5km search radius",
+            "Real-time GPS tracking",
+            "Search anywhere you drive"
+          ],
+          "community": [
+            "Post driver availability",
+            "Find available routes",
+            "Connect with fellow truckers",
+            "Real-time community feed"
+          ],
+          "leads": [
+            "Unlimited lead storage",
+            "Status tracking (New, Contacted, Won, Lost)",
+            "Add custom notes",
+            "CSV export functionality"
+          ],
+          "templates": [
+            "Pre-filled email templates",
+            "WhatsApp message templates",
+            "Auto-populate your contact info",
+            "Professional messaging"
+          ]
+        }
+      },
+      "how": {
+        "title": "How It Works",
+        "subtitle": "Start finding clients in 4 simple steps",
+        "steps": {
+          "step1": {
+            "title": "Download & Sign Up",
+            "desc": "Install Truxel from App Store or Google Play. Create your free account and get 5 trial searches."
+          },
+          "step2": {
+            "title": "Enable GPS & Search",
+            "desc": "Turn on your location and let Truxel find companies within 5km automatically."
+          },
+          "step3": {
+            "title": "View Results",
+            "desc": "Browse company details, contact information, and exact locations on the map."
+          },
+          "step4": {
+            "title": "Make Contact",
+            "desc": "Reach out via email, WhatsApp, or phone using our pre-filled templates."
+          }
+        }
+      },
+      "pro": {
+        "badge": "PRO PLAN",
+        "title": "Advanced Features",
+        "subtitle": "Unlock powerful tools with Pro tier subscription"
+      },
+      "additional": {
+        "title": "Additional Features"
+      },
+      "cta": {
+        "title": "Ready to Get Started?",
+        "subtitle": "Download Truxel today and start finding clients instantly with 5 free trial searches",
+        "secondary": "View Pricing"
+      }
     }
   }
 }

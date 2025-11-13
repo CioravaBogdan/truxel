@@ -1,8 +1,62 @@
 {
-  "common": {"login": "Prisijungti", "register": "Registruotis", "logout": "Atsijungti", "email": "El. paštas", "password": "Slaptažodis", "confirm_password": "Patvirtinti slaptažodį", "full_name": "Pilnas vardas", "phone_number": "Telefono numeris", "company_name": "Įmonės pavadinimas", "save": "Išsaugoti", "cancel": "Atšaukti", "delete": "Ištrinti", "edit": "Redaguoti", "share": "Dalintis", "loading": "Kraunama...", "error": "Klaida", "success": "Sėkmė", "search": "Ieškoti", "filter": "Filtruoti", "sort": "Rūšiuoti", "confirm": "Patvirtinti", "back": "Atgal", "close": "Uždaryti"},
-  "auth": {"welcome": "Sveiki atvykę į Truxel", "sign_in": "Prisijungti", "sign_up": "Registruotis", "forgot_password": "Pamiršote slaptažodį?", "reset_password": "Atkurti slaptažodį", "no_account": "Neturite paskyros?", "have_account": "Jau turite paskyrą?", "email_required": "El. paštas privalomas", "password_required": "Slaptažodis privalomas", "invalid_email": "Neteisingas el. pašto adresas", "password_too_short": "Slaptažodis turi būti bent 6 simbolių", "passwords_dont_match": "Slaptažodžiai nesutampa", "login_success": "Sėkmingai prisijungta", "register_success": "Registracija sėkminga", "logout_confirm": "Ar tikrai norite atsijungti?"},
-  "tabs": {"home": "Pagrindinis", "search": "Paieška", "leads": "Mano potencialūs klientai", "profile": "Profilis"},
-  "home": {"welcome": "Sveiki, {{name}}", "searches_remaining": "Liko {{count}} paieškų", "recent_leads": "Naujausi potencialūs klientai", "start_search": "Pradėti naują paiešką", "upgrade": "Atnaujinti planą", "total_leads": "Viso potencialių klientų", "leads_contacted": "Susisiekta", "active_searches": "Aktyvios paieškos"},
+  "common": {
+    "login": "Prisijungti",
+    "register": "Registruotis",
+    "logout": "Atsijungti",
+    "email": "El. paštas",
+    "password": "Slaptažodis",
+    "confirm_password": "Patvirtinti slaptažodį",
+    "full_name": "Pilnas vardas",
+    "phone_number": "Telefono numeris",
+    "company_name": "Įmonės pavadinimas",
+    "save": "Išsaugoti",
+    "cancel": "Atšaukti",
+    "delete": "Ištrinti",
+    "edit": "Redaguoti",
+    "share": "Dalintis",
+    "loading": "Kraunama...",
+    "error": "Klaida",
+    "success": "Sėkmė",
+    "search": "Ieškoti",
+    "filter": "Filtruoti",
+    "sort": "Rūšiuoti",
+    "confirm": "Patvirtinti",
+    "back": "Atgal",
+    "close": "Uždaryti"
+  },
+  "auth": {
+    "welcome": "Sveiki atvykę į Truxel",
+    "sign_in": "Prisijungti",
+    "sign_up": "Registruotis",
+    "forgot_password": "Pamiršote slaptažodį?",
+    "reset_password": "Atkurti slaptažodį",
+    "no_account": "Neturite paskyros?",
+    "have_account": "Jau turite paskyrą?",
+    "email_required": "El. paštas privalomas",
+    "password_required": "Slaptažodis privalomas",
+    "invalid_email": "Neteisingas el. pašto adresas",
+    "password_too_short": "Slaptažodis turi būti bent 6 simbolių",
+    "passwords_dont_match": "Slaptažodžiai nesutampa",
+    "login_success": "Sėkmingai prisijungta",
+    "register_success": "Registracija sėkminga",
+    "logout_confirm": "Ar tikrai norite atsijungti?"
+  },
+  "tabs": {
+    "home": "Pagrindinis",
+    "search": "Paieška",
+    "leads": "Mano potencialūs klientai",
+    "profile": "Profilis"
+  },
+  "home": {
+    "welcome": "Sveiki, {{name}}",
+    "searches_remaining": "Liko {{count}} paieškų",
+    "recent_leads": "Naujausi potencialūs klientai",
+    "start_search": "Pradėti naują paiešką",
+    "upgrade": "Atnaujinti planą",
+    "total_leads": "Viso potencialių klientų",
+    "leads_contacted": "Susisiekta",
+    "active_searches": "Aktyvios paieškos"
+  },
   "search": {
     "title": "Rasti įmones",
     "location_method": "Pasirinkite vietos metodą",
@@ -28,8 +82,74 @@
     "search_started": "Paieška pradėta! Pranešime, kai rezultatai bus paruošti.",
     "search_failed": "Paieška nepavyko. Bandykite dar kartą."
   },
-  "leads": {"title": "Mano potencialūs klientai", "no_leads": "Potencialių klientų nerasta", "search_results": "Paieškos rezultatai", "hot_leads": "Karšti potencialūs klientai", "my_book": "Mano knyga", "filter_drivers": "Vairuotojai", "filter_forwarding": "Ekspedijavimas", "add_to_mybook": "Pridėti į mano knygą", "converted_successfully": "Sėkmingai pridėta į mano knygą", "no_search_results": "Dar nėra paieškos rezultatų", "no_hot_leads": "Dar nėra išsaugotų įrašų", "no_mybook_leads": "Jūsų knyga tuščia", "save_posts_hint": "Išsaugokite įrašus iš Bendruomenės, kad juos čia matytumėte", "convert_hint": "Konvertuokite Karšius potencialius klientus, kad sukurtumėte nuolatinę veiklą", "removed_from_mybook": "Pašalinta iš Mano Knygos", "filter_all": "Visi", "filter_email": "Turi el. paštą", "filter_phone": "Turi telefoną", "filter_whatsapp": "Turi WhatsApp", "filter_linkedin": "Turi LinkedIn", "status_new": "Naujas", "status_contacted": "Susisiekta", "status_in_progress": "Vykdoma", "status_won": "Laimėta", "status_lost": "Prarasta", "sort_distance": "Pagal atstumą", "sort_name": "Abėcėlės tvarka", "sort_date": "Naujausi", "export_csv": "Eksportuoti į CSV", "lead_details": "Potencialaus kliento informacija", "contact_info": "Kontaktinė informacija", "location": "Vieta", "status": "Būsena", "notes": "Pastabos", "add_note": "Pridėti pastabą...", "send_email": "Siųsti el. laišką", "send_whatsapp": "Siųsti WhatsApp", "call": "Skambinti", "view_linkedin": "Žiūrėti LinkedIn", "view_facebook": "Žiūrėti Facebook", "view_website": "Aplankyti svetainę", "get_directions": "Gauti nurodymus", "lead_saved": "Potencialus klientas sėkmingai išsaugotas", "lead_updated": "Potencialus klientas sėkmingai atnaujintas", "lead_deleted": "Potencialus klientas sėkmingai ištrintas"},
-  "subscription": {"title": "Prenumerata", "current_plan": "Dabartinis planas", "trial": "Nemokamas bandomasis", "standard": "Standartinis planas", "premium": "Premium planas", "trial_desc": "5 paieškos iš viso", "standard_desc": "15 paieškų per mėnesį", "premium_desc": "100 paieškų per mėnesį", "price_month": "€{{price}}/mėn.", "searches_used": "Panaudota {{used}} iš {{total}} paieškų", "renews_on": "Atnaujinama {{date}}", "upgrade_to": "Atnaujinti į {{plan}}", "buy_search_pack": "Pirkti paieškų paketą", "search_pack_10": "10 papildomų paieškų", "search_pack_price": "€24.99", "purchase_success": "Pirkimas sėkmingas!", "purchase_failed": "Pirkimas nepavyko. Bandykite dar kartą.", "manage_subscription": "Valdyti prenumeratą", "cancel_subscription": "Atšaukti prenumeratą"},
+  "leads": {
+    "title": "Mano potencialūs klientai",
+    "no_leads": "Potencialių klientų nerasta",
+    "search_results": "Paieškos rezultatai",
+    "hot_leads": "Karšti potencialūs klientai",
+    "my_book": "Mano knyga",
+    "filter_drivers": "Vairuotojai",
+    "filter_forwarding": "Ekspedijavimas",
+    "add_to_mybook": "Pridėti į mano knygą",
+    "converted_successfully": "Sėkmingai pridėta į mano knygą",
+    "no_search_results": "Dar nėra paieškos rezultatų",
+    "no_hot_leads": "Dar nėra išsaugotų įrašų",
+    "no_mybook_leads": "Jūsų knyga tuščia",
+    "save_posts_hint": "Išsaugokite įrašus iš Bendruomenės, kad juos čia matytumėte",
+    "convert_hint": "Konvertuokite Karšius potencialius klientus, kad sukurtumėte nuolatinę veiklą",
+    "removed_from_mybook": "Pašalinta iš Mano Knygos",
+    "filter_all": "Visi",
+    "filter_email": "Turi el. paštą",
+    "filter_phone": "Turi telefoną",
+    "filter_whatsapp": "Turi WhatsApp",
+    "filter_linkedin": "Turi LinkedIn",
+    "status_new": "Naujas",
+    "status_contacted": "Susisiekta",
+    "status_in_progress": "Vykdoma",
+    "status_won": "Laimėta",
+    "status_lost": "Prarasta",
+    "sort_distance": "Pagal atstumą",
+    "sort_name": "Abėcėlės tvarka",
+    "sort_date": "Naujausi",
+    "export_csv": "Eksportuoti į CSV",
+    "lead_details": "Potencialaus kliento informacija",
+    "contact_info": "Kontaktinė informacija",
+    "location": "Vieta",
+    "status": "Būsena",
+    "notes": "Pastabos",
+    "add_note": "Pridėti pastabą...",
+    "send_email": "Siųsti el. laišką",
+    "send_whatsapp": "Siųsti WhatsApp",
+    "call": "Skambinti",
+    "view_linkedin": "Žiūrėti LinkedIn",
+    "view_facebook": "Žiūrėti Facebook",
+    "view_website": "Aplankyti svetainę",
+    "get_directions": "Gauti nurodymus",
+    "lead_saved": "Potencialus klientas sėkmingai išsaugotas",
+    "lead_updated": "Potencialus klientas sėkmingai atnaujintas",
+    "lead_deleted": "Potencialus klientas sėkmingai ištrintas"
+  },
+  "subscription": {
+    "title": "Prenumerata",
+    "current_plan": "Dabartinis planas",
+    "trial": "Nemokamas bandomasis",
+    "standard": "Standartinis planas",
+    "premium": "Premium planas",
+    "trial_desc": "5 paieškos iš viso",
+    "standard_desc": "15 paieškų per mėnesį",
+    "premium_desc": "100 paieškų per mėnesį",
+    "price_month": "€{{price}}/mėn.",
+    "searches_used": "Panaudota {{used}} iš {{total}} paieškų",
+    "renews_on": "Atnaujinama {{date}}",
+    "upgrade_to": "Atnaujinti į {{plan}}",
+    "buy_search_pack": "Pirkti paieškų paketą",
+    "search_pack_10": "10 papildomų paieškų",
+    "search_pack_price": "€24.99",
+    "purchase_success": "Pirkimas sėkmingas!",
+    "purchase_failed": "Pirkimas nepavyko. Bandykite dar kartą.",
+    "manage_subscription": "Valdyti prenumeratą",
+    "cancel_subscription": "Atšaukti prenumeratą"
+  },
   "profile": {
     "title": "Profilis",
     "account_info": "Paskyros informacija",
@@ -54,8 +174,17 @@
     "phone_number_placeholder": "61234567",
     "phone_number_invalid": "Numeris atrodo per trumpas. Patikrinkite ir bandykite dar kartą."
   },
-  "templates": {"email_subject": "Logistikos partnerystės galimybė - {{company}}", "email_body": "Sveiki {{contactName}},\n\nAš esu {{userName}} iš {{userCompany}}. Esu sunkvežimio vairuotojas, šiuo metu esantis {{location}} ir ieškau krovinių galimybių.\n\nTikiu, kad galėtume bendradarbiauti logistikos sprendimuose. Prašau susisiekti:\n\nTelefonas: {{userPhone}}\nEl. paštas: {{userEmail}}\n\nPagarbiai,\n{{userName}}", "whatsapp_message": "Sveiki {{contactName}}, aš esu {{userName}} iš {{userCompany}}. Esu sunkvežimio vairuotojas {{location}} ieškantis krovinių. Ar galime aptarti logistikos galimybes? Kontaktai: {{userPhone}}"},
-  "notifications": {"search_complete": "Paieška baigta", "search_complete_body": "Rasta {{count}} įmonių {{location}}", "permission_required": "Reikalingas pranešimų leidimas", "permission_message": "Įjunkite pranešimus, kad gautumėte įspėjimus, kai paieškos bus baigtos"},
+  "templates": {
+    "email_subject": "Logistikos partnerystės galimybė - {{company}}",
+    "email_body": "Sveiki {{contactName}},\n\nAš esu {{userName}} iš {{userCompany}}. Esu sunkvežimio vairuotojas, šiuo metu esantis {{location}} ir ieškau krovinių galimybių.\n\nTikiu, kad galėtume bendradarbiauti logistikos sprendimuose. Prašau susisiekti:\n\nTelefonas: {{userPhone}}\nEl. paštas: {{userEmail}}\n\nPagarbiai,\n{{userName}}",
+    "whatsapp_message": "Sveiki {{contactName}}, aš esu {{userName}} iš {{userCompany}}. Esu sunkvežimio vairuotojas {{location}} ieškantis krovinių. Ar galime aptarti logistikos galimybes? Kontaktai: {{userPhone}}"
+  },
+  "notifications": {
+    "search_complete": "Paieška baigta",
+    "search_complete_body": "Rasta {{count}} įmonių {{location}}",
+    "permission_required": "Reikalingas pranešimų leidimas",
+    "permission_message": "Įjunkite pranešimus, kad gautumėte įspėjimus, kai paieškos bus baigtos"
+  },
   "pricing": {
     "title": "Pasirink savo planą",
     "subtitle": "Išsirink idealų planą savo verslui",
@@ -83,7 +212,12 @@
     "buy_now": "Pirkti dabar",
     "footer_note": "Visi planai apima pagrindinę informaciją apie įmones, kontaktus ir vietas. Prenumeratą galima atšaukti bet kada."
   },
-  "errors": {"network_error": "Tinklo klaida. Patikrinkite savo ryšį.", "something_went_wrong": "Kažkas nutiko. Bandykite dar kartą.", "session_expired": "Sesija baigėsi. Prisijunkite iš naujo.", "insufficient_permissions": "Nepakanka leidimų"},
+  "errors": {
+    "network_error": "Tinklo klaida. Patikrinkite savo ryšį.",
+    "something_went_wrong": "Kažkas nutiko. Bandykite dar kartą.",
+    "session_expired": "Sesija baigėsi. Prisijunkite iš naujo.",
+    "insufficient_permissions": "Nepakanka leidimų"
+  },
   "directions": {
     "north": "Šiaurė",
     "northeast": "Šiaurės rytai",
@@ -138,14 +272,14 @@
     "whatsapp_choose_title": "Pasirinkite WhatsApp programą",
     "whatsapp_choose_message": "Kurią WhatsApp programą norite naudoti susisiekiant?",
     "whatsapp_app_regular": "WhatsApp",
-  "whatsapp_app_business": "WhatsApp Business",
-  "whatsapp_business_ios_title": "Svarbi informacija apie WhatsApp Business",
-  "whatsapp_business_ios_message": "„iOS“ įrenginiuose Apple visada pirmiausia atidaro asmeninę WhatsApp, jei įdiegtos abi programėlės. Tai „Meta“/Apple platformos apribojimas. Jei norite iš karto atidaryti WhatsApp Business, turite pašalinti asmeninę WhatsApp programą.",
-  "whatsapp_unavailable_title": "Nepavyksta atidaryti WhatsApp",
-  "whatsapp_unavailable_message": "Nepavyko atidaryti pasirinktos WhatsApp programos. Galite pakeisti nuostatą arba bandyti dar kartą.",
-  "whatsapp_change_preference": "Keisti nuostatą",
-  "whatsapp_invalid_number_title": "Reikalingas tarptautinis numeris",
-  "whatsapp_invalid_number_message": "Pridėkite šalies kodą (pvz., +370...) prie telefono numerio prieš susisiekdami per WhatsApp.",
+    "whatsapp_app_business": "WhatsApp Business",
+    "whatsapp_business_ios_title": "Svarbi informacija apie WhatsApp Business",
+    "whatsapp_business_ios_message": "„iOS“ įrenginiuose Apple visada pirmiausia atidaro asmeninę WhatsApp, jei įdiegtos abi programėlės. Tai „Meta“/Apple platformos apribojimas. Jei norite iš karto atidaryti WhatsApp Business, turite pašalinti asmeninę WhatsApp programą.",
+    "whatsapp_unavailable_title": "Nepavyksta atidaryti WhatsApp",
+    "whatsapp_unavailable_message": "Nepavyko atidaryti pasirinktos WhatsApp programos. Galite pakeisti nuostatą arba bandyti dar kartą.",
+    "whatsapp_change_preference": "Keisti nuostatą",
+    "whatsapp_invalid_number_title": "Reikalingas tarptautinis numeris",
+    "whatsapp_invalid_number_message": "Pridėkite šalies kodą (pvz., +370...) prie telefono numerio prieš susisiekdami per WhatsApp.",
     "upgrade_required": "Reikia atnaujinti",
     "upgrade_required_message": "Norėdami matyti kontaktus, turite turėti aktyvią prenumeratą.",
     "load_timing_warning_title": "📦 Geriausi Rezultatai su Aktyvia Kroviniais",
@@ -219,7 +353,12 @@
       "title": "Raskite Krovinius ir Prisijunkite prie Krovinių Įmonių Akimirksniu",
       "subtitle": "Pirmoji GPS pagrįsta logistikos platforma, jungiant vairuotojus, ekspeduotorius ir siuntėjus realiu laiku",
       "cta_primary": "Pradėti Nemokamai",
-      "trust_badge": "Mums pasitiki daugiau nei 10 000 vairuotojų ir logistikos įmonių visoje Europoje"
+      "trust_badge": "Mums pasitiki daugiau nei 10 000 vairuotojų ir logistikos įmonių visoje Europoje",
+      "trust_features": {
+        "no_broker_fees": "No Broker Fees",
+        "dead_zones": "Find Shippers in Dead Zones",
+        "instant_contact": "Instant Contact Methods"
+      }
     },
     "cta": {
       "learn_more": "Sužinoti Daugiau"
@@ -310,7 +449,98 @@
       "testimonial3_author": "Sarah K., Flotės Savininkė, Kalifornija",
       "stats_drivers": "Sukurta Nepriklausomiems Vairuotojams",
       "stats_companies": "Raskite Vietinius Siuntėjus Akimirksniu",
-      "stats_countries": "Paleidimas Šiaurės Amerikoje"
+      "stats_countries": "Paleidimas Šiaurės Amerikoje",
+      "stat_values": {
+        "drivers": "1000+",
+        "companies": "5000+",
+        "countries": "6"
+      }
+    },
+    "final_cta": {
+      "badge": "Built for Owner-Operators",
+      "stats": {
+        "success_rate": {
+          "value": "98%",
+          "label": "Success Rate"
+        },
+        "support": {
+          "value": "24/7",
+          "label": "Support"
+        },
+        "rating": {
+          "value": "5★",
+          "label": "Rating"
+        }
+      }
+    },
+    "features_page": {
+      "hero_title": "Powerful Features for Truck Drivers",
+      "hero_subtitle": "Everything you need to find clients, manage leads, and grow your logistics business",
+      "core": {
+        "title": "Core Features",
+        "subtitle": "Available on all plans, including the free trial",
+        "details": {
+          "gps": [
+            "Automatic location detection",
+            "5km search radius",
+            "Real-time GPS tracking",
+            "Search anywhere you drive"
+          ],
+          "community": [
+            "Post driver availability",
+            "Find available routes",
+            "Connect with fellow truckers",
+            "Real-time community feed"
+          ],
+          "leads": [
+            "Unlimited lead storage",
+            "Status tracking (New, Contacted, Won, Lost)",
+            "Add custom notes",
+            "CSV export functionality"
+          ],
+          "templates": [
+            "Pre-filled email templates",
+            "WhatsApp message templates",
+            "Auto-populate your contact info",
+            "Professional messaging"
+          ]
+        }
+      },
+      "how": {
+        "title": "How It Works",
+        "subtitle": "Start finding clients in 4 simple steps",
+        "steps": {
+          "step1": {
+            "title": "Download & Sign Up",
+            "desc": "Install Truxel from App Store or Google Play. Create your free account and get 5 trial searches."
+          },
+          "step2": {
+            "title": "Enable GPS & Search",
+            "desc": "Turn on your location and let Truxel find companies within 5km automatically."
+          },
+          "step3": {
+            "title": "View Results",
+            "desc": "Browse company details, contact information, and exact locations on the map."
+          },
+          "step4": {
+            "title": "Make Contact",
+            "desc": "Reach out via email, WhatsApp, or phone using our pre-filled templates."
+          }
+        }
+      },
+      "pro": {
+        "badge": "PRO PLAN",
+        "title": "Advanced Features",
+        "subtitle": "Unlock powerful tools with Pro tier subscription"
+      },
+      "additional": {
+        "title": "Additional Features"
+      },
+      "cta": {
+        "title": "Ready to Get Started?",
+        "subtitle": "Download Truxel today and start finding clients instantly with 5 free trial searches",
+        "secondary": "View Pricing"
+      }
     }
   }
 }
