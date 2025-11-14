@@ -33,16 +33,36 @@ import {
   Factory,
   Camera,
 } from 'lucide-react-native';
-import i18n from '@/lib/i18n';
+import i18n, { supportedLanguages } from '@/lib/i18n';
 
-const LANGUAGES = [
-  { code: 'en', name: 'English', flag: '🇬🇧' },
-  { code: 'ro', name: 'Română', flag: '🇷🇴' },
-  { code: 'pl', name: 'Polski', flag: '🇵🇱' },
-  { code: 'tr', name: 'Türkçe', flag: '🇹🇷' },
-  { code: 'lt', name: 'Lietuvių', flag: '🇱🇹' },
-  { code: 'es', name: 'Español', flag: '🇪🇸' },
-];
+const LANGUAGE_DETAILS: Record<
+  string,
+  {
+    name: string;
+    flag: string;
+  }
+> = {
+  en: { name: 'English', flag: 'EN' },
+  ro: { name: 'Romanian', flag: 'RO' },
+  pl: { name: 'Polish', flag: 'PL' },
+  tr: { name: 'Turkish', flag: 'TR' },
+  lt: { name: 'Lithuanian', flag: 'LT' },
+  es: { name: 'Spanish', flag: 'ES' },
+  fr: { name: 'French', flag: 'FR' },
+  de: { name: 'German', flag: 'DE' },
+  it: { name: 'Italian', flag: 'IT' },
+  uk: { name: 'Ukrainian', flag: 'UA' },
+};
+
+const LANGUAGES = supportedLanguages.map((code) => ({
+  code,
+  ...(LANGUAGE_DETAILS[code] || {
+    name: code.toUpperCase(),
+    flag: code.toUpperCase(),
+  }),
+}));
+
+
 
 const SUBSCRIPTION_TIERS: Record<string, any> = {
   trial: { name: 'Trial', searches: 5 },

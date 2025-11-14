@@ -22,7 +22,11 @@
     "sort": "Sırala",
     "confirm": "Onayla",
     "back": "Geri",
-    "close": "Kapat"
+    "close": "Kapat",
+    "no": "HAYIR",
+    "yes": "Evet",
+    "ok": "TAMAM",
+    "upgrade": "Güncelleme"
   },
   "auth": {
     "welcome": "Truxel'e Hoş Geldiniz",
@@ -32,6 +36,10 @@
     "reset_password": "Şifreyi Sıfırla",
     "no_account": "Hesabınız yok mu?",
     "have_account": "Zaten hesabınız var mı?",
+    "or_continue_with": "Veya ile devam edin",
+    "sign_in_with_google": "Google ile oturum açın",
+    "redirecting": "Yönlendiriliyor...",
+    "complete_in_browser": "Tarayıcınızda oturum açma işlemini tamamlayın",
     "email_required": "E-posta gerekli",
     "password_required": "Şifre gerekli",
     "invalid_email": "Geçersiz e-posta adresi",
@@ -41,21 +49,38 @@
     "register_success": "Kayıt başarılı",
     "logout_confirm": "Çıkış yapmak istediğinizden emin misiniz?"
   },
+  "directions": {
+    "north": "Kuzey",
+    "northeast": "Kuzeydoğu",
+    "east": "Doğu",
+    "southeast": "Güneydoğu",
+    "south": "Güney",
+    "southwest": "Güneybatı",
+    "west": "Batı",
+    "northwest": "Kuzeybatı",
+    "of": "den"
+  },
   "tabs": {
     "home": "Ana Sayfa",
     "search": "Ara",
     "leads": "Potansiyel Müşterilerim",
+    "community": "Toplum",
+    "pricing": "Fiyatlandırma",
+    "subscription": "Abonelik",
     "profile": "Profil"
   },
   "home": {
     "welcome": "Hoş geldin, {{name}}",
     "searches_remaining": "{{count}} arama kaldı",
     "recent_leads": "Son Potansiyel Müşteriler",
+    "view_all_results": "Tümünü Görüntüle",
     "start_search": "Yeni Arama Başlat",
     "upgrade": "Planı Yükselt",
     "total_leads": "Toplam Potansiyel Müşteri",
     "leads_contacted": "İletişime Geçilen",
-    "active_searches": "Aktif Aramalar"
+    "active_searches": "Aktif Aramalar",
+    "community_title": "Truxel Topluluğu",
+    "community_subtitle": "Gerçek zamanlı olarak gezileri ve sürücüleri bulun"
   },
   "search": {
     "title": "Şirket Bul",
@@ -80,7 +105,23 @@
     "location_permission": "Yakınınızdaki şirketleri bulmak için konumunuza ihtiyacımız var",
     "location_denied": "Konum izni reddedildi",
     "search_started": "Arama başlatıldı! Sonuçlar hazır olduğunda sizi bilgilendireceğiz.",
-    "search_failed": "Arama başarısız oldu. Lütfen tekrar deneyin."
+    "search_failed": "Arama başarısız oldu. Lütfen tekrar deneyin.",
+    "processing": "İşleme...",
+    "completed": "Tamamlanmış",
+    "failed": "Arızalı",
+    "location": "Konum",
+    "estimated": "tahmini",
+    "check_leads_tab": "Sonuçlar için Potansiyel Müşteriler sekmesini kontrol edin",
+    "please_try_again": "Lütfen tekrar deneyin",
+    "search_complete": "Arama Tamamlandı!",
+    "results_ready": "Arama sonuçlarınız hazır",
+    "quick_search": "Hızlı Arama",
+    "quick_search_description": "Araba sürerken mükemmel! Kayıtlı alan adlarınızı kullanarak, yazmanıza gerek kalmadan anında arama başlatın.",
+    "your_saved_domains": "Kayıtlı alan adlarınız",
+    "start_quick_search": "🚀 Hızlı Arama",
+    "quick_search_started": "Kayıtlı alan adlarınızla hızlı arama başladı!",
+    "no_saved_domains": "Kaydedilmiş alan adı yok",
+    "please_set_domains_in_profile": "Lütfen tercih ettiğiniz sektörleri Profil ayarlarında belirtin"
   },
   "leads": {
     "title": "Potansiyel Müşterilerim",
@@ -92,6 +133,8 @@
     "filter_forwarding": "Nakliye",
     "add_to_mybook": "Kitabıma Ekle",
     "converted_successfully": "Kitabınıza başarıyla eklendi",
+    "duplicate_lead_title": "Potansiyel Müşteri Zaten Var",
+    "duplicate_lead_message": "Kitabınızda bu iletişim bilgilerini (telefon veya e-posta + şirket) içeren bir müşteri adayı zaten var.",
     "no_search_results": "Henüz arama sonucu yok",
     "no_hot_leads": "Henüz kaydedilmiş gönderi yok",
     "no_mybook_leads": "Kitabınız boş",
@@ -127,20 +170,27 @@
     "get_directions": "Yol Tarifi Al",
     "lead_saved": "Potansiyel müşteri başarıyla kaydedildi",
     "lead_updated": "Potansiyel müşteri başarıyla güncellendi",
-    "lead_deleted": "Potansiyel müşteri başarıyla silindi"
+    "lead_deleted": "Potansiyel müşteri başarıyla silindi",
+    "share_contact": "Kişiyi Paylaş",
+    "contact_shared": "Kişi kartı başarıyla paylaşıldı",
+    "share_error": "Paylaşma Hatası"
   },
   "subscription": {
     "title": "Abonelik",
     "current_plan": "Mevcut Plan",
     "trial": "Ücretsiz Deneme",
     "standard": "Standart Plan",
+    "pro": "Profesyonel Plan",
     "premium": "Premium Plan",
     "trial_desc": "Toplam 5 arama",
     "standard_desc": "Ayda 15 arama",
+    "pro_desc": "LinkedIn ve yapay zeka ile 30 arama",
     "premium_desc": "Ayda 100 arama",
     "price_month": "€{{price}}/ay",
     "searches_used": "{{total}} aramadan {{used}} kullanıldı",
     "renews_on": "{{date}} tarihinde yenilenir",
+    "expires_on": "{{date}} tarihinde sona eriyor",
+    "cancelled_until": "İptal edildi ({{date}} tarihine kadar etkin)",
     "upgrade_to": "{{plan}} planına yükselt",
     "buy_search_pack": "Arama Paketi Satın Al",
     "search_pack_10": "10 Ek Arama",
@@ -148,11 +198,64 @@
     "purchase_success": "Satın alma başarılı!",
     "purchase_failed": "Satın alma başarısız oldu. Lütfen tekrar deneyin.",
     "manage_subscription": "Aboneliği Yönet",
-    "cancel_subscription": "Aboneliği İptal Et"
+    "cancel_subscription": "Aboneliği İptal Et",
+    "upgrade_now": "Şimdi Yükselt",
+    "manage": "Planı Yönet",
+    "buy_more_searches": "Daha Fazla Arama Satın Alın",
+    "credits_breakdown": "Kredi Dağılımı",
+    "subscription_searches": "Aylık Aramalar",
+    "purchased_credits": "Satın Alınan Krediler",
+    "total_available": "Toplam Mevcut",
+    "upgrade": "Güncelleme",
+    "downgrade": "Sürüm düşürme",
+    "reactivate": "Aboneliği Yeniden Etkinleştir",
+    "yes_cancel": "Evet, İptal",
+    "upgrade_options": "Yükseltme Seçenekleri",
+    "downgrade_options": "Sürüm Düşürme Seçenekleri",
+    "searches_remaining": "Kalan Arama Sayısı",
+    "cancellation_pending": "Aboneliğiniz fatura dönemi sonunda iptal edilecektir. Devam etmek için yeniden etkinleştirin.",
+    "cancel_warning": "Fatura döneminizin sonunda premium özelliklere erişiminizi kaybedeceksiniz.",
+    "upgrade_confirm_title": "Aboneliği Yükselt",
+    "upgrade_confirm_message": "Aylık {{price}} karşılığında {{tier}} sürümüne geçilsin mi?",
+    "upgrade_success_title": "Başarıyla Yükseltildi",
+    "upgrade_success_message": "Aboneliğiniz yükseltildi!",
+    "downgrade_confirm_title": "Aboneliği Düşürme",
+    "downgrade_confirm_message": "Ayda {{price}} ücret karşılığında {{tier}} sürümüne geçilsin mi? Değişiklikler bir sonraki faturalandırma döngüsünde geçerli olur.",
+    "downgrade_success_title": "Başarıyla Eski Sürüme Geçildi",
+    "downgrade_success_message": "Aboneliğiniz bir sonraki faturalandırma döneminde düşürülecek.",
+    "cancel_confirm_title": "Aboneliği İptal Et",
+    "cancel_confirm_message": "İptal etmek istediğinizden emin misiniz? Fatura döneminizin sonunda erişiminizi kaybedeceksiniz.",
+    "cancel_success_title": "Abonelik İptal Edildi",
+    "cancel_success_message": "Aboneliğiniz iptal edildi. İstediğiniz zaman yeniden etkinleştirebilirsiniz.",
+    "reactivate_success_title": "Başarıyla Yeniden Etkinleştirildi",
+    "reactivate_success_message": "Aboneliğiniz yeniden etkinleştirildi!"
   },
   "profile": {
     "title": "Profil",
     "account_info": "Hesap Bilgileri",
+    "personal_info": "Kişisel Bilgiler",
+    "full_name": "Ad Soyad",
+    "enter_name": "Tam adınızı girin",
+    "company_name": "Firma Adı",
+    "enter_company": "Şirketinizin adını girin",
+    "email": "E-posta",
+    "truck_type": "Kamyon Tipi",
+    "truck_type_desc": "Sürdüğünüz kamyonun türünü seçin",
+    "search_radius": "Arama Yarıçapı",
+    "search_radius_desc": "Bulunduğunuz yerin yakınındaki şirketleri ne kadar uzakta arayabilirsiniz?",
+    "distance_unit": "Mesafe Birimi",
+    "distance_unit_desc": "Mesafeler için tercih ettiğiniz birimi seçin",
+    "unit_km": "Kilometre (km)",
+    "unit_mi": "Mil (mi)",
+    "preferred_industries": "Tercih Edilen Sektörler",
+    "industries_desc": "Çalışmak istediğiniz en fazla {{count}}/5 sektörü seçin",
+    "phone_number_helper": "Ülke kodunuzu seçin, ardından numarayı baştaki sıfır olmadan girin.",
+    "phone_number_placeholder": "5312345678",
+    "phone_number_invalid": "Numara çok kısa görünüyor. Kontrol edip tekrar deneyin.",
+    "max_industries": "Maksimum 5 sektör",
+    "max_industries_desc": "En fazla 5 sektör seçebilirsiniz",
+    "name_required": "Ad gerekli",
+    "save_failed": "Profil kaydedilemedi",
     "edit_profile": "Profili Düzenle",
     "language": "Dil",
     "notifications": "Bildirimler",
@@ -165,14 +268,7 @@
     "permission_required": "İzin Gerekli",
     "photo_permission_message": "Profil fotoğrafınızı yüklemek için fotoğraf galerisine erişime ihtiyacımız var",
     "avatar_updated": "Profil fotoğrafı başarıyla güncellendi",
-    "avatar_upload_failed": "Profil fotoğrafı yüklenemedi",
-    "distance_unit": "Mesafe Birimi",
-    "distance_unit_desc": "Mesafeler için tercih ettiğiniz birimi seçin",
-    "unit_km": "Kilometre (km)",
-    "unit_mi": "Mil (mi)",
-    "phone_number_helper": "Ülke kodunuzu seçin, ardından numarayı baştaki sıfır olmadan girin.",
-    "phone_number_placeholder": "5312345678",
-    "phone_number_invalid": "Numara çok kısa görünüyor. Kontrol edip tekrar deneyin."
+    "avatar_upload_failed": "Profil fotoğrafı yüklenemedi"
   },
   "templates": {
     "email_subject": "Lojistik Ortaklık Fırsatı - {{company}}",
@@ -192,6 +288,8 @@
     "tier_standard": "Standart",
     "tier_pro": "Pro",
     "tier_premium": "Premium",
+    "tier_fleet_manager": "Filo Müdürü",
+    "tier_pro_freighter": "Profesyonel Yük Gemisi",
     "searches_per_month": "arama/ay",
     "max_results": "Arama başına en fazla {{count}} sonuç",
     "linkedin_contacts": "LinkedIn iletişim profilleri",
@@ -218,36 +316,36 @@
     "session_expired": "Oturum süresi doldu. Lütfen tekrar giriş yapın.",
     "insufficient_permissions": "Yetersiz izinler"
   },
-  "directions": {
-    "north": "Kuzey",
-    "northeast": "Kuzeydoğu",
-    "east": "Doğu",
-    "southeast": "Güneydoğu",
-    "south": "Güney",
-    "southwest": "Güneybatı",
-    "west": "Batı",
-    "northwest": "Kuzeybatı",
-    "of": "den"
-  },
   "community": {
+    "title": "Toplum",
+    "available_drivers": "Mevcut Sürücüler",
+    "available_loads": "Mevcut Yükler",
     "tab_badge_available": "Müsait",
     "tab_title_drivers": "Sürücüler",
-    "tab_title_routes": "Rotalar",
+    "tab_title_loads": "Yükler",
     "country": "Ülke",
     "city": "Şehir",
     "select_country": "Ülke Seç",
     "select_city": "Şehir Seç",
     "select_origin_city": "🚀 BAŞLANGIÇ ŞEHRİNİ SEÇİN",
     "select_origin_hint": "BAŞLAMA / YÜKLEME noktasını seçin",
-    "select_destination_hint": "🎯 TESLİM / BOŞALTMA noktasını seçin",
-    "desired_direction": "İstenilen yön:",
     "select_country_before_city": "Şehir seçmeden önce lütfen önce ülkeyi seçin",
     "search_country": "Ülke ara...",
     "clear_filter": "Filtreyi Temizle",
     "no_countries_found": "Ülke bulunamadı",
     "all_cities": "Tüm şehirler",
     "select_country_first": "Önce ülke seçin",
+    "quick_post": "HIZLI GÖNDERİM (2 dokunuş)",
+    "i_am_available": "ben müsaitim",
+    "i_have_load": "BİR YÜKÜM VAR",
+    "i_am": "Ben",
+    "available": "Mevcut",
+    "i_have": "bende var",
+    "load": "Yük",
+    "select_template": "Şablon Seçin",
     "search_city": "Şehir ara...",
+    "select_destination_hint": "🎯 TESLİM / BOŞALTMA noktasını seçin",
+    "desired_direction": "İstenilen yön:",
     "recent_cities": "Son Aramalar",
     "popular_cities": "Popüler Şehirler",
     "popular": "Popüler",
@@ -255,35 +353,54 @@
     "no_results": "Şehir bulunamadı",
     "try_different_name": "Farklı bir isim deneyin veya yazımı kontrol edin",
     "searching": "Aranıyor...",
-    "user": "Kullanıcı",
+    "location_required": "Konum Gerekli",
+    "location_required_message": "Konumunuzu alamadık. Lütfen konum erişimini etkinleştirin veya manuel olarak bir şehir seçin.",
+    "select_city_manually": "Şehir Seçiniz",
+    "post_created": "Gönderi Oluşturuldu!",
+    "post_created_success": "Başarıyla gönderildi! ✅",
+    "post_visible_in_feed": "Gönderiniz artık akışta görünüyor",
+    "post_created_message": "Gönderiniz artık topluluk tarafından görülebilir",
+    "post_deleted_success": "Gönderi başarıyla silindi",
+    "delete_post_title": "Gönderi Silinsin mi?",
+    "delete_post_message": "Bu gönderiyi silmek istediğinizden emin misiniz? Bu eylem geri alınamaz.",
+    "delete_error": "Hatayı Sil",
+    "post_limit_reached": "Sınıra Ulaşıldı",
+    "post_limit_message": "Şimdi yayınlayamazsınız. Gönderim sınırınızı kontrol edin.",
+    "post_limit_check_error": "Gönderim sınırları doğrulanamadı",
+    "post_error": "Gönderim Hatası",
+    "post_error_message": "Gönderi oluşturulamadı",
+    "posts_remaining_today": "bugün kalan gönderiler",
+    "posts_remaining_month": "bu ay",
+    "upgrade_for_more": "Daha fazlası için yükseltme",
+    "getting_location": "Konum alınıyor...",
+    "posting": "Yayınlanıyor...",
+    "load_timing_warning_title": "📦 Aktif Yüklerle Daha İyi Sonuçlar",
+    "load_timing_warning_message": "En iyi sonuçlar için BUGÜN veya YARIN müsait olan yükleri göndermenizi öneririz.\n\nAktif gönderiler yoldaki sürücülerden daha fazla yanıt alır.\n\nGönderiye devam edilsin mi?",
+    "continue_posting": "Evet, Devam Et",
+    "error_title": "Hata",
+    "auth_required": "Mesaj göndermek için giriş yapmalısınız.",
+    "creating_post": "Gönderi oluşturuluyor...",
+    "active": "Aktif",
+    "contacts": "Kişiler",
+    "leads": "Potansiyel müşteriler",
+    "filters": "Filtreler",
+    "no_drivers_available": "Sürücü yok",
+    "no_loads_available": "Yük yok",
+    "no_routes_available": "Yük yok",
+    "post_route_to_find_drivers": "Sürücüleri bulmak için kullanılabilir bir yük gönderin.",
+    "be_first_to_post": "Bölgenizdeki müsaitlik durumunuzu ilk ilan eden siz olun!",
+    "post_load_to_find_drivers": "Sürücüleri bulmak için kullanılabilir bir yük gönderin.",
     "saved": "Kaydedilenler",
     "no_saved_posts": "Henüz kaydedilmiş gönderi yok",
     "save_posts_hint": "Gönderileri kaydetmek için yer işareti simgesine dokunun",
-    "contact_whatsapp": "WhatsApp",
-    "contact_call": "Ara",
-    "contact_email": "E-posta",
-    "email_contact_line": "Bana {{phone}} numarasından ulaşabilirsiniz.",
-    "whatsapp_driver_available": "Merhaba {{theirName}}, ben {{myCompany}} firmasından {{myName}}. {{origin}} bölgesindeki uygunluğunuz hakkında yazıyorum.",
-    "whatsapp_load_available": "Merhaba {{theirName}}, ben {{myCompany}} firmasından {{myName}}. {{route}} hattınızla ilgileniyorum.",
-    "email_subject_driver": "{{origin}} bölgesindeki uygunluk",
-    "email_subject_load": "{{route}} hattı fırsatı",
-    "email_body_driver": "Merhaba {{theirName}},\n\nBen {{myCompany}} firmasından {{myName}}. {{origin}} bölgesindeki uygunluğunuz için iletişime geçiyorum.\n\n{{contactLine}}\nSaygılarımla,\n{{myName}}",
-    "email_body_load": "Merhaba {{theirName}},\n\nBen {{myCompany}} firmasından {{myName}}. {{route}} hattınızla ilgileniyorum.\n\n{{contactLine}}\nSaygılarımla,\n{{myName}}",
-    "whatsapp_choose_title": "WhatsApp uygulamasını seçin",
-    "whatsapp_choose_message": "İletişim için hangi WhatsApp uygulamasını kullanmak istersiniz?",
-    "whatsapp_app_regular": "WhatsApp",
-    "whatsapp_app_business": "WhatsApp Business",
-    "whatsapp_business_ios_title": "WhatsApp Business hakkında bilgi",
-    "whatsapp_business_ios_message": "iOS'ta her iki uygulama yüklüyse Apple her zaman önce kişisel WhatsApp'ı açar. Bu Meta/Apple kaynaklı bir platform kısıtlamasıdır. Doğrudan WhatsApp Business'a geçmek istiyorsanız kişisel WhatsApp uygulamasını kaldırmanız gerekir.",
-    "whatsapp_unavailable_title": "WhatsApp açılamıyor",
-    "whatsapp_unavailable_message": "Seçtiğiniz WhatsApp uygulamasını açamadık. Tercihi değiştirebilir veya tekrar deneyebilirsiniz.",
-    "whatsapp_change_preference": "Tercihi değiştir",
-    "whatsapp_invalid_number_title": "Uluslararası numara gerekli",
-    "whatsapp_invalid_number_message": "WhatsApp üzerinden iletişim kurmadan önce telefon numarasına ülke kodunu ekleyin (ör. +90...).",
+    "user": "Kullanıcı",
+    "your_post": "Gönderiniz",
+    "driver_available": "Sürücü Mevcut",
+    "load_available": "Mevcut Yük",
+    "contact_unavailable": "İletişim Ulaşılamıyor",
+    "phone_not_available": "Telefon numarası mevcut değil.",
     "upgrade_required": "Yükseltme gerekli",
     "upgrade_required_message": "İletişim bilgilerini görmek için aktif bir aboneliğe ihtiyacınız var.",
-    "load_timing_warning_title": "📦 Aktif Yüklerle Daha İyi Sonuçlar",
-    "load_timing_warning_message": "En iyi sonuçlar için BUGÜN veya YARIN müsait olan yükleri göndermenizi öneririz.\n\nAktif gönderiler yoldaki sürücülerden daha fazla yanıt alır.\n\nGönderiye devam edilsin mi?",
     "upgrade_modal": {
       "badge": "Erişimini artır",
       "title": "Topluluğa tam erişim kazanın",
@@ -302,16 +419,85 @@
       "no_price": "Yükseltme henüz hazır değil. Destekle iletişime geçin.",
       "generic_error": "Yükseltme başlatılamadı. Lütfen tekrar deneyin."
     },
+    "whatsapp_message": "MERHABA! Truxel'deki gönderinizi gördüm: {{title}}",
+    "whatsapp_not_installed": "WhatsApp Kurulu Değil",
+    "install_whatsapp": "Devam etmek için WhatsApp'ı yükleyin.",
+    "authentication_required": "Kimlik Doğrulaması Gerekli",
+    "must_be_logged_in": "Gönderileri kaydetmek için giriş yapmalısınız.",
+    "driver_available_in": "Sürücü {{city}}'da mevcut",
+    "load_from_to": "{{from}} → {{to}} yükle",
+    "destination": "varış noktası",
+    "post_available": "Gönderi mevcut",
+    "a_driver": "Bir sürücü",
+    "now": "Şimdi",
+    "today": "Bugün",
+    "tomorrow": "Yarın",
+    "email_not_available": "E-posta adresi mevcut değil.",
+    "cannot_open_whatsapp": "WhatsApp açılamadı. Lütfen tekrar deneyin.",
+    "cannot_open_email": "E-posta istemcisi açılamadı. Lütfen tekrar deneyin.",
+    "cannot_make_call": "Arama başlatılamadı. Lütfen tekrar deneyin.",
+    "error": "Hata",
+    "whatsapp_unavailable_title": "WhatsApp açılamıyor",
+    "whatsapp_unavailable_message": "Seçtiğiniz WhatsApp uygulamasını açamadık. Tercihi değiştirebilir veya tekrar deneyebilirsiniz.",
+    "whatsapp_change_preference": "Tercihi değiştir",
+    "whatsapp_invalid_number_title": "Uluslararası numara gerekli",
+    "whatsapp_invalid_number_message": "WhatsApp üzerinden iletişim kurmadan önce telefon numarasına ülke kodunu ekleyin (ör. +90...).",
+    "contact_whatsapp": "WhatsApp",
+    "contact_call": "Ara",
+    "contact_email": "E-posta",
+    "email_contact_line": "Bana {{phone}} numarasından ulaşabilirsiniz.",
+    "whatsapp_driver_available": "Merhaba {{theirName}}, ben {{myCompany}} firmasından {{myName}}. {{origin}} bölgesindeki uygunluğunuz hakkında yazıyorum.",
+    "whatsapp_load_available": "Merhaba {{theirName}}, ben {{myCompany}} firmasından {{myName}}. {{route}} hattınızla ilgileniyorum.",
+    "email_subject_driver": "{{origin}} bölgesindeki uygunluk",
+    "email_subject_load": "{{route}} hattı fırsatı",
+    "email_body_driver": "Merhaba {{theirName}},\n\nBen {{myCompany}} firmasından {{myName}}. {{origin}} bölgesindeki uygunluğunuz için iletişime geçiyorum.\n\n{{contactLine}}\nSaygılarımla,\n{{myName}}",
+    "email_body_load": "Merhaba {{theirName}},\n\nBen {{myCompany}} firmasından {{myName}}. {{route}} hattınızla ilgileniyorum.\n\n{{contactLine}}\nSaygılarımla,\n{{myName}}",
+    "whatsapp_choose_title": "WhatsApp uygulamasını seçin",
+    "whatsapp_choose_message": "İletişim için hangi WhatsApp uygulamasını kullanmak istersiniz?",
+    "whatsapp_app_regular": "WhatsApp",
+    "whatsapp_app_business": "WhatsApp Business",
+    "whatsapp_business_ios_title": "WhatsApp Business hakkında bilgi",
+    "whatsapp_business_ios_message": "iOS'ta her iki uygulama yüklüyse Apple her zaman önce kişisel WhatsApp'ı açar. Bu Meta/Apple kaynaklı bir platform kısıtlamasıdır. Doğrudan WhatsApp Business'a geçmek istiyorsanız kişisel WhatsApp uygulamasını kaldırmanız gerekir.",
     "templates": {
       "availability": {
+        "local": "Yerel olarak mevcut",
+        "north": "Kuzeye Gidiyorum",
+        "south": "Güneye Gidiyorum",
+        "east": "Doğuya Gitmek",
+        "west": "Batıya Gidiyorum",
         "custom": "Özel Rota"
+      },
+      "load": {
+        "loaded": "Kargo BUGÜN hazır",
+        "empty": "ŞİRKETTEN TESLİM ALINMASI GEREKİYOR...",
+        "return": "Özel rota"
       }
     },
     "template_descriptions": {
-      "custom": "Kendi rotanızı seçin: NEREDEN → NEREYE şehirleri seçin"
+      "local": "Mevcut bölgenizde, 50 km yarıçaplı",
+      "north": "Mevcut konumdan kuzeye doğru ilerliyoruz",
+      "south": "Mevcut konumdan güneye doğru ilerliyoruz",
+      "east": "Mevcut konumdan doğuya doğru ilerliyoruz",
+      "west": "Mevcut konumdan batıya doğru ilerliyoruz",
+      "custom": "Kendi rotanızı seçin: NEREDEN → NEREYE şehirleri seçin",
+      "loaded": "Konumumdan → Hedef seç",
+      "empty": "Teslim alma şehrini seçin → Konumuma",
+      "return": "Tam kontrol: BAŞLANGIÇ → ŞEHİR şehirlerini seçin"
     },
     "post_descriptions": {
-      "custom": "{{origin}} → {{dest}} rotası için uygun"
+      "local": "{{origin}} bölgesindeki yerel yükler için kullanılabilir",
+      "north": "{{origin}} tarihinden itibaren kuzeye giden yükler için kullanılabilir",
+      "south": "{{origin}} tarihinden itibaren güneye giden yükler için kullanılabilir",
+      "east": "{{origin}} tarihinden itibaren doğuya giden yükler için kullanılabilir",
+      "west": "{{origin}} tarihinden itibaren batıya giden yükler için kullanılabilir",
+      "custom": "{{origin}} → {{dest}} rotası için uygun",
+      "loaded": "Yük {{origin}} {{dest}} tarihinden itibaren mevcut, bugün yola çıkıyor",
+      "empty": "Yük {{origin}} {{dest}} tarihinden itibaren mevcut, çıkış yarın",
+      "return": "{{origin}} {{dest}} adresinden boş dönüş"
+    },
+    "post_types": {
+      "DRIVER_AVAILABLE": "Sürücü Mevcut",
+      "LOAD_AVAILABLE": "Mevcut Yük"
     }
   },
   "support": {
@@ -385,94 +571,6 @@
       "multilang_title": "Çoklu Dil",
       "multilang_desc": "İngilizce, Rumence, Lehçe, Türkçe, İspanyolca ve diğerlerinde mevcut"
     },
-    "footer": {
-      "tagline": "Lojistik ağlarının geleceği",
-      "product": "Ürün",
-      "company": "Şirket",
-      "legal": "Yasal",
-      "privacy": "Gizlilik Politikası",
-      "terms": "Hizmet Şartları",
-      "refund": "İade Politikası",
-      "cookies": "Çerez Politikası",
-      "rights": "Tüm hakları saklıdır."
-    },
-    "gdpr": {
-      "message": "Deneyiminizi iyileştirmek için çerezler kullanıyoruz. Devam ederek çerez kullanımımızı kabul ediyorsunuz.",
-      "learn_more": "Daha fazla bilgi",
-      "accept": "Hepsini Kabul Et",
-      "decline": "Reddet"
-    },
-    "faq": {
-      "title": "Sıkça Sorulan Sorular",
-      "q1": "Truxel ücretsiz mi?",
-      "a1": "Evet, ayda 5 arama ile ücretsiz deneme sunuyoruz.",
-      "q2": "GPS araması nasıl çalışır?",
-      "a2": "Yakındaki firmaları ve yükleri bulmak için cihazınızın konumunu kullanıyoruz.",
-      "q3": "Kendi yüklerimi paylaşabilir miyim?",
-      "a3": "Evet! Pro ve Fleet Manager planları toplulukta paylaşım içerir.",
-      "q4": "Verilerim güvende mi?",
-      "a4": "Kesinlikle. Endüstri standardı şifreleme kullanıyoruz ve GDPR'ye uyuyoruz.",
-      "q5": "Hangi ülkeler destekleniyor?",
-      "a5": "Tüm Avrupa Birliği ülkelerini ve UK, Türkiye ve diğerlerini kapsıyoruz.",
-      "q6": "İstediğim zaman iptal edebilir miyim?",
-      "a6": "Evet, aboneliğinizi istediğiniz zaman ceza ödemeden iptal edebilirsiniz.",
-      "q7": "Mobil uygulama var mı?",
-      "a7": "Evet! iOS ve Android için Truxel'i indirin.",
-      "q8": "Destekle nasıl iletişim kurarım?",
-      "a8": "Sohbet düğmesini kullanın veya office@truxel.app adresine e-posta gönderin"
-    },
-    "problem_solution": {
-      "problem_title": "Nakliye Simsarlarına Bağımlılığı Bitirin",
-      "problem_desc": "Sahip-operatör olarak yük panoları için beklemeniz veya simsar ücreti ödemeniz gerekmemeli. Özellikle fırsatların gizlendiği ölü bölgelerde, bölgenizdeki yük verenlere doğrudan erişimi hak ediyorsunuz.",
-      "solution_title": "Yük Verenleri Doğrudan Bulun - Kapı Kapı Dolaşmaya Gerek Yok",
-      "solution_desc": "İşiniz, kontrolünüz. Konumunuzun kilometre içindeki yerel yük verenlerini keşfetmek için GPS kullanın. Kişiselleştirilmiş mesajlarla anında ulaşın - soğuk arama yok, tahmin oyunu yok."
-    },
-    "how_it_works": {
-      "title": "Nasıl Çalışır",
-      "subtitle": "4 basit adımda müşteri bulmaya başlayın",
-      "step1_title": "İndirin ve Kaydolun",
-      "step1_desc": "Dakikalar içinde ücretsiz bir hesapla başlayın",
-      "step2_title": "Yerel Yük Verenleri Bulun",
-      "step2_desc": "Firmaları keşfetmek için GPS veya manuel arama kullanın",
-      "step3_title": "İletişim Bilgilerini Alın",
-      "step3_desc": "Telefon, e-posta ve LinkedIn profillerine erişin",
-      "step4_title": "Anında Ulaşın",
-      "step4_desc": "Tek dokunuşla WhatsApp, e-posta veya telefon üzerinden bağlanın"
-    },
-    "social_proof": {
-      "title": "Avrupa'daki Sürücüler Bize Güveniyor",
-      "testimonial1": "Sonunda bölgemdeki doğrudan yük verenleri buldum. Karımı yiyen simsar ücretlerine artık son!",
-      "testimonial1_author": "Mike T., Sahip-Operatör, Teksas",
-      "testimonial2": "Ölü bir bölgede sıkışmıştım ve 20 dakika içinde 3 yerel yük veren buldum. Bu kendi kendini geri ödüyor.",
-      "testimonial2_author": "James R., Bağımsız Sürücü, Ohio",
-      "testimonial3": "Tek dokunuşla mesajlaşma harika. Kamyon durağındayken yük verenlerle iletişim kurabilirim.",
-      "testimonial3_author": "Sarah K., Filo Sahibi, Kaliforniya",
-      "stats_drivers": "Bağımsız Sürücüler İçin Yapıldı",
-      "stats_companies": "Yerel Yük Verenleri Anında Bulun",
-      "stats_countries": "Kuzey Amerika'da Başlatılıyor",
-      "stat_values": {
-        "drivers": "1000+",
-        "companies": "5000+",
-        "countries": "6"
-      }
-    },
-    "final_cta": {
-      "badge": "Built for Owner-Operators",
-      "stats": {
-        "success_rate": {
-          "value": "98%",
-          "label": "Success Rate"
-        },
-        "support": {
-          "value": "24/7",
-          "label": "Support"
-        },
-        "rating": {
-          "value": "5★",
-          "label": "Rating"
-        }
-      }
-    },
     "features_page": {
       "hero_title": "Powerful Features for Truck Drivers",
       "hero_subtitle": "Everything you need to find clients, manage leads, and grow your logistics business",
@@ -540,6 +638,349 @@
         "title": "Ready to Get Started?",
         "subtitle": "Download Truxel today and start finding clients instantly with 5 free trial searches",
         "secondary": "View Pricing"
+      }
+    },
+    "footer": {
+      "tagline": "Lojistik ağlarının geleceği",
+      "product": "Ürün",
+      "company": "Şirket",
+      "legal": "Yasal",
+      "privacy": "Gizlilik Politikası",
+      "terms": "Hizmet Şartları",
+      "refund": "İade Politikası",
+      "cookies": "Çerez Politikası",
+      "rights": "Tüm hakları saklıdır."
+    },
+    "gdpr": {
+      "message": "Deneyiminizi iyileştirmek için çerezler kullanıyoruz. Devam ederek çerez kullanımımızı kabul ediyorsunuz.",
+      "learn_more": "Daha fazla bilgi",
+      "accept": "Hepsini Kabul Et",
+      "decline": "Reddet"
+    },
+    "faq": {
+      "title": "Sıkça Sorulan Sorular",
+      "q1": "Truxel ücretsiz mi?",
+      "a1": "Evet, ayda 5 arama ile ücretsiz deneme sunuyoruz.",
+      "q2": "GPS araması nasıl çalışır?",
+      "a2": "Yakındaki firmaları ve yükleri bulmak için cihazınızın konumunu kullanıyoruz.",
+      "q3": "Kendi yüklerimi paylaşabilir miyim?",
+      "a3": "Evet! Pro ve Fleet Manager planları toplulukta paylaşım içerir.",
+      "q4": "Verilerim güvende mi?",
+      "a4": "Kesinlikle. Endüstri standardı şifreleme kullanıyoruz ve GDPR'ye uyuyoruz.",
+      "q5": "Hangi ülkeler destekleniyor?",
+      "a5": "Tüm Avrupa Birliği ülkelerini ve UK, Türkiye ve diğerlerini kapsıyoruz.",
+      "q6": "İstediğim zaman iptal edebilir miyim?",
+      "a6": "Evet, aboneliğinizi istediğiniz zaman ceza ödemeden iptal edebilirsiniz.",
+      "q7": "Mobil uygulama var mı?",
+      "a7": "Evet! iOS ve Android için Truxel'i indirin.",
+      "q8": "Destekle nasıl iletişim kurarım?",
+      "a8": "Sohbet düğmesini kullanın veya office@truxel.app adresine e-posta gönderin"
+    },
+    "problem_solution": {
+      "problem_title": "Nakliye Simsarlarına Bağımlılığı Bitirin",
+      "problem_desc": "Sahip-operatör olarak yük panoları için beklemeniz veya simsar ücreti ödemeniz gerekmemeli. Özellikle fırsatların gizlendiği ölü bölgelerde, bölgenizdeki yük verenlere doğrudan erişimi hak ediyorsunuz.",
+      "solution_title": "Yük Verenleri Doğrudan Bulun - Kapı Kapı Dolaşmaya Gerek Yok",
+      "solution_desc": "İşiniz, kontrolünüz. Konumunuzun kilometre içindeki yerel yük verenlerini keşfetmek için GPS kullanın. Kişiselleştirilmiş mesajlarla anında ulaşın - soğuk arama yok, tahmin oyunu yok."
+    },
+    "how_it_works": {
+      "title": "Nasıl Çalışır",
+      "subtitle": "4 basit adımda müşteri bulmaya başlayın",
+      "step1_title": "İndirin ve Kaydolun",
+      "step1_desc": "Dakikalar içinde ücretsiz bir hesapla başlayın",
+      "step2_title": "Yerel Yük Verenleri Bulun",
+      "step2_desc": "Firmaları keşfetmek için GPS veya manuel arama kullanın",
+      "step3_title": "İletişim Bilgilerini Alın",
+      "step3_desc": "Telefon, e-posta ve LinkedIn profillerine erişin",
+      "step4_title": "Anında Ulaşın",
+      "step4_desc": "Tek dokunuşla WhatsApp, e-posta veya telefon üzerinden bağlanın"
+    },
+    "social_proof": {
+      "title": "Avrupa'daki Sürücüler Bize Güveniyor",
+      "testimonial1": "Sonunda bölgemdeki doğrudan yük verenleri buldum. Karımı yiyen simsar ücretlerine artık son!",
+      "testimonial1_author": "Mike T., Sahip-Operatör, Teksas",
+      "testimonial2": "Ölü bir bölgede sıkışmıştım ve 20 dakika içinde 3 yerel yük veren buldum. Bu kendi kendini geri ödüyor.",
+      "testimonial2_author": "James R., Bağımsız Sürücü, Ohio",
+      "testimonial3": "Tek dokunuşla mesajlaşma harika. Kamyon durağındayken yük verenlerle iletişim kurabilirim.",
+      "testimonial3_author": "Sarah K., Filo Sahibi, Kaliforniya",
+      "stat_values": {
+        "drivers": "1000+",
+        "companies": "5000+",
+        "countries": "6"
+      },
+      "stats_drivers": "Bağımsız Sürücüler İçin Yapıldı",
+      "stats_companies": "Yerel Yük Verenleri Anında Bulun",
+      "stats_countries": "Kuzey Amerika'da Başlatılıyor"
+    },
+    "final_cta": {
+      "title": "Müşteri Bulmaya Bugün Başlayın",
+      "subtitle": "Truxel ile işlerini büyüten 1000'den fazla kamyon şoförüne katılın",
+      "badge": "Built for Owner-Operators",
+      "download_ios": "App Store'dan indirin",
+      "download_android": "Google Play'den edinin",
+      "stats": {
+        "success_rate": {
+          "value": "98%",
+          "label": "Success Rate"
+        },
+        "support": {
+          "value": "24/7",
+          "label": "Support"
+        },
+        "rating": {
+          "value": "5★",
+          "label": "Rating"
+        }
+      }
+    },
+    "about": {
+      "hero_badge": "Sürücüler için sürücüler tarafından tasarlandı",
+      "hero_title": "Aracısız lojistik Truxel ile başlar",
+      "hero_subtitle": "Kurucumuz Avrupa yollarında yıllarını depo kapılarını çalarak ve komisyoncuların gelip almasını bekleyerek geçirdi. Truxel, sahip olmayı dilediği platformdu: doğrudan nakliyeci erişimi, anında destek ve gerçek topluluk desteği.",
+      "hero_cta": "Ücretsiz hesabınızı oluşturun",
+      "hero_secondary_cta": "Ekiple konuşun",
+      "founder_quote": "Hala yükleme iskelesinde park halindeyken nakliyatçıları bulmanın bir yolunu istiyordum. Truxel, her sürücünün komisyon ücreti ödemeden boru hattını kontrol etmesine olanak tanır.",
+      "journey_badge": "Hikayemiz",
+      "journey_title": "MAN TGX'in kabininde doğdu",
+      "journey_subtitle": "Güvenilir müşteriler arayan bir sürücüden Avrupa çapında binlerce hizmet veren bir platforma kadar.",
+      "mission_badge": "Misyon",
+      "mission_title": "Her kilometrenin bedeli ödenmeli",
+      "mission_subtitle": "Yükün taşınması gerektiğinde sürücülerin asla boşta kalmaması gerektiğine inanıyoruz.",
+      "mission": {
+        "point1": "Komisyonculara veya gizli ücretlere gerek kalmadan nakliyecilere doğrudan erişim.",
+        "point2": "Yoldaki yaşam için tasarlanmış araçlar: hızlı, mobil, çok dilli.",
+        "point3": "Sürücülerin sürücülere gerçek fırsatlarla yardımcı olduğu bir topluluk."
+      },
+      "coverage_title": "Truxel'in bugün faaliyet gösterdiği yer",
+      "coverage_subtitle": "10 dil ve Avrupa çapında binlerce doğrulanmış şirket.",
+      "coverage": {
+        "romania": "Romanya",
+        "uk": "Birleşik Krallık",
+        "us": "Amerika Birleşik Devletleri (yakında hizmete giriyor)",
+        "spain": "İspanya",
+        "poland": "Polonya",
+        "turkey": "Türkiye"
+      },
+      "coverage_footer": "Her ay genişletiyoruz. Bize bundan sonra nereden başlayacağımızı söyleyin.",
+      "values_badge": "Bizi yönlendiren şey",
+      "values_title": "Sürücü koltuğundaki değerler",
+      "values_subtitle": "Truxel'i bağımsız kamyonculuğun gerçekleri etrafında inşa ediyoruz.",
+      "values": {
+        "owner_operator": {
+          "title": "Sahip-operatör takıntılı",
+          "desc": "Özellik kararları basit bir soruyla başlar: Bu, sürücünün anlaşmayı daha hızlı tamamlamasına yardımcı olur mu?"
+        },
+        "community": {
+          "title": "Önce topluluk",
+          "desc": "Herkes doğrudan bağlantı kurabildiğinde sürücüler, nakliyatçılar, filo yöneticileri ve nakliyeciler kazanır."
+        },
+        "partners": {
+          "title": "Adil ortaklıklar",
+          "desc": "Sürücülere saygı duyan, zamanında ödeme yapan ve şeffaflığa değer veren nakliyatçılarla çalışıyoruz."
+        },
+        "innovation": {
+          "title": "Aralıksız iyileştirme",
+          "desc": "Yoldan gelen gerçek geri bildirimlerle desteklenen güncellemeleri haftalık olarak gönderiyoruz."
+        }
+      },
+      "impact_badge": "Gerçek çekiş",
+      "impact_title": "Avrupa'yı hareket ettiren insanlarla inşa edildi",
+      "impact_subtitle": "Truxel halihazırda binlerce lojistik profesyonelinin kargoyu daha hızlı bulmasına yardımcı oluyor.",
+      "impact": {
+        "stats": {
+          "drivers": {
+            "value": "4.800+",
+            "label": "sürücüler kendi boru hattını kuruyor"
+          },
+          "companies": {
+            "value": "12.500+",
+            "label": "doğrulanmış lojistik ve üretim şirketleri"
+          },
+          "countries": {
+            "value": "18",
+            "label": "yerel veriler kapsamındaki ülkeler"
+          },
+          "connections": {
+            "value": "65.000+",
+            "label": "doğrudan sürücüden nakliyeciye görüşmeler başladı"
+          }
+        }
+      },
+      "cta_title": "Bir sonraki şeridinizi birlikte inşa edelim",
+      "cta_subtitle": "Truxel ağına katılın ve nakliyatçılara, sürücülere ve kamyonlarınızın hareket etmesini sağlayan verilere doğrudan erişim sağlayın.",
+      "cta_primary": "Bugün başla",
+      "cta_secondary": "Fiyatlandırmayı görün"
+    },
+    "founder": {
+      "name": "Bogdan Ciorava",
+      "role": "Kurucu ve eski sahibi-operatörü",
+      "timeline": {
+        "step1": {
+          "title": "2019 • Doğrudan nakliyecilerin peşinde",
+          "desc": "Bogdan gecelerini şirketlerin elektronik tablolarıyla geçirdi, teslimatlar arasında ölü yollardan kaçınmak için depoları aradı."
+        },
+        "step2": {
+          "title": "2022 • İlk Truxel prototipi",
+          "desc": "6.000 şirketten oluşan manuel bir veritabanı oluşturduktan sonra, yakındaki nakliyatçıları anında ortaya çıkarmak için bir GPS arama aracı oluşturdu."
+        },
+        "step3": {
+          "title": "2024 • Topluluk yayına giriyor",
+          "desc": "Yüklerin ve kullanılabilirliğin günler yerine saniyeler içinde paylaşılabilmesi için Avrupa çapında bir sürücü ağı başlattık."
+        }
+      }
+    },
+    "contact": {
+      "hero_badge": "Gerçek bir kişiyle konuşun",
+      "hero_title": "Lojistik sorununuzu birlikte çözelim",
+      "hero_subtitle": "İster programını dolduran bir sürücü, ister kapasite arayan bir nakliyatçı olun, Truxel ekibi her mesajı 24 saatten kısa sürede yanıtlıyor.",
+      "cards_badge": "Bize hızlı ulaşın",
+      "cards_title": "Size uygun kanalı seçin",
+      "cards_subtitle": "Bükreş'te bulunuyoruz ve Avrupa ve Kuzey Amerika'daki sürücüleri destekliyoruz.",
+      "cards": {
+        "email": {
+          "title": "E-posta",
+          "subtitle": "24 saat içinde yanıt veriyoruz"
+        },
+        "phone": {
+          "title": "Telefon",
+          "subtitle": "Bizi Pazartesi'den Cuma'ya 09:00-18:00 EET arası arayın"
+        },
+        "whatsapp": {
+          "title": "WhatsApp",
+          "subtitle": "Yolla ilgili acil sorularınız için bize yazın"
+        },
+        "hours": {
+          "title": "Destek saatleri",
+          "value": "Pazartesi-Cum | 09:00-18:00 EET",
+          "subtitle": "Hafta sonu yardımına mı ihtiyacınız var? Mesaj bırakın, pazartesi ilk iş cevap vereceğiz."
+        },
+        "location": {
+          "title": "Konum",
+          "value": "Bükreş, Romanya",
+          "subtitle": "Avrupa Birliği genelinde sürücülere hizmet veriyoruz"
+        }
+      },
+      "form_badge": "Mesaj gönder",
+      "form_title": "Bize neye ihtiyacınız olduğunu söyleyin",
+      "form_subtitle": "Sizi doğru kişiyle buluşturabilmemiz için mümkün olduğunca çok ayrıntı paylaşın.",
+      "form": {
+        "name_label": "Adınız *",
+        "name_placeholder": "Tam adınızı girin",
+        "email_label": "E-posta adresi *",
+        "email_placeholder": "isim@example.com",
+        "subject_label": "Ders *",
+        "subject_placeholder": "Örn. İspanya'da yük bulma konusunda yardıma ihtiyacınız var",
+        "message_label": "Mesaj *",
+        "message_placeholder": "Nasıl yardımcı olabiliriz?",
+        "button": "Mesaj gönder",
+        "button_loading": "Gönderiliyor..."
+      },
+      "toast": {
+        "error_title": "Bir şeyler ters gitti",
+        "error_fields": "Lütfen gerekli tüm alanları doldurun.",
+        "error_email": "Geçerli bir e-posta adresi girin.",
+        "success_title": "E-posta gönderilmeye hazır",
+        "success_message": "Taslak e-postayı inceleyin ve mesajınızı tamamlamak için gönder tuşuna basın.",
+        "error_open": "E-posta istemcinizi açamadık. Bize office@truxel.io adresinden e-posta gönderin."
+      },
+      "audience_badge": "Kime yardım ediyoruz",
+      "audience_title": "Aynı lojistik hikayesinin iki yüzü",
+      "audience_subtitle": "Yükün hareket etmeye devam etmesi için sürücüler ve nakliyatçılar arasındaki diyalogları köprüliyoruz.",
+      "audience": {
+        "drivers": {
+          "badge": "Sürücüler ve işletme sahipleri",
+          "title": "Sürdüğünüz her şeridi doldurun",
+          "point1": "Aktif bölgelerinizdeki nakliyatçılarla doğrudan tanışın.",
+          "point2": "Hangi planların iletişim erişiminin ve yapay zeka içgörülerinin kilidini açtığını anlayın.",
+          "point3": "Ekibiniz veya sevk görevlileriniz için katılım desteği alın."
+        },
+        "shippers": {
+          "badge": "Nakliye komisyoncuları ve nakliyeciler",
+          "title": "Yükünüzü aracısız taşıyın",
+          "point1": "Sürüşe hazır taşıyıcılara ulaşmak için acil yükleri listeleyin.",
+          "point2": "Ekipman türüne ve bölgeye göre doğrulanmış taşıyıcıları keşfedin.",
+          "point3": "Pilot uygulamaları, ortaklıkları veya entegrasyonları koordine edin."
+        }
+      },
+      "bottom_cta_title": "Canlı konuşmayı mı tercih edersiniz?",
+      "bottom_cta_subtitle": "Ekibimizle bir keşif görüşmesi yapın veya bize bir ortaklık notu gönderin. Her talebe cevap veriyoruz.",
+      "bottom_cta_primary": "Demo rezervasyonu yapın",
+      "bottom_cta_secondary": "Ortaklık e-postası gönder"
+    },
+    "pricing": {
+      "hero_badge": "Ücretsiz deneme dahil",
+      "hero_title": "Yükleri bulun. Güvenli sözleşmeler. Lojistik işinizi büyütün.",
+      "hero_subtitle": "Broker ücreti ödemeden nakliyecilere doğrudan erişim isteyen işletme sahibi, filo yöneticileri ve nakliye komisyoncuları için tasarlandı.",
+      "hero_feature1": "Anında katılım. Kredi kartı gerekmez.",
+      "hero_feature2": "İstediğiniz zaman iptal edin. Verilerinizi sonsuza kadar saklayın.",
+      "hero_feature3": "Platformu test etmek için 5 ücretsiz arama.",
+      "hero_cta": "Ücretsiz Denemeyi Başlat",
+      "currency_label": "Fiyatları göster",
+      "currency_eur": "Avro (€)",
+      "currency_usd": "ABD Doları ($)",
+      "per_month": "aylık",
+      "cta": "Başlayın",
+      "cta_popular": "En Popüler",
+      "faq_title": "Fiyatlandırma ve plan soruları",
+      "faq": {
+        "q1": "Hangi Truxel planı operasyonuma uyuyor?",
+        "a1_part_standard": "Standart, bağımsız sürücülere rezervasyonlarını korumaları için 30 aylık şirket araması ve günlük gönderiler sunuyor.",
+        "a1_part_pro": "Pro, büyüyen ekipler için LinkedIn bağlantılarını, yapay zeka eşleştirmesini ve gelişmiş araştırmaları ekler.",
+        "a1_part_fleet": "Filo Yöneticisi, sevkiyat ekipleri için 30 günlük gönderinin, 30 eşzamanlı listelemenin ve 72 saatlik görünürlüğün kilidini açar.",
+        "a1_part_freighter": "Pro Freighter, ciddi nakliyeciler için her şeyin yanı sıra analizler, öncelikli destek ve 50 günlük gönderi sunar.",
+        "q2": "Planları daha sonra değiştirebilir miyim?",
+        "a2": "Evet! Hesap ayarlarınızdan istediğiniz zaman yükseltebilir veya düşürebilirsiniz. Değişiklikler yükseltmeler için hemen, düşürmeler için ise fatura döneminizin sonunda geçerli olur.",
+        "q3": "Ödemeler nasıl çalışır?",
+        "a3": "Tüm önemli kredi kartlarını kabul ediyoruz ve ödemeleri Stripe aracılığıyla güvenli bir şekilde gerçekleştiriyoruz. Abone olduğunuz tarihte aylık olarak faturalandırılırsınız. Tüm işlemler şifrelenir ve kart bilgilerinizi asla saklamayız.",
+        "q4": "Aramalar ve gönderiler arasındaki fark nedir?",
+        "a4_part_search": "Aramalar, belirli konumlardaki potansiyel müşterileri (nakliyeciler ve nakliye komisyoncuları) tüm iletişim bilgileriyle birlikte bulmanıza yardımcı olur.",
+        "a4_part_post": "Gönderiler, başkalarının sizi bulabilmesi için topluluğa uygunluk durumunuzu veya yüklerinizi duyurmanıza olanak tanır. Her ikisi de ağınızı büyütmek için birlikte çalışır.",
+        "q5": "İptal edersem erişime devam edebilir miyim?",
+        "a5": "Evet, mevcut fatura döneminizin sonuna kadar aboneliğinize tam erişime sahip olacaksınız. Kayıtlı tüm kişileriniz, notlarınız ve arama geçmişiniz, iptalden sonra bile erişilebilir durumda kalır."
+      },
+      "cards": {
+        "standard": {
+          "title": "Standart",
+          "tagline": "Bağımsız sürücüler için tasarlandı",
+          "feature_searches": "Her ay {{count}} şirket araması yapılıyor",
+          "feature_posts": "Günde {{daily}} gönderi (her ay {{monthly}})",
+          "feature_filters": "Doğru nakliyecileri bulmak için gelişmiş filtreler",
+          "feature_saves": "Sınırsız kayıtlı potansiyel müşteri ve takip"
+        },
+        "pro": {
+          "title": "Profesyonel",
+          "tagline": "Satış desteğinizi ölçeklendirin",
+          "feature_searches": "Genişletilmiş sonuçlar içeren {{count}} aramalar",
+          "feature_posts": "Günde {{daily}} gönderi (her ay {{monthly}})",
+          "feature_linkedin": "Karar vericiler için LinkedIn iletişim profilleri",
+          "feature_ai": "Yapay zeka destekli rota eşleştirme ve şirket puanlama",
+          "feature_research": "Sektöre ve kulvara göre derin şirket araştırması",
+          "feature_priority": "Topluluk akışında öncelikli yerleştirme",
+          "feature_export": "Potansiyel müşterileri ve notları tek dokunuşla CSV'ye aktarın"
+        },
+        "fleet": {
+          "title": "Filo Müdürü",
+          "tagline": "Uygun ölçekte gönderim",
+          "feature_searches": "Her ay {{count}} hedefli arama",
+          "feature_posts": "Günde {{daily}} gönderi (her ay {{monthly}})",
+          "feature_concurrent": "{{count}} aktif yayın aynı anda yayınlanıyor",
+          "feature_duration": "Erişimi en üst düzeye çıkarmak için yayınlar {{hours}} saat görünür kalır",
+          "feature_tools": "Ekip işbirliği için nakliye komisyoncusu iş akışları",
+          "feature_saved": "{{count_saved}} adede kadar rota ve şablon kaydedin"
+        },
+        "freighter": {
+          "title": "Profesyonel Yük Gemisi",
+          "tagline": "Kurumsal nakliye operasyonları",
+          "feature_searches": "Her ay {{count}} premium araması",
+          "feature_posts": "Günde {{daily}} gönderi (her ay {{monthly}})",
+          "feature_linkedin": "Tam karar verici iletişim verileri",
+          "feature_ai": "Yapay zeka, akıllı hatırlatıcılarla istihbarat gönderiyor",
+          "feature_research": "Çok ülkeli operasyonlar için ileri araştırma",
+          "feature_concurrent": "Ekipler arasında {{count}} eşzamanlı gönderiler",
+          "feature_duration": "Otomatik yenilemeyle {{hours}} saatlik görünürlük",
+          "feature_analytics": "Performans analizleri ve haftalık öngörüler",
+          "feature_support": "Özel konsiyerj hizmetiyle öncelikli destek",
+          "feature_saved": "{{count_saved}} şablonu ve kayıtlı rotayı depolayın"
+        }
       }
     }
   }

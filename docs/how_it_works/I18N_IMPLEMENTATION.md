@@ -16,7 +16,7 @@ Successfully migrated the Truxel app from device language auto-detection to **En
 - Removed device language detection function
 
 ```typescript
-export const supportedLanguages = ['en', 'ro', 'pl', 'tr', 'lt', 'es'];
+export const supportedLanguages = ['en', 'ro', 'pl', 'tr', 'lt', 'es', 'fr', 'de', 'it', 'uk'];
 
 const getDefaultLanguage = () => {
   return 'en'; // Always start with English
@@ -218,7 +218,7 @@ For language switching to work, the `profiles` table must have a `preferred_lang
 ```sql
 ALTER TABLE profiles 
 ADD COLUMN preferred_language TEXT DEFAULT 'en' 
-CHECK (preferred_language IN ('en', 'ro', 'pl', 'tr', 'lt', 'es'));
+CHECK (preferred_language IN ('en', 'ro', 'pl', 'tr', 'lt', 'es', 'fr', 'de', 'it', 'uk'));
 ```
 
 ## Benefits of This Approach

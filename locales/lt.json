@@ -22,7 +22,11 @@
     "sort": "Rūšiuoti",
     "confirm": "Patvirtinti",
     "back": "Atgal",
-    "close": "Uždaryti"
+    "close": "Uždaryti",
+    "no": "Nr",
+    "yes": "Taip",
+    "ok": "Gerai",
+    "upgrade": "Atnaujinti"
   },
   "auth": {
     "welcome": "Sveiki atvykę į Truxel",
@@ -32,6 +36,10 @@
     "reset_password": "Atkurti slaptažodį",
     "no_account": "Neturite paskyros?",
     "have_account": "Jau turite paskyrą?",
+    "or_continue_with": "Arba tęskite",
+    "sign_in_with_google": "Prisijunkite naudodami „Google“.",
+    "redirecting": "Peradresuojama...",
+    "complete_in_browser": "Užbaikite prisijungimą naršyklėje",
     "email_required": "El. paštas privalomas",
     "password_required": "Slaptažodis privalomas",
     "invalid_email": "Neteisingas el. pašto adresas",
@@ -41,21 +49,38 @@
     "register_success": "Registracija sėkminga",
     "logout_confirm": "Ar tikrai norite atsijungti?"
   },
+  "directions": {
+    "north": "Šiaurė",
+    "northeast": "Šiaurės rytai",
+    "east": "Rytai",
+    "southeast": "Pietryčiai",
+    "south": "Pietūs",
+    "southwest": "Pietvakariai",
+    "west": "Vakarai",
+    "northwest": "Šiaurės vakarai",
+    "of": "nuo"
+  },
   "tabs": {
     "home": "Pagrindinis",
     "search": "Paieška",
     "leads": "Mano potencialūs klientai",
+    "community": "bendruomenė",
+    "pricing": "Kainodara",
+    "subscription": "Prenumerata",
     "profile": "Profilis"
   },
   "home": {
     "welcome": "Sveiki, {{name}}",
     "searches_remaining": "Liko {{count}} paieškų",
     "recent_leads": "Naujausi potencialūs klientai",
+    "view_all_results": "Žiūrėti viską",
     "start_search": "Pradėti naują paiešką",
     "upgrade": "Atnaujinti planą",
     "total_leads": "Viso potencialių klientų",
     "leads_contacted": "Susisiekta",
-    "active_searches": "Aktyvios paieškos"
+    "active_searches": "Aktyvios paieškos",
+    "community_title": "Trukselio bendruomenė",
+    "community_subtitle": "Raskite keliones ir vairuotojus realiuoju laiku"
   },
   "search": {
     "title": "Rasti įmones",
@@ -80,7 +105,23 @@
     "location_permission": "Mums reikia jūsų vietos, kad rastume įmones šalia jūsų",
     "location_denied": "Vietos leidimas atmestas",
     "search_started": "Paieška pradėta! Pranešime, kai rezultatai bus paruošti.",
-    "search_failed": "Paieška nepavyko. Bandykite dar kartą."
+    "search_failed": "Paieška nepavyko. Bandykite dar kartą.",
+    "processing": "Apdorojama...",
+    "completed": "Užbaigta",
+    "failed": "Nepavyko",
+    "location": "Vieta",
+    "estimated": "įvertintas",
+    "check_leads_tab": "Norėdami pamatyti rezultatus, patikrinkite skirtuką Potencialūs klientai",
+    "please_try_again": "Bandykite dar kartą",
+    "search_complete": "Paieška baigta!",
+    "results_ready": "Jūsų paieškos rezultatai paruošti",
+    "quick_search": "Greita paieška",
+    "quick_search_description": "Puikiai tinka vairuojant! Nedelsdami pradėkite paiešką naudodami išsaugotus domenus neįvesdami.",
+    "your_saved_domains": "Jūsų išsaugoti domenai",
+    "start_quick_search": "🚀 Greita paieška",
+    "quick_search_started": "Sparti paieška prasidėjo jūsų išsaugotuose domenuose!",
+    "no_saved_domains": "Nėra išsaugotų domenų",
+    "please_set_domains_in_profile": "Profilio nustatymuose nustatykite pageidaujamas pramonės šakas"
   },
   "leads": {
     "title": "Mano potencialūs klientai",
@@ -92,6 +133,8 @@
     "filter_forwarding": "Ekspedijavimas",
     "add_to_mybook": "Pridėti į mano knygą",
     "converted_successfully": "Sėkmingai pridėta į mano knygą",
+    "duplicate_lead_title": "Švinas jau yra",
+    "duplicate_lead_message": "Jau turite potencialų klientą su šia kontaktine informacija (telefonu arba el. paštu + įmone) savo knygoje.",
     "no_search_results": "Dar nėra paieškos rezultatų",
     "no_hot_leads": "Dar nėra išsaugotų įrašų",
     "no_mybook_leads": "Jūsų knyga tuščia",
@@ -127,20 +170,27 @@
     "get_directions": "Gauti nurodymus",
     "lead_saved": "Potencialus klientas sėkmingai išsaugotas",
     "lead_updated": "Potencialus klientas sėkmingai atnaujintas",
-    "lead_deleted": "Potencialus klientas sėkmingai ištrintas"
+    "lead_deleted": "Potencialus klientas sėkmingai ištrintas",
+    "share_contact": "Bendrinti kontaktą",
+    "contact_shared": "Kontakto kortelė sėkmingai bendrinama",
+    "share_error": "Bendrinimo klaida"
   },
   "subscription": {
     "title": "Prenumerata",
     "current_plan": "Dabartinis planas",
     "trial": "Nemokamas bandomasis",
     "standard": "Standartinis planas",
+    "pro": "Pro planas",
     "premium": "Premium planas",
     "trial_desc": "5 paieškos iš viso",
     "standard_desc": "15 paieškų per mėnesį",
+    "pro_desc": "30 paieškų naudojant „LinkedIn“ ir AI",
     "premium_desc": "100 paieškų per mėnesį",
     "price_month": "€{{price}}/mėn.",
     "searches_used": "Panaudota {{used}} iš {{total}} paieškų",
     "renews_on": "Atnaujinama {{date}}",
+    "expires_on": "Galiojimas baigiasi {{date}}",
+    "cancelled_until": "Atšaukta (aktyvus iki {{date}})",
     "upgrade_to": "Atnaujinti į {{plan}}",
     "buy_search_pack": "Pirkti paieškų paketą",
     "search_pack_10": "10 papildomų paieškų",
@@ -148,11 +198,64 @@
     "purchase_success": "Pirkimas sėkmingas!",
     "purchase_failed": "Pirkimas nepavyko. Bandykite dar kartą.",
     "manage_subscription": "Valdyti prenumeratą",
-    "cancel_subscription": "Atšaukti prenumeratą"
+    "cancel_subscription": "Atšaukti prenumeratą",
+    "upgrade_now": "Atnaujinkite dabar",
+    "manage": "Tvarkyti planą",
+    "buy_more_searches": "Pirkti daugiau paieškų",
+    "credits_breakdown": "Kreditų suskirstymas",
+    "subscription_searches": "Mėnesinės paieškos",
+    "purchased_credits": "Įsigyti kreditai",
+    "total_available": "Iš viso prieinama",
+    "upgrade": "Atnaujinti",
+    "downgrade": "Sumažinti",
+    "reactivate": "Iš naujo suaktyvinkite prenumeratą",
+    "yes_cancel": "Taip, atšaukti",
+    "upgrade_options": "Atnaujinimo parinktys",
+    "downgrade_options": "Senesnės versijos parinktys",
+    "searches_remaining": "Likusios paieškos",
+    "cancellation_pending": "Jūsų prenumerata bus atšaukta atsiskaitymo laikotarpio pabaigoje. Norėdami tęsti, suaktyvinkite iš naujo.",
+    "cancel_warning": "Atsiskaitymo laikotarpio pabaigoje prarasite prieigą prie aukščiausios kokybės funkcijų.",
+    "upgrade_confirm_title": "Atnaujinkite prenumeratą",
+    "upgrade_confirm_message": "Naujovinti į {{tier}} už {{price}} per mėnesį?",
+    "upgrade_success_title": "Sėkmingai atnaujinta",
+    "upgrade_success_message": "Jūsų prenumerata buvo atnaujinta!",
+    "downgrade_confirm_title": "Sumažinti prenumeratos versiją",
+    "downgrade_confirm_message": "Sumažinti iki {{tier}} už {{price}} per mėnesį? Pakeitimai įsigalioja kitą atsiskaitymo ciklą.",
+    "downgrade_success_title": "Sėkmingai grąžinta į ankstesnę versiją",
+    "downgrade_success_message": "Kito atsiskaitymo ciklo metu jūsų prenumerata bus sumažinta.",
+    "cancel_confirm_title": "Atšaukti prenumeratą",
+    "cancel_confirm_message": "Ar tikrai norite atšaukti? Atsiskaitymo laikotarpio pabaigoje prarasite prieigą.",
+    "cancel_success_title": "Prenumerata atšaukta",
+    "cancel_success_message": "Jūsų prenumerata buvo atšaukta. Galite bet kada iš naujo suaktyvinti.",
+    "reactivate_success_title": "Iš naujo suaktyvinta sėkmingai",
+    "reactivate_success_message": "Jūsų prenumerata vėl suaktyvinta!"
   },
   "profile": {
     "title": "Profilis",
     "account_info": "Paskyros informacija",
+    "personal_info": "Asmeninė informacija",
+    "full_name": "Pilnas vardas",
+    "enter_name": "Įveskite savo vardą ir pavardę",
+    "company_name": "Įmonės pavadinimas",
+    "enter_company": "Įveskite savo įmonės pavadinimą",
+    "email": "El. paštas",
+    "truck_type": "Sunkvežimio tipas",
+    "truck_type_desc": "Pasirinkite sunkvežimio tipą, kurį vairuojate",
+    "search_radius": "Paieškos spindulys",
+    "search_radius_desc": "Kaip toli ieškoti įmonių aplink jūsų vietą",
+    "distance_unit": "Atstumo Vienetas",
+    "distance_unit_desc": "Pasirinkite pageidaujamą vienetą atstumams",
+    "unit_km": "Kilometrai (km)",
+    "unit_mi": "Mylios (mi)",
+    "preferred_industries": "Pageidaujamos pramonės šakos",
+    "industries_desc": "Pasirinkite iki {{count}}/5 pramonės, su kuriomis norite dirbti",
+    "phone_number_helper": "Pasirinkite šalies kodą ir įveskite likusį numerį be pradžios nulio.",
+    "phone_number_placeholder": "61234567",
+    "phone_number_invalid": "Numeris atrodo per trumpas. Patikrinkite ir bandykite dar kartą.",
+    "max_industries": "Daugiausia 5 pramonės šakos",
+    "max_industries_desc": "Galite pasirinkti tik iki 5 pramonės šakų",
+    "name_required": "Vardas yra būtinas",
+    "save_failed": "Nepavyko išsaugoti profilio",
     "edit_profile": "Redaguoti profilį",
     "language": "Kalba",
     "notifications": "Pranešimai",
@@ -165,14 +268,7 @@
     "permission_required": "Reikalingas leidimas",
     "photo_permission_message": "Mums reikia prieigos prie nuotraukų galerijos, kad įkeltume jūsų profilio nuotrauką",
     "avatar_updated": "Profilio nuotrauka sėkmingai atnaujinta",
-    "avatar_upload_failed": "Nepavyko įkelti profilio nuotraukos",
-    "distance_unit": "Atstumo Vienetas",
-    "distance_unit_desc": "Pasirinkite pageidaujamą vienetą atstumams",
-    "unit_km": "Kilometrai (km)",
-    "unit_mi": "Mylios (mi)",
-    "phone_number_helper": "Pasirinkite šalies kodą ir įveskite likusį numerį be pradžios nulio.",
-    "phone_number_placeholder": "61234567",
-    "phone_number_invalid": "Numeris atrodo per trumpas. Patikrinkite ir bandykite dar kartą."
+    "avatar_upload_failed": "Nepavyko įkelti profilio nuotraukos"
   },
   "templates": {
     "email_subject": "Logistikos partnerystės galimybė - {{company}}",
@@ -192,6 +288,8 @@
     "tier_standard": "Standartinis",
     "tier_pro": "Pro",
     "tier_premium": "Premium",
+    "tier_fleet_manager": "Flotilės vadovas",
+    "tier_pro_freighter": "Pro Freighter",
     "searches_per_month": "paieškų/mėn.",
     "max_results": "Iki {{count}} rezultatų kiekvienoje paieškoje",
     "linkedin_contacts": "LinkedIn kontaktų profiliai",
@@ -218,36 +316,36 @@
     "session_expired": "Sesija baigėsi. Prisijunkite iš naujo.",
     "insufficient_permissions": "Nepakanka leidimų"
   },
-  "directions": {
-    "north": "Šiaurė",
-    "northeast": "Šiaurės rytai",
-    "east": "Rytai",
-    "southeast": "Pietryčiai",
-    "south": "Pietūs",
-    "southwest": "Pietvakariai",
-    "west": "Vakarai",
-    "northwest": "Šiaurės vakarai",
-    "of": "nuo"
-  },
   "community": {
+    "title": "bendruomenė",
+    "available_drivers": "Galimos tvarkyklės",
+    "available_loads": "Galimi kroviniai",
     "tab_badge_available": "Prieinami",
     "tab_title_drivers": "Vairuotojai",
-    "tab_title_routes": "Maršrutai",
+    "tab_title_loads": "Kroviniai",
     "country": "Šalis",
     "city": "Miestas",
     "select_country": "Pasirinkite šalį",
     "select_city": "Pasirinkite miestą",
     "select_origin_city": "🚀 PASIRINKITE PRADŽIOS MIESTĄ",
     "select_origin_hint": "Pasirinkite kur PRADĖTI / PAKRAUTI",
-    "select_destination_hint": "🎯 Pasirinkite kur PRISTATYTI / IŠKRAUTI",
-    "desired_direction": "Norima kryptis:",
     "select_country_before_city": "Pirmiausia pasirinkite šalį prieš pasirinkdami miestą",
     "search_country": "Ieškoti šalies...",
     "clear_filter": "Išvalyti filtrą",
     "no_countries_found": "Šalių nerasta",
     "all_cities": "Visi miestai",
     "select_country_first": "Pirmiausia pasirinkite šalį",
+    "quick_post": "GREITAS ĮRAŠYMAS (2 palietimai)",
+    "i_am_available": "AŠ PRIEŠ",
+    "i_have_load": "TURIU KROVĄ",
+    "i_am": "aš esu",
+    "available": "Yra",
+    "i_have": "Turiu",
+    "load": "Įkelti",
+    "select_template": "Pasirinkite Šablonas",
     "search_city": "Ieškoti miesto...",
+    "select_destination_hint": "🎯 Pasirinkite kur PRISTATYTI / IŠKRAUTI",
+    "desired_direction": "Norima kryptis:",
     "recent_cities": "Naujausi",
     "popular_cities": "Populiarūs miestai",
     "popular": "Populiarus",
@@ -255,35 +353,54 @@
     "no_results": "Miestų nerasta",
     "try_different_name": "Bandykite kitą pavadinimą arba patikrinkite rašybą",
     "searching": "Ieškoma...",
-    "user": "Vartotojas",
+    "location_required": "Reikalinga vieta",
+    "location_required_message": "Nepavyko nustatyti jūsų vietos. Įgalinkite prieigą prie vietos arba pasirinkite miestą rankiniu būdu.",
+    "select_city_manually": "Pasirinkite Miestas",
+    "post_created": "Įrašas sukurtas!",
+    "post_created_success": "Paskelbta sėkmingai! ✅",
+    "post_visible_in_feed": "Jūsų įrašas dabar matomas sklaidos kanale",
+    "post_created_message": "Jūsų įrašas dabar matomas bendruomenei",
+    "post_deleted_success": "Įrašas sėkmingai ištrintas",
+    "delete_post_title": "Ištrinti įrašą?",
+    "delete_post_message": "Ar tikrai norite ištrinti šį įrašą? Šio veiksmo anuliuoti negalima.",
+    "delete_error": "Ištrinti klaida",
+    "post_limit_reached": "Pasiekta riba",
+    "post_limit_message": "Dabar negalite skelbti. Patikrinkite paskelbimo limitą.",
+    "post_limit_check_error": "Nepavyko patvirtinti paskelbimo apribojimų",
+    "post_error": "Skelbimo klaida",
+    "post_error_message": "Nepavyko sukurti įrašo",
+    "posts_remaining_today": "šiandien liko įrašų",
+    "posts_remaining_month": "šį mėnesį",
+    "upgrade_for_more": "Atnaujinkite, kad gautumėte daugiau",
+    "getting_location": "Gaunama vieta...",
+    "posting": "Skelbiama...",
+    "load_timing_warning_title": "📦 Geriausi Rezultatai su Aktyvia Kroviniais",
+    "load_timing_warning_message": "Geriausių rezultatų pasieksite skelbdami krovinius, kurie prieinami ŠIANDIEN arba RYTOJ.\n\nAktyvūs siuntimai gauna daugiau atsakymų iš vairuotojų kelyje.\n\nTęsti skelbimą?",
+    "continue_posting": "Taip, Tęsti",
+    "error_title": "Klaida",
+    "auth_required": "Norėdami skelbti, turite būti prisijungę.",
+    "creating_post": "Kuriamas įrašas...",
+    "active": "Aktyvus",
+    "contacts": "Kontaktai",
+    "leads": "Veda",
+    "filters": "Filtrai",
+    "no_drivers_available": "Nėra tvarkyklių",
+    "no_loads_available": "Krovinių nėra",
+    "no_routes_available": "Krovinių nėra",
+    "post_route_to_find_drivers": "Paskelbkite laisvą apkrovą, kad rastumėte tvarkykles.",
+    "be_first_to_post": "Būkite pirmas, paskelbęs apie savo užimtumą jūsų vietovėje!",
+    "post_load_to_find_drivers": "Paskelbkite laisvą apkrovą, kad rastumėte tvarkykles.",
     "saved": "Išsaugoti",
     "no_saved_posts": "Dar nėra išsaugotų įrašų",
     "save_posts_hint": "Bakstelėkite žymės piktogramą, kad išsaugotumėte įrašus",
-    "contact_whatsapp": "WhatsApp",
-    "contact_call": "Skambinti",
-    "contact_email": "El. paštas",
-    "email_contact_line": "Su manimi galite susisiekti telefonu {{phone}}.",
-    "whatsapp_driver_available": "Sveiki, {{theirName}}, čia {{myName}} iš {{myCompany}}. Rašau dėl jūsų prieinamumo {{origin}} regione.",
-    "whatsapp_load_available": "Sveiki, {{theirName}}, čia {{myName}} iš {{myCompany}}. Mane domina jūsų maršrutas {{route}}.",
-    "email_subject_driver": "Prieinamumas ties {{origin}}",
-    "email_subject_load": "Maršrutas {{route}}",
-    "email_body_driver": "Sveiki, {{theirName}},\n\nAš {{myName}} iš {{myCompany}}. Susisiekiu dėl jūsų prieinamumo {{origin}} regione.\n\n{{contactLine}}\nPagarbiai,\n{{myName}}",
-    "email_body_load": "Sveiki, {{theirName}},\n\nAš {{myName}} iš {{myCompany}}. Mane domina jūsų maršrutas {{route}}.\n\n{{contactLine}}\nPagarbiai,\n{{myName}}",
-    "whatsapp_choose_title": "Pasirinkite WhatsApp programą",
-    "whatsapp_choose_message": "Kurią WhatsApp programą norite naudoti susisiekiant?",
-    "whatsapp_app_regular": "WhatsApp",
-    "whatsapp_app_business": "WhatsApp Business",
-    "whatsapp_business_ios_title": "Svarbi informacija apie WhatsApp Business",
-    "whatsapp_business_ios_message": "„iOS“ įrenginiuose Apple visada pirmiausia atidaro asmeninę WhatsApp, jei įdiegtos abi programėlės. Tai „Meta“/Apple platformos apribojimas. Jei norite iš karto atidaryti WhatsApp Business, turite pašalinti asmeninę WhatsApp programą.",
-    "whatsapp_unavailable_title": "Nepavyksta atidaryti WhatsApp",
-    "whatsapp_unavailable_message": "Nepavyko atidaryti pasirinktos WhatsApp programos. Galite pakeisti nuostatą arba bandyti dar kartą.",
-    "whatsapp_change_preference": "Keisti nuostatą",
-    "whatsapp_invalid_number_title": "Reikalingas tarptautinis numeris",
-    "whatsapp_invalid_number_message": "Pridėkite šalies kodą (pvz., +370...) prie telefono numerio prieš susisiekdami per WhatsApp.",
+    "user": "Vartotojas",
+    "your_post": "Jūsų įrašas",
+    "driver_available": "Yra vairuotojas",
+    "load_available": "Galimas krovinys",
+    "contact_unavailable": "Kontaktas nepasiekiamas",
+    "phone_not_available": "Telefono numeris nepasiekiamas.",
     "upgrade_required": "Reikia atnaujinti",
     "upgrade_required_message": "Norėdami matyti kontaktus, turite turėti aktyvią prenumeratą.",
-    "load_timing_warning_title": "📦 Geriausi Rezultatai su Aktyvia Kroviniais",
-    "load_timing_warning_message": "Geriausių rezultatų pasieksite skelbdami krovinius, kurie prieinami ŠIANDIEN arba RYTOJ.\n\nAktyvūs siuntimai gauna daugiau atsakymų iš vairuotojų kelyje.\n\nTęsti skelbimą?",
     "upgrade_modal": {
       "badge": "Padidinkite pasiekiamumą",
       "title": "Atrakinkite pilną bendruomenės prieigą",
@@ -302,16 +419,85 @@
       "no_price": "Atnaujinimas dar nepasiekiamas. Susisiekite su mumis.",
       "generic_error": "Nepavyko pradėti atnaujinimo. Bandykite dar kartą."
     },
+    "whatsapp_message": "Sveiki! Mačiau jūsų įrašą apie Truxel: {{title}}",
+    "whatsapp_not_installed": "WhatsApp neįdiegta",
+    "install_whatsapp": "Norėdami tęsti, įdiekite „WhatsApp“.",
+    "authentication_required": "Reikalingas autentifikavimas",
+    "must_be_logged_in": "Norėdami išsaugoti įrašus, turite būti prisijungę.",
+    "driver_available_in": "Vairuotojas pasiekiamas {{city}}",
+    "load_from_to": "Įkelti {{from}} → {{to}}",
+    "destination": "paskirties vieta",
+    "post_available": "Galimas paštas",
+    "a_driver": "Vairuotojas",
+    "now": "Dabar",
+    "today": "Šiandien",
+    "tomorrow": "Rytoj",
+    "email_not_available": "El. pašto adresas nepasiekiamas.",
+    "cannot_open_whatsapp": "Nepavyko atidaryti WhatsApp. Bandykite dar kartą.",
+    "cannot_open_email": "Nepavyko atidaryti el. pašto programos. Bandykite dar kartą.",
+    "cannot_make_call": "Nepavyko inicijuoti skambučio. Bandykite dar kartą.",
+    "error": "Klaida",
+    "whatsapp_unavailable_title": "Nepavyksta atidaryti WhatsApp",
+    "whatsapp_unavailable_message": "Nepavyko atidaryti pasirinktos WhatsApp programos. Galite pakeisti nuostatą arba bandyti dar kartą.",
+    "whatsapp_change_preference": "Keisti nuostatą",
+    "whatsapp_invalid_number_title": "Reikalingas tarptautinis numeris",
+    "whatsapp_invalid_number_message": "Pridėkite šalies kodą (pvz., +370...) prie telefono numerio prieš susisiekdami per WhatsApp.",
+    "contact_whatsapp": "WhatsApp",
+    "contact_call": "Skambinti",
+    "contact_email": "El. paštas",
+    "email_contact_line": "Su manimi galite susisiekti telefonu {{phone}}.",
+    "whatsapp_driver_available": "Sveiki, {{theirName}}, čia {{myName}} iš {{myCompany}}. Rašau dėl jūsų prieinamumo {{origin}} regione.",
+    "whatsapp_load_available": "Sveiki, {{theirName}}, čia {{myName}} iš {{myCompany}}. Mane domina jūsų maršrutas {{route}}.",
+    "email_subject_driver": "Prieinamumas ties {{origin}}",
+    "email_subject_load": "Maršrutas {{route}}",
+    "email_body_driver": "Sveiki, {{theirName}},\n\nAš {{myName}} iš {{myCompany}}. Susisiekiu dėl jūsų prieinamumo {{origin}} regione.\n\n{{contactLine}}\nPagarbiai,\n{{myName}}",
+    "email_body_load": "Sveiki, {{theirName}},\n\nAš {{myName}} iš {{myCompany}}. Mane domina jūsų maršrutas {{route}}.\n\n{{contactLine}}\nPagarbiai,\n{{myName}}",
+    "whatsapp_choose_title": "Pasirinkite WhatsApp programą",
+    "whatsapp_choose_message": "Kurią WhatsApp programą norite naudoti susisiekiant?",
+    "whatsapp_app_regular": "WhatsApp",
+    "whatsapp_app_business": "WhatsApp Business",
+    "whatsapp_business_ios_title": "Svarbi informacija apie WhatsApp Business",
+    "whatsapp_business_ios_message": "„iOS“ įrenginiuose Apple visada pirmiausia atidaro asmeninę WhatsApp, jei įdiegtos abi programėlės. Tai „Meta“/Apple platformos apribojimas. Jei norite iš karto atidaryti WhatsApp Business, turite pašalinti asmeninę WhatsApp programą.",
     "templates": {
       "availability": {
+        "local": "Galima įsigyti vietoje",
+        "north": "Eiti į šiaurę",
+        "south": "Einant į pietus",
+        "east": "Keliauja į rytus",
+        "west": "Einant į Vakarus",
         "custom": "Pasirinktinis Maršrutas"
+      },
+      "load": {
+        "loaded": "Krovinys paruoštas ŠIANDIEN",
+        "empty": "Reikia pasiimti IŠ...",
+        "return": "Pasirinktinis maršrutas"
       }
     },
     "template_descriptions": {
-      "custom": "Pasirinkite savo maršrutą: Pasirinkite IŠ → Į miestus"
+      "local": "Dabartinėje jūsų vietovėje, 50 km spinduliu",
+      "north": "Važiuokite į šiaurę nuo dabartinės vietos",
+      "south": "Važiuokite į pietus nuo dabartinės vietos",
+      "east": "Važiuokite į rytus nuo dabartinės vietos",
+      "west": "Važiuokite į vakarus nuo dabartinės vietos",
+      "custom": "Pasirinkite savo maršrutą: Pasirinkite IŠ → Į miestus",
+      "loaded": "Iš mano vietos → Pasirinkite tikslą",
+      "empty": "Pasirinkite atsiėmimo miestą → Į mano vietą",
+      "return": "Visas valdymas: pasirinkite NUO → Į miestus"
     },
     "post_descriptions": {
-      "custom": "Prieinamas maršrutui {{origin}} → {{dest}}"
+      "local": "Galima vietiniams kroviniams {{origin}} srityje",
+      "north": "Galimas kroviniams, važiuojantiems į šiaurę nuo {{origin}}",
+      "south": "Galimas kroviniams, važiuojantiems į pietus nuo {{origin}}",
+      "east": "Galimas kroviniams, važiuojantiems į rytus nuo {{origin}}",
+      "west": "Galimas kroviniams, važiuojantiems į vakarus nuo {{origin}}",
+      "custom": "Prieinamas maršrutui {{origin}} → {{dest}}",
+      "loaded": "Galimas krovinys nuo {{origin}} {{dest}}, išvyksta šiandien",
+      "empty": "Galimas krovinys nuo {{origin}} {{dest}}, išvyksta rytoj",
+      "return": "Tuščias grąžinimas iš {{origin}} {{dest}}"
+    },
+    "post_types": {
+      "DRIVER_AVAILABLE": "Yra vairuotojas",
+      "LOAD_AVAILABLE": "Galimas krovinys"
     }
   },
   "support": {
@@ -385,94 +571,6 @@
       "multilang_title": "Kelios Kalbos",
       "multilang_desc": "Prieinama anglų, rumunų, lenkų, turkų, ispanų ir kitomis kalbomis"
     },
-    "footer": {
-      "tagline": "Logistikos tinklų ateitis",
-      "product": "Produktas",
-      "company": "Įmonė",
-      "legal": "Teisė",
-      "privacy": "Privatumo Politika",
-      "terms": "Paslaugų Sąlygos",
-      "refund": "Grąžinimo Politika",
-      "cookies": "Slapukų Politika",
-      "rights": "Visos teisės saugomos."
-    },
-    "gdpr": {
-      "message": "Naudojame slapukus, kad pagerintume jūsų patirtį. Tęsdami sutinkate su mūsų slapukų naudojimu.",
-      "learn_more": "Sužinoti daugiau",
-      "accept": "Priimti Visus",
-      "decline": "Atmesti"
-    },
-    "faq": {
-      "title": "Dažniausiai Užduodami Klausimai",
-      "q1": "Ar Truxel nemokamas?",
-      "a1": "Taip, siūlome nemokamą bandomąją versiją su 5 paieškoms per mėnesį.",
-      "q2": "Kaip veikia GPS paieška?",
-      "a2": "Naudojame jūsų įrenginio vietą, kad rastume netoliese esančias įmones ir krovinius.",
-      "q3": "Ar galiu skelbti savo krovinius?",
-      "a3": "Taip! Pro ir Fleet Manager planai apima skelbimą bendruomenėje.",
-      "q4": "Ar mano duomenys saugūs?",
-      "a4": "Absoliučiai. Naudojame pramoninės klasės šifravimą ir laikomės BDAR.",
-      "q5": "Kokios šalys palaikomos?",
-      "a5": "Apimame visas Europos Sąjungos šalis bei JK, Turkiją ir kitas.",
-      "q6": "Ar galiu atšaukti bet kada?",
-      "a6": "Taip, galite atšaukti prenumeratą bet kada be baudų.",
-      "q7": "Ar turite mobilią programą?",
-      "a7": "Taip! Atsisiųskite Truxel iOS ir Android.",
-      "q8": "Kaip susisiekti su palaikymu?",
-      "a8": "Naudokite pokalbių mygtuką arba siųskite el. laišką office@truxel.app"
-    },
-    "problem_solution": {
-      "problem_title": "Nustokite Priklausyti nuo Krovinių Tarpininkų",
-      "problem_desc": "Kaip savininkas-operatorius, neturėtumėte laukti krovinių lentų ar mokėti tarpininkų mokesčių. Nusipelnėte tiesioginės prieigos prie siuntėjų savo rajone, ypač mirusiose zonose, kur galimybės paslėptos.",
-      "solution_title": "Raskite Siuntėjus Tiesiogiai - Be Beldimo į Duris",
-      "solution_desc": "Jūsų verslas, jūsų kontrolė. Naudokite GPS, kad atrastumėte vietinius siuntėjus jūsų vietovės kilometre. Susisiekite akimirksniu su asmeninėmis žinutėmis - be šaltų skambučių, be spėliojimų."
-    },
-    "how_it_works": {
-      "title": "Kaip Tai Veikia",
-      "subtitle": "Pradėkite rasti klientus 4 paprastais žingsniais",
-      "step1_title": "Atsisiųskite ir Registruokitės",
-      "step1_desc": "Pradėkite su nemokama paskyra per kelias minutes",
-      "step2_title": "Raskite Vietinius Siuntėjus",
-      "step2_desc": "Naudokite GPS arba rankinę paiešką įmonėms atrasti",
-      "step3_title": "Gaukite Kontaktinę Informaciją",
-      "step3_desc": "Prieiga prie telefono, el. pašto ir LinkedIn profilių",
-      "step4_title": "Susisiekite Akimirksniu",
-      "step4_desc": "Prisijunkite per WhatsApp, el. paštą arba telefoną vienu paspaudimu"
-    },
-    "social_proof": {
-      "title": "Vairuotojai Visoje Europoje Mums Pasitiki",
-      "testimonial1": "Pagaliau radau tiesioginius siuntėjus savo rajone. Daugiau jokių tarpininkų mokesčių, ėdančių mano pelną!",
-      "testimonial1_author": "Mike T., Savininkas-Operatorius, Teksasas",
-      "testimonial2": "Įstrigau mirusioje zonoje ir per 20 minučių radau 3 vietinius siuntėjus. Tai atsipirko.",
-      "testimonial2_author": "James R., Nepriklausomas Vairuotojas, Ohajas",
-      "testimonial3": "Vieno paspaudimo žinutės yra genialios. Galiu susisiekti su siuntėjais, kai esu sunkvežimių stovėjimo aikštelėje.",
-      "testimonial3_author": "Sarah K., Flotės Savininkė, Kalifornija",
-      "stats_drivers": "Sukurta Nepriklausomiems Vairuotojams",
-      "stats_companies": "Raskite Vietinius Siuntėjus Akimirksniu",
-      "stats_countries": "Paleidimas Šiaurės Amerikoje",
-      "stat_values": {
-        "drivers": "1000+",
-        "companies": "5000+",
-        "countries": "6"
-      }
-    },
-    "final_cta": {
-      "badge": "Built for Owner-Operators",
-      "stats": {
-        "success_rate": {
-          "value": "98%",
-          "label": "Success Rate"
-        },
-        "support": {
-          "value": "24/7",
-          "label": "Support"
-        },
-        "rating": {
-          "value": "5★",
-          "label": "Rating"
-        }
-      }
-    },
     "features_page": {
       "hero_title": "Powerful Features for Truck Drivers",
       "hero_subtitle": "Everything you need to find clients, manage leads, and grow your logistics business",
@@ -540,6 +638,349 @@
         "title": "Ready to Get Started?",
         "subtitle": "Download Truxel today and start finding clients instantly with 5 free trial searches",
         "secondary": "View Pricing"
+      }
+    },
+    "footer": {
+      "tagline": "Logistikos tinklų ateitis",
+      "product": "Produktas",
+      "company": "Įmonė",
+      "legal": "Teisė",
+      "privacy": "Privatumo Politika",
+      "terms": "Paslaugų Sąlygos",
+      "refund": "Grąžinimo Politika",
+      "cookies": "Slapukų Politika",
+      "rights": "Visos teisės saugomos."
+    },
+    "gdpr": {
+      "message": "Naudojame slapukus, kad pagerintume jūsų patirtį. Tęsdami sutinkate su mūsų slapukų naudojimu.",
+      "learn_more": "Sužinoti daugiau",
+      "accept": "Priimti Visus",
+      "decline": "Atmesti"
+    },
+    "faq": {
+      "title": "Dažniausiai Užduodami Klausimai",
+      "q1": "Ar Truxel nemokamas?",
+      "a1": "Taip, siūlome nemokamą bandomąją versiją su 5 paieškoms per mėnesį.",
+      "q2": "Kaip veikia GPS paieška?",
+      "a2": "Naudojame jūsų įrenginio vietą, kad rastume netoliese esančias įmones ir krovinius.",
+      "q3": "Ar galiu skelbti savo krovinius?",
+      "a3": "Taip! Pro ir Fleet Manager planai apima skelbimą bendruomenėje.",
+      "q4": "Ar mano duomenys saugūs?",
+      "a4": "Absoliučiai. Naudojame pramoninės klasės šifravimą ir laikomės BDAR.",
+      "q5": "Kokios šalys palaikomos?",
+      "a5": "Apimame visas Europos Sąjungos šalis bei JK, Turkiją ir kitas.",
+      "q6": "Ar galiu atšaukti bet kada?",
+      "a6": "Taip, galite atšaukti prenumeratą bet kada be baudų.",
+      "q7": "Ar turite mobilią programą?",
+      "a7": "Taip! Atsisiųskite Truxel iOS ir Android.",
+      "q8": "Kaip susisiekti su palaikymu?",
+      "a8": "Naudokite pokalbių mygtuką arba siųskite el. laišką office@truxel.app"
+    },
+    "problem_solution": {
+      "problem_title": "Nustokite Priklausyti nuo Krovinių Tarpininkų",
+      "problem_desc": "Kaip savininkas-operatorius, neturėtumėte laukti krovinių lentų ar mokėti tarpininkų mokesčių. Nusipelnėte tiesioginės prieigos prie siuntėjų savo rajone, ypač mirusiose zonose, kur galimybės paslėptos.",
+      "solution_title": "Raskite Siuntėjus Tiesiogiai - Be Beldimo į Duris",
+      "solution_desc": "Jūsų verslas, jūsų kontrolė. Naudokite GPS, kad atrastumėte vietinius siuntėjus jūsų vietovės kilometre. Susisiekite akimirksniu su asmeninėmis žinutėmis - be šaltų skambučių, be spėliojimų."
+    },
+    "how_it_works": {
+      "title": "Kaip Tai Veikia",
+      "subtitle": "Pradėkite rasti klientus 4 paprastais žingsniais",
+      "step1_title": "Atsisiųskite ir Registruokitės",
+      "step1_desc": "Pradėkite su nemokama paskyra per kelias minutes",
+      "step2_title": "Raskite Vietinius Siuntėjus",
+      "step2_desc": "Naudokite GPS arba rankinę paiešką įmonėms atrasti",
+      "step3_title": "Gaukite Kontaktinę Informaciją",
+      "step3_desc": "Prieiga prie telefono, el. pašto ir LinkedIn profilių",
+      "step4_title": "Susisiekite Akimirksniu",
+      "step4_desc": "Prisijunkite per WhatsApp, el. paštą arba telefoną vienu paspaudimu"
+    },
+    "social_proof": {
+      "title": "Vairuotojai Visoje Europoje Mums Pasitiki",
+      "testimonial1": "Pagaliau radau tiesioginius siuntėjus savo rajone. Daugiau jokių tarpininkų mokesčių, ėdančių mano pelną!",
+      "testimonial1_author": "Mike T., Savininkas-Operatorius, Teksasas",
+      "testimonial2": "Įstrigau mirusioje zonoje ir per 20 minučių radau 3 vietinius siuntėjus. Tai atsipirko.",
+      "testimonial2_author": "James R., Nepriklausomas Vairuotojas, Ohajas",
+      "testimonial3": "Vieno paspaudimo žinutės yra genialios. Galiu susisiekti su siuntėjais, kai esu sunkvežimių stovėjimo aikštelėje.",
+      "testimonial3_author": "Sarah K., Flotės Savininkė, Kalifornija",
+      "stat_values": {
+        "drivers": "1000+",
+        "companies": "5000+",
+        "countries": "6"
+      },
+      "stats_drivers": "Sukurta Nepriklausomiems Vairuotojams",
+      "stats_companies": "Raskite Vietinius Siuntėjus Akimirksniu",
+      "stats_countries": "Paleidimas Šiaurės Amerikoje"
+    },
+    "final_cta": {
+      "title": "Pradėkite ieškoti klientų šiandien",
+      "subtitle": "Prisijunkite prie 1000 ir daugiau sunkvežimių vairuotojų, kurie plečia savo verslą su Truxel",
+      "badge": "Built for Owner-Operators",
+      "download_ios": "Atsisiųskite iš „App Store“.",
+      "download_android": "Gaukite jį iš „Google Play“.",
+      "stats": {
+        "success_rate": {
+          "value": "98%",
+          "label": "Success Rate"
+        },
+        "support": {
+          "value": "24/7",
+          "label": "Support"
+        },
+        "rating": {
+          "value": "5★",
+          "label": "Rating"
+        }
+      }
+    },
+    "about": {
+      "hero_badge": "Sukurta vairuotojų, vairuotojams",
+      "hero_title": "Logistika be tarpininkų prasideda nuo Truxel",
+      "hero_subtitle": "Mūsų įkūrėjas ilgus metus praleido Europos keliuose, belsdamasis į sandėlių duris ir laukdamas, kol brokeriai pasiims. „Truxel“ yra platforma, kurios jis norėjo turėti: tiesioginė siuntėjo prieiga, greitas informavimas ir tikras bendruomenės palaikymas.",
+      "hero_cta": "Sukurkite savo nemokamą paskyrą",
+      "hero_secondary_cta": "Pasikalbėkite su komanda",
+      "founder_quote": "Norėjau rasti siuntėjų, kol dar stovėjau prie pakrovimo doko. „Truxel“ leidžia kiekvienam vairuotojui valdyti savo vamzdyną nemokant tarpininko mokesčių.",
+      "journey_badge": "Mūsų istorija",
+      "journey_title": "Gimė MAN TGX kabinoje",
+      "journey_subtitle": "Nuo vieno vairuotojo, ieškančio patikimų klientų, iki platformos, aptarnaujančios tūkstančius visoje Europoje.",
+      "mission_badge": "Misija",
+      "mission_title": "Kiekvienas kilometras turėtų mokėti",
+      "mission_subtitle": "Manome, kad vairuotojai niekada neturėtų sėdėti be darbo, kai reikia perkelti krovinį.",
+      "mission": {
+        "point1": "Tiesioginė prieiga prie siuntėjų be tarpininkų ar paslėptų mokesčių.",
+        "point2": "Įrankiai, sukurti gyvenimui kelyje: greiti, mobilūs, daugiakalbiai.",
+        "point3": "Bendruomenė, kurioje vairuotojai padeda vairuotojams pasinaudoti realiomis galimybėmis."
+      },
+      "coverage_title": "Kur šiandien veikia Truxel",
+      "coverage_subtitle": "10 kalbų ir tūkstančiai patikrintų įmonių visoje Europoje.",
+      "coverage": {
+        "romania": "Rumunija",
+        "uk": "Jungtinė Karalystė",
+        "us": "Jungtinės Valstijos (netrukus pasirodys)",
+        "spain": "Ispanija",
+        "poland": "Lenkija",
+        "turkey": "Turkija"
+      },
+      "coverage_footer": "Kas mėnesį plečiamės. Nurodykite, kur toliau paleisti.",
+      "values_badge": "Kas mus veda",
+      "values_title": "Vertės iš vairuotojo sėdynės",
+      "values_subtitle": "Kuriame Truxel pagal nepriklausomo krovinių gabenimo realijas.",
+      "values": {
+        "owner_operator": {
+          "title": "Savininkas-operatorius apsėstas",
+          "desc": "Sprendimai dėl funkcijų prasideda nuo paprasto klausimo: ar tai padeda vairuotojui greičiau sudaryti sandorį?"
+        },
+        "community": {
+          "title": "bendruomenė pirmiausia",
+          "desc": "Vairuotojai, siuntėjai, transporto parko valdytojai ir ekspeditoriai laimi, kai visi gali prisijungti tiesiogiai."
+        },
+        "partners": {
+          "title": "Sąžiningos partnerystės",
+          "desc": "Dirbame su siuntėjais, kurie gerbia vairuotojus, moka laiku ir vertina skaidrumą."
+        },
+        "innovation": {
+          "title": "Nenumaldomas tobulėjimas",
+          "desc": "Atnaujinimus siunčiame kas savaitę, remdamiesi tikrais atsiliepimais iš kelių."
+        }
+      },
+      "impact_badge": "Tikra trauka",
+      "impact_title": "Pastatytas žmonėms, judantiems Europą",
+      "impact_subtitle": "„Truxel“ jau padeda tūkstančiams logistikos specialistų greičiau rasti krovinius.",
+      "impact": {
+        "stats": {
+          "drivers": {
+            "value": "4800+",
+            "label": "vairuotojai, statantys savo vamzdyną"
+          },
+          "companies": {
+            "value": "12 500 ir daugiau",
+            "label": "patikrintos logistikos ir gamybos įmonės"
+          },
+          "countries": {
+            "value": "18",
+            "label": "šalyse, kuriose pateikiami vietiniai duomenys"
+          },
+          "connections": {
+            "value": "65 000+",
+            "label": "prasidėjo tiesioginiai vairuotojo ir siuntėjo pokalbiai"
+          }
+        }
+      },
+      "cta_title": "Sukurkime kitą eismo juostą kartu",
+      "cta_subtitle": "Prisijunkite prie „Truxel“ tinklo ir gaukite tiesioginę prieigą prie siuntėjų, vairuotojų ir duomenų, kurie leidžia jūsų sunkvežimiams judėti.",
+      "cta_primary": "Pradėkite šiandien",
+      "cta_secondary": "Žiūrėti kainodarą"
+    },
+    "founder": {
+      "name": "Bogdanas Ciorava",
+      "role": "Įkūrėjas ir buvęs savininkas-operatorius",
+      "timeline": {
+        "step1": {
+          "title": "2019 • Tiesioginių siuntėjų persekiojimas",
+          "desc": "Bogdanas praleido naktis su įmonių skaičiuoklėmis, skambindamas į sandėlius tarp pristatymų, kad išvengtų tuščių mylių."
+        },
+        "step2": {
+          "title": "2022 m. • Pirmasis Truxel prototipas",
+          "desc": "Sukūręs rankinę 6 000 įmonių duomenų bazę, jis sukūrė GPS paieškos įrankį, kad iš karto pastebėtų netoliese esančius siuntėjus."
+        },
+        "step3": {
+          "title": "2024 m. • Bendruomenė pradeda veikti tiesiogiai",
+          "desc": "Įkūrėme Europos masto tvarkyklių tinklą, kad apkrovos ir pasiekiamumas galėtų būti bendrinami per kelias sekundes, o ne kelias dienas."
+        }
+      }
+    },
+    "contact": {
+      "hero_badge": "Kalbėkitės su tikru žmogumi",
+      "hero_title": "Išspręskime jūsų logistikos iššūkį kartu",
+      "hero_subtitle": "Nesvarbu, ar esate vairuotojas, pildantis tvarkaraštį, ar siuntėjas, ieškantis pajėgumų, „Truxel“ komanda atsako į kiekvieną pranešimą per mažiau nei 24 valandas.",
+      "cards_badge": "Greitai pasiekite mus",
+      "cards_title": "Pasirinkite kanalą, kuris jums tinka",
+      "cards_subtitle": "Esame įsikūrę Bukarešte ir palaikome vairuotojus visoje Europoje ir Šiaurės Amerikoje.",
+      "cards": {
+        "email": {
+          "title": "El. paštas",
+          "subtitle": "Atsakome per 24 valandas"
+        },
+        "phone": {
+          "title": "Telefonas",
+          "subtitle": "Skambinkite mums nuo pirmadienio iki penktadienio, 09:00-18:00 EET"
+        },
+        "whatsapp": {
+          "title": "WhatsApp",
+          "subtitle": "Rašykite mums dėl skubių klausimų iš kelio"
+        },
+        "hours": {
+          "title": "Palaikymo valandos",
+          "value": "P-Pn | 09:00-18:00 EET",
+          "subtitle": "Reikia savaitgalio pagalbos? Palikite žinutę ir mes atsakysime pirmadienį."
+        },
+        "location": {
+          "title": "Vieta",
+          "value": "Bukareštas, Rumunija",
+          "subtitle": "Vairuotojų aptarnavimas visoje Europos Sąjungoje"
+        }
+      },
+      "form_badge": "Siųsti žinutę",
+      "form_title": "Pasakykite mums, ko jums reikia",
+      "form_subtitle": "Pasidalykite kuo daugiau informacijos, kad galėtume susisiekti su tinkamu asmeniu.",
+      "form": {
+        "name_label": "tavo vardas*",
+        "name_placeholder": "Įveskite savo vardą ir pavardę",
+        "email_label": "El. pašto adresas*",
+        "email_placeholder": "vardas@pavyzdys.com",
+        "subject_label": "Tema*",
+        "subject_placeholder": "Pvz. Reikia pagalbos ieškant krovinių Ispanijoje",
+        "message_label": "žinutė*",
+        "message_placeholder": "Kaip galime padėti?",
+        "button": "Siųsti žinutę",
+        "button_loading": "Siunčiama..."
+      },
+      "toast": {
+        "error_title": "Kažkas nutiko",
+        "error_fields": "Užpildykite visus privalomus laukus.",
+        "error_email": "Įveskite galiojantį el. pašto adresą.",
+        "success_title": "El. laiškas paruoštas siųsti",
+        "success_message": "Peržiūrėkite el. laiško juodraštį ir paspauskite siuntimą, kad užbaigtumėte pranešimą.",
+        "error_open": "Nepavyko atidaryti jūsų el. pašto programos. Rašykite mums adresu office@truxel.io."
+      },
+      "audience_badge": "Kam padedame",
+      "audience_title": "Dvi tos pačios logistikos istorijos pusės",
+      "audience_subtitle": "Mes užmezgame pokalbius tarp vairuotojų ir siuntėjų, kad krovinys nuolat judėtų.",
+      "audience": {
+        "drivers": {
+          "badge": "Vairuotojai ir savininkai-operatoriai",
+          "title": "Užpildykite kiekvieną važiuojamą juostą",
+          "point1": "Tiesiogiai supažindinkite su siuntėjais savo aktyviuose regionuose.",
+          "point2": "Supraskite, kurie planai atrakina kontaktų prieigą ir AI įžvalgas.",
+          "point3": "Gaukite savo komandos ar dispečerių priėmimo palaikymą."
+        },
+        "shippers": {
+          "badge": "Ekspeditoriai ir siuntėjai",
+          "title": "Pervežti krovinius be tarpininkų",
+          "point1": "Išvardykite skubius krovinius, kad pasiektumėte važiuoti paruoštus vežėjus.",
+          "point2": "Atraskite patikrintus vežėjus pagal įrangos tipą ir regioną.",
+          "point3": "Koordinuokite bandomuosius projektus, partnerystes ar integracijas."
+        }
+      },
+      "bottom_cta_title": "Norite tiesioginio pokalbio?",
+      "bottom_cta_subtitle": "Užsisakykite atradimo skambutį su mūsų komanda arba atsiųskite mums partnerystės pranešimą. Atsakome į kiekvieną užklausą.",
+      "bottom_cta_primary": "Užsisakykite demonstraciją",
+      "bottom_cta_secondary": "Siųsti partnerystės el"
+    },
+    "pricing": {
+      "hero_badge": "Įtrauktas nemokamas bandomasis laikotarpis",
+      "hero_title": "Rasti krovinius. Saugios sutartys. Plėskite savo logistikos verslą.",
+      "hero_subtitle": "Sukurta savininkams-operatoriams, transporto parkų valdytojams ir ekspeditoriams, kurie nori tiesioginės prieigos prie siuntėjų nemokant tarpininko mokesčių.",
+      "hero_feature1": "Momentinis prisijungimas. Nereikia kredito kortelės.",
+      "hero_feature2": "Atšaukti bet kada. Išsaugokite savo duomenis amžinai.",
+      "hero_feature3": "5 nemokamos paieškos platformai išbandyti.",
+      "hero_cta": "Pradėkite nemokamą bandomąją versiją",
+      "currency_label": "Rodyti kainas",
+      "currency_eur": "EUR (€)",
+      "currency_usd": "USD ($)",
+      "per_month": "per mėnesį",
+      "cta": "Pradėkite",
+      "cta_popular": "Populiariausias",
+      "faq_title": "Kainos ir plano klausimai",
+      "faq": {
+        "q1": "Kuris Truxel planas tinka mano operacijai?",
+        "a1_part_standard": "Standartas suteikia nepriklausomiems vairuotojams 30 kas mėnesį įmonių paieškų ir kasdienių pranešimų, kad jie liktų rezervuoti.",
+        "a1_part_pro": "„Pro“ prideda „LinkedIn“ kontaktus, AI suderinimą ir pažangius tyrimus augančioms komandoms.",
+        "a1_part_fleet": "Fleet Manager atrakina 30 kasdienių pranešimų, 30 vienu metu esančių sąrašų ir 72 valandų matomumą siuntimo komandoms.",
+        "a1_part_freighter": "„Pro Freighter“ teikia viską, taip pat analizę, prioritetinį palaikymą ir 50 kasdienių pranešimų rimtiems ekspeditoriams.",
+        "q2": "Ar galiu vėliau pakeisti planus?",
+        "a2": "Taip! Galite bet kada atnaujinti arba grąžinti ankstesnę versiją paskyros nustatymuose. Pakeitimai įsigalioja iš karto, jei naujovinami, arba pasibaigus atsiskaitymo laikotarpiui, jei naujovinta versija.",
+        "q3": "Kaip veikia mokėjimai?",
+        "a3": "Mes priimame visas pagrindines kredito korteles ir saugiai apdorojame mokėjimus per Stripe. Prenumeratos dieną būsite apmokestinti kas mėnesį. Visos operacijos yra užšifruotos ir mes niekada nesaugome jūsų kortelės duomenų.",
+        "q4": "Kuo skiriasi paieškos ir įrašai?",
+        "a4_part_search": "Paieškos padeda rasti potencialių klientų (siuntėjų ir ekspeditorių) konkrečiose vietose su visa kontaktine informacija.",
+        "a4_part_post": "Įrašai leidžia bendruomenei reklamuoti savo pasiekiamumą arba apkrovas, kad kiti galėtų jus rasti. Abu kartu plėtoja jūsų tinklą.",
+        "q5": "Ar man pasilikti prieigą, jei atšaukiu?",
+        "a5": "Taip, visą prieigą prie prenumeratos išsaugosite iki dabartinio atsiskaitymo laikotarpio pabaigos. Visi išsaugoti kontaktai, užrašai ir paieškos istorija išlieka pasiekiami net atšaukus."
+      },
+      "cards": {
+        "standard": {
+          "title": "Standartinis",
+          "tagline": "Sukurta nepriklausomiems vairuotojams",
+          "feature_searches": "{{count}} įmonės ieško kiekvieną mėnesį",
+          "feature_posts": "{{daily}} įrašų per dieną ({{monthly}} kiekvieną mėnesį)",
+          "feature_filters": "Išplėstiniai filtrai, skirti rasti tinkamus siuntėjus",
+          "feature_saves": "Neribotas išsaugotų potencialių klientų ir tolesnių veiksmų skaičius"
+        },
+        "pro": {
+          "title": "Pro",
+          "tagline": "Padidinkite savo pardavimo apimtis",
+          "feature_searches": "{{count}} paieškos su išplėstiniais rezultatais",
+          "feature_posts": "{{daily}} įrašų per dieną ({{monthly}} kiekvieną mėnesį)",
+          "feature_linkedin": "LinkedIn kontaktiniai profiliai sprendimus priimantiems asmenims",
+          "feature_ai": "Dirbtinio intelekto sukurtas maršruto suderinimas ir įmonės balų nustatymas",
+          "feature_research": "Išsamus įmonės tyrimas pagal pramonės šaką ir sritis",
+          "feature_priority": "Pirmenybė teikiama bendruomenės sklaidos kanale",
+          "feature_export": "Eksportuokite potencialius klientus ir pastabas į CSV vienu bakstelėjimu"
+        },
+        "fleet": {
+          "title": "Flotilės vadovas",
+          "tagline": "Išsiuntimas pagal mastą",
+          "feature_searches": "{{count}} tikslinės paieškos kiekvieną mėnesį",
+          "feature_posts": "{{daily}} įrašų per dieną ({{monthly}} kiekvieną mėnesį)",
+          "feature_concurrent": "{{count}} aktyvūs įrašai rodomi tuo pačiu metu",
+          "feature_duration": "Įrašai lieka matomi {{hours}} valandas, kad padidintumėte pasiekiamumą",
+          "feature_tools": "Ekspeditorių darbo eigos komandiniam bendradarbiavimui",
+          "feature_saved": "Išsaugokite iki {{count_saved}} maršrutų ir šablonų"
+        },
+        "freighter": {
+          "title": "Pro Freighter",
+          "tagline": "Įmonių krovinių gabenimo operacijos",
+          "feature_searches": "{{count}} aukščiausios kokybės paieškų kiekvieną mėnesį",
+          "feature_posts": "{{daily}} įrašų per dieną ({{monthly}} kiekvieną mėnesį)",
+          "feature_linkedin": "Visi sprendimų priėmėjo kontaktiniai duomenys",
+          "feature_ai": "AI siuntimo žvalgyba su išmaniaisiais priminimais",
+          "feature_research": "Išplėstiniai kelių šalių operacijų tyrimai",
+          "feature_concurrent": "{{count}} vienu metu skelbiami komandose",
+          "feature_duration": "{{hours}} valandos matomumas su automatiniu atnaujinimu",
+          "feature_analytics": "Našumo analizė ir savaitės įžvalgos",
+          "feature_support": "Prioritetinė pagalba su specialiu konsjeržu",
+          "feature_saved": "Išsaugokite {{count_saved}} šablonus ir išsaugotus maršrutus"
+        }
       }
     }
   }

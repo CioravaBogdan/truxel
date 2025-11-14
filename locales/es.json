@@ -22,7 +22,11 @@
     "sort": "Ordenar",
     "confirm": "Confirmar",
     "back": "Atrás",
-    "close": "Cerrar"
+    "close": "Cerrar",
+    "no": "No",
+    "yes": "Sí",
+    "ok": "DE ACUERDO",
+    "upgrade": "Mejora"
   },
   "auth": {
     "welcome": "Bienvenido a Truxel",
@@ -32,6 +36,10 @@
     "reset_password": "Restablecer contraseña",
     "no_account": "¿No tienes cuenta?",
     "have_account": "¿Ya tienes cuenta?",
+    "or_continue_with": "O continuar con",
+    "sign_in_with_google": "Iniciar sesión con Google",
+    "redirecting": "Redirigiendo...",
+    "complete_in_browser": "Complete el inicio de sesión en su navegador",
     "email_required": "El correo electrónico es obligatorio",
     "password_required": "La contraseña es obligatoria",
     "invalid_email": "Dirección de correo electrónico inválida",
@@ -41,21 +49,38 @@
     "register_success": "Registro exitoso",
     "logout_confirm": "¿Estás seguro de que quieres cerrar sesión?"
   },
+  "directions": {
+    "north": "Norte",
+    "northeast": "Noreste",
+    "east": "Este",
+    "southeast": "Sureste",
+    "south": "Sur",
+    "southwest": "Suroeste",
+    "west": "Oeste",
+    "northwest": "Noroeste",
+    "of": "de"
+  },
   "tabs": {
     "home": "Inicio",
     "search": "Buscar",
     "leads": "Mis clientes potenciales",
+    "community": "Comunidad",
+    "pricing": "Precios",
+    "subscription": "Suscripción",
     "profile": "Perfil"
   },
   "home": {
     "welcome": "Bienvenido, {{name}}",
     "searches_remaining": "{{count}} búsquedas restantes",
     "recent_leads": "Clientes potenciales recientes",
+    "view_all_results": "Ver todo",
     "start_search": "Iniciar nueva búsqueda",
     "upgrade": "Actualizar plan",
     "total_leads": "Total de clientes potenciales",
     "leads_contacted": "Contactados",
-    "active_searches": "Búsquedas activas"
+    "active_searches": "Búsquedas activas",
+    "community_title": "Comunidad Truxel",
+    "community_subtitle": "Encuentra viajes y conductores en tiempo real"
   },
   "search": {
     "title": "Encontrar empresas",
@@ -80,7 +105,23 @@
     "location_permission": "Necesitamos tu ubicación para encontrar empresas cerca de ti",
     "location_denied": "Permiso de ubicación denegado",
     "search_started": "Búsqueda iniciada. Te notificaremos cuando los resultados estén listos.",
-    "search_failed": "La búsqueda falló. Por favor, inténtalo de nuevo."
+    "search_failed": "La búsqueda falló. Por favor, inténtalo de nuevo.",
+    "processing": "Tratamiento...",
+    "completed": "Terminado",
+    "failed": "Fallido",
+    "location": "Ubicación",
+    "estimated": "estimado",
+    "check_leads_tab": "Consulte la pestaña Clientes potenciales para obtener resultados",
+    "please_try_again": "Por favor inténtalo de nuevo",
+    "search_complete": "¡Búsqueda completa!",
+    "results_ready": "Los resultados de tu búsqueda están listos",
+    "quick_search": "Búsqueda Rápida",
+    "quick_search_description": "¡Perfecto para cuando conduces! Inicie una búsqueda instantáneamente utilizando sus dominios guardados sin escribir.",
+    "your_saved_domains": "Tus dominios guardados",
+    "start_quick_search": "🚀 Búsqueda rápida",
+    "quick_search_started": "¡La búsqueda rápida comenzó con sus dominios guardados!",
+    "no_saved_domains": "No hay dominios guardados",
+    "please_set_domains_in_profile": "Configure sus industrias preferidas en la configuración del perfil."
   },
   "leads": {
     "title": "Mis clientes potenciales",
@@ -92,6 +133,8 @@
     "filter_forwarding": "Reenvío",
     "add_to_mybook": "Añadir a mi libro",
     "converted_successfully": "Añadido a mi libro exitosamente",
+    "duplicate_lead_title": "El cliente potencial ya existe",
+    "duplicate_lead_message": "Ya tienes un lead con estos datos de contacto (teléfono o email + empresa) en tu libro.",
     "no_search_results": "Aún no hay resultados de búsqueda",
     "no_hot_leads": "Aún no hay publicaciones guardadas",
     "no_mybook_leads": "Tu libro está vacío",
@@ -127,20 +170,27 @@
     "get_directions": "Obtener indicaciones",
     "lead_saved": "Cliente potencial guardado exitosamente",
     "lead_updated": "Cliente potencial actualizado exitosamente",
-    "lead_deleted": "Cliente potencial eliminado exitosamente"
+    "lead_deleted": "Cliente potencial eliminado exitosamente",
+    "share_contact": "Compartir Contacto",
+    "contact_shared": "Tarjeta de contacto compartida con éxito",
+    "share_error": "Error al compartir"
   },
   "subscription": {
     "title": "Suscripción",
     "current_plan": "Plan actual",
     "trial": "Prueba gratuita",
     "standard": "Plan estándar",
+    "pro": "Plan profesional",
     "premium": "Plan premium",
     "trial_desc": "5 búsquedas en total",
     "standard_desc": "15 búsquedas por mes",
+    "pro_desc": "30 búsquedas con LinkedIn e IA",
     "premium_desc": "100 búsquedas por mes",
     "price_month": "€{{price}}/mes",
     "searches_used": "{{used}} de {{total}} búsquedas usadas",
     "renews_on": "Se renueva el {{date}}",
+    "expires_on": "Vence el {{date}}",
+    "cancelled_until": "Cancelado (activo hasta el {{date}})",
     "upgrade_to": "Actualizar a {{plan}}",
     "buy_search_pack": "Comprar paquete de búsquedas",
     "search_pack_10": "10 búsquedas adicionales",
@@ -148,11 +198,64 @@
     "purchase_success": "Compra exitosa!",
     "purchase_failed": "La compra falló. Por favor, inténtalo de nuevo.",
     "manage_subscription": "Gestionar suscripción",
-    "cancel_subscription": "Cancelar suscripción"
+    "cancel_subscription": "Cancelar suscripción",
+    "upgrade_now": "Actualiza ahora",
+    "manage": "Gestionar plan",
+    "buy_more_searches": "Comprar más búsquedas",
+    "credits_breakdown": "Desglose de créditos",
+    "subscription_searches": "Búsquedas mensuales",
+    "purchased_credits": "Créditos comprados",
+    "total_available": "Total disponible",
+    "upgrade": "Mejora",
+    "downgrade": "Degradar",
+    "reactivate": "Reactivar suscripción",
+    "yes_cancel": "Sí, cancelar",
+    "upgrade_options": "Opciones de actualización",
+    "downgrade_options": "Opciones de degradación",
+    "searches_remaining": "Búsquedas restantes",
+    "cancellation_pending": "Su suscripción se cancelará al final del período de facturación. Reactivar para continuar.",
+    "cancel_warning": "Perderás el acceso a las funciones premium al final de tu período de facturación.",
+    "upgrade_confirm_title": "Suscripción de actualización",
+    "upgrade_confirm_message": "¿Actualizar a {{tier}} por {{price}}/mes?",
+    "upgrade_success_title": "Actualizado exitosamente",
+    "upgrade_success_message": "¡Tu suscripción ha sido actualizada!",
+    "downgrade_confirm_title": "Suscripción de degradación",
+    "downgrade_confirm_message": "¿Bajar de categoría a {{tier}} por {{price}}/mes? Los cambios entran en vigor en el próximo ciclo de facturación.",
+    "downgrade_success_title": "Degradado con éxito",
+    "downgrade_success_message": "Su suscripción se reducirá en el próximo ciclo de facturación.",
+    "cancel_confirm_title": "Cancelar suscripción",
+    "cancel_confirm_message": "¿Estás seguro de que quieres cancelar? Perderás el acceso al final de tu período de facturación.",
+    "cancel_success_title": "Suscripción cancelada",
+    "cancel_success_message": "Su suscripción ha sido cancelada. Puedes reactivarlo en cualquier momento.",
+    "reactivate_success_title": "Reactivado con éxito",
+    "reactivate_success_message": "¡Tu suscripción ha sido reactivada!"
   },
   "profile": {
     "title": "Perfil",
     "account_info": "Información de cuenta",
+    "personal_info": "Información personal",
+    "full_name": "Nombre completo",
+    "enter_name": "Introduce tu nombre completo",
+    "company_name": "nombre de empresa",
+    "enter_company": "Introduzca el nombre de su empresa",
+    "email": "Correo electrónico",
+    "truck_type": "Tipo de camión",
+    "truck_type_desc": "Selecciona el tipo de camión que conduces",
+    "search_radius": "Radio de búsqueda",
+    "search_radius_desc": "¿Qué tan lejos buscar empresas alrededor de su ubicación?",
+    "distance_unit": "Unidad de Distancia",
+    "distance_unit_desc": "Elige tu unidad preferida para distancias",
+    "unit_km": "Kilómetros (km)",
+    "unit_mi": "Millas (mi)",
+    "preferred_industries": "Industrias preferidas",
+    "industries_desc": "Seleccione hasta {{count}}/5 industrias con las que desea trabajar",
+    "phone_number_helper": "Elige el prefijo del país y luego escribe el número sin el cero inicial.",
+    "phone_number_placeholder": "612345678",
+    "phone_number_invalid": "El número parece demasiado corto. Revísalo e inténtalo de nuevo.",
+    "max_industries": "Máximo 5 industrias",
+    "max_industries_desc": "Sólo puedes seleccionar hasta 5 industrias.",
+    "name_required": "El nombre es obligatorio",
+    "save_failed": "No se pudo guardar el perfil",
     "edit_profile": "Editar perfil",
     "language": "Idioma",
     "notifications": "Notificaciones",
@@ -165,14 +268,7 @@
     "permission_required": "Permiso requerido",
     "photo_permission_message": "Necesitamos acceso a la galería de fotos para subir tu foto de perfil",
     "avatar_updated": "Foto de perfil actualizada exitosamente",
-    "avatar_upload_failed": "Error al subir la foto de perfil",
-    "distance_unit": "Unidad de Distancia",
-    "distance_unit_desc": "Elige tu unidad preferida para distancias",
-    "unit_km": "Kilómetros (km)",
-    "unit_mi": "Millas (mi)",
-    "phone_number_helper": "Elige el prefijo del país y luego escribe el número sin el cero inicial.",
-    "phone_number_placeholder": "612345678",
-    "phone_number_invalid": "El número parece demasiado corto. Revísalo e inténtalo de nuevo."
+    "avatar_upload_failed": "Error al subir la foto de perfil"
   },
   "templates": {
     "email_subject": "Oportunidad de asociación logística - {{company}}",
@@ -192,6 +288,8 @@
     "tier_standard": "Estándar",
     "tier_pro": "Pro",
     "tier_premium": "Premium",
+    "tier_fleet_manager": "Gerente de flota",
+    "tier_pro_freighter": "Carguero profesional",
     "searches_per_month": "búsquedas/mes",
     "max_results": "Hasta {{count}} resultados por búsqueda",
     "linkedin_contacts": "Perfiles de contacto en LinkedIn",
@@ -218,36 +316,36 @@
     "session_expired": "Sesión expirada. Por favor, inicia sesión de nuevo.",
     "insufficient_permissions": "Permisos insuficientes"
   },
-  "directions": {
-    "north": "Norte",
-    "northeast": "Noreste",
-    "east": "Este",
-    "southeast": "Sureste",
-    "south": "Sur",
-    "southwest": "Suroeste",
-    "west": "Oeste",
-    "northwest": "Noroeste",
-    "of": "de"
-  },
   "community": {
+    "title": "Comunidad",
+    "available_drivers": "Controladores disponibles",
+    "available_loads": "Cargas disponibles",
     "tab_badge_available": "Disponibles",
     "tab_title_drivers": "Conductores",
-    "tab_title_routes": "Rutas",
+    "tab_title_loads": "Cargas",
     "country": "País",
     "city": "Ciudad",
     "select_country": "Seleccionar país",
     "select_city": "Seleccionar ciudad",
     "select_origin_city": "🚀 SELECCIONA CIUDAD DE ORIGEN",
     "select_origin_hint": "Elige dónde COMENZAR / CARGAR",
-    "select_destination_hint": "🎯 Elige dónde ENTREGAR / DESCARGAR",
-    "desired_direction": "Dirección deseada:",
     "select_country_before_city": "Por favor selecciona primero el país antes de elegir la ciudad",
     "search_country": "Buscar país...",
     "clear_filter": "Limpiar filtro",
     "no_countries_found": "No se encontraron países",
     "all_cities": "Todas las ciudades",
     "select_country_first": "Primero selecciona el país",
+    "quick_post": "PUBLICACIÓN RÁPIDA (2 toques)",
+    "i_am_available": "ESTOY DISPONIBLE",
+    "i_have_load": "TENGO UNA CARGA",
+    "i_am": "Soy",
+    "available": "Disponible",
+    "i_have": "Tengo",
+    "load": "Carga",
+    "select_template": "Seleccionar plantilla",
     "search_city": "Buscar ciudad...",
+    "select_destination_hint": "🎯 Elige dónde ENTREGAR / DESCARGAR",
+    "desired_direction": "Dirección deseada:",
     "recent_cities": "Recientes",
     "popular_cities": "Ciudades populares",
     "popular": "Popular",
@@ -255,35 +353,54 @@
     "no_results": "No se encontraron ciudades",
     "try_different_name": "Prueba con otro nombre o verifica la ortografía",
     "searching": "Buscando...",
-    "user": "Usuario",
+    "location_required": "Ubicación requerida",
+    "location_required_message": "No pudimos obtener su ubicación. Habilite el acceso a la ubicación o seleccione una ciudad manualmente.",
+    "select_city_manually": "Seleccionar ciudad",
+    "post_created": "Publicación creada!",
+    "post_created_success": "Publicado exitosamente! ✅",
+    "post_visible_in_feed": "Tu publicación ahora es visible en el feed.",
+    "post_created_message": "Tu publicación ahora es visible para la comunidad.",
+    "post_deleted_success": "Publicación eliminada exitosamente",
+    "delete_post_title": "¿Eliminar publicación?",
+    "delete_post_message": "¿Estás seguro de que deseas eliminar esta publicación? Esta acción no se puede deshacer.",
+    "delete_error": "Eliminar error",
+    "post_limit_reached": "Límite alcanzado",
+    "post_limit_message": "No puedes publicar ahora. Verifique su límite de publicación.",
+    "post_limit_check_error": "No se pudieron verificar los límites de publicación",
+    "post_error": "Error de publicación",
+    "post_error_message": "No se pudo crear la publicación",
+    "posts_remaining_today": "publicaciones que quedan hoy",
+    "posts_remaining_month": "este mes",
+    "upgrade_for_more": "Actualiza para más",
+    "getting_location": "Obteniendo ubicación...",
+    "posting": "Destino...",
+    "load_timing_warning_title": "📦 Mejores Resultados con Cargas Activas",
+    "load_timing_warning_message": "Para obtener los mejores resultados, recomendamos publicar cargas disponibles HOY o MAÑANA.\n\nLos envíos activos reciben más respuestas de conductores en ruta.\n\n¿Continuar con la publicación?",
+    "continue_posting": "Sí, continuar",
+    "error_title": "Error",
+    "auth_required": "Debes iniciar sesión para publicar.",
+    "creating_post": "Creando publicación...",
+    "active": "Activo",
+    "contacts": "Contactos",
+    "leads": "Dirige",
+    "filters": "Filtros",
+    "no_drivers_available": "No hay controladores disponibles",
+    "no_loads_available": "No hay cargas disponibles",
+    "no_routes_available": "No hay cargas disponibles",
+    "post_route_to_find_drivers": "Publique una carga disponible para encontrar controladores.",
+    "be_first_to_post": "¡Sé el primero en publicar tu disponibilidad en tu área!",
+    "post_load_to_find_drivers": "Publique una carga disponible para encontrar controladores.",
     "saved": "Guardados",
     "no_saved_posts": "No hay publicaciones guardadas",
     "save_posts_hint": "Toca el icono de marcador para guardar publicaciones",
-    "contact_whatsapp": "WhatsApp",
-    "contact_call": "Llamar",
-    "contact_email": "Correo",
-    "email_contact_line": "Puedes contactarme al {{phone}}.",
-    "whatsapp_driver_available": "Hola {{theirName}}, soy {{myName}} de {{myCompany}}. Te escribo por tu disponibilidad en la zona de {{origin}}.",
-    "whatsapp_load_available": "Hola {{theirName}}, soy {{myName}} de {{myCompany}}. Estoy interesado en tu ruta {{route}}.",
-    "email_subject_driver": "Disponibilidad en {{origin}}",
-    "email_subject_load": "Ruta {{route}}",
-    "email_body_driver": "Hola {{theirName}},\n\nSoy {{myName}} de {{myCompany}}. Te contacto por tu disponibilidad en la zona de {{origin}}.\n\n{{contactLine}}\nSaludos,\n{{myName}}",
-    "email_body_load": "Hola {{theirName}},\n\nSoy {{myName}} de {{myCompany}}. Estoy interesado en tu ruta {{route}}.\n\n{{contactLine}}\nSaludos,\n{{myName}}",
-    "whatsapp_choose_title": "Elige la aplicación de WhatsApp",
-    "whatsapp_choose_message": "¿Qué aplicación de WhatsApp quieres usar para contactar?",
-    "whatsapp_app_regular": "WhatsApp",
-    "whatsapp_app_business": "WhatsApp Business",
-    "whatsapp_business_ios_title": "Aviso sobre WhatsApp Business",
-    "whatsapp_business_ios_message": "En iOS, Apple siempre abre primero el WhatsApp personal cuando ambas aplicaciones están instaladas. Es una limitación de la plataforma impuesta por Meta/Apple. Para abrir directamente WhatsApp Business debes desinstalar la aplicación personal de WhatsApp.",
-    "whatsapp_unavailable_title": "No se puede abrir WhatsApp",
-    "whatsapp_unavailable_message": "No pudimos abrir la aplicación de WhatsApp seleccionada. Puedes cambiar la preferencia o intentarlo de nuevo.",
-    "whatsapp_change_preference": "Cambiar preferencia",
-    "whatsapp_invalid_number_title": "Se requiere número internacional",
-    "whatsapp_invalid_number_message": "Agrega el código de país (por ejemplo, +34...) al número antes de contactar por WhatsApp.",
+    "user": "Usuario",
+    "your_post": "Tu publicación",
+    "driver_available": "Conductor disponible",
+    "load_available": "Carga disponible",
+    "contact_unavailable": "Contacto no disponible",
+    "phone_not_available": "El número de teléfono no está disponible.",
     "upgrade_required": "Actualización necesaria",
     "upgrade_required_message": "Necesitas una suscripción activa para ver los contactos.",
-    "load_timing_warning_title": "📦 Mejores Resultados con Cargas Activas",
-    "load_timing_warning_message": "Para obtener los mejores resultados, recomendamos publicar cargas disponibles HOY o MAÑANA.\n\nLos envíos activos reciben más respuestas de conductores en ruta.\n\n¿Continuar con la publicación?",
     "upgrade_modal": {
       "badge": "Impulsa tu alcance",
       "title": "Desbloquea el acceso completo a la comunidad",
@@ -302,16 +419,85 @@
       "no_price": "La actualización aún no está disponible. Contacta con soporte.",
       "generic_error": "No pudimos iniciar la actualización. Inténtalo de nuevo."
     },
+    "whatsapp_message": "¡Hola! Vi tu publicación en Truxel: {{title}}",
+    "whatsapp_not_installed": "WhatsApp no ​​instalado",
+    "install_whatsapp": "Instala WhatsApp para continuar.",
+    "authentication_required": "Se requiere autenticación",
+    "must_be_logged_in": "Debes iniciar sesión para guardar publicaciones.",
+    "driver_available_in": "Conductor disponible en {{city}}",
+    "load_from_to": "Cargar {{from}} → {{to}}",
+    "destination": "destino",
+    "post_available": "Publicación disponible",
+    "a_driver": "un conductor",
+    "now": "Ahora",
+    "today": "Hoy",
+    "tomorrow": "Mañana",
+    "email_not_available": "La dirección de correo electrónico no está disponible.",
+    "cannot_open_whatsapp": "No se pudo abrir WhatsApp. Por favor inténtalo de nuevo.",
+    "cannot_open_email": "No se pudo abrir el cliente de correo electrónico. Por favor inténtalo de nuevo.",
+    "cannot_make_call": "No se pudo iniciar la llamada. Por favor inténtalo de nuevo.",
+    "error": "Error",
+    "whatsapp_unavailable_title": "No se puede abrir WhatsApp",
+    "whatsapp_unavailable_message": "No pudimos abrir la aplicación de WhatsApp seleccionada. Puedes cambiar la preferencia o intentarlo de nuevo.",
+    "whatsapp_change_preference": "Cambiar preferencia",
+    "whatsapp_invalid_number_title": "Se requiere número internacional",
+    "whatsapp_invalid_number_message": "Agrega el código de país (por ejemplo, +34...) al número antes de contactar por WhatsApp.",
+    "contact_whatsapp": "WhatsApp",
+    "contact_call": "Llamar",
+    "contact_email": "Correo",
+    "email_contact_line": "Puedes contactarme al {{phone}}.",
+    "whatsapp_driver_available": "Hola {{theirName}}, soy {{myName}} de {{myCompany}}. Te escribo por tu disponibilidad en la zona de {{origin}}.",
+    "whatsapp_load_available": "Hola {{theirName}}, soy {{myName}} de {{myCompany}}. Estoy interesado en tu ruta {{route}}.",
+    "email_subject_driver": "Disponibilidad en {{origin}}",
+    "email_subject_load": "Ruta {{route}}",
+    "email_body_driver": "Hola {{theirName}},\n\nSoy {{myName}} de {{myCompany}}. Te contacto por tu disponibilidad en la zona de {{origin}}.\n\n{{contactLine}}\nSaludos,\n{{myName}}",
+    "email_body_load": "Hola {{theirName}},\n\nSoy {{myName}} de {{myCompany}}. Estoy interesado en tu ruta {{route}}.\n\n{{contactLine}}\nSaludos,\n{{myName}}",
+    "whatsapp_choose_title": "Elige la aplicación de WhatsApp",
+    "whatsapp_choose_message": "¿Qué aplicación de WhatsApp quieres usar para contactar?",
+    "whatsapp_app_regular": "WhatsApp",
+    "whatsapp_app_business": "WhatsApp Business",
+    "whatsapp_business_ios_title": "Aviso sobre WhatsApp Business",
+    "whatsapp_business_ios_message": "En iOS, Apple siempre abre primero el WhatsApp personal cuando ambas aplicaciones están instaladas. Es una limitación de la plataforma impuesta por Meta/Apple. Para abrir directamente WhatsApp Business debes desinstalar la aplicación personal de WhatsApp.",
     "templates": {
       "availability": {
+        "local": "Disponible localmente",
+        "north": "Hacia el norte",
+        "south": "Hacia el sur",
+        "east": "Hacia el este",
+        "west": "Hacia el oeste",
         "custom": "Ruta Personalizada"
+      },
+      "load": {
+        "loaded": "Carga lista HOY",
+        "empty": "Necesita RECOGER DESDE...",
+        "return": "Ruta personalizada"
       }
     },
     "template_descriptions": {
-      "custom": "Elige tu propia ruta: Selecciona ciudades DESDE → HASTA"
+      "local": "En tu área actual, radio de 50 km.",
+      "north": "Hacia el norte desde la ubicación actual",
+      "south": "Hacia el sur desde la ubicación actual",
+      "east": "Hacia el este desde la ubicación actual",
+      "west": "Hacia el oeste desde la ubicación actual",
+      "custom": "Elige tu propia ruta: Selecciona ciudades DESDE → HASTA",
+      "loaded": "Desde mi ubicación → Seleccionar destino",
+      "empty": "Seleccione ciudad de recogida → A mi ubicación",
+      "return": "Control total: seleccione DESDE → HACIA ciudades"
     },
     "post_descriptions": {
-      "custom": "Disponible para ruta {{origin}} → {{dest}}"
+      "local": "Disponible para cargas locales en el área {{origin}}",
+      "north": "Disponible para cargas que se dirigen al norte desde {{origin}}",
+      "south": "Disponible para cargas que se dirigen al sur desde {{origin}}",
+      "east": "Disponible para cargas que se dirigen al este desde {{origin}}",
+      "west": "Disponible para cargas que se dirigen al oeste desde {{origin}}",
+      "custom": "Disponible para ruta {{origin}} → {{dest}}",
+      "loaded": "Carga disponible desde {{origin}} {{dest}}, saliendo hoy",
+      "empty": "Carga disponible desde {{origin}} {{dest}}, saliendo mañana",
+      "return": "Retorno vacío de {{origin}} {{dest}}"
+    },
+    "post_types": {
+      "DRIVER_AVAILABLE": "Conductor disponible",
+      "LOAD_AVAILABLE": "Carga disponible"
     }
   },
   "support": {
@@ -385,94 +571,6 @@
       "multilang_title": "Multi-idioma",
       "multilang_desc": "Disponible en inglés, rumano, polaco, turco, español y más"
     },
-    "footer": {
-      "tagline": "El futuro de las redes logísticas",
-      "product": "Producto",
-      "company": "Empresa",
-      "legal": "Legal",
-      "privacy": "Política de Privacidad",
-      "terms": "Términos de Servicio",
-      "refund": "Política de Reembolso",
-      "cookies": "Política de Cookies",
-      "rights": "Todos los derechos reservados."
-    },
-    "gdpr": {
-      "message": "Usamos cookies para mejorar tu experiencia. Al continuar, aceptas nuestro uso de cookies.",
-      "learn_more": "Saber más",
-      "accept": "Aceptar Todo",
-      "decline": "Rechazar"
-    },
-    "faq": {
-      "title": "Preguntas Frecuentes",
-      "q1": "¿Truxel es gratis?",
-      "a1": "Sí, ofrecemos una prueba gratuita con 5 búsquedas al mes.",
-      "q2": "¿Cómo funciona la búsqueda GPS?",
-      "a2": "Usamos la ubicación de tu dispositivo para encontrar empresas y cargas cercanas.",
-      "q3": "¿Puedo publicar mis propias cargas?",
-      "a3": "¡Sí! Los planes Pro y Fleet Manager incluyen publicación en comunidad.",
-      "q4": "¿Mis datos están seguros?",
-      "a4": "Absolutamente. Usamos cifrado de nivel industrial y cumplimos con GDPR.",
-      "q5": "¿Qué países están soportados?",
-      "a5": "Cubrimos todos los países de la Unión Europea más UK, Turquía y más.",
-      "q6": "¿Puedo cancelar en cualquier momento?",
-      "a6": "Sí, puedes cancelar tu suscripción en cualquier momento sin penalizaciones.",
-      "q7": "¿Tienen aplicación móvil?",
-      "a7": "¡Sí! Descarga Truxel para iOS y Android.",
-      "q8": "¿Cómo contacto con soporte?",
-      "a8": "Usa el botón de chat o envíanos un correo a office@truxel.app"
-    },
-    "problem_solution": {
-      "problem_title": "Deja de Depender de Intermediarios de Transporte",
-      "problem_desc": "Como propietario-operador, no deberías tener que esperar tablones de cargas o pagar comisiones a intermediarios. Mereces acceso directo a cargadores en tu área, especialmente en zonas muertas donde las oportunidades están ocultas.",
-      "solution_title": "Encuentra Cargadores Directamente - Sin Tocar Puertas",
-      "solution_desc": "Tu negocio, tu control. Usa GPS para descubrir cargadores locales a kilómetros de tu ubicación. Contacta al instante con mensajes personalizados - sin llamadas en frío, sin adivinanzas."
-    },
-    "how_it_works": {
-      "title": "Cómo Funciona",
-      "subtitle": "Empieza a encontrar clientes en 4 simples pasos",
-      "step1_title": "Descarga y Regístrate",
-      "step1_desc": "Comienza con una cuenta gratuita en minutos",
-      "step2_title": "Encuentra Cargadores Locales",
-      "step2_desc": "Usa GPS o búsqueda manual para descubrir empresas",
-      "step3_title": "Obtén Detalles de Contacto",
-      "step3_desc": "Accede a teléfono, correo y perfiles de LinkedIn",
-      "step4_title": "Contacta al Instante",
-      "step4_desc": "Conéctate por WhatsApp, correo o teléfono con un toque"
-    },
-    "social_proof": {
-      "title": "Conductores en Toda Europa Confían en Nosotros",
-      "testimonial1": "¡Finalmente encontré cargadores directos en mi área. Se acabaron las comisiones de intermediarios comiéndose mis ganancias!",
-      "testimonial1_author": "Mike T., Propietario-Operador, Texas",
-      "testimonial2": "Estaba atascado en una zona muerta y encontré 3 cargadores locales en 20 minutos. Esto se paga solo.",
-      "testimonial2_author": "James R., Conductor Independiente, Ohio",
-      "testimonial3": "Los mensajes con un toque son geniales. Puedo contactar cargadores mientras estoy en una parada de camiones.",
-      "testimonial3_author": "Sarah K., Propietaria de Flota, California",
-      "stats_drivers": "Construido para Conductores Independientes",
-      "stats_companies": "Encuentra Cargadores Locales al Instante",
-      "stats_countries": "Lanzamiento en América del Norte",
-      "stat_values": {
-        "drivers": "1000+",
-        "companies": "5000+",
-        "countries": "6"
-      }
-    },
-    "final_cta": {
-      "badge": "Built for Owner-Operators",
-      "stats": {
-        "success_rate": {
-          "value": "98%",
-          "label": "Success Rate"
-        },
-        "support": {
-          "value": "24/7",
-          "label": "Support"
-        },
-        "rating": {
-          "value": "5★",
-          "label": "Rating"
-        }
-      }
-    },
     "features_page": {
       "hero_title": "Powerful Features for Truck Drivers",
       "hero_subtitle": "Everything you need to find clients, manage leads, and grow your logistics business",
@@ -540,6 +638,349 @@
         "title": "Ready to Get Started?",
         "subtitle": "Download Truxel today and start finding clients instantly with 5 free trial searches",
         "secondary": "View Pricing"
+      }
+    },
+    "footer": {
+      "tagline": "El futuro de las redes logísticas",
+      "product": "Producto",
+      "company": "Empresa",
+      "legal": "Legal",
+      "privacy": "Política de Privacidad",
+      "terms": "Términos de Servicio",
+      "refund": "Política de Reembolso",
+      "cookies": "Política de Cookies",
+      "rights": "Todos los derechos reservados."
+    },
+    "gdpr": {
+      "message": "Usamos cookies para mejorar tu experiencia. Al continuar, aceptas nuestro uso de cookies.",
+      "learn_more": "Saber más",
+      "accept": "Aceptar Todo",
+      "decline": "Rechazar"
+    },
+    "faq": {
+      "title": "Preguntas Frecuentes",
+      "q1": "¿Truxel es gratis?",
+      "a1": "Sí, ofrecemos una prueba gratuita con 5 búsquedas al mes.",
+      "q2": "¿Cómo funciona la búsqueda GPS?",
+      "a2": "Usamos la ubicación de tu dispositivo para encontrar empresas y cargas cercanas.",
+      "q3": "¿Puedo publicar mis propias cargas?",
+      "a3": "¡Sí! Los planes Pro y Fleet Manager incluyen publicación en comunidad.",
+      "q4": "¿Mis datos están seguros?",
+      "a4": "Absolutamente. Usamos cifrado de nivel industrial y cumplimos con GDPR.",
+      "q5": "¿Qué países están soportados?",
+      "a5": "Cubrimos todos los países de la Unión Europea más UK, Turquía y más.",
+      "q6": "¿Puedo cancelar en cualquier momento?",
+      "a6": "Sí, puedes cancelar tu suscripción en cualquier momento sin penalizaciones.",
+      "q7": "¿Tienen aplicación móvil?",
+      "a7": "¡Sí! Descarga Truxel para iOS y Android.",
+      "q8": "¿Cómo contacto con soporte?",
+      "a8": "Usa el botón de chat o envíanos un correo a office@truxel.app"
+    },
+    "problem_solution": {
+      "problem_title": "Deja de Depender de Intermediarios de Transporte",
+      "problem_desc": "Como propietario-operador, no deberías tener que esperar tablones de cargas o pagar comisiones a intermediarios. Mereces acceso directo a cargadores en tu área, especialmente en zonas muertas donde las oportunidades están ocultas.",
+      "solution_title": "Encuentra Cargadores Directamente - Sin Tocar Puertas",
+      "solution_desc": "Tu negocio, tu control. Usa GPS para descubrir cargadores locales a kilómetros de tu ubicación. Contacta al instante con mensajes personalizados - sin llamadas en frío, sin adivinanzas."
+    },
+    "how_it_works": {
+      "title": "Cómo Funciona",
+      "subtitle": "Empieza a encontrar clientes en 4 simples pasos",
+      "step1_title": "Descarga y Regístrate",
+      "step1_desc": "Comienza con una cuenta gratuita en minutos",
+      "step2_title": "Encuentra Cargadores Locales",
+      "step2_desc": "Usa GPS o búsqueda manual para descubrir empresas",
+      "step3_title": "Obtén Detalles de Contacto",
+      "step3_desc": "Accede a teléfono, correo y perfiles de LinkedIn",
+      "step4_title": "Contacta al Instante",
+      "step4_desc": "Conéctate por WhatsApp, correo o teléfono con un toque"
+    },
+    "social_proof": {
+      "title": "Conductores en Toda Europa Confían en Nosotros",
+      "testimonial1": "¡Finalmente encontré cargadores directos en mi área. Se acabaron las comisiones de intermediarios comiéndose mis ganancias!",
+      "testimonial1_author": "Mike T., Propietario-Operador, Texas",
+      "testimonial2": "Estaba atascado en una zona muerta y encontré 3 cargadores locales en 20 minutos. Esto se paga solo.",
+      "testimonial2_author": "James R., Conductor Independiente, Ohio",
+      "testimonial3": "Los mensajes con un toque son geniales. Puedo contactar cargadores mientras estoy en una parada de camiones.",
+      "testimonial3_author": "Sarah K., Propietaria de Flota, California",
+      "stat_values": {
+        "drivers": "1000+",
+        "companies": "5000+",
+        "countries": "6"
+      },
+      "stats_drivers": "Construido para Conductores Independientes",
+      "stats_companies": "Encuentra Cargadores Locales al Instante",
+      "stats_countries": "Lanzamiento en América del Norte"
+    },
+    "final_cta": {
+      "title": "Comience a encontrar clientes hoy",
+      "subtitle": "Únase a más de 1000 camioneros que están haciendo crecer su negocio con Truxel",
+      "badge": "Built for Owner-Operators",
+      "download_ios": "Descargar en la tienda de aplicaciones",
+      "download_android": "Consíguelo en Google Play",
+      "stats": {
+        "success_rate": {
+          "value": "98%",
+          "label": "Success Rate"
+        },
+        "support": {
+          "value": "24/7",
+          "label": "Support"
+        },
+        "rating": {
+          "value": "5★",
+          "label": "Rating"
+        }
+      }
+    },
+    "about": {
+      "hero_badge": "Construido por conductores, para conductores",
+      "hero_title": "La logística sin intermediarios comienza con Truxel",
+      "hero_subtitle": "Nuestro fundador pasó años en las carreteras europeas, llamando a las puertas de los almacenes y esperando a que los agentes recogieran. Truxel es la plataforma que deseaba tener: acceso directo al remitente, alcance instantáneo y apoyo comunitario real.",
+      "hero_cta": "Crea tu cuenta gratuita",
+      "hero_secondary_cta": "hablar con el equipo",
+      "founder_quote": "Quería una forma de encontrar transportistas mientras todavía estaba estacionado en el muelle de carga. Truxel permite que cada conductor controle su canal sin pagar tarifas de intermediario.",
+      "journey_badge": "nuestra historia",
+      "journey_title": "Nacido en la cabina de un MAN TGX",
+      "journey_subtitle": "Desde un conductor que busca clientes fiables hasta una plataforma que presta servicio a miles de personas en toda Europa.",
+      "mission_badge": "Misión",
+      "mission_title": "Cada kilómetro debe pagar.",
+      "mission_subtitle": "Creemos que los conductores nunca deben quedarse inactivos cuando es necesario mover la carga.",
+      "mission": {
+        "point1": "Acceso directo a transportistas sin intermediarios ni tarifas ocultas.",
+        "point2": "Herramientas diseñadas para la vida en la carretera: rápidas, móviles y multilingües.",
+        "point3": "Una comunidad donde los conductores ayudan a los conductores con oportunidades reales."
+      },
+      "coverage_title": "Dónde opera Truxel hoy",
+      "coverage_subtitle": "10 idiomas y miles de empresas verificadas en toda Europa.",
+      "coverage": {
+        "romania": "Rumania",
+        "uk": "Reino Unido",
+        "us": "Estados Unidos (próximamente)",
+        "spain": "España",
+        "poland": "Polonia",
+        "turkey": "Pavo"
+      },
+      "coverage_footer": "Nos vamos ampliando cada mes. Díganos dónde lanzar a continuación.",
+      "values_badge": "que nos guia",
+      "values_title": "Valores desde el asiento del conductor",
+      "values_subtitle": "Construimos Truxel en torno a las realidades del transporte por carretera independiente.",
+      "values": {
+        "owner_operator": {
+          "title": "Propietario-operador obsesionado",
+          "desc": "Las decisiones sobre funciones comienzan con una simple pregunta: ¿ayuda esto al conductor a cerrar un trato más rápido?"
+        },
+        "community": {
+          "title": "comunidad primero",
+          "desc": "Los conductores, transportistas, administradores de flotas y transportistas ganan cuando todos pueden conectarse directamente."
+        },
+        "partners": {
+          "title": "Asociaciones justas",
+          "desc": "Trabajamos con transportistas que respetan a los conductores, pagan a tiempo y valoran la transparencia."
+        },
+        "innovation": {
+          "title": "Mejora implacable",
+          "desc": "Enviamos actualizaciones semanalmente, impulsadas por comentarios reales de la carretera."
+        }
+      },
+      "impact_badge": "Tracción real",
+      "impact_title": "Construido con las personas que mueven Europa",
+      "impact_subtitle": "Truxel ya ayuda a miles de profesionales de la logística a encontrar carga más rápido.",
+      "impact": {
+        "stats": {
+          "drivers": {
+            "value": "4,800+",
+            "label": "conductores construyendo su propio oleoducto"
+          },
+          "companies": {
+            "value": "12,500+",
+            "label": "empresas de logística y fabricación verificadas"
+          },
+          "countries": {
+            "value": "18",
+            "label": "Países cubiertos con datos locales."
+          },
+          "connections": {
+            "value": "65.000+",
+            "label": "Se iniciaron conversaciones directas entre el conductor y el transportista."
+          }
+        }
+      },
+      "cta_title": "Construyamos juntos tu próximo carril",
+      "cta_subtitle": "Únase a la red Truxel y obtenga acceso directo a transportistas, conductores y datos que mantienen sus camiones en movimiento.",
+      "cta_primary": "Empieza hoy",
+      "cta_secondary": "Ver precios"
+    },
+    "founder": {
+      "name": "Bogdan Ciorava",
+      "role": "Fundador y ex propietario-operador",
+      "timeline": {
+        "step1": {
+          "title": "2019 • Persiguiendo a los transportistas directos",
+          "desc": "Bogdan pasó las noches con hojas de cálculo de empresas, llamando a los almacenes entre entregas para evitar kilómetros sin salida."
+        },
+        "step2": {
+          "title": "2022 • Primer prototipo Truxel",
+          "desc": "Después de crear una base de datos manual de 6.000 empresas, creó una herramienta de búsqueda por GPS para localizar instantáneamente a los transportistas cercanos."
+        },
+        "step3": {
+          "title": "2024 • La comunidad se activa",
+          "desc": "Lanzamos una red de conductores en toda Europa para que las cargas y la disponibilidad pudieran compartirse en segundos, no en días."
+        }
+      }
+    },
+    "contact": {
+      "hero_badge": "Habla con una persona real",
+      "hero_title": "Resolvamos juntos su desafío logístico",
+      "hero_subtitle": "Ya sea usted un conductor que llena su agenda o un transportista que busca capacidad, el equipo de Truxel responde a todos los mensajes en menos de 24 horas.",
+      "cards_badge": "Contáctanos rápido",
+      "cards_title": "Elija el canal que funcione para usted",
+      "cards_subtitle": "Tenemos nuestra sede en Bucarest y brindamos soporte a conductores en toda Europa y América del Norte.",
+      "cards": {
+        "email": {
+          "title": "Correo electrónico",
+          "subtitle": "Respondemos en 24 horas"
+        },
+        "phone": {
+          "title": "Teléfono",
+          "subtitle": "Llámenos de lunes a viernes, de 09:00 a 18:00 EET"
+        },
+        "whatsapp": {
+          "title": "WhatsApp",
+          "subtitle": "Envíanos un mensaje de texto si tienes preguntas urgentes desde la carretera."
+        },
+        "hours": {
+          "title": "Horas de soporte",
+          "value": "Lunes a viernes | 09:00-18:00 hora del este",
+          "subtitle": "¿Necesitas ayuda el fin de semana? Deja un mensaje y te responderemos el lunes a primera hora."
+        },
+        "location": {
+          "title": "Ubicación",
+          "value": "Bucarest, Rumania",
+          "subtitle": "Al servicio de los conductores de toda la Unión Europea"
+        }
+      },
+      "form_badge": "enviar un mensaje",
+      "form_title": "Cuéntanos qué necesitas",
+      "form_subtitle": "Comparta tantos detalles como pueda para que podamos conectarlo con la persona adecuada.",
+      "form": {
+        "name_label": "Su nombre *",
+        "name_placeholder": "Introduce tu nombre completo",
+        "email_label": "Dirección de correo electrónico *",
+        "email_placeholder": "nombre@ejemplo.com",
+        "subject_label": "Sujeto *",
+        "subject_placeholder": "P.ej. Necesito ayuda para encontrar cargas en España",
+        "message_label": "Mensaje *",
+        "message_placeholder": "¿Cómo podemos ayudar?",
+        "button": "enviar mensaje",
+        "button_loading": "Envío..."
+      },
+      "toast": {
+        "error_title": "algo salió mal",
+        "error_fields": "Por favor complete todos los campos requeridos.",
+        "error_email": "Ingrese una dirección de correo electrónico válida.",
+        "success_title": "Correo electrónico listo para enviar",
+        "success_message": "Revise el borrador del correo electrónico y presione enviar para completar su mensaje.",
+        "error_open": "No pudimos abrir su cliente de correo electrónico. Envíenos un correo electrónico a office@truxel.io."
+      },
+      "audience_badge": "a quien ayudamos",
+      "audience_title": "Dos caras de la misma historia logística",
+      "audience_subtitle": "Unimos las conversaciones entre conductores y transportistas para que la carga siga en movimiento.",
+      "audience": {
+        "drivers": {
+          "badge": "Conductores y propietarios-operadores",
+          "title": "Llena cada carril por el que conduces",
+          "point1": "Obtenga presentaciones directas a los transportistas en sus regiones activas.",
+          "point2": "Comprenda qué planes desbloquean el acceso a los contactos y la información de la IA.",
+          "point3": "Reciba soporte de incorporación para su equipo o despachadores."
+        },
+        "shippers": {
+          "badge": "Agentes de carga y transportistas",
+          "title": "Mueve mercancías sin intermediarios",
+          "point1": "Enumere cargas urgentes para llegar a los transportistas listos para conducir.",
+          "point2": "Descubra transportistas verificados por tipo de equipo y región.",
+          "point3": "Coordinar pilotos, asociaciones o integraciones."
+        }
+      },
+      "bottom_cta_title": "¿Prefieres una conversación en vivo?",
+      "bottom_cta_subtitle": "Reserve una llamada de descubrimiento con nuestro equipo o envíenos una nota de asociación. Respondemos a cada solicitud.",
+      "bottom_cta_primary": "Reserva una demostración",
+      "bottom_cta_secondary": "Enviar correo electrónico de asociación"
+    },
+    "pricing": {
+      "hero_badge": "Prueba gratuita incluida",
+      "hero_title": "Encuentra cargas. Contratos seguros. Haga crecer su negocio de logística.",
+      "hero_subtitle": "Diseñado para propietarios-operadores, administradores de flotas y transitarios que desean acceso directo a los transportistas sin pagar tarifas de intermediario.",
+      "hero_feature1": "Incorporación instantánea. No se requiere tarjeta de crédito.",
+      "hero_feature2": "Cancele en cualquier momento. Conserva tus datos para siempre.",
+      "hero_feature3": "5 búsquedas gratuitas para probar la plataforma.",
+      "hero_cta": "Iniciar prueba gratuita",
+      "currency_label": "Mostrar precios en",
+      "currency_eur": "euros (€)",
+      "currency_usd": "USD ($)",
+      "per_month": "por mes",
+      "cta": "Empezar",
+      "cta_popular": "Más Popular",
+      "faq_title": "Preguntas sobre precios y planes",
+      "faq": {
+        "q1": "¿Qué plan Truxel se adapta a mi operación?",
+        "a1_part_standard": "Standard ofrece a los conductores independientes 30 búsquedas de empresas mensuales y publicaciones diarias para mantenerse reservados.",
+        "a1_part_pro": "Pro agrega contactos de LinkedIn, coincidencias de IA e investigación avanzada para equipos en crecimiento.",
+        "a1_part_fleet": "Fleet Manager desbloquea 30 publicaciones diarias, 30 listados simultáneos y visibilidad de 72 horas para los equipos de despacho.",
+        "a1_part_freighter": "Pro Freighter ofrece todo, además de análisis, soporte prioritario y 50 publicaciones diarias para transportistas serios.",
+        "q2": "¿Puedo cambiar de plan más tarde?",
+        "a2": "¡Sí! Puede actualizar o degradar en cualquier momento desde la configuración de su cuenta. Los cambios entran en vigor inmediatamente para las actualizaciones o al final de su período de facturación para las degradaciones.",
+        "q3": "¿Cómo funcionan los pagos?",
+        "a3": "Aceptamos todas las principales tarjetas de crédito y procesamos pagos de forma segura a través de Stripe. Se le facturará mensualmente en la fecha de suscripción. Todas las transacciones están cifradas y nunca almacenamos los datos de su tarjeta.",
+        "q4": "¿Cuál es la diferencia entre búsquedas y publicaciones?",
+        "a4_part_search": "Las búsquedas lo ayudan a encontrar clientes potenciales (transportistas y transitarios) en ubicaciones específicas con detalles de contacto completos.",
+        "a4_part_post": "Las publicaciones te permiten anunciar tu disponibilidad o cargas en la comunidad para que otros puedan encontrarte. Ambos trabajan juntos para hacer crecer su red.",
+        "q5": "¿Conservo el acceso si cancelo?",
+        "a5": "Sí, conservará el acceso completo a su suscripción hasta el final de su período de facturación actual. Todos sus contactos, notas e historial de búsqueda guardados permanecen accesibles incluso después de la cancelación."
+      },
+      "cards": {
+        "standard": {
+          "title": "Estándar",
+          "tagline": "Diseñado para conductores independientes",
+          "feature_searches": "{{count}} búsquedas de empresas cada mes",
+          "feature_posts": "{{daily}} publicaciones por día ({{monthly}} cada mes)",
+          "feature_filters": "Filtros avanzados para encontrar los transportistas adecuados",
+          "feature_saves": "Clientes potenciales y seguimientos guardados ilimitados"
+        },
+        "pro": {
+          "title": "Pro",
+          "tagline": "Amplíe su alcance de ventas",
+          "feature_searches": "{{count}} búsquedas con resultados extendidos",
+          "feature_posts": "{{daily}} publicaciones por día ({{monthly}} cada mes)",
+          "feature_linkedin": "Perfiles de contacto de LinkedIn para tomadores de decisiones",
+          "feature_ai": "Coincidencia de rutas y puntuación de empresas impulsadas por IA",
+          "feature_research": "Investigación profunda de empresas por industria y carril.",
+          "feature_priority": "Ubicación prioritaria dentro del feed de la comunidad",
+          "feature_export": "Exporte clientes potenciales y notas a CSV con un solo toque"
+        },
+        "fleet": {
+          "title": "Gerente de flota",
+          "tagline": "Envío a escala",
+          "feature_searches": "{{count}} búsquedas dirigidas cada mes",
+          "feature_posts": "{{daily}} publicaciones por día ({{monthly}} cada mes)",
+          "feature_concurrent": "{{count}} publicaciones activas publicadas al mismo tiempo",
+          "feature_duration": "Las publicaciones permanecen visibles {{hours}} horas para maximizar el alcance",
+          "feature_tools": "Flujos de trabajo de transportistas para la colaboración en equipo",
+          "feature_saved": "Guarde hasta {{count_saved}} rutas y plantillas"
+        },
+        "freighter": {
+          "title": "Carguero profesional",
+          "tagline": "Operaciones de transporte empresarial",
+          "feature_searches": "{{count}} búsquedas premium cada mes",
+          "feature_posts": "{{daily}} publicaciones por día ({{monthly}} cada mes)",
+          "feature_linkedin": "Datos completos de contacto de la persona que toma las decisiones",
+          "feature_ai": "Inteligencia de despacho de IA con recordatorios inteligentes",
+          "feature_research": "Investigación avanzada para operaciones en varios países",
+          "feature_concurrent": "{{count}} publicaciones simultáneas en todos los equipos",
+          "feature_duration": "Visibilidad de {{hours}} horas con actualización automática",
+          "feature_analytics": "Análisis de rendimiento e información semanal",
+          "feature_support": "Soporte prioritario con conserjería dedicada",
+          "feature_saved": "Almacenar {{count_saved}} plantillas y rutas guardadas"
+        }
       }
     }
   }

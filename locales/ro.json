@@ -25,7 +25,8 @@
     "close": "Închide",
     "no": "Nu",
     "yes": "Da",
-    "ok": "OK"
+    "ok": "OK",
+    "upgrade": "Upgrade"
   },
   "auth": {
     "welcome": "Bine ai venit la Truxel",
@@ -47,6 +48,17 @@
     "login_success": "Autentificare reușită",
     "register_success": "Înregistrare reușită",
     "logout_confirm": "Ești sigur că vrei să te deconectezi?"
+  },
+  "directions": {
+    "north": "Nord",
+    "northeast": "Nord-Est",
+    "east": "Est",
+    "southeast": "Sud-Est",
+    "south": "Sud",
+    "southwest": "Sud-Vest",
+    "west": "Vest",
+    "northwest": "Nord-Vest",
+    "of": "de"
   },
   "tabs": {
     "home": "Acasă",
@@ -93,7 +105,23 @@
     "location_permission": "Avem nevoie de locația ta pentru a găsi companii în apropiere",
     "location_denied": "Permisiune de localizare refuzată",
     "search_started": "Căutare începută! Te vom notifica când sunt gata rezultatele.",
-    "search_failed": "Căutarea a eșuat. Te rugăm să încerci din nou."
+    "search_failed": "Căutarea a eșuat. Te rugăm să încerci din nou.",
+    "processing": "Prelucrare...",
+    "completed": "Terminat",
+    "failed": "A eșuat",
+    "location": "Locaţie",
+    "estimated": "estimat",
+    "check_leads_tab": "Verificați fila Leads pentru rezultate",
+    "please_try_again": "Vă rugăm să încercați din nou",
+    "search_complete": "Căutare finalizată!",
+    "results_ready": "Rezultatele căutării dvs. sunt gata",
+    "quick_search": "Căutare rapidă",
+    "quick_search_description": "Perfect pentru când conduceți! Începeți o căutare instantaneu folosind domeniile salvate, fără a introduce text.",
+    "your_saved_domains": "Domeniile dvs. salvate",
+    "start_quick_search": "🚀 Căutare rapidă",
+    "quick_search_started": "Căutarea rapidă a început cu domeniile salvate!",
+    "no_saved_domains": "Niciun domeniu salvat",
+    "please_set_domains_in_profile": "Vă rugăm să setați industriile preferate în setările profilului"
   },
   "leads": {
     "title": "Lead-urile Mele",
@@ -221,9 +249,9 @@
     "unit_mi": "Mile (mi)",
     "preferred_industries": "Industrii Preferate",
     "industries_desc": "Selectează până la {{count}}/5 industrii cu care vrei să lucrezi",
-  "phone_number_helper": "Alege prefixul țării și apoi introdu restul numărului fără zero-ul din față.",
-  "phone_number_placeholder": "712345678",
-  "phone_number_invalid": "Numărul pare prea scurt. Verifică-l și încearcă din nou.",
+    "phone_number_helper": "Alege prefixul țării și apoi introdu restul numărului fără zero-ul din față.",
+    "phone_number_placeholder": "712345678",
+    "phone_number_invalid": "Numărul pare prea scurt. Verifică-l și încearcă din nou.",
     "max_industries": "Maxim 5 industrii",
     "max_industries_desc": "Poți selecta maximum 5 industrii",
     "name_required": "Numele este obligatoriu",
@@ -260,6 +288,8 @@
     "tier_standard": "Standard",
     "tier_pro": "Pro",
     "tier_premium": "Premium",
+    "tier_fleet_manager": "Manager de flotă",
+    "tier_pro_freighter": "Pro Freighter",
     "searches_per_month": "căutări/lună",
     "max_results": "Până la {{count}} rezultate per căutare",
     "linkedin_contacts": "Profiluri de contact LinkedIn",
@@ -285,17 +315,6 @@
     "something_went_wrong": "Ceva nu a funcționat. Te rugăm să încerci din nou.",
     "session_expired": "Sesiune expirată. Te rugăm să te autentifici din nou.",
     "insufficient_permissions": "Permisiuni insuficiente"
-  },
-  "directions": {
-    "north": "Nord",
-    "northeast": "Nord-Est",
-    "east": "Est",
-    "southeast": "Sud-Est",
-    "south": "Sud",
-    "southwest": "Sud-Vest",
-    "west": "Vest",
-    "northwest": "Nord-Vest",
-    "of": "de"
   },
   "community": {
     "title": "Comunitate",
@@ -389,8 +408,8 @@
       "tier_name": "Plan Growth",
       "tier_price": "€29.99 / lună",
       "tier_description": "Creat pentru firme în creștere care au nevoie de acces constant la încărcători.",
-    "feature_contacts": "Acces complet la datele de contact pentru toate postările",
-    "feature_posts": "Până la 5 postări pe zi și 30 pe lună",
+      "feature_contacts": "Acces complet la datele de contact pentru toate postările",
+      "feature_posts": "Până la 5 postări pe zi și 30 pe lună",
       "feature_support": "Suport prioritar și filtre salvate",
       "secondary_cta": "Ai nevoie de mai mult? Planurile superioare includ AI matching, analytics și export LinkedIn.",
       "upgrade_now": "Upgrade acum",
@@ -423,22 +442,22 @@
     "whatsapp_change_preference": "Schimbă preferința",
     "whatsapp_invalid_number_title": "Număr internațional necesar",
     "whatsapp_invalid_number_message": "Adaugă prefixul internațional (de exemplu +40...) la numărul de telefon înainte de a contacta pe WhatsApp.",
-  "contact_whatsapp": "WhatsApp",
-  "contact_call": "Sună",
-  "contact_email": "Email",
-  "email_contact_line": "Mă poți contacta la {{phone}}.",
-  "whatsapp_driver_available": "Salut {{theirName}}, sunt {{myName}} de la {{myCompany}}. Te contactez pentru disponibilitatea ta în zona {{origin}}.",
-  "whatsapp_load_available": "Salut {{theirName}}, sunt {{myName}} de la {{myCompany}}. Sunt interesat de marfa {{load}}.",
-  "email_subject_driver": "Disponibilitate în zona {{origin}}",
-  "email_subject_load": "Marfă {{load}}",
-  "email_body_driver": "Bună {{theirName}},\n\nSunt {{myName}} de la {{myCompany}}. Te contactez pentru disponibilitatea ta în zona {{origin}}.\n\n{{contactLine}}\nCu respect,\n{{myName}}",
-  "email_body_load": "Bună {{theirName}},\n\nSunt {{myName}} de la {{myCompany}}. Sunt interesat de marfa {{load}}.\n\n{{contactLine}}\nCu respect,\n{{myName}}",
-  "whatsapp_choose_title": "Alege aplicația WhatsApp",
-  "whatsapp_choose_message": "Ce aplicație WhatsApp vrei să folosești pentru contact?",
-  "whatsapp_app_regular": "WhatsApp",
-  "whatsapp_app_business": "WhatsApp Business",
-  "whatsapp_business_ios_title": "Atenție la WhatsApp Business",
-  "whatsapp_business_ios_message": "Pe iOS, Apple deschide mereu WhatsApp-ul personal atunci când ambele aplicații sunt instalate. Este o limitare impusă de Meta/Apple. Dacă vrei să intri direct în WhatsApp Business, trebuie să dezinstalezi aplicația WhatsApp personal.",
+    "contact_whatsapp": "WhatsApp",
+    "contact_call": "Sună",
+    "contact_email": "Email",
+    "email_contact_line": "Mă poți contacta la {{phone}}.",
+    "whatsapp_driver_available": "Salut {{theirName}}, sunt {{myName}} de la {{myCompany}}. Te contactez pentru disponibilitatea ta în zona {{origin}}.",
+    "whatsapp_load_available": "Salut {{theirName}}, sunt {{myName}} de la {{myCompany}}. Sunt interesat de marfa {{load}}.",
+    "email_subject_driver": "Disponibilitate în zona {{origin}}",
+    "email_subject_load": "Marfă {{load}}",
+    "email_body_driver": "Bună {{theirName}},\n\nSunt {{myName}} de la {{myCompany}}. Te contactez pentru disponibilitatea ta în zona {{origin}}.\n\n{{contactLine}}\nCu respect,\n{{myName}}",
+    "email_body_load": "Bună {{theirName}},\n\nSunt {{myName}} de la {{myCompany}}. Sunt interesat de marfa {{load}}.\n\n{{contactLine}}\nCu respect,\n{{myName}}",
+    "whatsapp_choose_title": "Alege aplicația WhatsApp",
+    "whatsapp_choose_message": "Ce aplicație WhatsApp vrei să folosești pentru contact?",
+    "whatsapp_app_regular": "WhatsApp",
+    "whatsapp_app_business": "WhatsApp Business",
+    "whatsapp_business_ios_title": "Atenție la WhatsApp Business",
+    "whatsapp_business_ios_message": "Pe iOS, Apple deschide mereu WhatsApp-ul personal atunci când ambele aplicații sunt instalate. Este o limitare impusă de Meta/Apple. Dacă vrei să intri direct în WhatsApp Business, trebuie să dezinstalezi aplicația WhatsApp personal.",
     "templates": {
       "availability": {
         "local": "Disponibil local",
@@ -508,6 +527,211 @@
     }
   },
   "web": {
+    "nav": {
+      "features": "Caracteristici",
+      "pricing": "Prețuri",
+      "about": "Despre",
+      "contact": "Contact",
+      "login": "Log in",
+      "signup": "Înscrieți-vă"
+    },
+    "hero": {
+      "title": "Preluați controlul asupra afacerii dvs. de transport cu camioane",
+      "subtitle": "Nu mai așteptați brokeri. Găsiți expeditori direct în jurul vostru, chiar și în zonele moarte. Trimiteți mesaje personalizate prin WhatsApp, e-mail sau apelați cu o singură atingere.",
+      "cta_primary": "Începeți proba gratuită",
+      "trust_badge": "Construit pentru proprietarii-operatori din America de Nord",
+      "trust_features": {
+        "no_broker_fees": "Fără comisioane de broker",
+        "dead_zones": "Găsiți expeditori în zonele moarte",
+        "instant_contact": "Metode de contact instantanee"
+      }
+    },
+    "cta": {
+      "learn_more": "Află mai multe"
+    },
+    "features": {
+      "title": "Tot ce ai nevoie pentru a crește",
+      "subtitle": "Caracteristici puternice concepute pentru șoferii de camion",
+      "gps_title": "Căutare bazată pe GPS",
+      "gps_desc": "Găsiți instantaneu companiile din apropiere folosind locația în timp real",
+      "instant_contact_title": "Contact instantaneu",
+      "instant_contact_desc": "Conectați-vă prin WhatsApp, e-mail sau telefon dintr-o singură atingere",
+      "community_title": "Comunitatea șoferilor",
+      "community_desc": "Postați disponibilitatea dvs. și găsiți încărcături de la alți șoferi",
+      "leads_title": "Oferte de companie",
+      "leads_desc": "Descoperiți companiile de transport de marfă și partenerii logistici",
+      "templates_title": "Șabloane rapide",
+      "templates_desc": "Utilizați mesaje predefinite pentru a contacta companiile mai rapid",
+      "linkedin_title": "Integrare LinkedIn",
+      "linkedin_desc": "Găsiți factorii de decizie și informații de contact instantaneu",
+      "ai_title": "Potrivire AI",
+      "ai_desc": "Recomandări inteligente bazate pe rutele și preferințele dvs",
+      "notifications_title": "Notificări inteligente",
+      "notifications_desc": "Primiți alerte atunci când companiile postează încărcături în apropierea dvs",
+      "multilang_title": "Multi-limbi",
+      "multilang_desc": "Disponibil în engleză, română, poloneză, turcă, spaniolă și multe altele"
+    },
+    "features_page": {
+      "hero_title": "Caracteristici puternice pentru șoferii de camion",
+      "hero_subtitle": "Tot ce aveți nevoie pentru a găsi clienți, a gestiona clienții potențiali și a vă dezvolta afacerea de logistică",
+      "core": {
+        "title": "Caracteristici de bază",
+        "subtitle": "Disponibil pentru toate planurile, inclusiv pentru perioada de încercare gratuită",
+        "details": {
+          "gps": [
+            "Detectarea automată a locației",
+            "5 km rază de căutare",
+            "Urmărire GPS în timp real",
+            "Căutați oriunde conduceți"
+          ],
+          "community": [
+            "Postați disponibilitatea șoferului",
+            "Găsiți rute disponibile",
+            "Conectează-te cu colegii de camion",
+            "Flux comunitar în timp real"
+          ],
+          "leads": [
+            "Stocare nelimitată de lead-uri",
+            "Urmărirea stării (nou, contactat, câștigat, pierdut)",
+            "Adăugați note personalizate",
+            "Funcționalitate de export CSV"
+          ],
+          "templates": [
+            "Șabloane de e-mail precompletate",
+            "Șabloane de mesaje WhatsApp",
+            "Completați automat informațiile dvs. de contact",
+            "Mesaje profesionale"
+          ]
+        }
+      },
+      "how": {
+        "title": "Cum funcționează",
+        "subtitle": "Începeți să găsiți clienți în 4 pași simpli",
+        "steps": {
+          "step1": {
+            "title": "Descărcați și înregistrați-vă",
+            "desc": "Instalați Truxel din App Store sau Google Play. Creați-vă contul gratuit și obțineți 5 căutări de probă."
+          },
+          "step2": {
+            "title": "Activați GPS și căutare",
+            "desc": "Activați-vă locația și lăsați Truxel să găsească automat companii pe o rază de 5 km."
+          },
+          "step3": {
+            "title": "Vedeți rezultatele",
+            "desc": "Răsfoiți detaliile companiei, informațiile de contact și locațiile exacte de pe hartă."
+          },
+          "step4": {
+            "title": "Faceți Contact",
+            "desc": "Contactați prin e-mail, WhatsApp sau telefon folosind șabloanele noastre precompletate."
+          }
+        }
+      },
+      "pro": {
+        "badge": "PLAN PRO",
+        "title": "Caracteristici avansate",
+        "subtitle": "Deblocați instrumente puternice cu abonamentul la nivelul Pro"
+      },
+      "additional": {
+        "title": "Caracteristici suplimentare"
+      },
+      "cta": {
+        "title": "Sunteți gata să începeți?",
+        "subtitle": "Descărcați Truxel astăzi și începeți să găsiți clienți instantaneu cu 5 căutări de probă gratuite",
+        "secondary": "Vedeți prețurile"
+      }
+    },
+    "footer": {
+      "tagline": "Viitorul rețelelor logistice",
+      "product": "Produs",
+      "company": "Companie",
+      "legal": "Legal",
+      "privacy": "Politica de confidențialitate",
+      "terms": "Termeni și condiții",
+      "refund": "Politica de rambursare",
+      "cookies": "Politica cookie",
+      "rights": "Toate drepturile rezervate."
+    },
+    "gdpr": {
+      "message": "Folosim cookie-uri pentru a vă îmbunătăți experiența. Continuând, sunteți de acord cu utilizarea cookie-urilor.",
+      "learn_more": "Află mai multe",
+      "accept": "Acceptați toate",
+      "decline": "Declin"
+    },
+    "faq": {
+      "title": "Întrebări frecvente",
+      "q1": "Cum funcționează căutarea GPS?",
+      "a1": "Pur și simplu activați GPS-ul dispozitivului dvs., iar Truxel va căuta automat companii de logistică pe o rază de 5 km de locația dvs. actuală. Rezultatele includ numele companiei, detaliile de contact și locația exactă.",
+      "q2": "Ce este inclus în perioada de încercare gratuită?",
+      "a2": "Proba gratuită include 5 căutări, acces la informațiile de bază ale companiei, șabloane de e-mail și WhatsApp, managementul clienților potențiali și exportul CSV. Nu este necesar un card de credit.",
+      "q3": "Câte căutări primesc pe lună?",
+      "a3": "Depinde de planul dvs.: Trial (5 în total), Standard (15/lună), Pro (30/lună). De asemenea, puteți achiziționa pachete de căutare suplimentare oricând.",
+      "q4": "Îmi pot exporta clienții potențiali?",
+      "a4": "Da! Toate planurile includ funcționalitate de export CSV. Puteți exporta oricând întreaga listă de clienți potențiali cu toate detaliile de contact și notele.",
+      "q5": "Care este caracteristica Comunităţii?",
+      "a5": "Funcția Comunitate vă permite să vă publicați disponibilitatea sau rutele disponibile și să vedeți postările de la alți șoferi. Este o modalitate excelentă de a găsi oportunități de marfă și de a intra în legătură cu colegii de camion.",
+      "q6": "Susțineți limba mea?",
+      "a6": "Acceptăm 6 limbi: engleză, română, poloneză, turcă, lituaniană și spaniolă. Puteți schimba oricând limbile din setările profilului.",
+      "q7": "Cum îmi anulez abonamentul?",
+      "a7": "Puteți anula oricând din setările profilului dvs. Veți continua să aveți acces până la sfârșitul perioadei curente de facturare, fără taxe suplimentare.",
+      "q8": "Sunt datele mele securizate?",
+      "a8": "Absolut. Utilizăm criptare standard din industrie, servere securizate din UE prin Supabase și respectăm pe deplin GDPR. Datele dumneavoastră nu sunt niciodată partajate cu terți fără consimțământul dumneavoastră."
+    },
+    "problem_solution": {
+      "problem_title": "Nu mai depindeți de brokerii de marfă",
+      "problem_desc": "În calitate de proprietar-operator, nu ar trebui să așteptați panouri de încărcare sau să plătiți comisioane de broker. Meritați acces direct la expeditorii din zona dvs., în special în zonele moarte, unde oportunitățile sunt ascunse.",
+      "solution_title": "Găsiți direct expeditori - Fără ciocănirea la ușă",
+      "solution_desc": "Afacerea ta, controlul tău. Utilizați GPS-ul pentru a descoperi expeditorii locali la o rază de mile de locație. Ajungeți instantaneu cu mesaje personalizate - fără apeluri la rece, fără jocuri de ghicire."
+    },
+    "how_it_works": {
+      "title": "Cum funcționează",
+      "subtitle": "Începeți să găsiți clienți în 4 pași simpli",
+      "step1_title": "Descărcați și înregistrați-vă",
+      "step1_desc": "Începeți cu un cont gratuit în câteva minute",
+      "step2_title": "Găsiți expeditori locali",
+      "step2_desc": "Utilizați GPS sau căutarea manuală pentru a descoperi companii",
+      "step3_title": "Obțineți detalii de contact",
+      "step3_desc": "Accesați profiluri de telefon, e-mail și LinkedIn",
+      "step4_title": "Ajungeți instantaneu",
+      "step4_desc": "Conectați-vă prin WhatsApp, e-mail sau telefon cu o singură atingere"
+    },
+    "social_proof": {
+      "title": "Încrederea șoferilor din toată Europa",
+      "testimonial1": "În sfârșit am găsit expeditori direcți în zona mea. Gata cu comisioanele de broker care îmi mănâncă profitul!",
+      "testimonial1_author": "Mike T., proprietar-operator, Texas",
+      "testimonial2": "Am fost blocat într-o zonă moartă și am găsit 3 expeditori locali în 20 de minute. Acest lucru se plătește de la sine.",
+      "testimonial2_author": "James R., șofer independent, Ohio",
+      "testimonial3": "Mesageria cu o singură atingere este genială. Pot contacta expeditorii în timp ce sunt la o stație de camioane.",
+      "testimonial3_author": "Sarah K., proprietar de flotă, California",
+      "stat_values": {
+        "drivers": "1000+",
+        "companies": "5000+",
+        "countries": "6"
+      },
+      "stats_drivers": "Construit pentru șoferi independenți",
+      "stats_companies": "Găsiți instantaneu expeditori locali",
+      "stats_countries": "Lansare în America de Nord"
+    },
+    "final_cta": {
+      "title": "Începeți să găsiți clienți astăzi",
+      "subtitle": "Alăturați-vă celor peste 1000 de șoferi de camion care își dezvoltă afacerea cu Truxel",
+      "badge": "Construit pentru proprietari-operatori",
+      "download_ios": "Descărcați pe App Store",
+      "download_android": "Obțineți-l pe Google Play",
+      "stats": {
+        "success_rate": {
+          "value": "98%",
+          "label": "Rata de succes"
+        },
+        "support": {
+          "value": "24/7",
+          "label": "Sprijin"
+        },
+        "rating": {
+          "value": "5★",
+          "label": "Evaluare"
+        }
+      }
+    },
     "about": {
       "hero_badge": "Creat de șoferi, pentru șoferi",
       "hero_title": "Logistica fără intermediari începe cu Truxel",
