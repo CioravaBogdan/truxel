@@ -2,6 +2,15 @@ import { supabase } from '@/lib/supabase';
 import { Lead, LeadStatus } from '@/types/database.types';
 import type { CommunityPost } from '@/types/community.types';
 
+type UserLeadWithLead = {
+  id: string;
+  status: LeadStatus;
+  user_notes: string | null;
+  saved_at: string;
+  source_type: string;
+  lead: Lead;
+};
+
 export const leadsService = {
   /**
    * Get all leads saved by a user (using user_leads junction table)
@@ -279,6 +288,44 @@ export const leadsService = {
       saved_at: ul.saved_at,
       source_type: ul.source_type,
     })) || [];
+  },
+
+  /**
+   * Promote an existing saved lead (from search) into My Book by toggling source_type
+   * This avoids duplicate lead creation while reusing the same user_leads entry
+   */
+  async promoteLeadToMyBook(userLeadId: string, userId: string): Promise<Lead> {
+    const timestamp = new Date().toISOString();
+
+    const { data, error } = await supabase
+      .from('user_leads')
+      .update({
+        source_type: 'community',
+        saved_at: timestamp,
+      })
+      .eq('id', userLeadId)
+      .eq('user_id', userId)
+      .select(`
+        id,
+        status,
+        user_notes,
+        saved_at,
+        source_type,
+        lead:leads!inner (*)
+      `)
+      .single<UserLeadWithLead>();
+
+    if (error) throw error;
+
+    return {
+      ...data.lead,
+      id: data.lead.id,
+      user_lead_id: data.id,
+      status: data.status as LeadStatus,
+      user_notes: data.user_notes ?? undefined,
+      saved_at: data.saved_at,
+      source_type: 'community',
+    };
   },
 
   /**

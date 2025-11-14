@@ -41,6 +41,7 @@ interface LeadsState {
   setConvertedLeads: (leads: Lead[]) => void;
   loadConvertedLeads: (userId: string) => Promise<void>;
   convertToMyBook: (post: CommunityPost, userId: string) => Promise<void>;
+  promoteLeadToMyBook: (userLeadId: string, userId: string) => Promise<void>;
   
   // Tab navigation
   setSelectedTab: (tab: 'search' | 'hotleads' | 'mybook') => void;
@@ -136,6 +137,22 @@ export const useLeadsStore = create<LeadsState>((set, get) => ({
       await get().loadConvertedLeads(userId);
     } catch (error) {
       console.error('Error converting to My Book:', error);
+      set({ isLoading: false });
+      throw error;
+    }
+  },
+
+  promoteLeadToMyBook: async (userLeadId: string, userId: string) => {
+    set({ isLoading: true });
+    try {
+      const { leadsService } = await import('@/services/leadsService');
+      await leadsService.promoteLeadToMyBook(userLeadId, userId);
+
+      // Reload converted leads to reflect the promoted lead
+      await get().loadConvertedLeads(userId);
+      set({ isLoading: false });
+    } catch (error) {
+      console.error('Error promoting lead to My Book:', error);
       set({ isLoading: false });
       throw error;
     }

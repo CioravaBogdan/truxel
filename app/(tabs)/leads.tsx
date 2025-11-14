@@ -1007,61 +1007,43 @@ export default function LeadsScreen() {
         }}
         onAddToMyBook={selectedLead && selectedLead.source_type !== 'community' ? async (lead) => {
           if (!user) return;
-          
+
           try {
-            // Check if lead already exists in My Book using phone/email (same as server-side isDuplicateLead)
-            const phone = lead.phone;
-            const email = lead.email;
-            const companyName = lead.company_name;
-            
-            // Check by phone first (most reliable)
-            let isAlreadyInMyBook = false;
-            if (phone) {
-              isAlreadyInMyBook = convertedLeads.some(converted => converted.phone === phone);
+            const userLeadId = (lead as any).user_lead_id;
+
+            if (userLeadId) {
+              await useLeadsStore.getState().promoteLeadToMyBook(userLeadId, user.id);
+              useLeadsStore.getState().updateLead(lead.id, { source_type: 'community' as Lead['source_type'] });
+
+              Toast.show({
+                type: 'success',
+                text1: t('leads.converted_successfully'),
+              });
+            } else {
+              const communityPost = {
+                id: lead.id,
+                user_id: user.id,
+                post_type: 'LOAD_AVAILABLE' as const,
+                status: 'active' as const,
+                origin_city: lead.city || '',
+                origin_country: lead.country || '',
+                origin_lat: lead.latitude || 0,
+                origin_lng: lead.longitude || 0,
+                template_key: 'custom',
+                created_at: new Date().toISOString(),
+                profile: {
+                  full_name: lead.contact_person_name || lead.company_name,
+                  company_name: lead.company_name,
+                  phone_number: lead.phone || '',
+                  email: lead.email || '',
+                },
+                contact_phone: lead.phone || undefined,
+                contact_whatsapp: !!lead.whatsapp,
+              } as unknown as CommunityPost;
+
+              await handleAddToMyBook(communityPost);
             }
-            
-            // If not found by phone, check by email + company name
-            if (!isAlreadyInMyBook && email && companyName) {
-              isAlreadyInMyBook = convertedLeads.some(
-                converted => converted.email === email && converted.company_name === companyName
-              );
-            }
-            
-            if (isAlreadyInMyBook) {
-              Alert.alert(
-                t('leads.duplicate_lead_title'),
-                t('leads.duplicate_lead_message'),
-                [{ text: t('common.ok'), style: 'default' }]
-              );
-              return;
-            }
-            
-            // Create a CommunityPost-like structure from Lead (search result)
-            const communityPost = {
-              id: lead.id,
-              user_id: user.id,
-              post_type: 'LOAD_AVAILABLE' as const,
-              status: 'active' as const,
-              origin_city: lead.city || '',
-              origin_country: lead.country || '',
-              origin_lat: lead.latitude || 0,
-              origin_lng: lead.longitude || 0,
-              template_key: 'custom',
-              created_at: new Date().toISOString(),
-              profile: {
-                full_name: lead.contact_person_name || lead.company_name,
-                company_name: lead.company_name,
-                phone_number: lead.phone || '',
-                email: lead.email || '',
-              },
-              contact_phone: lead.phone || undefined,
-              contact_whatsapp: !!lead.whatsapp,
-            } as unknown as CommunityPost;
-            
-            // Use existing handleAddToMyBook function
-            await handleAddToMyBook(communityPost);
-            
-            // Close modal after successful save
+
             setModalVisible(false);
             setSelectedLead(null);
             setSourceTab(null);
