@@ -321,28 +321,40 @@ export default function LeadsScreen() {
   };
 
   const handleShareLead = async (lead: Lead) => {
-    const shareText = `
-Company: ${lead.company_name}
-Contact: ${lead.contact_person_name || 'N/A'}
-Email: ${lead.email || 'N/A'}
-Phone: ${lead.phone || 'N/A'}
-WhatsApp: ${lead.whatsapp || 'N/A'}
-Address: ${lead.address || 'N/A'}
-City: ${lead.city || 'N/A'}
-Industry: ${lead.industry || 'N/A'}
-Website: ${lead.website || 'N/A'}
-LinkedIn: ${lead.linkedin || 'N/A'}
-Facebook: ${lead.facebook || 'N/A'}
-
-Notes: ${lead.user_notes || 'N/A'}
-
-Shared from Truxel
-    `.trim();
-
     try {
-      await Sharing.shareAsync('data:text/plain,' + encodeURIComponent(shareText));
+      // Create vCard (contact card) format - compatible with all devices
+      const vCard = `BEGIN:VCARD
+VERSION:3.0
+FN:${lead.company_name}
+ORG:${lead.company_name}
+${lead.contact_person_name ? `N:${lead.contact_person_name};;;;\n` : ''}${lead.phone ? `TEL;TYPE=WORK,VOICE:${lead.phone}\n` : ''}${lead.whatsapp ? `TEL;TYPE=CELL:${lead.whatsapp}\n` : ''}${lead.email ? `EMAIL;TYPE=WORK:${lead.email}\n` : ''}${lead.address ? `ADR;TYPE=WORK:;;${lead.address};${lead.city || ''};;;;\n` : ''}${lead.website ? `URL:${lead.website}\n` : ''}${lead.linkedin ? `X-SOCIALPROFILE;TYPE=linkedin:${lead.linkedin}\n` : ''}${lead.user_notes ? `NOTE:${lead.user_notes.replace(/\n/g, '\\n')}\n` : ''}NOTE:Industry: ${lead.industry || 'N/A'} | Shared from Truxel
+END:VCARD`;
+
+      // Save vCard to file using expo-file-system SDK 54 API
+      const fileName = `${lead.company_name.replace(/[^a-z0-9]/gi, '_')}_Contact.vcf`;
+      const file = new File(Paths.cache, fileName);
+      
+      await file.create();
+      await file.write(vCard);
+
+      // Share the vCard file
+      await Sharing.shareAsync(file.uri, {
+        mimeType: 'text/vcard',
+        dialogTitle: t('leads.share_contact'),
+        UTI: 'public.vcard',
+      });
+
+      Toast.show({
+        type: 'success',
+        text1: t('leads.contact_shared'),
+      });
     } catch (error) {
       console.error('Share error:', error);
+      Toast.show({
+        type: 'error',
+        text1: t('leads.share_error'),
+        text2: 'Could not create contact card',
+      });
     }
   };
 
@@ -355,7 +367,10 @@ Shared from Truxel
       await file.create();
       await file.write(csv);
 
-      await Sharing.shareAsync(file.uri);
+      await Sharing.shareAsync(file.uri, {
+        mimeType: 'text/csv',
+        dialogTitle: t('leads.export_csv'),
+      });
 
       Toast.show({
         type: 'success',

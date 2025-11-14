@@ -32,5 +32,9 @@ yarn-error.*
 .env
 TRUXEL_ENV_FOR_EXPO.json
 
+# MCP configuration with API keys
+.cursor/mcp.json
+.claude/
+
 # typescript
 *.tsbuildinfo

@@ -169,7 +169,10 @@
     "get_directions": "Get Directions",
     "lead_saved": "Lead saved successfully",
     "lead_updated": "Lead updated successfully",
-    "lead_deleted": "Lead deleted successfully"
+    "lead_deleted": "Lead deleted successfully",
+    "share_contact": "Share Contact",
+    "contact_shared": "Contact card shared successfully",
+    "share_error": "Share Error"
   },
   "subscription": {
     "title": "Subscription",
