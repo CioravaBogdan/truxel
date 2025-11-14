@@ -323,12 +323,44 @@ export default function LeadsScreen() {
   const handleShareLead = async (lead: Lead) => {
     try {
       // Create vCard (contact card) format - compatible with all devices
-      const vCard = `BEGIN:VCARD
-VERSION:3.0
-FN:${lead.company_name}
-ORG:${lead.company_name}
-${lead.contact_person_name ? `N:${lead.contact_person_name};;;;\n` : ''}${lead.phone ? `TEL;TYPE=WORK,VOICE:${lead.phone}\n` : ''}${lead.whatsapp ? `TEL;TYPE=CELL:${lead.whatsapp}\n` : ''}${lead.email ? `EMAIL;TYPE=WORK:${lead.email}\n` : ''}${lead.address ? `ADR;TYPE=WORK:;;${lead.address};${lead.city || ''};;;;\n` : ''}${lead.website ? `URL:${lead.website}\n` : ''}${lead.linkedin ? `X-SOCIALPROFILE;TYPE=linkedin:${lead.linkedin}\n` : ''}${lead.user_notes ? `NOTE:${lead.user_notes.replace(/\n/g, '\\n')}\n` : ''}NOTE:Industry: ${lead.industry || 'N/A'} | Shared from Truxel
-END:VCARD`;
+      const vCardLines = [
+        'BEGIN:VCARD',
+        'VERSION:3.0',
+        `FN:${lead.company_name}`,
+        `ORG:${lead.company_name}`,
+      ];
+
+      // Add optional fields only if they exist
+      if (lead.contact_person_name) {
+        vCardLines.push(`N:${lead.contact_person_name};;;;`);
+      }
+      if (lead.phone) {
+        vCardLines.push(`TEL;TYPE=WORK,VOICE:${lead.phone}`);
+      }
+      if (lead.whatsapp && lead.whatsapp !== lead.phone) {
+        vCardLines.push(`TEL;TYPE=CELL:${lead.whatsapp}`);
+      }
+      if (lead.email) {
+        vCardLines.push(`EMAIL;TYPE=WORK:${lead.email}`);
+      }
+      if (lead.address) {
+        vCardLines.push(`ADR;TYPE=WORK:;;${lead.address};${lead.city || ''};;;;`);
+      }
+      if (lead.website) {
+        vCardLines.push(`URL:${lead.website}`);
+      }
+      if (lead.linkedin) {
+        vCardLines.push(`X-SOCIALPROFILE;TYPE=linkedin:${lead.linkedin}`);
+      }
+      if (lead.user_notes) {
+        vCardLines.push(`NOTE:${lead.user_notes.replace(/\n/g, '\\n')}`);
+      }
+      
+      // Add metadata
+      vCardLines.push(`NOTE:Industry: ${lead.industry || 'N/A'} | Shared from Truxel`);
+      vCardLines.push('END:VCARD');
+
+      const vCard = vCardLines.join('\n');
 
       // Save vCard to file using expo-file-system SDK 54 API
       const fileName = `${lead.company_name.replace(/[^a-z0-9]/gi, '_')}_Contact.vcf`;
