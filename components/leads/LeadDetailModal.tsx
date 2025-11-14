@@ -496,11 +496,11 @@ const styles = StyleSheet.create({
   addToMyBookContainer: {
     marginTop: 16,
     marginHorizontal: 16,
-    alignItems: 'center',
   },
   addToMyBookButton: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     gap: 8,
     backgroundColor: '#F59E0B', // Orange background (same as PostCard)
     paddingHorizontal: 20,
@@ -511,8 +511,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 6,
     elevation: 4,
-    minWidth: 200,
-    justifyContent: 'center',
+    width: '100%', // Full width like other sections
   },
   addToMyBookText: {
     fontSize: 15,

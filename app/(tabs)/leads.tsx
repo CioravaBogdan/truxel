@@ -76,6 +76,7 @@ export default function LeadsScreen() {
   // Lead detail modal state
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
+  const [sourceTab, setSourceTab] = useState<string | null>(null); // Track which tab opened the modal
 
   // Filter state (Country + City - identical to Community Feed)
   const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
@@ -152,11 +153,13 @@ export default function LeadsScreen() {
     if (lead) {
       setSelectedLead(lead);
       setModalVisible(true);
+      // Track source tab when opening from navigation (Home screen recent leads)
+      setSourceTab(selectedTab);
     }
 
     // Clear selectedLeadId after opening modal
     setSelectedLeadId(null);
-  }, [selectedLeadId, leads, convertedLeads, setSelectedLeadId]);
+  }, [selectedLeadId, leads, convertedLeads, setSelectedLeadId, selectedTab]);
 
   const onRefresh = async () => {
     if (!user) return;
@@ -551,6 +554,7 @@ export default function LeadsScreen() {
     const handleLeadPress = () => {
       setSelectedLead(lead);
       setModalVisible(true);
+      setSourceTab(selectedTab); // Track current tab when opening modal
     };
     
     return (
@@ -995,11 +999,31 @@ export default function LeadsScreen() {
         onClose={() => {
           setModalVisible(false);
           setSelectedLead(null);
+          // Restore source tab if modal was opened from navigation (Home screen)
+          if (sourceTab && sourceTab !== selectedTab) {
+            setSelectedTab(sourceTab as any);
+          }
+          setSourceTab(null);
         }}
         onAddToMyBook={selectedTab === 'search' ? async (lead) => {
           if (!user) return;
           
           try {
+            // Check if lead already exists in My Book
+            const isAlreadyInMyBook = convertedLeads.some(
+              converted => converted.company_name === lead.company_name && 
+                           converted.city === lead.city
+            );
+            
+            if (isAlreadyInMyBook) {
+              Alert.alert(
+                t('leads.duplicate_lead_title'),
+                t('leads.duplicate_lead_message'),
+                [{ text: t('common.ok'), style: 'default' }]
+              );
+              return;
+            }
+            
             // Create a CommunityPost-like structure from Lead (search result)
             const communityPost = {
               id: lead.id,
@@ -1027,6 +1051,7 @@ export default function LeadsScreen() {
             // Close modal after successful save
             setModalVisible(false);
             setSelectedLead(null);
+            setSourceTab(null);
           } catch (error) {
             console.error('Error adding to My Book from modal:', error);
           }
