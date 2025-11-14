@@ -584,6 +584,8 @@ export default function LeadsScreen() {
 
   // Render functions for different card types
   const renderLeadCard = ({ item: lead }: { item: Lead }) => {
+    // Check if this lead is in My Book
+    const isMyBookLead = selectedTab === 'mybook';
     
     const handleLeadPress = () => {
       setSelectedLead(lead);
@@ -623,14 +625,29 @@ export default function LeadsScreen() {
               )}
             </View>
             
-            {/* Last Contacted Badge */}
-            <View style={styles.lastContactedBadge}>
-              <Text style={[
-                styles.lastContactedText,
-                lastContactedText === 'New' && styles.lastContactedTextNew
-              ]}>
-                {lastContactedText}
-              </Text>
+            {/* Actions: Last Contacted Badge + Bookmark (My Book only) */}
+            <View style={styles.cardActions}>
+              {isMyBookLead && (
+                <TouchableOpacity
+                  style={styles.bookmarkButton}
+                  onPress={(e) => {
+                    e.stopPropagation(); // Prevent card press when tapping bookmark
+                    handleDeleteFromMyBook(lead);
+                  }}
+                  hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                >
+                  <BookMarked size={20} color="#F59E0B" fill="#F59E0B" />
+                </TouchableOpacity>
+              )}
+              
+              <View style={styles.lastContactedBadge}>
+                <Text style={[
+                  styles.lastContactedText,
+                  lastContactedText === 'New' && styles.lastContactedTextNew
+                ]}>
+                  {lastContactedText}
+                </Text>
+              </View>
             </View>
           </View>
 
@@ -1364,6 +1381,12 @@ const styles = StyleSheet.create({
   },
   lastContactedTextNew: {
     color: '#10B981',
+  },
+  // Card Actions (Bookmark + Badge)
+  cardActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
   },
   // Contact Actions Row (Chips)
   contactActionsRow: {
