@@ -291,6 +291,8 @@ export const leadsService = {
     email: string | null, 
     companyName: string
   ): Promise<boolean> {
+    console.log('[isDuplicateLead] Starting check:', { userId, phone, email, companyName });
+    
     // Check for duplicate phone (if provided)
     if (phone) {
       // First, find leads with this phone
@@ -298,6 +300,8 @@ export const leadsService = {
         .from('leads')
         .select('id')
         .eq('phone', phone);
+      
+      console.log('[isDuplicateLead] Leads with phone:', leadsWithPhone);
       
       if (leadsWithPhone && leadsWithPhone.length > 0) {
         const leadIds = leadsWithPhone.map(l => l.id);
@@ -309,7 +313,10 @@ export const leadsService = {
           .eq('user_id', userId)
           .in('lead_id', leadIds);
         
+        console.log('[isDuplicateLead] Phone count in user_leads:', phoneCount);
+        
         if (phoneCount && phoneCount > 0) {
+          console.log('[isDuplicateLead] DUPLICATE FOUND by phone!');
           return true; // User already saved a lead with this phone
         }
       }
@@ -353,8 +360,18 @@ export const leadsService = {
     const email = post.profile?.email || null;
     const companyName = post.profile?.company_name || 'Unknown Company';
     
+    console.log('[convertPostToLead] Checking duplicate for:', {
+      phone,
+      email,
+      companyName,
+      postId: post.id,
+      userId
+    });
+    
     // Check for duplicates BEFORE creating lead
     const isDuplicate = await this.isDuplicateLead(userId, phone, email, companyName);
+    
+    console.log('[convertPostToLead] isDuplicate result:', isDuplicate);
     
     if (isDuplicate) {
       throw new Error('DUPLICATE_LEAD'); // Special error code for UI handling
