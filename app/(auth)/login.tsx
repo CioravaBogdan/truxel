@@ -14,14 +14,17 @@ import { useTranslation } from 'react-i18next';
 import { useForm, Controller } from 'react-hook-form';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import * as WebBrowser from 'expo-web-browser';
+import { makeRedirectUri } from 'expo-auth-session';
+import * as QueryParams from 'expo-auth-session/build/QueryParams';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
 import { authService } from '@/services/authService';
-import { signInWithApple, signInWithGoogle, isAppleAuthAvailable, isGoogleAuthAvailable } from '@/services/oauthService';
+import { signInWithApple, isAppleAuthAvailable, isGoogleAuthAvailable } from '@/services/oauthService';
 import { supabase } from '@/lib/supabase';
 import Toast from 'react-native-toast-message';
 import { Truck } from 'lucide-react-native';
 
+// Required for web OAuth completion
 WebBrowser.maybeCompleteAuthSession();
 
 interface LoginForm {
@@ -114,43 +117,72 @@ export default function LoginScreen() {
   const handleGoogleSignIn = async () => {
     try {
       setIsLoading(true);
-      const result = await signInWithGoogle();
 
-      if (result?.url) {
-        if (Platform.OS === 'web') {
-          // Web: Direct redirect - Supabase will handle session automatically
-          window.location.href = result.url;
-        } else {
-          // Mobile: Use WebBrowser for better OAuth flow
-          const browserResult = await WebBrowser.openAuthSessionAsync(
-            result.url,
-            'truxel://auth/callback'
+      if (Platform.OS === 'web') {
+        // Web: Use direct redirect flow
+        const { data, error } = await supabase.auth.signInWithOAuth({
+          provider: 'google',
+          options: {
+            redirectTo: window.location.origin,
+          },
+        });
+
+        if (error) throw error;
+        if (data?.url) {
+          window.location.href = data.url;
+        }
+      } else {
+        // Mobile: Use recommended Expo auth flow with makeRedirectUri
+        const redirectTo = makeRedirectUri();
+        console.log('📱 Using Expo redirect URI:', redirectTo);
+
+        const { data, error } = await supabase.auth.signInWithOAuth({
+          provider: 'google',
+          options: {
+            redirectTo,
+            skipBrowserRedirect: true,
+          },
+        });
+
+        if (error) throw error;
+
+        if (data?.url) {
+          console.log('🔗 Opening OAuth URL...');
+          const result = await WebBrowser.openAuthSessionAsync(
+            data.url,
+            redirectTo
           );
 
-          if (browserResult.type === 'success') {
-            // Extract tokens from URL
-            const redirectUrl = (browserResult as any).url;
-            if (redirectUrl) {
-              const params = new URLSearchParams(redirectUrl.split('#')[1]);
-              const access_token = params.get('access_token');
-              const refresh_token = params.get('refresh_token');
-
-              if (access_token && refresh_token) {
-                // Set session manually
-                const { error } = await supabase.auth.setSession({
-                  access_token,
-                  refresh_token,
-                });
-
-                if (error) throw error;
-
-                Toast.show({
-                  type: 'success',
-                  text1: t('auth.login_success'),
-                });
-              }
+          if (result.type === 'success') {
+            console.log('✅ OAuth redirect successful');
+            const { url } = result;
+            
+            // Extract tokens using QueryParams (recommended by Supabase)
+            const { params, errorCode } = QueryParams.getQueryParams(url);
+            
+            if (errorCode) {
+              throw new Error(errorCode);
             }
-          } else if (browserResult.type === 'cancel') {
+
+            const { access_token, refresh_token } = params;
+
+            if (!access_token) {
+              throw new Error('No access token received');
+            }
+
+            // Set session with tokens
+            const { error: sessionError } = await supabase.auth.setSession({
+              access_token,
+              refresh_token,
+            });
+
+            if (sessionError) throw sessionError;
+
+            Toast.show({
+              type: 'success',
+              text1: t('auth.login_success'),
+            });
+          } else if (result.type === 'cancel') {
             Toast.show({
               type: 'info',
               text1: t('common.cancel'),
@@ -160,11 +192,11 @@ export default function LoginScreen() {
         }
       }
     } catch (error: any) {
-      console.error('Google Sign In error:', error);
+      console.error('❌ Google Sign In error:', error);
       Toast.show({
         type: 'error',
         text1: t('common.error'),
-        text2: error.message,
+        text2: error.message || 'Authentication failed',
       });
     } finally {
       setIsLoading(false);
