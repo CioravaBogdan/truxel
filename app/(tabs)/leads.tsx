@@ -1005,15 +1005,27 @@ export default function LeadsScreen() {
           }
           setSourceTab(null);
         }}
-        onAddToMyBook={selectedTab === 'search' ? async (lead) => {
+        onAddToMyBook={selectedLead && selectedLead.source_type !== 'community' ? async (lead) => {
           if (!user) return;
           
           try {
-            // Check if lead already exists in My Book
-            const isAlreadyInMyBook = convertedLeads.some(
-              converted => converted.company_name === lead.company_name && 
-                           converted.city === lead.city
-            );
+            // Check if lead already exists in My Book using phone/email (same as server-side isDuplicateLead)
+            const phone = lead.phone;
+            const email = lead.email;
+            const companyName = lead.company_name;
+            
+            // Check by phone first (most reliable)
+            let isAlreadyInMyBook = false;
+            if (phone) {
+              isAlreadyInMyBook = convertedLeads.some(converted => converted.phone === phone);
+            }
+            
+            // If not found by phone, check by email + company name
+            if (!isAlreadyInMyBook && email && companyName) {
+              isAlreadyInMyBook = convertedLeads.some(
+                converted => converted.email === email && converted.company_name === companyName
+              );
+            }
             
             if (isAlreadyInMyBook) {
               Alert.alert(
@@ -1035,15 +1047,16 @@ export default function LeadsScreen() {
               origin_lat: lead.latitude || 0,
               origin_lng: lead.longitude || 0,
               template_key: 'custom',
-              metadata: {},
               created_at: new Date().toISOString(),
               profile: {
                 full_name: lead.contact_person_name || lead.company_name,
                 company_name: lead.company_name,
                 phone_number: lead.phone || '',
                 email: lead.email || '',
-              }
-            } as CommunityPost;
+              },
+              contact_phone: lead.phone || undefined,
+              contact_whatsapp: !!lead.whatsapp,
+            } as unknown as CommunityPost;
             
             // Use existing handleAddToMyBook function
             await handleAddToMyBook(communityPost);
