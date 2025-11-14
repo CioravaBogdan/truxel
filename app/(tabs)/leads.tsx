@@ -366,6 +366,15 @@ export default function LeadsScreen() {
       const fileName = `${lead.company_name.replace(/[^a-z0-9]/gi, '_')}_Contact.vcf`;
       const file = new File(Paths.cache, fileName);
       
+      // Delete existing file if it exists (for re-sharing same contact)
+      try {
+        if (file.exists) {
+          await file.delete();
+        }
+      } catch {
+        // File doesn't exist, that's fine
+      }
+      
       await file.create();
       await file.write(vCard);
 
