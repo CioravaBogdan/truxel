@@ -16,6 +16,7 @@ import * as AppleAuthentication from 'expo-apple-authentication';
 import * as WebBrowser from 'expo-web-browser';
 import { makeRedirectUri } from 'expo-auth-session';
 import * as QueryParams from 'expo-auth-session/build/QueryParams';
+import Constants from 'expo-constants';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
 import { authService } from '@/services/authService';
@@ -135,6 +136,8 @@ export default function LoginScreen() {
         // Mobile: Use recommended Expo auth flow with makeRedirectUri
         const redirectTo = makeRedirectUri();
         console.log('📱 Using Expo redirect URI:', redirectTo);
+        console.log('📱 Platform:', Platform.OS);
+        console.log('📱 App scheme from config:', Constants.expoConfig?.scheme);
 
         const { data, error } = await supabase.auth.signInWithOAuth({
           provider: 'google',
@@ -144,7 +147,10 @@ export default function LoginScreen() {
           },
         });
 
-        if (error) throw error;
+        if (error) {
+          console.error('❌ Supabase OAuth error:', error);
+          throw error;
+        }
 
         if (data?.url) {
           console.log('🔗 Opening OAuth URL...');

@@ -61,6 +61,13 @@ export async function logoutRevenueCat(): Promise<void> {
       return;
     }
     
+    // Check if running in Expo Go (RevenueCat not initialized)
+    const appOwnership = Constants.appOwnership;
+    if (appOwnership === 'expo') {
+      console.log('🟡 Expo Go: Skipping RevenueCat logout (not initialized)');
+      return;
+    }
+    
     await Purchases.logOut();
     console.log('✅ RevenueCat user logged out');
   } catch (error) {
