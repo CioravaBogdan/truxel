@@ -195,6 +195,9 @@ export async function safeRequestLocationPermissions(): Promise<Location.Permiss
  * Safe wrapper for Location.getCurrentPositionAsync
  * Returns location or null if error/denied
  * 
+ * Android: Uses 5s timeout for faster response
+ * iOS: Uses default timeout (longer but more accurate)
+ * 
  * @param options - Location options
  * @returns Location object or null
  */
@@ -207,9 +210,14 @@ export async function safeGetCurrentPosition(
       return null;
     }
 
-    const location = await Location.getCurrentPositionAsync(options || {
+    // Android: 5s timeout for faster response with network location
+    // iOS: Default timeout (no timeout option needed)
+    const defaultOptions: Location.LocationOptions = {
       accuracy: Location.Accuracy.Balanced,
-    });
+      ...(Platform.OS === 'android' && { timeInterval: 5000 }), // 5 second timeout on Android
+    };
+
+    const location = await Location.getCurrentPositionAsync(options || defaultOptions);
 
     return location;
   } catch (error) {
