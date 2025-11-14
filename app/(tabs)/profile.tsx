@@ -370,6 +370,8 @@ export default function ProfileScreen() {
         authService.signOut()
           .then(() => {
             reset();
+            // Navigate to landing page on web
+            router.replace('/(web)');
           })
           .catch((error: any) => {
             Toast.show({
