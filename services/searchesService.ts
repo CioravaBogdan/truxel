@@ -125,11 +125,11 @@ export const searchesService = {
       .from('searches')
       .insert({
         user_id: userId,
-        search_keywords: params.keywords,
-        search_address: params.address,
+        keywords: params.keywords,
+        address: params.address,
         latitude: params.latitude,
         longitude: params.longitude,
-        radius_km: 5,
+        radius_km: profile.search_radius_km || 5,
         status: 'pending',
       })
       .select()
@@ -146,7 +146,7 @@ export const searchesService = {
       address: params.address,
       latitude: params.latitude,
       longitude: params.longitude,
-      radius_km: 5,
+      radius_km: profile.search_radius_km || 5,
       tier: profile.subscription_tier,
       features: tierFeatures,
       credit_source: creditSource,

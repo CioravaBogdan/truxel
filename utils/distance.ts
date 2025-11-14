@@ -117,8 +117,12 @@ export function autoDetectDistanceUnit(locale?: string): DistanceUnit {
 /**
  * Common radius values for search/notification settings
  * Stored in km (database), displayed based on user preference
+ * 
+ * Simplified to 5, 10, 50 based on Google Places API best practices:
+ * - Larger radius (>50km) can miss companies due to API result limits
+ * - 5km is recommended default for best coverage
  */
-export const RADIUS_OPTIONS_KM = [1, 5, 10, 25, 50, 100];
+export const RADIUS_OPTIONS_KM = [5, 10, 50];
 
 /**
  * Get radius options formatted for user's preferred unit

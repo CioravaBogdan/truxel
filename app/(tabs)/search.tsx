@@ -11,6 +11,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocation } from '@/hooks/useLocation';
 import * as Notifications from 'expo-notifications';
 import { safeScheduleNotification } from '@/utils/safeNativeModules';
+import { formatDistance } from '@/utils/distance';
 import { Card } from '@/components/Card';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
@@ -436,7 +437,11 @@ export default function SearchScreen() {
                 <View style={styles.radiusInfo}>
                   <Crosshair size={14} color="#10B981" />
                   <Text style={styles.radiusText}>
-                    {profile?.preferred_distance_unit === 'mi' ? '5 miles' : '5 km'} {t('search.radius')}
+                    {formatDistance(
+                      profile?.search_radius_km || 5,
+                      profile?.preferred_distance_unit || 'km',
+                      0
+                    )} {t('search.radius')}
                   </Text>
                 </View>
               </View>

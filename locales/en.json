@@ -244,6 +244,7 @@
     "truck_type_desc": "Select the type of truck you drive",
     "search_radius": "Search Radius",
     "search_radius_desc": "How far to search for companies around your location",
+    "search_radius_warning": "⚠️ Larger radius may miss companies due to Google API limits. 5km recommended for best results.",
     "distance_unit": "Distance Unit",
     "distance_unit_desc": "Choose your preferred unit for distances",
     "unit_km": "Kilometers (km)",

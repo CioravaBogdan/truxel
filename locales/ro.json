@@ -244,6 +244,7 @@
     "truck_type_desc": "Selectează tipul de camion pe care îl conduci",
     "search_radius": "Raza de Căutare",
     "search_radius_desc": "Cât de departe să căutăm companii în jurul locației tale",
+    "search_radius_warning": "⚠️ Raza mai mare poate rata companii din cauza limitelor Google API. 5km recomandat pentru rezultate optime.",
     "distance_unit": "Unitate Distanță",
     "distance_unit_desc": "Alege unitatea preferată pentru distanțe",
     "unit_km": "Kilometri (km)",

@@ -244,6 +244,7 @@
     "truck_type_desc": "Wybierz typ ciężarówki, którą prowadzisz",
     "search_radius": "Szukaj w promieniu",
     "search_radius_desc": "Jak daleko szukać firm w okolicy Twojej lokalizacji",
+    "search_radius_warning": "⚠️ Większy promień może pominąć firmy z powodu limitów Google API. Zalecane 5 km dla najlepszych wyników.",
     "distance_unit": "Jednostka Odległości",
     "distance_unit_desc": "Wybierz preferowaną jednostkę dla odległości",
     "unit_km": "Kilometry (km)",

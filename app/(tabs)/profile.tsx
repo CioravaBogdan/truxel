@@ -671,6 +671,13 @@ export default function ProfileScreen() {
             {t('profile.search_radius_desc')}
           </Text>
 
+          {/* Warning about larger radius */}
+          <View style={styles.radiusWarning}>
+            <Text style={styles.radiusWarningText}>
+              {t('profile.search_radius_warning')}
+            </Text>
+          </View>
+
           <View style={styles.radiusContainer}>
             {SEARCH_RADIUS_OPTIONS.map((option) => (
               <TouchableOpacity
@@ -1103,6 +1110,19 @@ const styles = StyleSheet.create({
   chipTextSelected: {
     color: '#2563EB',
     fontWeight: '600',
+  },
+  radiusWarning: {
+    backgroundColor: '#FEF3C7',
+    borderLeftWidth: 3,
+    borderLeftColor: '#F59E0B',
+    padding: 12,
+    marginBottom: 16,
+    borderRadius: 8,
+  },
+  radiusWarningText: {
+    fontSize: 13,
+    color: '#92400E',
+    lineHeight: 18,
   },
   radiusContainer: {
     flexDirection: 'row',
