@@ -16,6 +16,9 @@ interface LeadsState {
   // My Book tab (converted leads)
   convertedLeads: Lead[];
   
+  // Lead detail modal (cross-tab communication)
+  selectedLeadId: string | null;
+  
   // Common state
   isLoading: boolean;
   filterStatus: LeadStatus | 'all';
@@ -42,6 +45,9 @@ interface LeadsState {
   // Tab navigation
   setSelectedTab: (tab: 'search' | 'hotleads' | 'mybook') => void;
   
+  // Lead detail modal actions
+  setSelectedLeadId: (id: string | null) => void;
+  
   // Common actions
   setIsLoading: (isLoading: boolean) => void;
   setFilterStatus: (status: LeadStatus | 'all') => void;
@@ -58,6 +64,7 @@ export const useLeadsStore = create<LeadsState>((set, get) => ({
   savedPosts: [],
   hotLeadsFilter: 'all',
   convertedLeads: [],
+  selectedLeadId: null,
   isLoading: false,
   filterStatus: 'all',
   filterContactType: 'all',
@@ -139,6 +146,9 @@ export const useLeadsStore = create<LeadsState>((set, get) => ({
     set({ selectedTab: tab });
   },
 
+  // Lead detail modal actions
+  setSelectedLeadId: (id: string | null) => set({ selectedLeadId: id }),
+
   // Common actions
   setIsLoading: (isLoading) => set({ isLoading }),
 
@@ -156,6 +166,7 @@ export const useLeadsStore = create<LeadsState>((set, get) => ({
     savedPosts: [],
     hotLeadsFilter: 'all',
     convertedLeads: [],
+    selectedLeadId: null,
     isLoading: false,
     filterStatus: 'all',
     filterContactType: 'all',

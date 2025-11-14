@@ -10,19 +10,18 @@ import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Card } from '@/components/Card';
 import { Button } from '@/components/Button';
-import { StatusBadge } from '@/components/StatusBadge';
 import { useAuthStore } from '@/store/authStore';
 import { useLeadsStore } from '@/store/leadsStore';
 import { leadsService } from '@/services/leadsService';
 import { searchesService } from '@/services/searchesService';
-import { Briefcase, Clock, CreditCard, MapPin, Users } from 'lucide-react-native';
+import { Briefcase, Clock, CreditCard, MapPin, Building2, Users } from 'lucide-react-native';
 import CommunityFeed from '@/components/community/CommunityFeed';
 
 export default function HomeScreen() {
   const { t } = useTranslation();
   const router = useRouter();
   const { profile, user } = useAuthStore();
-  const { leads, setLeads } = useLeadsStore();
+  const { leads, setLeads, setSelectedLeadId, setSelectedTab } = useLeadsStore();
   const [searchesRemaining, setSearchesRemaining] = useState(0);
 
   const loadData = useCallback(async () => {
@@ -101,19 +100,30 @@ export default function HomeScreen() {
           recentLeads.map((lead) => (
             <TouchableOpacity
               key={lead.id}
-              onPress={() => router.push(`/lead/${lead.id}` as any)}
+              onPress={() => {
+                setSelectedTab('mybook');
+                setSelectedLeadId(lead.id);
+                router.push('/(tabs)/leads');
+              }}
             >
               <Card style={styles.leadCard}>
-                <View style={styles.leadHeader}>
-                  <Text style={styles.leadName}>{lead.company_name}</Text>
-                  <StatusBadge status={lead.status} />
-                </View>
-                {lead.city && (
-                  <View style={styles.leadLocation}>
-                    <MapPin size={14} color="#64748B" />
-                    <Text style={styles.leadCity}>{lead.city}</Text>
+                <View style={styles.leadContent}>
+                  <View style={styles.leadIconContainer}>
+                    <Building2 size={20} color="#2563EB" />
                   </View>
-                )}
+                  <View style={styles.leadInfo}>
+                    <Text style={styles.leadName}>{lead.company_name}</Text>
+                    {lead.industry && (
+                      <Text style={styles.leadIndustry}>{lead.industry}</Text>
+                    )}
+                    {lead.city && (
+                      <View style={styles.leadLocation}>
+                        <MapPin size={12} color="#94A3B8" />
+                        <Text style={styles.leadCity}>{lead.city}</Text>
+                      </View>
+                    )}
+                  </View>
+                </View>
               </Card>
             </TouchableOpacity>
           ))
@@ -215,25 +225,41 @@ const styles = StyleSheet.create({
   leadCard: {
     marginBottom: 12,
   },
-  leadHeader: {
+  leadContent: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 8,
+  },
+  leadIconContainer: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: '#DBEAFE',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
+  },
+  leadInfo: {
+    flex: 1,
   },
   leadName: {
-    fontSize: 16,
-    fontWeight: '600',
+    fontSize: 17,
+    fontWeight: '700',
     color: '#1E293B',
-    flex: 1,
+    marginBottom: 4,
+  },
+  leadIndustry: {
+    fontSize: 14,
+    color: '#64748B',
+    marginBottom: 4,
   },
   leadLocation: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginTop: 2,
   },
   leadCity: {
-    fontSize: 14,
-    color: '#64748B',
+    fontSize: 13,
+    color: '#94A3B8',
     marginLeft: 4,
   },
   communityHeader: {

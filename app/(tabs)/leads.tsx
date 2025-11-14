@@ -29,6 +29,7 @@ import { leadsService } from '@/services/leadsService';
 import PostCard from '@/components/community/PostCard';
 import CountryPickerModal from '@/components/community/CommunityFiltersModal';
 import CitySearchModal from '@/components/community/CitySearchModal';
+import LeadDetailModal from '@/components/leads/LeadDetailModal';
 import { cityService } from '@/services/cityService';
 import * as Sharing from 'expo-sharing';
 import { File, Paths } from 'expo-file-system';
@@ -67,8 +68,14 @@ export default function LeadsScreen() {
     convertedLeads,
     searchQuery, 
     setSearchQuery,
+    selectedLeadId,
+    setSelectedLeadId,
   } = useLeadsStore();
   const [isRefreshing, setIsRefreshing] = useState(false);
+  
+  // Lead detail modal state
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
 
   // Filter state (Country + City - identical to Community Feed)
   const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
@@ -133,6 +140,23 @@ export default function LeadsScreen() {
       void useLeadsStore.getState().loadConvertedLeads(user.id);
     }
   }, [selectedTab, user, loadLeads]);
+
+  // Watch for selectedLeadId changes (navigation from Home screen)
+  useEffect(() => {
+    if (!selectedLeadId) return;
+
+    // Find lead in all available leads
+    const allLeads = [...leads, ...convertedLeads];
+    const lead = allLeads.find(l => l.id === selectedLeadId);
+
+    if (lead) {
+      setSelectedLead(lead);
+      setModalVisible(true);
+    }
+
+    // Clear selectedLeadId after opening modal
+    setSelectedLeadId(null);
+  }, [selectedLeadId, leads, convertedLeads, setSelectedLeadId]);
 
   const onRefresh = async () => {
     if (!user) return;
@@ -524,8 +548,14 @@ export default function LeadsScreen() {
     // Check if this lead is from My Book (converted from community post)
     const isMyBookLead = lead.source_type === 'community';
     
+    const handleLeadPress = () => {
+      setSelectedLead(lead);
+      setModalVisible(true);
+    };
+    
     return (
-      <Card style={styles.leadCard}>
+      <TouchableOpacity onPress={handleLeadPress} activeOpacity={0.7}>
+        <Card style={styles.leadCard}>
         <View style={styles.leadHeader}>
           <View style={styles.leadHeaderLeft}>
             <Text style={styles.leadName}>{lead.company_name}</Text>
@@ -664,6 +694,7 @@ export default function LeadsScreen() {
           </Text>
         )}
       </Card>
+      </TouchableOpacity>
     );
   };
 
@@ -956,6 +987,16 @@ export default function LeadsScreen() {
           onClose={() => setCityPickerVisible(false)}
         />
       </Modal>
+
+      {/* Lead Detail Modal */}
+      <LeadDetailModal
+        lead={selectedLead}
+        visible={modalVisible}
+        onClose={() => {
+          setModalVisible(false);
+          setSelectedLead(null);
+        }}
+      />
     </SafeAreaView>
   );
 }
