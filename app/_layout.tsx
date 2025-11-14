@@ -208,27 +208,19 @@ export default function RootLayout() {
     }
 
   const inAuthGroup = segments[0] === '(auth)';
-  const inWebGroup = segments[0] === '(web)';
   const isRootScreen = !segments[0];
     console.log('RootLayout: Navigation check:', {
       isAuthenticated,
       inAuthGroup,
-      inWebGroup,
       isRootScreen,
       segments,
       currentPath: segments.join('/'),
     });
 
-    if (!isAuthenticated && !inAuthGroup && !inWebGroup) {
-      // Web users go to landing page, native users go to login
-      if (Platform.OS === 'web') {
-        console.log('RootLayout: Not authenticated on web, redirecting to landing page');
-        router.replace('/(web)');
-      } else {
-        console.log('RootLayout: Not authenticated on native, redirecting to login');
-        router.replace('/(auth)/login');
-      }
-    } else if (isAuthenticated && (inAuthGroup || inWebGroup || isRootScreen)) {
+    if (!isAuthenticated && !inAuthGroup) {
+      console.log('RootLayout: Not authenticated, redirecting to login');
+      router.replace('/(auth)/login');
+    } else if (isAuthenticated && (inAuthGroup || isRootScreen)) {
       // Navigate to tabs if authenticated and either in auth group OR on root screen
       console.log('RootLayout: Authenticated, redirecting to tabs');
       router.replace('/(tabs)');
@@ -242,7 +234,6 @@ export default function RootLayout() {
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="(web)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar style="auto" />

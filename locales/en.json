@@ -73,6 +73,7 @@
     "welcome": "Welcome, {{name}}",
     "searches_remaining": "{{count}} searches remaining",
     "recent_leads": "Recent Leads",
+    "view_all_results": "View All",
     "start_search": "Start New Search",
     "upgrade": "Upgrade Plan",
     "total_leads": "Total Leads",

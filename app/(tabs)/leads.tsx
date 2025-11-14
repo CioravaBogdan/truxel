@@ -995,6 +995,8 @@ export default function LeadsScreen() {
         onClose={() => {
           setModalVisible(false);
           setSelectedLead(null);
+          // Stay on My Leads tab when closing modal
+          setSelectedTab('mybook');
         }}
       />
     </SafeAreaView>

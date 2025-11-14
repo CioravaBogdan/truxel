@@ -61,6 +61,7 @@
     "welcome": "Bine ai venit, {{name}}",
     "searches_remaining": "{{count}} căutări rămase",
     "recent_leads": "Lead-uri Recente",
+    "view_all_results": "Vezi Toate",
     "start_search": "Începe Căutare Nouă",
     "upgrade": "Actualizează Planul",
     "total_leads": "Total Lead-uri",
