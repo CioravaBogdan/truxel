@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   ScrollView,
-  Alert,
   ActivityIndicator,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
@@ -38,7 +37,7 @@ try {
 
 export default function SearchScreen() {
   const { t } = useTranslation();
-  const { user, profile, setProfile } = useAuthStore();
+  const { user, profile } = useAuthStore();
   const [keywords, setKeywords] = useState('');
   const [keywordsList, setKeywordsList] = useState<string[]>([]);
   const [address, setAddress] = useState('');
@@ -48,6 +47,7 @@ export default function SearchScreen() {
   const [searchesRemaining, setSearchesRemaining] = useState(0);
   const [activeSearch, setActiveSearch] = useState<SearchType | null>(null);
   const [elapsedTime, setElapsedTime] = useState(0);
+  const [isAutoLocationFetched, setIsAutoLocationFetched] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -128,7 +128,7 @@ export default function SearchScreen() {
 
   const { getCurrentLocation, reverseGeocode } = useLocation();
 
-  const handleUseCurrentLocation = async () => {
+  const handleUseCurrentLocation = useCallback(async () => {
     setIsLoading(true);
     try {
       // Platform-agnostic: Works on mobile (Expo Location) and web (browser Geolocation API)
@@ -172,7 +172,15 @@ export default function SearchScreen() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [getCurrentLocation, reverseGeocode, t]);
+
+  // Auto-fetch location when screen mounts
+  useEffect(() => {
+    if (!isAutoLocationFetched) {
+      handleUseCurrentLocation();
+      setIsAutoLocationFetched(true);
+    }
+  }, [isAutoLocationFetched, handleUseCurrentLocation]);
 
   const handleStartSearch = async () => {
     // Parse keywords into array (split by comma)
@@ -423,7 +431,15 @@ export default function SearchScreen() {
           {address && (
             <View style={styles.locationResult}>
               <MapPin size={16} color="#10B981" />
-              <Text style={styles.locationText}>{address}</Text>
+              <View style={styles.locationInfo}>
+                <Text style={styles.locationText}>{address}</Text>
+                <View style={styles.radiusInfo}>
+                  <Crosshair size={14} color="#10B981" />
+                  <Text style={styles.radiusText}>
+                    {profile?.preferred_distance_unit === 'mi' ? '5 miles' : '5 km'} {t('search.radius')}
+                  </Text>
+                </View>
+              </View>
             </View>
           )}
         </Card>
@@ -562,16 +578,31 @@ const styles = StyleSheet.create({
   },
   locationResult: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     padding: 12,
     backgroundColor: '#F0FDF4',
     borderRadius: 8,
   },
+  locationInfo: {
+    flex: 1,
+    marginLeft: 8,
+  },
   locationText: {
     fontSize: 14,
     color: '#166534',
-    marginLeft: 8,
-    flex: 1,
+    fontWeight: '500',
+    marginBottom: 4,
+  },
+  radiusInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 4,
+  },
+  radiusText: {
+    fontSize: 12,
+    color: '#15803D',
+    marginLeft: 4,
+    fontWeight: '600',
   },
   costInfo: {
     flexDirection: 'row',
