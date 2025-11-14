@@ -4,7 +4,7 @@
 
 ---
 
-## ðŸŽ¯ What is Truxel?
+## ðŸŽ¯ What is Truxel€
 
 Truxel is a revolutionary mobile application designed specifically for **truck drivers and logistics professionals** who want to **maximize their earnings** and **never drive empty again**. 
 
@@ -215,7 +215,7 @@ Post your availability or available loads in **2 taps**. See what's happening RI
 
 ðŸš€ WITH TRUXEL COMMUNITY:
 â”œâ”€ 14:00 - Tap "I'M AVAILABLE" â†’ "Munich â†’ Poland, 7.5T" â†’ Posted! (3 seconds)
-â”œâ”€ 14:05 - Driver messages: "I have 3 tons Hamburg â†’ Warsaw, can you help?"
+â”œâ”€ 14:05 - Driver messages: "I have 3 tons Hamburg â†’ Warsaw, can you help€"
 â”œâ”€ 14:08 - Call on WhatsApp, agree on â‚¬400 rate
 â”œâ”€ 14:45 - Detour 80km to Hamburg (costs â‚¬40 fuel)
 â”œâ”€ 16:00 - Loaded, heading home with cargo
@@ -441,7 +441,7 @@ Background: New owner-operator, just bought first truck, no broker contacts
 ---
 
 ### **âš¡ Search Packs - One-Time Boosts** *(Top Up Anytime)*
-**Need extra searches this month?**
+**Need extra searches this month€**
 - ðŸ”¹ **10 searches** - â‚¬24.99 (â‚¬2.50/search)
 - ðŸ”¹ **25 searches** - â‚¬49.99 (â‚¬2.00/search) *BEST VALUE*
 - ðŸ”¹ **50 searches** - â‚¬99.99 (â‚¬2.00/search)
@@ -459,9 +459,9 @@ Background: New owner-operator, just bought first truck, no broker contacts
 
 ---
 
-### **ðŸ“Š Which Plan Should You Choose?**
+### **ðŸ“Š Which Plan Should You Choose€**
 
-| **Your Situation** | **Recommended Plan** | **Why?** |
+| **Your Situation** | **Recommended Plan** | **Why€** |
 |--------------------|---------------------|----------|
 | Just bought first truck, no network | **Standard** | Learn the ropes, build foundation, low risk |
 | Full-time international driver | **Pro** | LinkedIn + AI matching = game changer |
@@ -487,7 +487,7 @@ Background: New owner-operator, just bought first truck, no broker contacts
 ### **ðŸ’ª The Truxel Guarantee - We Believe In Results**
 **If Truxel doesn't help you earn more money within 30 days, we'll refund 100% - no questions asked.**
 
-Why? Because we KNOW this works. We've seen drivers go from â‚¬0 to â‚¬2,000+ extra per month within 60 days. We're so confident, we're putting our money where our mouth is.
+Why€ Because we KNOW this works. We've seen drivers go from â‚¬0 to â‚¬2,000+ extra per month within 60 days. We're so confident, we're putting our money where our mouth is.
 
 **Try Standard or Pro for 30 days. If you don't find at least ONE new cargo opportunity that covers the subscription cost, email us and get a full refund.** 
 
@@ -500,7 +500,7 @@ Why? Because we KNOW this works. We've seen drivers go from â‚¬0 to â‚¬2
 - Pro (â‚¬49.99) â†’ Earn â‚¬3,000-3,700 first month
 - Premium (â‚¬99.99) â†’ Earn â‚¬6,600-8,300 first month (fleet)
 
-**Which plan pays you the most? That's the one you should choose.** ðŸ’°
+**Which plan pays you the most€ That's the one you should choose.** ðŸ’°
 
 ---
 
@@ -536,7 +536,7 @@ Why? Because we KNOW this works. We've seen drivers go from â‚¬0 to â‚¬2
 1. Go to **Community** tab
 2. Browse "Available Drivers" or "Available Loads"
 3. Filter by country, city, or type
-4. See a match? Tap WhatsApp/Call/Email
+4. See a match€ Tap WhatsApp/Call/Email
 5. Contact directly - no commission
 
 ### **Posting Your Availability**
@@ -589,7 +589,7 @@ Why? Because we KNOW this works. We've seen drivers go from â‚¬0 to â‚¬2
 
 ## ðŸ¤ Support & Contact
 
-### **Need Help?**
+### **Need Help€**
 - ðŸ“§ Email: support@truxel.app
 - ðŸ’¬ In-app chat support
 - ðŸ“– Help Center: docs.truxel.app
@@ -615,7 +615,7 @@ Why? Because we KNOW this works. We've seen drivers go from â‚¬0 to â‚¬2
 
 ---
 
-## ðŸš€ Why Choose Truxel?
+## ðŸš€ Why Choose Truxel€
 
 ### **Built by Drivers, for Drivers**
 We understand the challenges of the road because we've been there. Truxel was designed based on real feedback from professional drivers across Europe.

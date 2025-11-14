@@ -55,6 +55,12 @@ export async function initRevenueCat(userId: string): Promise<void> {
  */
 export async function logoutRevenueCat(): Promise<void> {
   try {
+    // Web doesn't need RevenueCat logout (browser mode)
+    if (Platform.OS === 'web') {
+      console.log('🌐 Web: Skipping RevenueCat logout (browser mode)');
+      return;
+    }
+    
     await Purchases.logOut();
     console.log('✅ RevenueCat user logged out');
   } catch (error) {

@@ -1,7 +1,6 @@
 import { Stack } from 'expo-router';
-import { View, StyleSheet, Platform } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { WebHeader } from '@/components/web/WebHeader';
-import { GDPRConsentBanner } from '@/components/web/GDPRConsentBanner';
 
 export default function WebLayout() {
   return (
@@ -20,7 +19,6 @@ export default function WebLayout() {
           <Stack.Screen name="cookies" />
         </Stack>
       </View>
-      {Platform.OS === 'web' && <GDPRConsentBanner />}
     </View>
   );
 }

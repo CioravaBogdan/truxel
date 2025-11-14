@@ -1,0 +1,1088 @@
+# Prompt for Codex 5.1 – Apply Truxel Brand Colors
+
+Use the following palette and rules whenever you touch UI styles:
+
+1. **Primary cobalt (#2563EB)** – default fill color for primary buttons, CTA gradients, active tab icons, and accent icons. Maintain white text (`#FFFFFF`) for contrast.
+2. **Deep navy (#0B2A5A)** – background for top bars/hero cards, secondary button text, and large headings when placed on light backgrounds like `#F8FAFC`.
+3. **Neon cyan (#00B4FF)** – hover/focus states, outline borders, and secondary button fills on dark backgrounds. If component already uses theme tokens, map to `theme.colors.info`.
+4. **Sunset orange (#FF6A1D / theme warning)** – limited to critical CTAs (upgrade prompts), success ribbons in community cards, or glow/shadow accents. Never use for text on light backgrounds without drop shadow.
+5. **Neutrals** – keep `#F8FAFC` / `#FFFFFF` for cards, `#1E293B`/`#64748B` for text, `#E2E8F0` for dividers. Use Supabase status colors (`#10B981`, `#F59E0B`, `#EF4444`) only for status badges.
+6. **Implementation expectations**:
+   - Prefer `lib/theme.tsx` tokens (`colors.primary`, `colors.warning`, etc.). If you must hardcode, stick to the hexes above.
+   - Buttons: primary = `#2563EB` background, `#FFFFFF` text; secondary outline = border/text `#00B4FF`; destructive = `#EF4444`.
+   - Navigation bars/tab bars: active tint `#2563EB`, inactive `#64748B`, background `#FFFFFF` or `#0B2A5A` depending on context.
+   - QuickPost/Community cards: highlight edges/badges with `#FF6A1D` and keep body text `#1E293B`.
+   - Ensure accessible contrast (WCAG AA) for every combination.
+7. Update any legacy color codes in this file to match the palette. When converting, mention the file/line and which palette role it maps to.
+
+---
+
+# Truxel Color Usage
+\n## app\(auth)\login.tsx
+- $(@{Color=#2563EB; Line=167; Text=<Truck size={48} color="#2563EB" />}.Color) at line 167: <Truck size={48} color="#2563EB" />
+- $(@{Color=#F8FAFC; Line=279; Text=backgroundColor: '#F8FAFC',}.Color) at line 279: backgroundColor: '#F8FAFC',
+- $(@{Color=#1E293B; Line=293; Text=color: '#1E293B',}.Color) at line 293: color: '#1E293B',
+- $(@{Color=#64748B; Line=298; Text=color: '#64748B',}.Color) at line 298: color: '#64748B',
+- $(@{Color=#E2E8F0; Line=316; Text=backgroundColor: '#E2E8F0',}.Color) at line 316: backgroundColor: '#E2E8F0',
+- $(@{Color=#64748B; Line=321; Text=color: '#64748B',}.Color) at line 321: color: '#64748B',
+- $(@{Color=#FFFFFF; Line=331; Text=backgroundColor: '#FFFFFF',}.Color) at line 331: backgroundColor: '#FFFFFF',
+- $(@{Color=#E2E8F0; Line=334; Text=borderColor: '#E2E8F0',}.Color) at line 334: borderColor: '#E2E8F0',
+- $(@{Color=#4285F4; Line=347; Text=color: '#4285F4',}.Color) at line 347: color: '#4285F4',
+- $(@{Color=#1E293B; Line=352; Text=color: '#1E293B',}.Color) at line 352: color: '#1E293B',
+\n## app\(auth)\register.tsx
+- $(@{Color=#2563EB; Line=83; Text=<Truck size={48} color="#2563EB" />}.Color) at line 83: <Truck size={48} color="#2563EB" />
+- $(@{Color=#F8FAFC; Line=222; Text=backgroundColor: '#F8FAFC',}.Color) at line 222: backgroundColor: '#F8FAFC',
+- $(@{Color=#1E293B; Line=236; Text=color: '#1E293B',}.Color) at line 236: color: '#1E293B',
+- $(@{Color=#64748B; Line=241; Text=color: '#64748B',}.Color) at line 241: color: '#64748B',
+\n## app\(tabs)\_layout.tsx
+- $(@{Color=#2563EB; Line=12; Text=tabBarActiveTintColor: '#2563EB',}.Color) at line 12: tabBarActiveTintColor: '#2563EB',
+- $(@{Color=#64748B; Line=13; Text=tabBarInactiveTintColor: '#64748B',}.Color) at line 13: tabBarInactiveTintColor: '#64748B',
+- $(@{Color=#FFFFFF; Line=15; Text=backgroundColor: '#FFFFFF',}.Color) at line 15: backgroundColor: '#FFFFFF',
+- $(@{Color=#E2E8F0; Line=17; Text=borderTopColor: '#E2E8F0',}.Color) at line 17: borderTopColor: '#E2E8F0',
+\n## app\(tabs)\community.tsx
+- $(@{Color=#F8FAFC; Line=17; Text=backgroundColor: '#F8FAFC',}.Color) at line 17: backgroundColor: '#F8FAFC',
+\n## app\(tabs)\index.tsx
+- $(@{Color=#2563EB; Line=64; Text=<Briefcase size={24} color="#2563EB" />}.Color) at line 64: <Briefcase size={24} color="#2563EB" />
+- $(@{Color=#10B981; Line=70; Text=<Clock size={24} color="#10B981" />}.Color) at line 70: <Clock size={24} color="#10B981" />
+- $(@{Color=#F59E0B; Line=76; Text=<CreditCard size={24} color="#F59E0B" />}.Color) at line 76: <CreditCard size={24} color="#F59E0B" />
+- $(@{Color=#2563EB; Line=129; Text=<Building2 size={20} color="#2563EB" />}.Color) at line 129: <Building2 size={20} color="#2563EB" />
+- $(@{Color=#94A3B8; Line=138; Text=<MapPin size={12} color="#94A3B8" />}.Color) at line 138: <MapPin size={12} color="#94A3B8" />
+- $(@{Color=#2563EB; Line=153; Text=<Users size={24} color="#2563EB" />}.Color) at line 153: <Users size={24} color="#2563EB" />
+- $(@{Color=#F8FAFC; Line=175; Text=backgroundColor: '#F8FAFC',}.Color) at line 175: backgroundColor: '#F8FAFC',
+- $(@{Color=#1E293B; Line=186; Text=color: '#1E293B',}.Color) at line 186: color: '#1E293B',
+- $(@{Color=#64748B; Line=191; Text=color: '#64748B',}.Color) at line 191: color: '#64748B',
+- $(@{Color=#1E293B; Line=208; Text=color: '#1E293B',}.Color) at line 208: color: '#1E293B',
+- $(@{Color=#64748B; Line=213; Text=color: '#64748B',}.Color) at line 213: color: '#64748B',
+- $(@{Color=#E2E8F0; Line=220; Text=backgroundColor: '#E2E8F0',}.Color) at line 220: backgroundColor: '#E2E8F0',
+- $(@{Color=#F59E0B; Line=226; Text=shadowColor: '#F59E0B',}.Color) at line 226: shadowColor: '#F59E0B',
+- $(@{Color=#2563EB; Line=234; Text=backgroundColor: '#2563EB', // Logo blue as base}.Color) at line 234: backgroundColor: '#2563EB', // Logo blue as base
+- $(@{Color=#F59E0B; Line=236; Text=borderColor: '#F59E0B', // Logo orange border}.Color) at line 236: borderColor: '#F59E0B', // Logo orange border
+- $(@{Color=#1E293B; Line=260; Text=color: '#1E293B',}.Color) at line 260: color: '#1E293B',
+- $(@{Color=#DBEAFE; Line=265; Text=backgroundColor: '#DBEAFE',}.Color) at line 265: backgroundColor: '#DBEAFE',
+- $(@{Color=#2563EB; Line=271; Text=color: '#2563EB',}.Color) at line 271: color: '#2563EB',
+- $(@{Color=#64748B; Line=279; Text=color: '#64748B',}.Color) at line 279: color: '#64748B',
+- $(@{Color=#DBEAFE; Line=293; Text=backgroundColor: '#DBEAFE',}.Color) at line 293: backgroundColor: '#DBEAFE',
+- $(@{Color=#1E293B; Line=304; Text=color: '#1E293B',}.Color) at line 304: color: '#1E293B',
+- $(@{Color=#64748B; Line=309; Text=color: '#64748B',}.Color) at line 309: color: '#64748B',
+- $(@{Color=#94A3B8; Line=319; Text=color: '#94A3B8',}.Color) at line 319: color: '#94A3B8',
+- $(@{Color=#64748B; Line=333; Text=color: '#64748B',}.Color) at line 333: color: '#64748B',
+\n## app\(tabs)\leads.tsx
+- $(@{Color=#64748B; Line=619; Text=<MapPin size={12} color="#64748B" />}.Color) at line 619: <MapPin size={12} color="#64748B" />
+- $(@{Color=#F59E0B; Line=639; Text=<BookMarked size={20} color="#F59E0B" fill="#F59E0B" />}.Color) at line 639: <BookMarked size={20} color="#F59E0B" fill="#F59E0B" />
+- $(@{Color=#2563EB; Line=661; Text=<Mail size={16} color="#2563EB" />}.Color) at line 661: <Mail size={16} color="#2563EB" />
+- $(@{Color=#2563EB; Line=662; Text=<Text style={[styles.chipText, { color: '#2563EB' }]}>Email</Text>}.Color) at line 662: <Text style={[styles.chipText, { color: '#2563EB' }]}>Email</Text>
+- $(@{Color=#10B981; Line=670; Text=<MessageCircle size={16} color="#10B981" />}.Color) at line 670: <MessageCircle size={16} color="#10B981" />
+- $(@{Color=#10B981; Line=671; Text=<Text style={[styles.chipText, { color: '#10B981' }]}>WhatsApp</Text>}.Color) at line 671: <Text style={[styles.chipText, { color: '#10B981' }]}>WhatsApp</Text>
+- $(@{Color=#F59E0B; Line=698; Text=<Phone size={16} color="#F59E0B" />}.Color) at line 698: <Phone size={16} color="#F59E0B" />
+- $(@{Color=#F59E0B; Line=699; Text=<Text style={[styles.chipText, { color: '#F59E0B' }]}>Call</Text>}.Color) at line 699: <Text style={[styles.chipText, { color: '#F59E0B' }]}>Call</Text>
+- $(@{Color=#EA4335; Line=719; Text=<MapPin size={16} color="#EA4335" />}.Color) at line 719: <MapPin size={16} color="#EA4335" />
+- $(@{Color=#EA4335; Line=720; Text=<Text style={[styles.chipText, { color: '#EA4335' }]}>Maps</Text>}.Color) at line 720: <Text style={[styles.chipText, { color: '#EA4335' }]}>Maps</Text>
+- $(@{Color=#2563EB; Line=758; Text=<Download size={24} color={leads.length > 0 ? '#2563EB' : '#CBD5E1'} />}.Color) at line 758: <Download size={24} color={leads.length > 0 ? '#2563EB' : '#CBD5E1'} />
+- $(@{Color=#2563EB; Line=769; Text={ backgroundColor: selectedTab === 'search' ? '#2563EB' : '#DBEAFE' },}.Color) at line 769: { backgroundColor: selectedTab === 'search' ? '#2563EB' : '#DBEAFE' },
+- $(@{Color=#2563EB; Line=774; Text=<SearchIcon size={18} color={selectedTab === 'search' ? 'white' : '#2563EB'} />}.Color) at line 774: <SearchIcon size={18} color={selectedTab === 'search' ? 'white' : '#2563EB'} />
+- $(@{Color=#2563EB; Line=777; Text={ color: selectedTab === 'search' ? 'white' : '#2563EB' },}.Color) at line 777: { color: selectedTab === 'search' ? 'white' : '#2563EB' },
+- $(@{Color=#F59E0B; Line=786; Text={ backgroundColor: selectedTab === 'hotleads' ? '#F59E0B' : '#FEF3C7' },}.Color) at line 786: { backgroundColor: selectedTab === 'hotleads' ? '#F59E0B' : '#FEF3C7' },
+- $(@{Color=#D97706; Line=791; Text=<Zap size={18} color={selectedTab === 'hotleads' ? 'white' : '#D97706'} />}.Color) at line 791: <Zap size={18} color={selectedTab === 'hotleads' ? 'white' : '#D97706'} />
+- $(@{Color=#D97706; Line=794; Text={ color: selectedTab === 'hotleads' ? 'white' : '#D97706' },}.Color) at line 794: { color: selectedTab === 'hotleads' ? 'white' : '#D97706' },
+- $(@{Color=#10B981; Line=806; Text={ backgroundColor: selectedTab === 'mybook' ? '#10B981' : '#D1FAE5' },}.Color) at line 806: { backgroundColor: selectedTab === 'mybook' ? '#10B981' : '#D1FAE5' },
+- $(@{Color=#059669; Line=811; Text=<BookMarked size={18} color={selectedTab === 'mybook' ? 'white' : '#059669'} />}.Color) at line 811: <BookMarked size={18} color={selectedTab === 'mybook' ? 'white' : '#059669'} />
+- $(@{Color=#059669; Line=814; Text={ color: selectedTab === 'mybook' ? 'white' : '#059669' },}.Color) at line 814: { color: selectedTab === 'mybook' ? 'white' : '#059669' },
+- $(@{Color=#10B981; Line=825; Text=<ActivityIndicator size="small" color="#10B981" />}.Color) at line 825: <ActivityIndicator size="small" color="#10B981" />
+- $(@{Color=#6B7280; Line=833; Text=<Globe size={14} color="#6B7280" />}.Color) at line 833: <Globe size={14} color="#6B7280" />
+- $(@{Color=#6B7280; Line=861; Text=<MapPin size={14} color={selectedCountry ? "#6B7280" : "#D1D5DB"} />}.Color) at line 861: <MapPin size={14} color={selectedCountry ? "#6B7280" : "#D1D5DB"} />
+- $(@{Color=#64748B; Line=912; Text=<Users size={16} color={hotLeadsFilter === 'drivers' ? 'white' : '#64748B'} />}.Color) at line 912: <Users size={16} color={hotLeadsFilter === 'drivers' ? 'white' : '#64748B'} />
+- $(@{Color=#64748B; Line=927; Text=<Truck size={16} color={hotLeadsFilter === 'forwarding' ? 'white' : '#64748B'} />}.Color) at line 927: <Truck size={16} color={hotLeadsFilter === 'forwarding' ? 'white' : '#64748B'} />
+- $(@{Color=#CBD5E1; Line=960; Text=<SearchIcon size={48} color="#CBD5E1" />}.Color) at line 960: <SearchIcon size={48} color="#CBD5E1" />
+- $(@{Color=#CBD5E1; Line=978; Text=<Zap size={48} color="#CBD5E1" />}.Color) at line 978: <Zap size={48} color="#CBD5E1" />
+- $(@{Color=#CBD5E1; Line=997; Text=<BookMarked size={48} color="#CBD5E1" />}.Color) at line 997: <BookMarked size={48} color="#CBD5E1" />
+- $(@{Color=#F8FAFC; Line=1096; Text=backgroundColor: '#F8FAFC',}.Color) at line 1096: backgroundColor: '#F8FAFC',
+- $(@{Color=#1E293B; Line=1108; Text=color: '#1E293B',}.Color) at line 1108: color: '#1E293B',
+- $(@{Color=#1E293B; Line=1143; Text=color: '#1E293B',}.Color) at line 1143: color: '#1E293B',
+- $(@{Color=#64748B; Line=1152; Text=color: '#64748B',}.Color) at line 1152: color: '#64748B',
+- $(@{Color=#F1F5F9; Line=1164; Text=backgroundColor: '#F1F5F9',}.Color) at line 1164: backgroundColor: '#F1F5F9',
+- $(@{Color=#F8FAFC; Line=1180; Text=backgroundColor: '#F8FAFC',}.Color) at line 1180: backgroundColor: '#F8FAFC',
+- $(@{Color=#E2E8F0; Line=1182; Text=borderColor: '#E2E8F0',}.Color) at line 1182: borderColor: '#E2E8F0',
+- $(@{Color=#64748B; Line=1191; Text=color: '#64748B',}.Color) at line 1191: color: '#64748B',
+- $(@{Color=#64748B; Line=1200; Text=color: '#64748B',}.Color) at line 1200: color: '#64748B',
+- $(@{Color=#94A3B8; Line=1205; Text=color: '#94A3B8',}.Color) at line 1205: color: '#94A3B8',
+- $(@{Color=#E5E7EB; Line=1263; Text=borderColor: '#E5E7EB',}.Color) at line 1263: borderColor: '#E5E7EB',
+- $(@{Color=#F9FAFB; Line=1269; Text=backgroundColor: '#F9FAFB',}.Color) at line 1269: backgroundColor: '#F9FAFB',
+- $(@{Color=#E5E7EB; Line=1274; Text=borderColor: '#E5E7EB',}.Color) at line 1274: borderColor: '#E5E7EB',
+- $(@{Color=#6B7280; Line=1285; Text=color: '#6B7280',}.Color) at line 1285: color: '#6B7280',
+- $(@{Color=#D1D5DB; Line=1290; Text=color: '#D1D5DB',}.Color) at line 1290: color: '#D1D5DB',
+- $(@{Color=#111827; Line=1294; Text=color: '#111827',}.Color) at line 1294: color: '#111827',
+- $(@{Color=#9CA3AF; Line=1299; Text=color: '#9CA3AF',}.Color) at line 1299: color: '#9CA3AF',
+- $(@{Color=#6B7280; Line=1306; Text=color: '#6B7280',}.Color) at line 1306: color: '#6B7280',
+- $(@{Color=#F8FAFC; Line=1322; Text=backgroundColor: '#F8FAFC',}.Color) at line 1322: backgroundColor: '#F8FAFC',
+- $(@{Color=#E2E8F0; Line=1324; Text=borderColor: '#E2E8F0',}.Color) at line 1324: borderColor: '#E2E8F0',
+- $(@{Color=#10B981; Line=1333; Text=backgroundColor: '#10B981',}.Color) at line 1333: backgroundColor: '#10B981',
+- $(@{Color=#10B981; Line=1334; Text=borderColor: '#10B981',}.Color) at line 1334: borderColor: '#10B981',
+- $(@{Color=#64748B; Line=1342; Text=color: '#64748B',}.Color) at line 1342: color: '#64748B',
+- $(@{Color=#F1F5F9; Line=1361; Text=backgroundColor: '#F1F5F9',}.Color) at line 1361: backgroundColor: '#F1F5F9',
+- $(@{Color=#94A3B8; Line=1369; Text=color: '#94A3B8',}.Color) at line 1369: color: '#94A3B8',
+- $(@{Color=#F1F5F9; Line=1375; Text=backgroundColor: '#F1F5F9',}.Color) at line 1375: backgroundColor: '#F1F5F9',
+- $(@{Color=#64748B; Line=1380; Text=color: '#64748B',}.Color) at line 1380: color: '#64748B',
+- $(@{Color=#10B981; Line=1383; Text=color: '#10B981',}.Color) at line 1383: color: '#10B981',
+- $(@{Color=#F8FAFC; Line=1404; Text=backgroundColor: '#F8FAFC',}.Color) at line 1404: backgroundColor: '#F8FAFC',
+- $(@{Color=#E2E8F0; Line=1406; Text=borderColor: '#E2E8F0',}.Color) at line 1406: borderColor: '#E2E8F0',
+- $(@{Color=#F1F5F9; Line=1417; Text=borderTopColor: '#F1F5F9',}.Color) at line 1417: borderTopColor: '#F1F5F9',
+- $(@{Color=#64748B; Line=1421; Text=color: '#64748B',}.Color) at line 1421: color: '#64748B',
+\n## app\(tabs)\pricing.tsx
+- $(@{Color=#2563EB; Line=850; Text=return <Zap size={32} color="#2563EB" />;}.Color) at line 850: return <Zap size={32} color="#2563EB" />;
+- $(@{Color=#7C3AED; Line=852; Text=return <Sparkles size={32} color="#7C3AED" />;}.Color) at line 852: return <Sparkles size={32} color="#7C3AED" />;
+- $(@{Color=#059669; Line=854; Text=return <Users size={32} color="#059669" />; // Green for fleet management}.Color) at line 854: return <Users size={32} color="#059669" />; // Green for fleet management
+- $(@{Color=#DC2626; Line=856; Text=return <TrendingUp size={32} color="#DC2626" />; // Red/Premium for Pro Freighter}.Color) at line 856: return <TrendingUp size={32} color="#DC2626" />; // Red/Premium for Pro Freighter
+- $(@{Color=#DC2626; Line=858; Text=return <Shield size={32} color="#DC2626" />;}.Color) at line 858: return <Shield size={32} color="#DC2626" />;
+- $(@{Color=#10B981; Line=860; Text=return <Check size={32} color="#10B981" />; // Green checkmark for addon}.Color) at line 860: return <Check size={32} color="#10B981" />; // Green checkmark for addon
+- $(@{Color=#64748B; Line=862; Text=return <CreditCard size={32} color="#64748B" />;}.Color) at line 862: return <CreditCard size={32} color="#64748B" />;
+- $(@{Color=#DC2626; Line=943; Text=icon: <TrendingUp size={20} color="#DC2626" />,}.Color) at line 943: icon: <TrendingUp size={20} color="#DC2626" />,
+- $(@{Color=#10B981; Line=949; Text=icon: <TrendingDown size={20} color="#10B981" />,}.Color) at line 949: icon: <TrendingDown size={20} color="#10B981" />,
+- $(@{Color=#2563EB; Line=958; Text=<ActivityIndicator size="large" color="#2563EB" />}.Color) at line 958: <ActivityIndicator size="large" color="#2563EB" />
+- $(@{Color=#2563EB; Line=984; Text=<CreditCard size={40} color="#2563EB" />}.Color) at line 984: <CreditCard size={40} color="#2563EB" />
+- $(@{Color=#2563EB; Line=992; Text=<Shield size={24} color="#2563EB" />}.Color) at line 992: <Shield size={24} color="#2563EB" />
+- $(@{Color=#2563EB; Line=1029; Text=<Tag size={24} color="#2563EB" />}.Color) at line 1029: <Tag size={24} color="#2563EB" />
+- $(@{Color=#10B981; Line=1057; Text=<Check size={20} color="#10B981" />}.Color) at line 1057: <Check size={20} color="#10B981" />
+- $(@{Color=#EF4444; Line=1063; Text=<XCircle size={20} color="#EF4444" />}.Color) at line 1063: <XCircle size={20} color="#EF4444" />
+- $(@{Color=#10B981; Line=1121; Text=<Check size={20} color="#10B981" />}.Color) at line 1121: <Check size={20} color="#10B981" />
+- $(@{Color=#10B981; Line=1200; Text=<Check size={20} color="#10B981" />}.Color) at line 1200: <Check size={20} color="#10B981" />
+- $(@{Color=#2563EB; Line=1278; Text=<Users size={32} color="#2563EB" />}.Color) at line 1278: <Users size={32} color="#2563EB" />
+- $(@{Color=#2563EB; Line=1322; Text=<Users size={32} color="#2563EB" />}.Color) at line 1322: <Users size={32} color="#2563EB" />
+- $(@{Color=#F8FAFC; Line=1391; Text=backgroundColor: '#F8FAFC',}.Color) at line 1391: backgroundColor: '#F8FAFC',
+- $(@{Color=#1E293B; Line=1408; Text=color: '#1E293B',}.Color) at line 1408: color: '#1E293B',
+- $(@{Color=#64748B; Line=1413; Text=color: '#64748B',}.Color) at line 1413: color: '#64748B',
+- $(@{Color=#2563EB; Line=1426; Text=borderColor: '#2563EB',}.Color) at line 1426: borderColor: '#2563EB',
+- $(@{Color=#2563EB; Line=1432; Text=backgroundColor: '#2563EB',}.Color) at line 1432: backgroundColor: '#2563EB',
+- $(@{Color=#FFFFFF; Line=1440; Text=color: '#FFFFFF',}.Color) at line 1440: color: '#FFFFFF',
+- $(@{Color=#1E293B; Line=1449; Text=color: '#1E293B',}.Color) at line 1449: color: '#1E293B',
+- $(@{Color=#2563EB; Line=1455; Text=color: '#2563EB',}.Color) at line 1455: color: '#2563EB',
+- $(@{Color=#64748B; Line=1461; Text=color: '#64748B',}.Color) at line 1461: color: '#64748B',
+- $(@{Color=#64748B; Line=1465; Text=color: '#64748B',}.Color) at line 1465: color: '#64748B',
+- $(@{Color=#1E293B; Line=1480; Text=color: '#1E293B',}.Color) at line 1480: color: '#1E293B',
+- $(@{Color=#E2E8F0; Line=1488; Text=backgroundColor: '#E2E8F0',}.Color) at line 1488: backgroundColor: '#E2E8F0',
+- $(@{Color=#1E293B; Line=1498; Text=color: '#1E293B',}.Color) at line 1498: color: '#1E293B',
+- $(@{Color=#64748B; Line=1503; Text=color: '#64748B',}.Color) at line 1503: color: '#64748B',
+- $(@{Color=#1E293B; Line=1522; Text=color: '#1E293B',}.Color) at line 1522: color: '#1E293B',
+- $(@{Color=#2563EB; Line=1527; Text=color: '#2563EB',}.Color) at line 1527: color: '#2563EB',
+- $(@{Color=#EFF6FF; Line=1532; Text=backgroundColor: '#EFF6FF',}.Color) at line 1532: backgroundColor: '#EFF6FF',
+- $(@{Color=#BFDBFE; Line=1534; Text=borderColor: '#BFDBFE',}.Color) at line 1534: borderColor: '#BFDBFE',
+- $(@{Color=#1E293B; Line=1548; Text=color: '#1E293B',}.Color) at line 1548: color: '#1E293B',
+- $(@{Color=#64748B; Line=1553; Text=color: '#64748B',}.Color) at line 1553: color: '#64748B',
+- $(@{Color=#E2E8F0; Line=1561; Text=borderTopColor: '#E2E8F0',}.Color) at line 1561: borderTopColor: '#E2E8F0',
+- $(@{Color=#E0F2FE; Line=1568; Text=backgroundColor: '#E0F2FE',}.Color) at line 1568: backgroundColor: '#E0F2FE',
+- $(@{Color=#1E293B; Line=1575; Text=color: '#1E293B',}.Color) at line 1575: color: '#1E293B',
+- $(@{Color=#64748B; Line=1580; Text=color: '#64748B',}.Color) at line 1580: color: '#64748B',
+- $(@{Color=#1E293B; Line=1585; Text=color: '#1E293B',}.Color) at line 1585: color: '#1E293B',
+- $(@{Color=#F1F5F9; Line=1590; Text=backgroundColor: '#F1F5F9',}.Color) at line 1590: backgroundColor: '#F1F5F9',
+- $(@{Color=#64748B; Line=1595; Text=color: '#64748B',}.Color) at line 1595: color: '#64748B',
+- $(@{Color=#FFFFFF; Line=1603; Text=backgroundColor: '#FFFFFF',}.Color) at line 1603: backgroundColor: '#FFFFFF',
+- $(@{Color=#E2E8F0; Line=1605; Text=borderColor: '#E2E8F0',}.Color) at line 1605: borderColor: '#E2E8F0',
+- $(@{Color=#1E293B; Line=1616; Text=color: '#1E293B',}.Color) at line 1616: color: '#1E293B',
+- $(@{Color=#CBD5E1; Line=1626; Text=borderColor: '#CBD5E1',}.Color) at line 1626: borderColor: '#CBD5E1',
+- $(@{Color=#1E293B; Line=1630; Text=color: '#1E293B',}.Color) at line 1630: color: '#1E293B',
+- $(@{Color=#FFFFFF; Line=1631; Text=backgroundColor: '#FFFFFF',}.Color) at line 1631: backgroundColor: '#FFFFFF',
+- $(@{Color=#ECFDF5; Line=1641; Text=backgroundColor: '#ECFDF5',}.Color) at line 1641: backgroundColor: '#ECFDF5',
+- $(@{Color=#10B981; Line=1644; Text=borderColor: '#10B981',}.Color) at line 1644: borderColor: '#10B981',
+- $(@{Color=#059669; Line=1654; Text=color: '#059669',}.Color) at line 1654: color: '#059669',
+- $(@{Color=#EF4444; Line=1658; Text=color: '#EF4444',}.Color) at line 1658: color: '#EF4444',
+- $(@{Color=#94A3B8; Line=1669; Text=color: '#94A3B8',}.Color) at line 1669: color: '#94A3B8',
+- $(@{Color=#10B981; Line=1674; Text=backgroundColor: '#10B981',}.Color) at line 1674: backgroundColor: '#10B981',
+- $(@{Color=#FFFFFF; Line=1683; Text=color: '#FFFFFF',}.Color) at line 1683: color: '#FFFFFF',
+- $(@{Color=#94A3B8; Line=1692; Text=color: '#94A3B8',}.Color) at line 1692: color: '#94A3B8',
+- $(@{Color=#F0F9FF; Line=1698; Text=backgroundColor: '#F0F9FF',}.Color) at line 1698: backgroundColor: '#F0F9FF',
+- $(@{Color=#BFDBFE; Line=1706; Text=borderColor: '#BFDBFE',}.Color) at line 1706: borderColor: '#BFDBFE',
+- $(@{Color=#1E40AF; Line=1710; Text=color: '#1E40AF',}.Color) at line 1710: color: '#1E40AF',
+- $(@{Color=#60A5FA; Line=1716; Text=color: '#60A5FA',}.Color) at line 1716: color: '#60A5FA',
+\n## app\(tabs)\profile.tsx
+- $(@{Color=#2563EB; Line=460; Text=<ActivityIndicator size="large" color="#2563EB" />}.Color) at line 460: <ActivityIndicator size="large" color="#2563EB" />
+- $(@{Color=#64748B; Line=461; Text=<Text style={{ marginTop: 16, fontSize: 16, color: '#64748B' }}>}.Color) at line 461: <Text style={{ marginTop: 16, fontSize: 16, color: '#64748B' }}>
+- $(@{Color=#FFFFFF; Line=512; Text=<ActivityIndicator size="small" color="#FFFFFF" />}.Color) at line 512: <ActivityIndicator size="small" color="#FFFFFF" />
+- $(@{Color=#FFFFFF; Line=514; Text=<Camera size={20} color="#FFFFFF" />}.Color) at line 514: <Camera size={20} color="#FFFFFF" />
+- $(@{Color=#64748B; Line=553; Text=<Mail size={20} color="#64748B" />}.Color) at line 553: <Mail size={20} color="#64748B" />
+- $(@{Color=#2563EB; Line=611; Text=<Truck size={24} color="#2563EB" />}.Color) at line 611: <Truck size={24} color="#2563EB" />
+- $(@{Color=#2563EB; Line=647; Text=<MapPin size={24} color="#2563EB" />}.Color) at line 647: <MapPin size={24} color="#2563EB" />
+- $(@{Color=#2563EB; Line=683; Text=<MapPin size={24} color="#2563EB" />}.Color) at line 683: <MapPin size={24} color="#2563EB" />
+- $(@{Color=#2563EB; Line=736; Text=<Factory size={24} color="#2563EB" />}.Color) at line 736: <Factory size={24} color="#2563EB" />
+- $(@{Color=#2563EB; Line=793; Text=<CreditCard size={32} color="#2563EB" />}.Color) at line 793: <CreditCard size={32} color="#2563EB" />
+- $(@{Color=#F8FAFC; Line=909; Text=backgroundColor: '#F8FAFC',}.Color) at line 909: backgroundColor: '#F8FAFC',
+- $(@{Color=#1E293B; Line=920; Text=color: '#1E293B',}.Color) at line 920: color: '#1E293B',
+- $(@{Color=#1E293B; Line=928; Text=color: '#1E293B',}.Color) at line 928: color: '#1E293B',
+- $(@{Color=#F1F5F9; Line=936; Text=borderBottomColor: '#F1F5F9',}.Color) at line 936: borderBottomColor: '#F1F5F9',
+- $(@{Color=#1E293B; Line=940; Text=color: '#1E293B',}.Color) at line 940: color: '#1E293B',
+- $(@{Color=#64748B; Line=945; Text=color: '#64748B',}.Color) at line 945: color: '#64748B',
+- $(@{Color=#1E293B; Line=957; Text=color: '#1E293B',}.Color) at line 957: color: '#1E293B',
+- $(@{Color=#64748B; Line=961; Text=color: '#64748B',}.Color) at line 961: color: '#64748B',
+- $(@{Color=#64748B; Line=969; Text=color: '#64748B',}.Color) at line 969: color: '#64748B',
+- $(@{Color=#F1F5F9; Line=974; Text=backgroundColor: '#F1F5F9',}.Color) at line 974: backgroundColor: '#F1F5F9',
+- $(@{Color=#2563EB; Line=980; Text=backgroundColor: '#2563EB',}.Color) at line 980: backgroundColor: '#2563EB',
+- $(@{Color=#E2E8F0; Line=994; Text=borderColor: '#E2E8F0',}.Color) at line 994: borderColor: '#E2E8F0',
+- $(@{Color=#FFFFFF; Line=995; Text=backgroundColor: '#FFFFFF',}.Color) at line 995: backgroundColor: '#FFFFFF',
+- $(@{Color=#2563EB; Line=998; Text=borderColor: '#2563EB',}.Color) at line 998: borderColor: '#2563EB',
+- $(@{Color=#EFF6FF; Line=999; Text=backgroundColor: '#EFF6FF',}.Color) at line 999: backgroundColor: '#EFF6FF',
+- $(@{Color=#64748B; Line=1007; Text=color: '#64748B',}.Color) at line 1007: color: '#64748B',
+- $(@{Color=#2563EB; Line=1010; Text=color: '#2563EB',}.Color) at line 1010: color: '#2563EB',
+- $(@{Color=#007AFF; Line=1014; Text=backgroundColor: '#007AFF',}.Color) at line 1014: backgroundColor: '#007AFF',
+- $(@{Color=#94A3B8; Line=1036; Text=color: '#94A3B8',}.Color) at line 1036: color: '#94A3B8',
+- $(@{Color=#475569; Line=1047; Text=color: '#475569',}.Color) at line 1047: color: '#475569',
+- $(@{Color=#64748B; Line=1058; Text=color: '#64748B',}.Color) at line 1058: color: '#64748B',
+- $(@{Color=#E2E8F0; Line=1071; Text=borderColor: '#E2E8F0',}.Color) at line 1071: borderColor: '#E2E8F0',
+- $(@{Color=#FFFFFF; Line=1072; Text=backgroundColor: '#FFFFFF',}.Color) at line 1072: backgroundColor: '#FFFFFF',
+- $(@{Color=#2563EB; Line=1075; Text=borderColor: '#2563EB',}.Color) at line 1075: borderColor: '#2563EB',
+- $(@{Color=#EFF6FF; Line=1076; Text=backgroundColor: '#EFF6FF',}.Color) at line 1076: backgroundColor: '#EFF6FF',
+- $(@{Color=#64748B; Line=1080; Text=color: '#64748B',}.Color) at line 1080: color: '#64748B',
+- $(@{Color=#2563EB; Line=1084; Text=color: '#2563EB',}.Color) at line 1084: color: '#2563EB',
+- $(@{Color=#E2E8F0; Line=1097; Text=borderColor: '#E2E8F0',}.Color) at line 1097: borderColor: '#E2E8F0',
+- $(@{Color=#FFFFFF; Line=1098; Text=backgroundColor: '#FFFFFF',}.Color) at line 1098: backgroundColor: '#FFFFFF',
+- $(@{Color=#2563EB; Line=1102; Text=borderColor: '#2563EB',}.Color) at line 1102: borderColor: '#2563EB',
+- $(@{Color=#EFF6FF; Line=1103; Text=backgroundColor: '#EFF6FF',}.Color) at line 1103: backgroundColor: '#EFF6FF',
+- $(@{Color=#64748B; Line=1107; Text=color: '#64748B',}.Color) at line 1107: color: '#64748B',
+- $(@{Color=#2563EB; Line=1111; Text=color: '#2563EB',}.Color) at line 1111: color: '#2563EB',
+- $(@{Color=#E2E8F0; Line=1129; Text=borderColor: '#E2E8F0',}.Color) at line 1129: borderColor: '#E2E8F0',
+- $(@{Color=#FFFFFF; Line=1130; Text=backgroundColor: '#FFFFFF',}.Color) at line 1130: backgroundColor: '#FFFFFF',
+- $(@{Color=#2563EB; Line=1134; Text=borderColor: '#2563EB',}.Color) at line 1134: borderColor: '#2563EB',
+- $(@{Color=#EFF6FF; Line=1135; Text=backgroundColor: '#EFF6FF',}.Color) at line 1135: backgroundColor: '#EFF6FF',
+- $(@{Color=#475569; Line=1139; Text=color: '#475569',}.Color) at line 1139: color: '#475569',
+- $(@{Color=#1D4ED8; Line=1143; Text=color: '#1D4ED8',}.Color) at line 1143: color: '#1D4ED8',
+- $(@{Color=#CBD5E1; Line=1150; Text=borderColor: '#CBD5E1',}.Color) at line 1150: borderColor: '#CBD5E1',
+- $(@{Color=#FFFFFF; Line=1153; Text=backgroundColor: '#FFFFFF',}.Color) at line 1153: backgroundColor: '#FFFFFF',
+- $(@{Color=#F8FAFC; Line=1158; Text=backgroundColor: '#F8FAFC',}.Color) at line 1158: backgroundColor: '#F8FAFC',
+- $(@{Color=#E2E8F0; Line=1160; Text=borderRightColor: '#E2E8F0',}.Color) at line 1160: borderRightColor: '#E2E8F0',
+- $(@{Color=#1E293B; Line=1165; Text=color: '#1E293B',}.Color) at line 1165: color: '#1E293B',
+- $(@{Color=#1E293B; Line=1172; Text=color: '#1E293B',}.Color) at line 1172: color: '#1E293B',
+- $(@{Color=#EF4444; Line=1176; Text=color: '#EF4444',}.Color) at line 1176: color: '#EF4444',
+- $(@{Color=#FEE2E2; Line=1184; Text=borderColor: '#FEE2E2',}.Color) at line 1184: borderColor: '#FEE2E2',
+- $(@{Color=#FEF2F2; Line=1185; Text=backgroundColor: '#FEF2F2',}.Color) at line 1185: backgroundColor: '#FEF2F2',
+- $(@{Color=#DC2626; Line=1193; Text=color: '#DC2626',}.Color) at line 1193: color: '#DC2626',
+- $(@{Color=#991B1B; Line=1198; Text=color: '#991B1B',}.Color) at line 1198: color: '#991B1B',
+- $(@{Color=#DC2626; Line=1202; Text=backgroundColor: '#DC2626',}.Color) at line 1202: backgroundColor: '#DC2626',
+- $(@{Color=#DC2626; Line=1207; Text=shadowColor: '#DC2626',}.Color) at line 1207: shadowColor: '#DC2626',
+- $(@{Color=#FFFFFF; Line=1216; Text=color: '#FFFFFF',}.Color) at line 1216: color: '#FFFFFF',
+- $(@{Color=#E5E7EB; Line=1232; Text=backgroundColor: '#E5E7EB',}.Color) at line 1232: backgroundColor: '#E5E7EB',
+- $(@{Color=#E5E7EB; Line=1238; Text=backgroundColor: '#E5E7EB',}.Color) at line 1238: backgroundColor: '#E5E7EB',
+- $(@{Color=#6B7280; Line=1245; Text=color: '#6B7280',}.Color) at line 1245: color: '#6B7280',
+- $(@{Color=#2563EB; Line=1254; Text=backgroundColor: '#2563EB',}.Color) at line 1254: backgroundColor: '#2563EB',
+- $(@{Color=#FFFFFF; Line=1258; Text=borderColor: '#FFFFFF',}.Color) at line 1258: borderColor: '#FFFFFF',
+- $(@{Color=#1E293B; Line=1271; Text=color: '#1E293B',}.Color) at line 1271: color: '#1E293B',
+- $(@{Color=#64748B; Line=1276; Text=color: '#64748B',}.Color) at line 1276: color: '#64748B',
+\n## app\(tabs)\search.tsx
+- $(@{Color=#F59E0B; Line=327; Text=return '#F59E0B';}.Color) at line 327: return '#F59E0B';
+- $(@{Color=#10B981; Line=329; Text=return '#10B981';}.Color) at line 329: return '#10B981';
+- $(@{Color=#EF4444; Line=331; Text=return '#EF4444';}.Color) at line 331: return '#EF4444';
+- $(@{Color=#64748B; Line=333; Text=return '#64748B';}.Color) at line 333: return '#64748B';
+- $(@{Color=#F59E0B; Line=340; Text=return <Clock size={20} color="#F59E0B" />;}.Color) at line 340: return <Clock size={20} color="#F59E0B" />;
+- $(@{Color=#10B981; Line=342; Text=return <CheckCircle size={20} color="#10B981" />;}.Color) at line 342: return <CheckCircle size={20} color="#10B981" />;
+- $(@{Color=#EF4444; Line=344; Text=return <AlertCircle size={20} color="#EF4444" />;}.Color) at line 344: return <AlertCircle size={20} color="#EF4444" />;
+- $(@{Color=#2563EB; Line=354; Text=<Search size={32} color="#2563EB" />}.Color) at line 354: <Search size={32} color="#2563EB" />
+- $(@{Color=#F59E0B; Line=385; Text=<ActivityIndicator size="small" color="#F59E0B" />}.Color) at line 385: <ActivityIndicator size="small" color="#F59E0B" />
+- $(@{Color=#64748B; Line=387; Text=<Clock size={16} color="#64748B" />}.Color) at line 387: <Clock size={16} color="#64748B" />
+- $(@{Color=#10B981; Line=396; Text=<CheckCircle size={16} color="#10B981" />}.Color) at line 396: <CheckCircle size={16} color="#10B981" />
+- $(@{Color=#EF4444; Line=405; Text=<AlertCircle size={16} color="#EF4444" />}.Color) at line 405: <AlertCircle size={16} color="#EF4444" />
+- $(@{Color=#10B981; Line=425; Text=<MapPin size={16} color="#10B981" />}.Color) at line 425: <MapPin size={16} color="#10B981" />
+- $(@{Color=#64748B; Line=479; Text=<Crosshair size={20} color="#64748B" />}.Color) at line 479: <Crosshair size={20} color="#64748B" />
+- $(@{Color=#F8FAFC; Line=531; Text=backgroundColor: '#F8FAFC',}.Color) at line 531: backgroundColor: '#F8FAFC',
+- $(@{Color=#1E293B; Line=543; Text=color: '#1E293B',}.Color) at line 543: color: '#1E293B',
+- $(@{Color=#64748B; Line=548; Text=color: '#64748B',}.Color) at line 548: color: '#64748B',
+- $(@{Color=#1E293B; Line=557; Text=color: '#1E293B',}.Color) at line 557: color: '#1E293B',
+- $(@{Color=#F0FDF4; Line=567; Text=backgroundColor: '#F0FDF4',}.Color) at line 567: backgroundColor: '#F0FDF4',
+- $(@{Color=#166534; Line=572; Text=color: '#166534',}.Color) at line 572: color: '#166534',
+- $(@{Color=#F8FAFC; Line=582; Text=backgroundColor: '#F8FAFC',}.Color) at line 582: backgroundColor: '#F8FAFC',
+- $(@{Color=#64748B; Line=587; Text=color: '#64748B',}.Color) at line 587: color: '#64748B',
+- $(@{Color=#64748B; Line=611; Text=color: '#64748B',}.Color) at line 611: color: '#64748B',
+- $(@{Color=#1E293B; Line=616; Text=color: '#1E293B',}.Color) at line 616: color: '#1E293B',
+- $(@{Color=#FEF3C7; Line=622; Text=backgroundColor: '#FEF3C7',}.Color) at line 622: backgroundColor: '#FEF3C7',
+- $(@{Color=#92400E; Line=634; Text=color: '#92400E',}.Color) at line 634: color: '#92400E',
+- $(@{Color=#78350F; Line=639; Text=color: '#78350F',}.Color) at line 639: color: '#78350F',
+- $(@{Color=#D1FAE5; Line=644; Text=backgroundColor: '#D1FAE5',}.Color) at line 644: backgroundColor: '#D1FAE5',
+- $(@{Color=#065F46; Line=651; Text=color: '#065F46',}.Color) at line 651: color: '#065F46',
+- $(@{Color=#FEE2E2; Line=658; Text=backgroundColor: '#FEE2E2',}.Color) at line 658: backgroundColor: '#FEE2E2',
+- $(@{Color=#991B1B; Line=665; Text=color: '#991B1B',}.Color) at line 665: color: '#991B1B',
+- $(@{Color=#EFF6FF; Line=671; Text=backgroundColor: '#EFF6FF',}.Color) at line 671: backgroundColor: '#EFF6FF',
+- $(@{Color=#3B82F6; Line=673; Text=borderColor: '#3B82F6',}.Color) at line 673: borderColor: '#3B82F6',
+- $(@{Color=#1E40AF; Line=681; Text=color: '#1E40AF',}.Color) at line 681: color: '#1E40AF',
+- $(@{Color=#64748B; Line=686; Text=color: '#64748B',}.Color) at line 686: color: '#64748B',
+- $(@{Color=#475569; Line=695; Text=color: '#475569',}.Color) at line 695: color: '#475569',
+- $(@{Color=#DBEAFE; Line=704; Text=backgroundColor: '#DBEAFE',}.Color) at line 704: backgroundColor: '#DBEAFE',
+- $(@{Color=#93C5FD; Line=709; Text=borderColor: '#93C5FD',}.Color) at line 709: borderColor: '#93C5FD',
+- $(@{Color=#1E40AF; Line=713; Text=color: '#1E40AF',}.Color) at line 713: color: '#1E40AF',
+- $(@{Color=#3B82F6; Line=717; Text=backgroundColor: '#3B82F6',}.Color) at line 717: backgroundColor: '#3B82F6',
+- $(@{Color=#F1F5F9; Line=727; Text=backgroundColor: '#F1F5F9',}.Color) at line 727: backgroundColor: '#F1F5F9',
+- $(@{Color=#E2E8F0; Line=732; Text=borderColor: '#E2E8F0',}.Color) at line 732: borderColor: '#E2E8F0',
+- $(@{Color=#64748B; Line=737; Text=color: '#64748B',}.Color) at line 737: color: '#64748B',
+- $(@{Color=#EF4444; Line=740; Text=color: '#EF4444',}.Color) at line 740: color: '#EF4444',
+- $(@{Color=#64748B; Line=744; Text=color: '#64748B',}.Color) at line 744: color: '#64748B',
+- $(@{Color=#EF4444; Line=749; Text=borderColor: '#EF4444',}.Color) at line 749: borderColor: '#EF4444',
+- $(@{Color=#F8FAFC; Line=755; Text=backgroundColor: '#F8FAFC',}.Color) at line 755: backgroundColor: '#F8FAFC',
+- $(@{Color=#E2E8F0; Line=758; Text=borderColor: '#E2E8F0',}.Color) at line 758: borderColor: '#E2E8F0',
+- $(@{Color=#475569; Line=763; Text=color: '#475569',}.Color) at line 763: color: '#475569',
+- $(@{Color=#DBEAFE; Line=772; Text=backgroundColor: '#DBEAFE',}.Color) at line 772: backgroundColor: '#DBEAFE',
+- $(@{Color=#93C5FD; Line=777; Text=borderColor: '#93C5FD',}.Color) at line 777: borderColor: '#93C5FD',
+- $(@{Color=#1E40AF; Line=781; Text=color: '#1E40AF',}.Color) at line 781: color: '#1E40AF',
+- $(@{Color=#FEE2E2; Line=785; Text=backgroundColor: '#FEE2E2',}.Color) at line 785: backgroundColor: '#FEE2E2',
+- $(@{Color=#FCA5A5; Line=790; Text=borderColor: '#FCA5A5',}.Color) at line 790: borderColor: '#FCA5A5',
+- $(@{Color=#991B1B; Line=794; Text=color: '#991B1B',}.Color) at line 794: color: '#991B1B',
+\n## app\(web)\_layout.tsx
+- $(@{Color=#FFFFFF; Line=31; Text=backgroundColor: '#FFFFFF',}.Color) at line 31: backgroundColor: '#FFFFFF',
+\n## app\(web)\about.tsx
+- $(@{Color=#FF6B35; Line=17; Text=const BRAND_ORANGE = '#FF6B35';}.Color) at line 17: const BRAND_ORANGE = '#FF6B35';
+- $(@{Color=#FFFFFF; Line=154; Text=<Sparkles size={16} color="#FFFFFF" />}.Color) at line 154: <Sparkles size={16} color="#FFFFFF" />
+- $(@{Color=#0F172A; Line=243; Text=backgroundColor: '#0F172A',}.Color) at line 243: backgroundColor: '#0F172A',
+- $(@{Color=#0F172A; Line=264; Text=backgroundColor: '#0F172A',}.Color) at line 264: backgroundColor: '#0F172A',
+- $(@{Color=#FFFFFF; Line=296; Text=color: '#FFFFFF',}.Color) at line 296: color: '#FFFFFF',
+- $(@{Color=#FFFFFF; Line=302; Text=color: '#FFFFFF',}.Color) at line 302: color: '#FFFFFF',
+- $(@{Color=#FFFFFF; Line=340; Text=color: '#FFFFFF',}.Color) at line 340: color: '#FFFFFF',
+- $(@{Color=#FFFFFF; Line=354; Text=borderColor: '#FFFFFF',}.Color) at line 354: borderColor: '#FFFFFF',
+- $(@{Color=#FFFFFF; Line=362; Text=color: '#FFFFFF',}.Color) at line 362: color: '#FFFFFF',
+- $(@{Color=#E2E8F0; Line=376; Text=color: '#E2E8F0',}.Color) at line 376: color: '#E2E8F0',
+- $(@{Color=#FFFFFF; Line=383; Text=color: '#FFFFFF',}.Color) at line 383: color: '#FFFFFF',
+- $(@{Color=#0F172A; Line=400; Text=color: '#0F172A',}.Color) at line 400: color: '#0F172A',
+- $(@{Color=#475569; Line=411; Text=color: '#475569',}.Color) at line 411: color: '#475569',
+- $(@{Color=#FFFFFF; Line=417; Text=backgroundColor: '#FFFFFF',}.Color) at line 417: backgroundColor: '#FFFFFF',
+- $(@{Color=#F8FAFC; Line=429; Text=backgroundColor: '#F8FAFC',}.Color) at line 429: backgroundColor: '#F8FAFC',
+- $(@{Color=#E2E8F0; Line=431; Text=borderColor: '#E2E8F0',}.Color) at line 431: borderColor: '#E2E8F0',
+- $(@{Color=#0F172A; Line=445; Text=color: '#0F172A',}.Color) at line 445: color: '#0F172A',
+- $(@{Color=#475569; Line=449; Text=color: '#475569',}.Color) at line 449: color: '#475569',
+- $(@{Color=#F8FAFC; Line=453; Text=backgroundColor: '#F8FAFC',}.Color) at line 453: backgroundColor: '#F8FAFC',
+- $(@{Color=#FFFFFF; Line=461; Text=backgroundColor: '#FFFFFF',}.Color) at line 461: backgroundColor: '#FFFFFF',
+- $(@{Color=#E2E8F0; Line=465; Text=borderColor: '#E2E8F0',}.Color) at line 465: borderColor: '#E2E8F0',
+- $(@{Color=#475569; Line=486; Text=color: '#475569',}.Color) at line 486: color: '#475569',
+- $(@{Color=#0F172A; Line=493; Text=backgroundColor: '#0F172A',}.Color) at line 493: backgroundColor: '#0F172A',
+- $(@{Color=#FFFFFF; Line=501; Text=color: '#FFFFFF',}.Color) at line 501: color: '#FFFFFF',
+- $(@{Color=#FFFFFF; Line=519; Text=color: '#FFFFFF',}.Color) at line 519: color: '#FFFFFF',
+- $(@{Color=#FFFFFF; Line=528; Text=backgroundColor: '#FFFFFF',}.Color) at line 528: backgroundColor: '#FFFFFF',
+- $(@{Color=#F8FAFC; Line=538; Text=backgroundColor: '#F8FAFC',}.Color) at line 538: backgroundColor: '#F8FAFC',
+- $(@{Color=#E2E8F0; Line=542; Text=borderColor: '#E2E8F0',}.Color) at line 542: borderColor: '#E2E8F0',
+- $(@{Color=#0F172A; Line=556; Text=color: '#0F172A',}.Color) at line 556: color: '#0F172A',
+- $(@{Color=#475569; Line=560; Text=color: '#475569',}.Color) at line 560: color: '#475569',
+- $(@{Color=#F8FAFC; Line=564; Text=backgroundColor: '#F8FAFC',}.Color) at line 564: backgroundColor: '#F8FAFC',
+- $(@{Color=#0F172A; Line=580; Text=color: '#0F172A',}.Color) at line 580: color: '#0F172A',
+- $(@{Color=#475569; Line=584; Text=color: '#475569',}.Color) at line 584: color: '#475569',
+- $(@{Color=#0F172A; Line=589; Text=backgroundColor: '#0F172A',}.Color) at line 589: backgroundColor: '#0F172A',
+- $(@{Color=#111C33; Line=592; Text=backgroundColor: '#111C33',}.Color) at line 592: backgroundColor: '#111C33',
+- $(@{Color=#FFFFFF; Line=603; Text=color: '#FFFFFF',}.Color) at line 603: color: '#FFFFFF',
+\n## app\(web)\contact.tsx
+- $(@{Color=#FF6B35; Line=18; Text=const BRAND_ORANGE = '#FF6B35';}.Color) at line 18: const BRAND_ORANGE = '#FF6B35';
+- $(@{Color=#0B1120; Line=290; Text=backgroundColor: '#0B1120',}.Color) at line 290: backgroundColor: '#0B1120',
+- $(@{Color=#0B1120; Line=311; Text=backgroundColor: '#0B1120',}.Color) at line 311: backgroundColor: '#0B1120',
+- $(@{Color=#FFFFFF; Line=344; Text=color: '#FFFFFF',}.Color) at line 344: color: '#FFFFFF',
+- $(@{Color=#FFFFFF; Line=349; Text=color: '#FFFFFF',}.Color) at line 349: color: '#FFFFFF',
+- $(@{Color=#F8FAFC; Line=375; Text=color: '#F8FAFC',}.Color) at line 375: color: '#F8FAFC',
+- $(@{Color=#94A3B8; Line=385; Text=color: '#94A3B8',}.Color) at line 385: color: '#94A3B8',
+- $(@{Color=#080C16; Line=391; Text=backgroundColor: '#080C16',}.Color) at line 391: backgroundColor: '#080C16',
+- $(@{Color=#0F172A; Line=401; Text=backgroundColor: '#0F172A',}.Color) at line 401: backgroundColor: '#0F172A',
+- $(@{Color=#F8FAFC; Line=428; Text=color: '#F8FAFC',}.Color) at line 428: color: '#F8FAFC',
+- $(@{Color=#FFFFFF; Line=433; Text=color: '#FFFFFF',}.Color) at line 433: color: '#FFFFFF',
+- $(@{Color=#CBD5F5; Line=437; Text=color: '#CBD5F5',}.Color) at line 437: color: '#CBD5F5',
+- $(@{Color=#0B1120; Line=441; Text=backgroundColor: '#0B1120',}.Color) at line 441: backgroundColor: '#0B1120',
+- $(@{Color=#080C16; Line=447; Text=backgroundColor: '#080C16',}.Color) at line 447: backgroundColor: '#080C16',
+- $(@{Color=#E2E8F0; Line=467; Text=color: '#E2E8F0',}.Color) at line 467: color: '#E2E8F0',
+- $(@{Color=#0F172A; Line=470; Text=backgroundColor: '#0F172A',}.Color) at line 470: backgroundColor: '#0F172A',
+- $(@{Color=#F8FAFC; Line=477; Text=color: '#F8FAFC',}.Color) at line 477: color: '#F8FAFC',
+- $(@{Color=#080C16; Line=483; Text=backgroundColor: '#080C16',}.Color) at line 483: backgroundColor: '#080C16',
+- $(@{Color=#0F172A; Line=493; Text=backgroundColor: '#0F172A',}.Color) at line 493: backgroundColor: '#0F172A',
+- $(@{Color=#F8FAFC; Line=515; Text=color: '#F8FAFC',}.Color) at line 515: color: '#F8FAFC',
+- $(@{Color=#CBD5F5; Line=523; Text=color: '#CBD5F5',}.Color) at line 523: color: '#CBD5F5',
+- $(@{Color=#0B1120; Line=527; Text=backgroundColor: '#0B1120',}.Color) at line 527: backgroundColor: '#0B1120',
+- $(@{Color=#111C33; Line=530; Text=backgroundColor: '#111C33',}.Color) at line 530: backgroundColor: '#111C33',
+- $(@{Color=#FFFFFF; Line=541; Text=color: '#FFFFFF',}.Color) at line 541: color: '#FFFFFF',
+- $(@{Color=#FFFFFF; Line=570; Text=color: '#FFFFFF',}.Color) at line 570: color: '#FFFFFF',
+- $(@{Color=#FFFFFF; Line=585; Text=color: '#FFFFFF',}.Color) at line 585: color: '#FFFFFF',
+\n## app\(web)\cookies.tsx
+- $(@{Color=#FFFFFF; Line=237; Text=backgroundColor: '#FFFFFF',}.Color) at line 237: backgroundColor: '#FFFFFF',
+- $(@{Color=#1E293B; Line=249; Text=color: '#1E293B',}.Color) at line 249: color: '#1E293B',
+- $(@{Color=#64748B; Line=254; Text=color: '#64748B',}.Color) at line 254: color: '#64748B',
+- $(@{Color=#1E293B; Line=263; Text=color: '#1E293B',}.Color) at line 263: color: '#1E293B',
+- $(@{Color=#1E293B; Line=269; Text=color: '#1E293B',}.Color) at line 269: color: '#1E293B',
+- $(@{Color=#64748B; Line=275; Text=color: '#64748B',}.Color) at line 275: color: '#64748B',
+\n## app\(web)\features.tsx
+- $(@{Color=#2563EB; Line=128; Text=<Icon size={48} color="#2563EB" />}.Color) at line 128: <Icon size={48} color="#2563EB" />
+- $(@{Color=#10B981; Line=134; Text=<Check size={16} color="#10B981" />}.Color) at line 134: <Check size={16} color="#10B981" />
+- $(@{Color=#2563EB; Line=161; Text=<Icon size={32} color="#2563EB" style={styles.stepIcon} />}.Color) at line 161: <Icon size={32} color="#2563EB" style={styles.stepIcon} />
+- $(@{Color=#7C3AED; Line=186; Text=<Icon size={40} color="#7C3AED" />}.Color) at line 186: <Icon size={40} color="#7C3AED" />
+- $(@{Color=#2563EB; Line=204; Text=<Icon size={32} color="#2563EB" />}.Color) at line 204: <Icon size={32} color="#2563EB" />
+- $(@{Color=#FFFFFF; Line=245; Text=backgroundColor: '#FFFFFF',}.Color) at line 245: backgroundColor: '#FFFFFF',
+- $(@{Color=#F8FAFC; Line=255; Text=backgroundColor: '#F8FAFC',}.Color) at line 255: backgroundColor: '#F8FAFC',
+- $(@{Color=#1E293B; Line=261; Text=color: '#1E293B',}.Color) at line 261: color: '#1E293B',
+- $(@{Color=#64748B; Line=267; Text=color: '#64748B',}.Color) at line 267: color: '#64748B',
+- $(@{Color=#FFFFFF; Line=272; Text=backgroundColor: '#FFFFFF',}.Color) at line 272: backgroundColor: '#FFFFFF',
+- $(@{Color=#1E293B; Line=277; Text=color: '#1E293B',}.Color) at line 277: color: '#1E293B',
+- $(@{Color=#64748B; Line=283; Text=color: '#64748B',}.Color) at line 283: color: '#64748B',
+- $(@{Color=#F8FAFC; Line=296; Text=backgroundColor: '#F8FAFC',}.Color) at line 296: backgroundColor: '#F8FAFC',
+- $(@{Color=#1E293B; Line=302; Text=color: '#1E293B',}.Color) at line 302: color: '#1E293B',
+- $(@{Color=#64748B; Line=308; Text=color: '#64748B',}.Color) at line 308: color: '#64748B',
+- $(@{Color=#64748B; Line=322; Text=color: '#64748B',}.Color) at line 322: color: '#64748B',
+- $(@{Color=#F8FAFC; Line=325; Text=backgroundColor: '#F8FAFC',}.Color) at line 325: backgroundColor: '#F8FAFC',
+- $(@{Color=#FFFFFF; Line=336; Text=backgroundColor: '#FFFFFF',}.Color) at line 336: backgroundColor: '#FFFFFF',
+- $(@{Color=#2563EB; Line=349; Text=backgroundColor: '#2563EB',}.Color) at line 349: backgroundColor: '#2563EB',
+- $(@{Color=#FFFFFF; Line=356; Text=color: '#FFFFFF',}.Color) at line 356: color: '#FFFFFF',
+- $(@{Color=#1E293B; Line=364; Text=color: '#1E293B',}.Color) at line 364: color: '#1E293B',
+- $(@{Color=#64748B; Line=369; Text=color: '#64748B',}.Color) at line 369: color: '#64748B',
+- $(@{Color=#FFFFFF; Line=373; Text=backgroundColor: '#FFFFFF',}.Color) at line 373: backgroundColor: '#FFFFFF',
+- $(@{Color=#7C3AED; Line=378; Text=backgroundColor: '#7C3AED',}.Color) at line 378: backgroundColor: '#7C3AED',
+- $(@{Color=#FFFFFF; Line=387; Text=color: '#FFFFFF',}.Color) at line 387: color: '#FFFFFF',
+- $(@{Color=#FAF5FF; Line=398; Text=backgroundColor: '#FAF5FF',}.Color) at line 398: backgroundColor: '#FAF5FF',
+- $(@{Color=#7C3AED; Line=401; Text=borderColor: '#7C3AED',}.Color) at line 401: borderColor: '#7C3AED',
+- $(@{Color=#1E293B; Line=406; Text=color: '#1E293B',}.Color) at line 406: color: '#1E293B',
+- $(@{Color=#64748B; Line=412; Text=color: '#64748B',}.Color) at line 412: color: '#64748B',
+- $(@{Color=#F8FAFC; Line=416; Text=backgroundColor: '#F8FAFC',}.Color) at line 416: backgroundColor: '#F8FAFC',
+- $(@{Color=#FFFFFF; Line=424; Text=backgroundColor: '#FFFFFF',}.Color) at line 424: backgroundColor: '#FFFFFF',
+- $(@{Color=#1E293B; Line=434; Text=color: '#1E293B',}.Color) at line 434: color: '#1E293B',
+- $(@{Color=#64748B; Line=439; Text=color: '#64748B',}.Color) at line 439: color: '#64748B',
+- $(@{Color=#2563EB; Line=443; Text=backgroundColor: '#2563EB',}.Color) at line 443: backgroundColor: '#2563EB',
+- $(@{Color=#FFFFFF; Line=449; Text=color: '#FFFFFF',}.Color) at line 449: color: '#FFFFFF',
+- $(@{Color=#FFFFFF; Line=455; Text=color: '#FFFFFF',}.Color) at line 455: color: '#FFFFFF',
+- $(@{Color=#FFFFFF; Line=466; Text=backgroundColor: '#FFFFFF',}.Color) at line 466: backgroundColor: '#FFFFFF',
+- $(@{Color=#2563EB; Line=474; Text=color: '#2563EB',}.Color) at line 474: color: '#2563EB',
+- $(@{Color=#FFFFFF; Line=482; Text=borderColor: '#FFFFFF',}.Color) at line 482: borderColor: '#FFFFFF',
+- $(@{Color=#FFFFFF; Line=487; Text=color: '#FFFFFF',}.Color) at line 487: color: '#FFFFFF',
+\n## app\(web)\index.tsx
+- $(@{Color=#FF6B35; Line=127; Text=<Star size={32} color="#ff6b35" fill="#ff6b35" />}.Color) at line 127: <Star size={32} color="#ff6b35" fill="#ff6b35" />
+- $(@{Color=#FF6B35; Line=128; Text=<Star size={32} color="#ff6b35" fill="#ff6b35" />}.Color) at line 128: <Star size={32} color="#ff6b35" fill="#ff6b35" />
+- $(@{Color=#FF6B35; Line=129; Text=<Star size={32} color="#ff6b35" fill="#ff6b35" />}.Color) at line 129: <Star size={32} color="#ff6b35" fill="#ff6b35" />
+- $(@{Color=#FF6B35; Line=130; Text=<Star size={32} color="#ff6b35" fill="#ff6b35" />}.Color) at line 130: <Star size={32} color="#ff6b35" fill="#ff6b35" />
+- $(@{Color=#FF6B35; Line=131; Text=<Star size={32} color="#ff6b35" fill="#ff6b35" />}.Color) at line 131: <Star size={32} color="#ff6b35" fill="#ff6b35" />
+- $(@{Color=#0FB988; Line=137; Text=<CheckCircle size={20} color="#0fb988" />}.Color) at line 137: <CheckCircle size={20} color="#0fb988" />
+- $(@{Color=#2563EB; Line=185; Text=<Icon size={32} color="#2563EB" />}.Color) at line 185: <Icon size={32} color="#2563EB" />
+- $(@{Color=#2563EB; Line=223; Text=<Icon size={32} color="#2563EB" />}.Color) at line 223: <Icon size={32} color="#2563EB" />
+- $(@{Color=#FFFFFF; Line=287; Text=backgroundColor: '#FFFFFF',}.Color) at line 287: backgroundColor: '#FFFFFF',
+- $(@{Color=#F0F9FF; Line=316; Text=background: 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #bae6fd 100%)',}.Color) at line 316: background: 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #bae6fd 100%)',
+- $(@{Color=#0F172A; Line=377; Text=color: '#0f172a',}.Color) at line 377: color: '#0f172a',
+- $(@{Color=#334155; Line=395; Text=color: '#334155',}.Color) at line 395: color: '#334155',
+- $(@{Color=#FF6B35; Line=438; Text=background: 'linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%)',}.Color) at line 438: background: 'linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%)',
+- $(@{Color=#FF6B35; Line=446; Text=backgroundColor: '#ff6b35',}.Color) at line 446: backgroundColor: '#ff6b35',
+- $(@{Color=#FFFFFF; Line=451; Text=color: '#FFFFFF',}.Color) at line 451: color: '#FFFFFF',
+- $(@{Color=#2563EA; Line=463; Text=borderColor: '#2563ea',}.Color) at line 463: borderColor: '#2563ea',
+- $(@{Color=#2563EA; Line=478; Text=color: '#2563ea',}.Color) at line 478: color: '#2563ea',
+- $(@{Color=#FFFFFF; Line=482; Text=backgroundColor: '#FFFFFF',}.Color) at line 482: backgroundColor: '#FFFFFF',
+- $(@{Color=#E2E8F0; Line=486; Text=borderColor: '#E2E8F0',}.Color) at line 486: borderColor: '#E2E8F0',
+- $(@{Color=#1E293B; Line=508; Text=color: '#1E293B',}.Color) at line 508: color: '#1E293B',
+- $(@{Color=#475569; Line=543; Text=color: '#475569',}.Color) at line 543: color: '#475569',
+- $(@{Color=#FFFFFF; Line=551; Text=backgroundColor: '#FFFFFF',}.Color) at line 551: backgroundColor: '#FFFFFF',
+- $(@{Color=#1E293B; Line=565; Text=color: '#1E293B',}.Color) at line 565: color: '#1E293B',
+- $(@{Color=#64748B; Line=578; Text=color: '#64748B',}.Color) at line 578: color: '#64748B',
+- $(@{Color=#FFFFFF; Line=591; Text=background: 'linear-gradient(180deg, #FFFFFF 0%, #f0f9ff 50%, #e0f2fe 100%)',}.Color) at line 591: background: 'linear-gradient(180deg, #FFFFFF 0%, #f0f9ff 50%, #e0f2fe 100%)',
+- $(@{Color=#F0F9FF; Line=593; Text=backgroundColor: '#f0f9ff',}.Color) at line 593: backgroundColor: '#f0f9ff',
+- $(@{Color=#0F172A; Line=601; Text=color: '#0f172a',}.Color) at line 601: color: '#0f172a',
+- $(@{Color=#334155; Line=615; Text=color: '#334155',}.Color) at line 615: color: '#334155',
+- $(@{Color=#FF6B35; Line=649; Text=background: 'linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%)',}.Color) at line 649: background: 'linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%)',
+- $(@{Color=#FF6B35; Line=652; Text=backgroundColor: '#ff6b35',}.Color) at line 652: backgroundColor: '#ff6b35',
+- $(@{Color=#FFFFFF; Line=657; Text=color: '#FFFFFF',}.Color) at line 657: color: '#FFFFFF',
+- $(@{Color=#0F172A; Line=665; Text=color: '#0F172A',}.Color) at line 665: color: '#0F172A',
+- $(@{Color=#475569; Line=672; Text=color: '#475569',}.Color) at line 672: color: '#475569',
+- $(@{Color=#FFFFFF; Line=677; Text=backgroundColor: '#FFFFFF',}.Color) at line 677: backgroundColor: '#FFFFFF',
+- $(@{Color=#FFFFFF; Line=690; Text=backgroundColor: '#FFFFFF',}.Color) at line 690: backgroundColor: '#FFFFFF',
+- $(@{Color=#0F172A; Line=706; Text=color: '#0F172A',}.Color) at line 706: color: '#0F172A',
+- $(@{Color=#475569; Line=713; Text=color: '#475569',}.Color) at line 713: color: '#475569',
+- $(@{Color=#FFFFFF; Line=720; Text=background: 'linear-gradient(180deg, #FFFFFF 0%, #fef3f2 100%)',}.Color) at line 720: background: 'linear-gradient(180deg, #FFFFFF 0%, #fef3f2 100%)',
+- $(@{Color=#FEF3F2; Line=722; Text=backgroundColor: '#fef3f2',}.Color) at line 722: backgroundColor: '#fef3f2',
+- $(@{Color=#FFFFFF; Line=734; Text=backgroundColor: '#FFFFFF',}.Color) at line 734: backgroundColor: '#FFFFFF',
+- $(@{Color=#1E293B; Line=746; Text=color: '#1E293B',}.Color) at line 746: color: '#1E293B',
+- $(@{Color=#2563EB; Line=754; Text=color: '#2563EB',}.Color) at line 754: color: '#2563EB',
+- $(@{Color=#2563EB; Line=768; Text=color: '#2563EB',}.Color) at line 768: color: '#2563EB',
+- $(@{Color=#64748B; Line=773; Text=color: '#64748B',}.Color) at line 773: color: '#64748B',
+- $(@{Color=#FFFFFF; Line=776; Text=backgroundColor: '#FFFFFF',}.Color) at line 776: backgroundColor: '#FFFFFF',
+- $(@{Color=#FFFFFF; Line=789; Text=backgroundColor: '#FFFFFF',}.Color) at line 789: backgroundColor: '#FFFFFF',
+- $(@{Color=#0F172A; Line=805; Text=color: '#0F172A',}.Color) at line 805: color: '#0F172A',
+- $(@{Color=#475569; Line=812; Text=color: '#475569',}.Color) at line 812: color: '#475569',
+- $(@{Color=#1E3A5F; Line=819; Text=background: 'linear-gradient(135deg, #1e3a5f 0%, #2563ea 50%, #0fb988 100%)',}.Color) at line 819: background: 'linear-gradient(135deg, #1e3a5f 0%, #2563ea 50%, #0fb988 100%)',
+- $(@{Color=#2563EA; Line=821; Text=backgroundColor: '#2563ea',}.Color) at line 821: backgroundColor: '#2563ea',
+- $(@{Color=#FFFFFF; Line=876; Text=color: '#FFFFFF',}.Color) at line 876: color: '#FFFFFF',
+- $(@{Color=#FFFFFF; Line=885; Text=color: '#FFFFFF',}.Color) at line 885: color: '#FFFFFF',
+- $(@{Color=#FF6B35; Line=957; Text=background: 'linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%)',}.Color) at line 957: background: 'linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%)',
+- $(@{Color=#FF6B35; Line=966; Text=backgroundColor: '#ff6b35',}.Color) at line 966: backgroundColor: '#ff6b35',
+- $(@{Color=#FFFFFF; Line=971; Text=color: '#FFFFFF',}.Color) at line 971: color: '#FFFFFF',
+- $(@{Color=#FFFFFF; Line=1003; Text=color: '#FFFFFF',}.Color) at line 1003: color: '#FFFFFF',
+- $(@{Color=#FFFFFF; Line=1029; Text=color: '#FFFFFF',}.Color) at line 1029: color: '#FFFFFF',
+\n## app\(web)\pricing.tsx
+- $(@{Color=#FF6B35; Line=20; Text=const BRAND_ORANGE = '#FF6B35';}.Color) at line 20: const BRAND_ORANGE = '#FF6B35';
+- $(@{Color=#2563EB; Line=41; Text=accentColor: '#2563EB',}.Color) at line 41: accentColor: '#2563EB',
+- $(@{Color=#0EA5E9; Line=58; Text=accentColor: '#0EA5E9',}.Color) at line 58: accentColor: '#0EA5E9',
+- $(@{Color=#0EA765; Line=73; Text=accentColor: '#0EA765',}.Color) at line 73: accentColor: '#0EA765',
+- $(@{Color=#F8FAFC; Line=282; Text=backgroundColor: '#F8FAFC',}.Color) at line 282: backgroundColor: '#F8FAFC',
+- $(@{Color=#1E293B; Line=350; Text=color: '#1E293B',}.Color) at line 350: color: '#1E293B',
+- $(@{Color=#64748B; Line=375; Text=color: '#64748B',}.Color) at line 375: color: '#64748B',
+- $(@{Color=#E2E8F0; Line=394; Text=borderColor: '#E2E8F0',}.Color) at line 394: borderColor: '#E2E8F0',
+- $(@{Color=#0F172A; Line=427; Text=color: '#0F172A',}.Color) at line 427: color: '#0F172A',
+- $(@{Color=#64748B; Line=432; Text=color: '#64748B',}.Color) at line 432: color: '#64748B',
+- $(@{Color=#64748B; Line=447; Text=color: '#64748B',}.Color) at line 447: color: '#64748B',
+- $(@{Color=#334155; Line=460; Text=color: '#334155',}.Color) at line 460: color: '#334155',
+- $(@{Color=#0F172A; Line=483; Text=color: '#0F172A',}.Color) at line 483: color: '#0F172A',
+- $(@{Color=#E2E8F0; Line=494; Text=borderColor: '#E2E8F0',}.Color) at line 494: borderColor: '#E2E8F0',
+- $(@{Color=#0F172A; Line=506; Text=color: '#0F172A',}.Color) at line 506: color: '#0F172A',
+- $(@{Color=#475569; Line=522; Text=color: '#475569',}.Color) at line 522: color: '#475569',
+\n## app\(web)\pricing_web.tsx
+- $(@{Color=#FF6B35; Line=10; Text=const BRAND_ORANGE = '#FF6B35';}.Color) at line 10: const BRAND_ORANGE = '#FF6B35';
+- $(@{Color=#2563EB; Line=46; Text=accentColor: '#2563EB',}.Color) at line 46: accentColor: '#2563EB',
+- $(@{Color=#0EA5E9; Line=63; Text=accentColor: '#0EA5E9',}.Color) at line 63: accentColor: '#0EA5E9',
+- $(@{Color=#0EA765; Line=78; Text=accentColor: '#0EA765',}.Color) at line 78: accentColor: '#0EA765',
+- $(@{Color=#F8FAFC; Line=285; Text=backgroundColor: '#F8FAFC',}.Color) at line 285: backgroundColor: '#F8FAFC',
+- $(@{Color=#FFF7F2; Line=298; Text=backgroundColor: '#FFF7F2',}.Color) at line 298: backgroundColor: '#FFF7F2',
+- $(@{Color=#FF6B35; Line=300; Text=backgroundImage: 'linear-gradient(135deg, #FF6B35 0%, #FF9156 100%)',}.Color) at line 300: backgroundImage: 'linear-gradient(135deg, #FF6B35 0%, #FF9156 100%)',
+- $(@{Color=#FFFFFF; Line=301; Text=color: '#FFFFFF',}.Color) at line 301: color: '#FFFFFF',
+- $(@{Color=#FFFFFF; Line=321; Text=color: '#FFFFFF',}.Color) at line 321: color: '#FFFFFF',
+- $(@{Color=#FFFFFF; Line=327; Text=color: '#FFFFFF',}.Color) at line 327: color: '#FFFFFF',
+- $(@{Color=#FFFFFF; Line=358; Text=color: '#FFFFFF',}.Color) at line 358: color: '#FFFFFF',
+- $(@{Color=#FFFFFF; Line=363; Text=backgroundColor: '#FFFFFF',}.Color) at line 363: backgroundColor: '#FFFFFF',
+- $(@{Color=#1F2937; Line=390; Text=color: '#1F2937',}.Color) at line 390: color: '#1F2937',
+- $(@{Color=#FFFFFF; Line=394; Text=backgroundColor: '#FFFFFF',}.Color) at line 394: backgroundColor: '#FFFFFF',
+- $(@{Color=#64748B; Line=417; Text=color: '#64748B',}.Color) at line 417: color: '#64748B',
+- $(@{Color=#FFFFFF; Line=420; Text=color: '#FFFFFF',}.Color) at line 420: color: '#FFFFFF',
+- $(@{Color=#FFFFFF; Line=435; Text=backgroundColor: '#FFFFFF',}.Color) at line 435: backgroundColor: '#FFFFFF',
+- $(@{Color=#E2E8F0; Line=440; Text=borderColor: '#E2E8F0',}.Color) at line 440: borderColor: '#E2E8F0',
+- $(@{Color=#0F172A; Line=489; Text=color: '#0F172A',}.Color) at line 489: color: '#0F172A',
+- $(@{Color=#64748B; Line=493; Text=color: '#64748B',}.Color) at line 493: color: '#64748B',
+- $(@{Color=#0F172A; Line=507; Text=color: '#0F172A',}.Color) at line 507: color: '#0F172A',
+- $(@{Color=#94A3B8; Line=511; Text=color: '#94A3B8',}.Color) at line 511: color: '#94A3B8',
+- $(@{Color=#475569; Line=528; Text=color: '#475569',}.Color) at line 528: color: '#475569',
+- $(@{Color=#FFFFFF; Line=548; Text=color: '#FFFFFF',}.Color) at line 548: color: '#FFFFFF',
+- $(@{Color=#0F172A; Line=558; Text=color: '#0F172A',}.Color) at line 558: color: '#0F172A',
+- $(@{Color=#FFFFFF; Line=563; Text=backgroundColor: '#FFFFFF',}.Color) at line 563: backgroundColor: '#FFFFFF',
+- $(@{Color=#1E293B; Line=584; Text=color: '#1E293B',}.Color) at line 584: color: '#1E293B',
+- $(@{Color=#E2E8F0; Line=597; Text=borderTopColor: '#E2E8F0',}.Color) at line 597: borderTopColor: '#E2E8F0',
+- $(@{Color=#475569; Line=602; Text=color: '#475569',}.Color) at line 602: color: '#475569',
+\n## app\(web)\privacy.tsx
+- $(@{Color=#FFFFFF; Line=204; Text=backgroundColor: '#FFFFFF',}.Color) at line 204: backgroundColor: '#FFFFFF',
+- $(@{Color=#1E293B; Line=216; Text=color: '#1E293B',}.Color) at line 216: color: '#1E293B',
+- $(@{Color=#64748B; Line=221; Text=color: '#64748B',}.Color) at line 221: color: '#64748B',
+- $(@{Color=#1E293B; Line=230; Text=color: '#1E293B',}.Color) at line 230: color: '#1E293B',
+- $(@{Color=#1E293B; Line=236; Text=color: '#1E293B',}.Color) at line 236: color: '#1E293B',
+- $(@{Color=#64748B; Line=242; Text=color: '#64748B',}.Color) at line 242: color: '#64748B',
+\n## app\(web)\refund.tsx
+- $(@{Color=#FFFFFF; Line=227; Text=backgroundColor: '#FFFFFF',}.Color) at line 227: backgroundColor: '#FFFFFF',
+- $(@{Color=#1E293B; Line=239; Text=color: '#1E293B',}.Color) at line 239: color: '#1E293B',
+- $(@{Color=#64748B; Line=244; Text=color: '#64748B',}.Color) at line 244: color: '#64748B',
+- $(@{Color=#1E293B; Line=253; Text=color: '#1E293B',}.Color) at line 253: color: '#1E293B',
+- $(@{Color=#1E293B; Line=259; Text=color: '#1E293B',}.Color) at line 259: color: '#1E293B',
+- $(@{Color=#64748B; Line=265; Text=color: '#64748B',}.Color) at line 265: color: '#64748B',
+\n## app\(web)\terms.tsx
+- $(@{Color=#FFFFFF; Line=250; Text=backgroundColor: '#FFFFFF',}.Color) at line 250: backgroundColor: '#FFFFFF',
+- $(@{Color=#1E293B; Line=262; Text=color: '#1E293B',}.Color) at line 262: color: '#1E293B',
+- $(@{Color=#64748B; Line=267; Text=color: '#64748B',}.Color) at line 267: color: '#64748B',
+- $(@{Color=#1E293B; Line=276; Text=color: '#1E293B',}.Color) at line 276: color: '#1E293B',
+- $(@{Color=#1E293B; Line=282; Text=color: '#1E293B',}.Color) at line 282: color: '#1E293B',
+- $(@{Color=#64748B; Line=288; Text=color: '#64748B',}.Color) at line 288: color: '#64748B',
+\n## app\_backup_pricing\pricing_revenuecat.tsx
+- $(@{Color=#3B82F6; Line=155; Text=if (identifier.includes('standard')) return '#3b82f6'; // Blue}.Color) at line 155: if (identifier.includes('standard')) return '#3b82f6'; // Blue
+- $(@{Color=#8B5CF6; Line=156; Text=if (identifier.includes('pro')) return '#8b5cf6'; // Purple}.Color) at line 156: if (identifier.includes('pro')) return '#8b5cf6'; // Purple
+- $(@{Color=#10B981; Line=157; Text=if (identifier.includes('fleet')) return '#10b981'; // Green}.Color) at line 157: if (identifier.includes('fleet')) return '#10b981'; // Green
+- $(@{Color=#F59E0B; Line=158; Text=return '#f59e0b'; // Amber}.Color) at line 158: return '#f59e0b'; // Amber
+- $(@{Color=#007AFF; Line=183; Text=<ActivityIndicator size="large" color="#007AFF" />}.Color) at line 183: <ActivityIndicator size="large" color="#007AFF" />
+- $(@{Color=#F59E0B; Line=284; Text=<View style={[styles.iconContainer, { backgroundColor: '#f59e0b15' }]}>}.Color) at line 284: <View style={[styles.iconContainer, { backgroundColor: '#f59e0b15' }]}>
+- $(@{Color=#F59E0B; Line=285; Text=<Package size={24} color="#f59e0b" />}.Color) at line 285: <Package size={24} color="#f59e0b" />
+- $(@{Color=#F8F9FA; Line=328; Text=backgroundColor: '#f8f9fa',}.Color) at line 328: backgroundColor: '#f8f9fa',
+- $(@{Color=#1A1A1A; Line=353; Text=color: '#1a1a1a',}.Color) at line 353: color: '#1a1a1a',
+- $(@{Color=#007AFF; Line=367; Text=color: '#007AFF',}.Color) at line 367: color: '#007AFF',
+- $(@{Color=#1A1A1A; Line=376; Text=color: '#1a1a1a',}.Color) at line 376: color: '#1a1a1a',
+- $(@{Color=#1A1A1A; Line=402; Text=color: '#1a1a1a',}.Color) at line 402: color: '#1a1a1a',
+- $(@{Color=#007AFF; Line=408; Text=color: '#007AFF',}.Color) at line 408: color: '#007AFF',
+- $(@{Color=#10B981; Line=418; Text=backgroundColor: '#10b981',}.Color) at line 418: backgroundColor: '#10b981',
+- $(@{Color=#E5E7EB; Line=439; Text=backgroundColor: '#e5e7eb',}.Color) at line 439: backgroundColor: '#e5e7eb',
+- $(@{Color=#1A1A1A; Line=456; Text=color: '#1a1a1a',}.Color) at line 456: color: '#1a1a1a',
+- $(@{Color=#F59E0B; Line=462; Text=color: '#f59e0b',}.Color) at line 462: color: '#f59e0b',
+\n## app\_backup_pricing\pricing_stripe_backup.tsx
+- $(@{Color=#2563EB; Line=517; Text=return <Zap size={32} color="#2563EB" />;}.Color) at line 517: return <Zap size={32} color="#2563EB" />;
+- $(@{Color=#7C3AED; Line=519; Text=return <Sparkles size={32} color="#7C3AED" />;}.Color) at line 519: return <Sparkles size={32} color="#7C3AED" />;
+- $(@{Color=#DC2626; Line=521; Text=return <Shield size={32} color="#DC2626" />;}.Color) at line 521: return <Shield size={32} color="#DC2626" />;
+- $(@{Color=#64748B; Line=523; Text=return <CreditCard size={32} color="#64748B" />;}.Color) at line 523: return <CreditCard size={32} color="#64748B" />;
+- $(@{Color=#DC2626; Line=604; Text=icon: <TrendingUp size={20} color="#DC2626" />,}.Color) at line 604: icon: <TrendingUp size={20} color="#DC2626" />,
+- $(@{Color=#10B981; Line=610; Text=icon: <TrendingDown size={20} color="#10B981" />,}.Color) at line 610: icon: <TrendingDown size={20} color="#10B981" />,
+- $(@{Color=#2563EB; Line=619; Text=<ActivityIndicator size="large" color="#2563EB" />}.Color) at line 619: <ActivityIndicator size="large" color="#2563EB" />
+- $(@{Color=#2563EB; Line=645; Text=<CreditCard size={40} color="#2563EB" />}.Color) at line 645: <CreditCard size={40} color="#2563EB" />
+- $(@{Color=#2563EB; Line=653; Text=<Shield size={24} color="#2563EB" />}.Color) at line 653: <Shield size={24} color="#2563EB" />
+- $(@{Color=#2563EB; Line=689; Text=<Tag size={24} color="#2563EB" />}.Color) at line 689: <Tag size={24} color="#2563EB" />
+- $(@{Color=#10B981; Line=717; Text=<Check size={20} color="#10B981" />}.Color) at line 717: <Check size={20} color="#10B981" />
+- $(@{Color=#EF4444; Line=723; Text=<XCircle size={20} color="#EF4444" />}.Color) at line 723: <XCircle size={20} color="#EF4444" />
+- $(@{Color=#10B981; Line=791; Text=<Check size={20} color="#10B981" />}.Color) at line 791: <Check size={20} color="#10B981" />
+- $(@{Color=#2563EB; Line=867; Text=<Users size={32} color="#2563EB" />}.Color) at line 867: <Users size={32} color="#2563EB" />
+- $(@{Color=#F8FAFC; Line=936; Text=backgroundColor: '#F8FAFC',}.Color) at line 936: backgroundColor: '#F8FAFC',
+- $(@{Color=#1E293B; Line=953; Text=color: '#1E293B',}.Color) at line 953: color: '#1E293B',
+- $(@{Color=#64748B; Line=958; Text=color: '#64748B',}.Color) at line 958: color: '#64748B',
+- $(@{Color=#2563EB; Line=971; Text=borderColor: '#2563EB',}.Color) at line 971: borderColor: '#2563EB',
+- $(@{Color=#2563EB; Line=977; Text=backgroundColor: '#2563EB',}.Color) at line 977: backgroundColor: '#2563EB',
+- $(@{Color=#FFFFFF; Line=985; Text=color: '#FFFFFF',}.Color) at line 985: color: '#FFFFFF',
+- $(@{Color=#1E293B; Line=994; Text=color: '#1E293B',}.Color) at line 994: color: '#1E293B',
+- $(@{Color=#2563EB; Line=1000; Text=color: '#2563EB',}.Color) at line 1000: color: '#2563EB',
+- $(@{Color=#64748B; Line=1006; Text=color: '#64748B',}.Color) at line 1006: color: '#64748B',
+- $(@{Color=#64748B; Line=1010; Text=color: '#64748B',}.Color) at line 1010: color: '#64748B',
+- $(@{Color=#1E293B; Line=1025; Text=color: '#1E293B',}.Color) at line 1025: color: '#1E293B',
+- $(@{Color=#E2E8F0; Line=1033; Text=backgroundColor: '#E2E8F0',}.Color) at line 1033: backgroundColor: '#E2E8F0',
+- $(@{Color=#1E293B; Line=1043; Text=color: '#1E293B',}.Color) at line 1043: color: '#1E293B',
+- $(@{Color=#64748B; Line=1048; Text=color: '#64748B',}.Color) at line 1048: color: '#64748B',
+- $(@{Color=#1E293B; Line=1067; Text=color: '#1E293B',}.Color) at line 1067: color: '#1E293B',
+- $(@{Color=#2563EB; Line=1072; Text=color: '#2563EB',}.Color) at line 1072: color: '#2563EB',
+- $(@{Color=#EFF6FF; Line=1077; Text=backgroundColor: '#EFF6FF',}.Color) at line 1077: backgroundColor: '#EFF6FF',
+- $(@{Color=#BFDBFE; Line=1079; Text=borderColor: '#BFDBFE',}.Color) at line 1079: borderColor: '#BFDBFE',
+- $(@{Color=#1E293B; Line=1093; Text=color: '#1E293B',}.Color) at line 1093: color: '#1E293B',
+- $(@{Color=#64748B; Line=1098; Text=color: '#64748B',}.Color) at line 1098: color: '#64748B',
+- $(@{Color=#E2E8F0; Line=1106; Text=borderTopColor: '#E2E8F0',}.Color) at line 1106: borderTopColor: '#E2E8F0',
+- $(@{Color=#E0F2FE; Line=1113; Text=backgroundColor: '#E0F2FE',}.Color) at line 1113: backgroundColor: '#E0F2FE',
+- $(@{Color=#1E293B; Line=1120; Text=color: '#1E293B',}.Color) at line 1120: color: '#1E293B',
+- $(@{Color=#64748B; Line=1125; Text=color: '#64748B',}.Color) at line 1125: color: '#64748B',
+- $(@{Color=#1E293B; Line=1130; Text=color: '#1E293B',}.Color) at line 1130: color: '#1E293B',
+- $(@{Color=#F1F5F9; Line=1135; Text=backgroundColor: '#F1F5F9',}.Color) at line 1135: backgroundColor: '#F1F5F9',
+- $(@{Color=#64748B; Line=1140; Text=color: '#64748B',}.Color) at line 1140: color: '#64748B',
+- $(@{Color=#FFFFFF; Line=1148; Text=backgroundColor: '#FFFFFF',}.Color) at line 1148: backgroundColor: '#FFFFFF',
+- $(@{Color=#E2E8F0; Line=1150; Text=borderColor: '#E2E8F0',}.Color) at line 1150: borderColor: '#E2E8F0',
+- $(@{Color=#1E293B; Line=1161; Text=color: '#1E293B',}.Color) at line 1161: color: '#1E293B',
+- $(@{Color=#CBD5E1; Line=1171; Text=borderColor: '#CBD5E1',}.Color) at line 1171: borderColor: '#CBD5E1',
+- $(@{Color=#1E293B; Line=1175; Text=color: '#1E293B',}.Color) at line 1175: color: '#1E293B',
+- $(@{Color=#FFFFFF; Line=1176; Text=backgroundColor: '#FFFFFF',}.Color) at line 1176: backgroundColor: '#FFFFFF',
+- $(@{Color=#ECFDF5; Line=1186; Text=backgroundColor: '#ECFDF5',}.Color) at line 1186: backgroundColor: '#ECFDF5',
+- $(@{Color=#10B981; Line=1189; Text=borderColor: '#10B981',}.Color) at line 1189: borderColor: '#10B981',
+- $(@{Color=#059669; Line=1199; Text=color: '#059669',}.Color) at line 1199: color: '#059669',
+- $(@{Color=#EF4444; Line=1203; Text=color: '#EF4444',}.Color) at line 1203: color: '#EF4444',
+- $(@{Color=#94A3B8; Line=1214; Text=color: '#94A3B8',}.Color) at line 1214: color: '#94A3B8',
+- $(@{Color=#10B981; Line=1219; Text=backgroundColor: '#10B981',}.Color) at line 1219: backgroundColor: '#10B981',
+- $(@{Color=#FFFFFF; Line=1228; Text=color: '#FFFFFF',}.Color) at line 1228: color: '#FFFFFF',
+- $(@{Color=#94A3B8; Line=1237; Text=color: '#94A3B8',}.Color) at line 1237: color: '#94A3B8',
+- $(@{Color=#F0F9FF; Line=1243; Text=backgroundColor: '#F0F9FF',}.Color) at line 1243: backgroundColor: '#F0F9FF',
+- $(@{Color=#BFDBFE; Line=1251; Text=borderColor: '#BFDBFE',}.Color) at line 1251: borderColor: '#BFDBFE',
+- $(@{Color=#1E40AF; Line=1255; Text=color: '#1E40AF',}.Color) at line 1255: color: '#1E40AF',
+- $(@{Color=#60A5FA; Line=1261; Text=color: '#60A5FA',}.Color) at line 1261: color: '#60A5FA',
+\n## components\Button.tsx
+- $(@{Color=#FFFFFF; Line=56; Text=<ActivityIndicator color={variant === 'primary' ? '#FFFFFF' : '#2563EB'} />}.Color) at line 56: <ActivityIndicator color={variant === 'primary' ? '#FFFFFF' : '#2563EB'} />
+- $(@{Color=#2563EB; Line=72; Text=backgroundColor: '#2563EB',}.Color) at line 72: backgroundColor: '#2563EB',
+- $(@{Color=#64748B; Line=75; Text=backgroundColor: '#64748B',}.Color) at line 75: backgroundColor: '#64748B',
+- $(@{Color=#2563EB; Line=80; Text=borderColor: '#2563EB',}.Color) at line 80: borderColor: '#2563EB',
+- $(@{Color=#FFFFFF; Line=104; Text=color: '#FFFFFF',}.Color) at line 104: color: '#FFFFFF',
+- $(@{Color=#FFFFFF; Line=107; Text=color: '#FFFFFF',}.Color) at line 107: color: '#FFFFFF',
+- $(@{Color=#2563EB; Line=110; Text=color: '#2563EB',}.Color) at line 110: color: '#2563EB',
+- $(@{Color=#2563EB; Line=113; Text=color: '#2563EB',}.Color) at line 113: color: '#2563EB',
+- $(@{Color=#94A3B8; Line=125; Text=color: '#94A3B8',}.Color) at line 125: color: '#94A3B8',
+\n## components\Card.tsx
+- $(@{Color=#FFFFFF; Line=15; Text=backgroundColor: '#FFFFFF',}.Color) at line 15: backgroundColor: '#FFFFFF',
+\n## components\ChatSupportModal.tsx
+- $(@{Color=#007AFF; Line=242; Text=<ActivityIndicator size="large" color="#007AFF" />}.Color) at line 242: <ActivityIndicator size="large" color="#007AFF" />
+- $(@{Color=#FFFFFF; Line=338; Text=<ActivityIndicator color="#FFFFFF" size="small" />}.Color) at line 338: <ActivityIndicator color="#FFFFFF" size="small" />
+- $(@{Color=#E0E0E0; Line=363; Text=borderBottomColor: '#e0e0e0',}.Color) at line 363: borderBottomColor: '#e0e0e0',
+- $(@{Color=#F5F5F5; Line=412; Text=backgroundColor: '#f5f5f5',}.Color) at line 412: backgroundColor: '#f5f5f5',
+- $(@{Color=#E0E0E0; Line=417; Text=borderColor: '#e0e0e0',}.Color) at line 417: borderColor: '#e0e0e0',
+- $(@{Color=#007AFF; Line=426; Text=color: '#007AFF',}.Color) at line 426: color: '#007AFF',
+- $(@{Color=#007AFF; Line=430; Text=backgroundColor: '#007AFF',}.Color) at line 430: backgroundColor: '#007AFF',
+- $(@{Color=#007AFF; Line=464; Text=backgroundColor: '#007AFF',}.Color) at line 464: backgroundColor: '#007AFF',
+- $(@{Color=#007AFF; Line=493; Text=backgroundColor: '#007AFF',}.Color) at line 493: backgroundColor: '#007AFF',
+- $(@{Color=#F0F0F0; Line=497; Text=backgroundColor: '#F0F0F0',}.Color) at line 497: backgroundColor: '#F0F0F0',
+- $(@{Color=#FFFFFF; Line=511; Text=color: '#FFFFFF',}.Color) at line 511: color: '#FFFFFF',
+- $(@{Color=#FFFFFF; Line=521; Text=color: '#FFFFFF',}.Color) at line 521: color: '#FFFFFF',
+- $(@{Color=#E0E0E0; Line=533; Text=borderTopColor: '#e0e0e0',}.Color) at line 533: borderTopColor: '#e0e0e0',
+- $(@{Color=#F5F5F5; Line=540; Text=backgroundColor: '#f5f5f5',}.Color) at line 540: backgroundColor: '#f5f5f5',
+- $(@{Color=#F5F5F5; Line=550; Text=backgroundColor: '#F5F5F5',}.Color) at line 550: backgroundColor: '#F5F5F5',
+- $(@{Color=#007AFF; Line=563; Text=backgroundColor: '#007AFF',}.Color) at line 563: backgroundColor: '#007AFF',
+- $(@{Color=#FFFFFF; Line=572; Text=color: '#FFFFFF',}.Color) at line 572: color: '#FFFFFF',
+\n## components\community\CitySearchModal.tsx
+- $(@{Color=#6B7280; Line=104; Text=<MapPin size={20} color="#6B7280" />}.Color) at line 104: <MapPin size={20} color="#6B7280" />
+- $(@{Color=#3B82F6; Line=125; Text=<ActivityIndicator size="large" color="#3B82F6" />}.Color) at line 125: <ActivityIndicator size="large" color="#3B82F6" />
+- $(@{Color=#D1D5DB; Line=134; Text=<MapPin size={48} color="#D1D5DB" />}.Color) at line 134: <MapPin size={48} color="#D1D5DB" />
+- $(@{Color=#6B7280; Line=175; Text={item.title === t('community.recent_cities') && <Clock size={16} color="#6B7280" />}}.Color) at line 175: {item.title === t('community.recent_cities') && <Clock size={16} color="#6B7280" />}
+- $(@{Color=#6B7280; Line=208; Text=<X size={24} color="#6B7280" />}.Color) at line 208: <X size={24} color="#6B7280" />
+- $(@{Color=#6B7280; Line=213; Text=<Search size={20} color="#6B7280" style={styles.searchIcon} />}.Color) at line 213: <Search size={20} color="#6B7280" style={styles.searchIcon} />
+- $(@{Color=#6B7280; Line=230; Text=<X size={18} color="#6B7280" />}.Color) at line 230: <X size={18} color="#6B7280" />
+- $(@{Color=#E5E7EB; Line=252; Text=borderBottomColor: '#E5E7EB',}.Color) at line 252: borderBottomColor: '#E5E7EB',
+- $(@{Color=#111827; Line=260; Text=color: '#111827',}.Color) at line 260: color: '#111827',
+- $(@{Color=#6B7280; Line=265; Text=color: '#6B7280',}.Color) at line 265: color: '#6B7280',
+- $(@{Color=#F3F4F6; Line=274; Text=backgroundColor: '#F3F4F6',}.Color) at line 274: backgroundColor: '#F3F4F6',
+- $(@{Color=#111827; Line=286; Text=color: '#111827',}.Color) at line 286: color: '#111827',
+- $(@{Color=#F9FAFB; Line=299; Text=backgroundColor: '#F9FAFB',}.Color) at line 299: backgroundColor: '#F9FAFB',
+- $(@{Color=#6B7280; Line=305; Text=color: '#6B7280',}.Color) at line 305: color: '#6B7280',
+- $(@{Color=#F3F4F6; Line=314; Text=borderBottomColor: '#F3F4F6',}.Color) at line 314: borderBottomColor: '#F3F4F6',
+- $(@{Color=#111827; Line=323; Text=color: '#111827',}.Color) at line 323: color: '#111827',
+- $(@{Color=#6B7280; Line=328; Text=color: '#6B7280',}.Color) at line 328: color: '#6B7280',
+- $(@{Color=#EBF5FF; Line=331; Text=backgroundColor: '#EBF5FF',}.Color) at line 331: backgroundColor: '#EBF5FF',
+- $(@{Color=#3B82F6; Line=338; Text=color: '#3B82F6',}.Color) at line 338: color: '#3B82F6',
+- $(@{Color=#6B7280; Line=350; Text=color: '#6B7280',}.Color) at line 350: color: '#6B7280',
+- $(@{Color=#6B7280; Line=356; Text=color: '#6B7280',}.Color) at line 356: color: '#6B7280',
+- $(@{Color=#9CA3AF; Line=361; Text=color: '#9CA3AF',}.Color) at line 361: color: '#9CA3AF',
+\n## components\community\CommunityFeed.tsx
+- $(@{Color=#D1D5DB; Line=210; Text=<Truck size={48} color="#D1D5DB" />}.Color) at line 210: <Truck size={48} color="#D1D5DB" />
+- $(@{Color=#D1D5DB; Line=218; Text=<Package size={48} color="#D1D5DB" />}.Color) at line 218: <Package size={48} color="#D1D5DB" />
+- $(@{Color=#D1D5DB; Line=226; Text=<Bookmark size={48} color="#D1D5DB" />}.Color) at line 226: <Bookmark size={48} color="#D1D5DB" />
+- $(@{Color=#3B82F6; Line=242; Text=<ActivityIndicator size="small" color="#3B82F6" />}.Color) at line 242: <ActivityIndicator size="small" color="#3B82F6" />
+- $(@{Color=#10B981; Line=289; Text={ backgroundColor: selectedTab === 'availability' ? '#10B981' : '#D1FAE5' },}.Color) at line 289: { backgroundColor: selectedTab === 'availability' ? '#10B981' : '#D1FAE5' },
+- $(@{Color=#059669; Line=294; Text=<Truck size={20} color={selectedTab === 'availability' ? 'white' : '#059669'} />}.Color) at line 294: <Truck size={20} color={selectedTab === 'availability' ? 'white' : '#059669'} />
+- $(@{Color=#059669; Line=297; Text={ color: selectedTab === 'availability' ? 'white' : '#059669' },}.Color) at line 297: { color: selectedTab === 'availability' ? 'white' : '#059669' },
+- $(@{Color=#3B82F6; Line=306; Text={ backgroundColor: selectedTab === 'routes' ? '#3B82F6' : '#DBEAFE' },}.Color) at line 306: { backgroundColor: selectedTab === 'routes' ? '#3B82F6' : '#DBEAFE' },
+- $(@{Color=#2563EB; Line=311; Text=<Package size={20} color={selectedTab === 'routes' ? 'white' : '#2563EB'} />}.Color) at line 311: <Package size={20} color={selectedTab === 'routes' ? 'white' : '#2563EB'} />
+- $(@{Color=#2563EB; Line=314; Text={ color: selectedTab === 'routes' ? 'white' : '#2563EB' },}.Color) at line 314: { color: selectedTab === 'routes' ? 'white' : '#2563EB' },
+- $(@{Color=#F59E0B; Line=326; Text={ backgroundColor: selectedTab === 'saved' ? '#F59E0B' : '#FEF3C7' },}.Color) at line 326: { backgroundColor: selectedTab === 'saved' ? '#F59E0B' : '#FEF3C7' },
+- $(@{Color=#D97706; Line=331; Text=<Bookmark size={20} color={selectedTab === 'saved' ? 'white' : '#D97706'} />}.Color) at line 331: <Bookmark size={20} color={selectedTab === 'saved' ? 'white' : '#D97706'} />
+- $(@{Color=#D97706; Line=334; Text={ color: selectedTab === 'saved' ? 'white' : '#D97706' },}.Color) at line 334: { color: selectedTab === 'saved' ? 'white' : '#D97706' },
+- $(@{Color=#10B981; Line=345; Text=<ActivityIndicator size="small" color="#10B981" />}.Color) at line 345: <ActivityIndicator size="small" color="#10B981" />
+- $(@{Color=#6B7280; Line=353; Text=<Globe size={14} color="#6B7280" />}.Color) at line 353: <Globe size={14} color="#6B7280" />
+- $(@{Color=#6B7280; Line=381; Text=<MapPin size={14} color={selectedCountry ? "#6B7280" : "#D1D5DB"} />}.Color) at line 381: <MapPin size={14} color={selectedCountry ? "#6B7280" : "#D1D5DB"} />
+- $(@{Color=#3B82F6; Line=455; Text=colors={['#3B82F6']}}.Color) at line 455: colors={['#3B82F6']}
+- $(@{Color=#6B7280; Line=505; Text=color: '#6B7280',}.Color) at line 505: color: '#6B7280',
+- $(@{Color=#111827; Line=518; Text=color: '#111827',}.Color) at line 518: color: '#111827',
+- $(@{Color=#6B7280; Line=522; Text=color: '#6B7280',}.Color) at line 522: color: '#6B7280',
+- $(@{Color=#E5E7EB; Line=606; Text=borderColor: '#E5E7EB',}.Color) at line 606: borderColor: '#E5E7EB',
+- $(@{Color=#F9FAFB; Line=612; Text=backgroundColor: '#F9FAFB',}.Color) at line 612: backgroundColor: '#F9FAFB',
+- $(@{Color=#E5E7EB; Line=617; Text=borderColor: '#E5E7EB',}.Color) at line 617: borderColor: '#E5E7EB',
+- $(@{Color=#6B7280; Line=628; Text=color: '#6B7280',}.Color) at line 628: color: '#6B7280',
+- $(@{Color=#D1D5DB; Line=633; Text=color: '#D1D5DB',}.Color) at line 633: color: '#D1D5DB',
+- $(@{Color=#111827; Line=637; Text=color: '#111827',}.Color) at line 637: color: '#111827',
+- $(@{Color=#9CA3AF; Line=642; Text=color: '#9CA3AF',}.Color) at line 642: color: '#9CA3AF',
+- $(@{Color=#6B7280; Line=649; Text=color: '#6B7280',}.Color) at line 649: color: '#6B7280',
+- $(@{Color=#374151; Line=661; Text=color: '#374151',}.Color) at line 661: color: '#374151',
+- $(@{Color=#6B7280; Line=667; Text=color: '#6B7280',}.Color) at line 667: color: '#6B7280',
+- $(@{Color=#FEE2E2; Line=675; Text=backgroundColor: '#FEE2E2',}.Color) at line 675: backgroundColor: '#FEE2E2',
+- $(@{Color=#DC2626; Line=685; Text=color: '#DC2626',}.Color) at line 685: color: '#DC2626',
+- $(@{Color=#DC2626; Line=690; Text=color: '#DC2626',}.Color) at line 690: color: '#DC2626',
+\n## components\community\CommunityFeed.web.tsx
+- $(@{Color=#D1D5DB; Line=213; Text=<Truck size={48} color="#D1D5DB" />}.Color) at line 213: <Truck size={48} color="#D1D5DB" />
+- $(@{Color=#D1D5DB; Line=221; Text=<Package size={48} color="#D1D5DB" />}.Color) at line 221: <Package size={48} color="#D1D5DB" />
+- $(@{Color=#D1D5DB; Line=229; Text=<Bookmark size={48} color="#D1D5DB" />}.Color) at line 229: <Bookmark size={48} color="#D1D5DB" />
+- $(@{Color=#3B82F6; Line=245; Text=<ActivityIndicator size="small" color="#3B82F6" />}.Color) at line 245: <ActivityIndicator size="small" color="#3B82F6" />
+- $(@{Color=#10B981; Line=292; Text={ backgroundColor: selectedTab === 'availability' ? '#10B981' : '#D1FAE5' },}.Color) at line 292: { backgroundColor: selectedTab === 'availability' ? '#10B981' : '#D1FAE5' },
+- $(@{Color=#059669; Line=297; Text=<Truck size={20} color={selectedTab === 'availability' ? 'white' : '#059669'} />}.Color) at line 297: <Truck size={20} color={selectedTab === 'availability' ? 'white' : '#059669'} />
+- $(@{Color=#059669; Line=300; Text={ color: selectedTab === 'availability' ? 'white' : '#059669' },}.Color) at line 300: { color: selectedTab === 'availability' ? 'white' : '#059669' },
+- $(@{Color=#3B82F6; Line=309; Text={ backgroundColor: selectedTab === 'routes' ? '#3B82F6' : '#DBEAFE' },}.Color) at line 309: { backgroundColor: selectedTab === 'routes' ? '#3B82F6' : '#DBEAFE' },
+- $(@{Color=#2563EB; Line=314; Text=<Package size={20} color={selectedTab === 'routes' ? 'white' : '#2563EB'} />}.Color) at line 314: <Package size={20} color={selectedTab === 'routes' ? 'white' : '#2563EB'} />
+- $(@{Color=#2563EB; Line=317; Text={ color: selectedTab === 'routes' ? 'white' : '#2563EB' },}.Color) at line 317: { color: selectedTab === 'routes' ? 'white' : '#2563EB' },
+- $(@{Color=#F59E0B; Line=329; Text={ backgroundColor: selectedTab === 'saved' ? '#F59E0B' : '#FEF3C7' },}.Color) at line 329: { backgroundColor: selectedTab === 'saved' ? '#F59E0B' : '#FEF3C7' },
+- $(@{Color=#D97706; Line=334; Text=<Bookmark size={20} color={selectedTab === 'saved' ? 'white' : '#D97706'} />}.Color) at line 334: <Bookmark size={20} color={selectedTab === 'saved' ? 'white' : '#D97706'} />
+- $(@{Color=#D97706; Line=337; Text={ color: selectedTab === 'saved' ? 'white' : '#D97706' },}.Color) at line 337: { color: selectedTab === 'saved' ? 'white' : '#D97706' },
+- $(@{Color=#10B981; Line=348; Text=<ActivityIndicator size="small" color="#10B981" />}.Color) at line 348: <ActivityIndicator size="small" color="#10B981" />
+- $(@{Color=#6B7280; Line=356; Text=<Globe size={14} color="#6B7280" />}.Color) at line 356: <Globe size={14} color="#6B7280" />
+- $(@{Color=#6B7280; Line=384; Text=<MapPin size={14} color={selectedCountry ? "#6B7280" : "#D1D5DB"} />}.Color) at line 384: <MapPin size={14} color={selectedCountry ? "#6B7280" : "#D1D5DB"} />
+- $(@{Color=#3B82F6; Line=458; Text=colors={['#3B82F6']}}.Color) at line 458: colors={['#3B82F6']}
+- $(@{Color=#6B7280; Line=508; Text=color: '#6B7280',}.Color) at line 508: color: '#6B7280',
+- $(@{Color=#111827; Line=521; Text=color: '#111827',}.Color) at line 521: color: '#111827',
+- $(@{Color=#6B7280; Line=525; Text=color: '#6B7280',}.Color) at line 525: color: '#6B7280',
+- $(@{Color=#E5E7EB; Line=609; Text=borderColor: '#E5E7EB',}.Color) at line 609: borderColor: '#E5E7EB',
+- $(@{Color=#F9FAFB; Line=615; Text=backgroundColor: '#F9FAFB',}.Color) at line 615: backgroundColor: '#F9FAFB',
+- $(@{Color=#E5E7EB; Line=620; Text=borderColor: '#E5E7EB',}.Color) at line 620: borderColor: '#E5E7EB',
+- $(@{Color=#6B7280; Line=631; Text=color: '#6B7280',}.Color) at line 631: color: '#6B7280',
+- $(@{Color=#D1D5DB; Line=636; Text=color: '#D1D5DB',}.Color) at line 636: color: '#D1D5DB',
+- $(@{Color=#111827; Line=640; Text=color: '#111827',}.Color) at line 640: color: '#111827',
+- $(@{Color=#9CA3AF; Line=645; Text=color: '#9CA3AF',}.Color) at line 645: color: '#9CA3AF',
+- $(@{Color=#6B7280; Line=652; Text=color: '#6B7280',}.Color) at line 652: color: '#6B7280',
+- $(@{Color=#374151; Line=664; Text=color: '#374151',}.Color) at line 664: color: '#374151',
+- $(@{Color=#6B7280; Line=670; Text=color: '#6B7280',}.Color) at line 670: color: '#6B7280',
+- $(@{Color=#FEE2E2; Line=678; Text=backgroundColor: '#FEE2E2',}.Color) at line 678: backgroundColor: '#FEE2E2',
+- $(@{Color=#DC2626; Line=688; Text=color: '#DC2626',}.Color) at line 688: color: '#DC2626',
+- $(@{Color=#DC2626; Line=693; Text=color: '#DC2626',}.Color) at line 693: color: '#DC2626',
+\n## components\community\CommunityFeed_WORKING_BEFORE_FILTERS.tsx
+- $(@{Color=#D1D5DB; Line=95; Text=<Truck size={48} color="#D1D5DB" />}.Color) at line 95: <Truck size={48} color="#D1D5DB" />
+- $(@{Color=#D1D5DB; Line=103; Text=<Package size={48} color="#D1D5DB" />}.Color) at line 103: <Package size={48} color="#D1D5DB" />
+- $(@{Color=#3B82F6; Line=119; Text=<ActivityIndicator size="small" color="#3B82F6" />}.Color) at line 119: <ActivityIndicator size="small" color="#3B82F6" />
+- $(@{Color=#10B981; Line=165; Text=<Truck size={18} color={selectedTab === 'availability' ? '#10B981' : '#6B7280'} />}.Color) at line 165: <Truck size={18} color={selectedTab === 'availability' ? '#10B981' : '#6B7280'} />
+- $(@{Color=#3B82F6; Line=174; Text=<Package size={18} color={selectedTab === 'routes' ? '#3B82F6' : '#6B7280'} />}.Color) at line 174: <Package size={18} color={selectedTab === 'routes' ? '#3B82F6' : '#6B7280'} />
+- $(@{Color=#3B82F6; Line=186; Text=<MapPin size={14} color="#3B82F6" />}.Color) at line 186: <MapPin size={14} color="#3B82F6" />
+- $(@{Color=#6B7280; Line=199; Text=<Filter size={18} color="#6B7280" />}.Color) at line 199: <Filter size={18} color="#6B7280" />
+- $(@{Color=#3B82F6; Line=228; Text=colors={['#3B82F6']}}.Color) at line 228: colors={['#3B82F6']}
+- $(@{Color=#6B7280; Line=254; Text=color: '#6B7280',}.Color) at line 254: color: '#6B7280',
+- $(@{Color=#111827; Line=267; Text=color: '#111827',}.Color) at line 267: color: '#111827',
+- $(@{Color=#6B7280; Line=271; Text=color: '#6B7280',}.Color) at line 271: color: '#6B7280',
+- $(@{Color=#F3F4F6; Line=292; Text=backgroundColor: '#F3F4F6',}.Color) at line 292: backgroundColor: '#F3F4F6',
+- $(@{Color=#6B7280; Line=297; Text=color: '#6B7280',}.Color) at line 297: color: '#6B7280',
+- $(@{Color=#111827; Line=300; Text=color: '#111827',}.Color) at line 300: color: '#111827',
+- $(@{Color=#9CA3AF; Line=318; Text=color: '#9CA3AF',}.Color) at line 318: color: '#9CA3AF',
+- $(@{Color=#EFF6FF; Line=323; Text=backgroundColor: '#EFF6FF',}.Color) at line 323: backgroundColor: '#EFF6FF',
+- $(@{Color=#3B82F6; Line=331; Text=color: '#3B82F6',}.Color) at line 331: color: '#3B82F6',
+- $(@{Color=#3B82F6; Line=337; Text=color: '#3B82F6',}.Color) at line 337: color: '#3B82F6',
+- $(@{Color=#F3F4F6; Line=345; Text=backgroundColor: '#F3F4F6',}.Color) at line 345: backgroundColor: '#F3F4F6',
+- $(@{Color=#6B7280; Line=350; Text=color: '#6B7280',}.Color) at line 350: color: '#6B7280',
+- $(@{Color=#374151; Line=362; Text=color: '#374151',}.Color) at line 362: color: '#374151',
+- $(@{Color=#6B7280; Line=368; Text=color: '#6B7280',}.Color) at line 368: color: '#6B7280',
+- $(@{Color=#FEE2E2; Line=376; Text=backgroundColor: '#FEE2E2',}.Color) at line 376: backgroundColor: '#FEE2E2',
+- $(@{Color=#DC2626; Line=386; Text=color: '#DC2626',}.Color) at line 386: color: '#DC2626',
+- $(@{Color=#DC2626; Line=391; Text=color: '#DC2626',}.Color) at line 391: color: '#DC2626',
+\n## components\community\CommunityFiltersModal.tsx
+- $(@{Color=#6B7280; Line=115; Text=<X size={24} color="#6B7280" />}.Color) at line 115: <X size={24} color="#6B7280" />
+- $(@{Color=#9CA3AF; Line=121; Text=<Search size={20} color="#9CA3AF" />}.Color) at line 121: <Search size={20} color="#9CA3AF" />
+- $(@{Color=#9CA3AF; Line=132; Text=<X size={20} color="#9CA3AF" />}.Color) at line 132: <X size={20} color="#9CA3AF" />
+- $(@{Color=#10B981; Line=162; Text={isSelected && <Check size={20} color="#10B981" />}}.Color) at line 162: {isSelected && <Check size={20} color="#10B981" />}
+- $(@{Color=#F9FAFB; Line=190; Text=backgroundColor: '#F9FAFB',}.Color) at line 190: backgroundColor: '#F9FAFB',
+- $(@{Color=#E5E7EB; Line=200; Text=borderBottomColor: '#E5E7EB',}.Color) at line 200: borderBottomColor: '#E5E7EB',
+- $(@{Color=#111827; Line=205; Text=color: '#111827',}.Color) at line 205: color: '#111827',
+- $(@{Color=#E5E7EB; Line=221; Text=borderColor: '#E5E7EB',}.Color) at line 221: borderColor: '#E5E7EB',
+- $(@{Color=#111827; Line=227; Text=color: '#111827',}.Color) at line 227: color: '#111827',
+- $(@{Color=#FEE2E2; Line=230; Text=backgroundColor: '#FEE2E2',}.Color) at line 230: backgroundColor: '#FEE2E2',
+- $(@{Color=#DC2626; Line=238; Text=color: '#DC2626',}.Color) at line 238: color: '#DC2626',
+- $(@{Color=#F0FDF4; Line=257; Text=backgroundColor: '#F0FDF4',}.Color) at line 257: backgroundColor: '#F0FDF4',
+- $(@{Color=#10B981; Line=259; Text=borderColor: '#10B981',}.Color) at line 259: borderColor: '#10B981',
+- $(@{Color=#111827; Line=271; Text=color: '#111827',}.Color) at line 271: color: '#111827',
+- $(@{Color=#10B981; Line=275; Text=color: '#10B981',}.Color) at line 275: color: '#10B981',
+- $(@{Color=#9CA3AF; Line=280; Text=color: '#9CA3AF',}.Color) at line 280: color: '#9CA3AF',
+- $(@{Color=#6B7280; Line=290; Text=color: '#6B7280',}.Color) at line 290: color: '#6B7280',
+\n## components\community\PostCard.tsx
+- $(@{Color=#111827; Line=582; Text=<Building2 size={14} color="#111827" />}.Color) at line 582: <Building2 size={14} color="#111827" />
+- $(@{Color=#6B7280; Line=595; Text=<Truck size={14} color="#6B7280" />}.Color) at line 595: <Truck size={14} color="#6B7280" />
+- $(@{Color=#F59E0B; Line=636; Text=color={isSaved ? '#F59E0B' : '#6B7280'}}.Color) at line 636: color={isSaved ? '#F59E0B' : '#6B7280'}
+- $(@{Color=#F59E0B; Line=637; Text=fill={isSaved ? '#F59E0B' : 'none'}}.Color) at line 637: fill={isSaved ? '#F59E0B' : 'none'}
+- $(@{Color=#10B981; Line=649; Text=<Navigation size={16} color="#10B981" />}.Color) at line 649: <Navigation size={16} color="#10B981" />
+- $(@{Color=#3B82F6; Line=654; Text=<Package size={16} color="#3B82F6" />}.Color) at line 654: <Package size={16} color="#3B82F6" />
+- $(@{Color=#10B981; Line=664; Text=<MapPin size={16} color="#10B981" fill="#10B981" />}.Color) at line 664: <MapPin size={16} color="#10B981" fill="#10B981" />
+- $(@{Color=#EF4444; Line=673; Text=<MapPin size={16} color="#EF4444" fill="#EF4444" />}.Color) at line 673: <MapPin size={16} color="#EF4444" fill="#EF4444" />
+- $(@{Color=#3B82F6; Line=684; Text=<Navigation size={14} color="#3B82F6" />}.Color) at line 684: <Navigation size={14} color="#3B82F6" />
+- $(@{Color=#6B7280; Line=702; Text=<Clock size={12} color="#6B7280" />}.Color) at line 702: <Clock size={12} color="#6B7280" />
+- $(@{Color=#6B7280; Line=712; Text=<Package size={12} color="#6B7280" />}.Color) at line 712: <Package size={12} color="#6B7280" />
+- $(@{Color=#9CA3AF; Line=727; Text=<Clock size={14} color="#9CA3AF" />}.Color) at line 727: <Clock size={14} color="#9CA3AF" />
+- $(@{Color=#9CA3AF; Line=730; Text=<Eye size={14} color="#9CA3AF" />}.Color) at line 730: <Eye size={14} color="#9CA3AF" />
+- $(@{Color=#9CA3AF; Line=735; Text=<MessageCircle size={14} color="#9CA3AF" />}.Color) at line 735: <MessageCircle size={14} color="#9CA3AF" />
+- $(@{Color=#FFFFFF; Line=748; Text=<MessageCircle size={18} color="#FFFFFF" />}.Color) at line 748: <MessageCircle size={18} color="#FFFFFF" />
+- $(@{Color=#FFFFFF; Line=756; Text=<Phone size={18} color="#FFFFFF" />}.Color) at line 756: <Phone size={18} color="#FFFFFF" />
+- $(@{Color=#FFFFFF; Line=764; Text=<Mail size={18} color="#FFFFFF" />}.Color) at line 764: <Mail size={18} color="#FFFFFF" />
+- $(@{Color=#10B981; Line=869; Text=borderColor: '#10B981',}.Color) at line 869: borderColor: '#10B981',
+- $(@{Color=#E5E7EB; Line=885; Text=backgroundColor: '#E5E7EB',}.Color) at line 885: backgroundColor: '#E5E7EB',
+- $(@{Color=#6B7280; Line=893; Text=color: '#6B7280',}.Color) at line 893: color: '#6B7280',
+- $(@{Color=#111827; Line=907; Text=color: '#111827',}.Color) at line 907: color: '#111827',
+- $(@{Color=#111827; Line=912; Text=color: '#111827',}.Color) at line 912: color: '#111827',
+- $(@{Color=#4B5563; Line=918; Text=color: '#4B5563',}.Color) at line 918: color: '#4B5563',
+- $(@{Color=#6B7280; Line=928; Text=color: '#6B7280',}.Color) at line 928: color: '#6B7280',
+- $(@{Color=#D1D5DB; Line=933; Text=color: '#D1D5DB',}.Color) at line 933: color: '#D1D5DB',
+- $(@{Color=#6B7280; Line=943; Text=color: '#6B7280',}.Color) at line 943: color: '#6B7280',
+- $(@{Color=#F3F4F6; Line=952; Text=backgroundColor: '#F3F4F6',}.Color) at line 952: backgroundColor: '#F3F4F6',
+- $(@{Color=#6B7280; Line=959; Text=color: '#6B7280',}.Color) at line 959: color: '#6B7280',
+- $(@{Color=#FEE2E2; Line=962; Text=backgroundColor: '#FEE2E2',}.Color) at line 962: backgroundColor: '#FEE2E2',
+- $(@{Color=#FECACA; Line=967; Text=borderColor: '#FECACA',}.Color) at line 967: borderColor: '#FECACA',
+- $(@{Color=#10B981; Line=986; Text=color: '#10B981',}.Color) at line 986: color: '#10B981',
+- $(@{Color=#3B82F6; Line=989; Text=color: '#3B82F6',}.Color) at line 989: color: '#3B82F6',
+- $(@{Color=#F9FAFB; Line=1000; Text=backgroundColor: '#F9FAFB',}.Color) at line 1000: backgroundColor: '#F9FAFB',
+- $(@{Color=#E5E7EB; Line=1003; Text=borderColor: '#E5E7EB',}.Color) at line 1003: borderColor: '#E5E7EB',
+- $(@{Color=#ECFDF5; Line=1011; Text=backgroundColor: '#ECFDF5',}.Color) at line 1011: backgroundColor: '#ECFDF5',
+- $(@{Color=#A7F3D0; Line=1014; Text=borderColor: '#A7F3D0',}.Color) at line 1014: borderColor: '#A7F3D0',
+- $(@{Color=#FEE2E2; Line=1022; Text=backgroundColor: '#FEE2E2',}.Color) at line 1022: backgroundColor: '#FEE2E2',
+- $(@{Color=#FECACA; Line=1025; Text=borderColor: '#FECACA',}.Color) at line 1025: borderColor: '#FECACA',
+- $(@{Color=#DBEAFE; Line=1034; Text=backgroundColor: '#DBEAFE',}.Color) at line 1034: backgroundColor: '#DBEAFE',
+- $(@{Color=#BFDBFE; Line=1037; Text=borderColor: '#BFDBFE',}.Color) at line 1037: borderColor: '#BFDBFE',
+- $(@{Color=#6B7280; Line=1048; Text=color: '#6B7280',}.Color) at line 1048: color: '#6B7280',
+- $(@{Color=#1E40AF; Line=1054; Text=color: '#1E40AF',}.Color) at line 1054: color: '#1E40AF',
+- $(@{Color=#111827; Line=1059; Text=color: '#111827',}.Color) at line 1059: color: '#111827',
+- $(@{Color=#9CA3AF; Line=1064; Text=color: '#9CA3AF',}.Color) at line 1064: color: '#9CA3AF',
+- $(@{Color=#374151; Line=1068; Text=color: '#374151',}.Color) at line 1068: color: '#374151',
+- $(@{Color=#F9FAFB; Line=1080; Text=backgroundColor: '#F9FAFB',}.Color) at line 1080: backgroundColor: '#F9FAFB',
+- $(@{Color=#6B7280; Line=1088; Text=color: '#6B7280',}.Color) at line 1088: color: '#6B7280',
+- $(@{Color=#F3F4F6; Line=1095; Text=borderTopColor: '#F3F4F6',}.Color) at line 1095: borderTopColor: '#F3F4F6',
+- $(@{Color=#9CA3AF; Line=1107; Text=color: '#9CA3AF',}.Color) at line 1107: color: '#9CA3AF',
+- $(@{Color=#F3F4F6; Line=1110; Text=backgroundColor: '#F3F4F6',}.Color) at line 1110: backgroundColor: '#F3F4F6',
+- $(@{Color=#F59E0B; Line=1123; Text=backgroundColor: '#F59E0B', // Orange background}.Color) at line 1123: backgroundColor: '#F59E0B', // Orange background
+- $(@{Color=#F59E0B; Line=1127; Text=shadowColor: '#F59E0B',}.Color) at line 1127: shadowColor: '#F59E0B',
+- $(@{Color=#FFFFFF; Line=1136; Text=color: '#FFFFFF',}.Color) at line 1136: color: '#FFFFFF',
+- $(@{Color=#FFFFFF; Line=1160; Text=color: '#FFFFFF',}.Color) at line 1160: color: '#FFFFFF',
+- $(@{Color=#25D366; Line=1163; Text=backgroundColor: '#25D366',}.Color) at line 1163: backgroundColor: '#25D366',
+- $(@{Color=#3B82F6; Line=1166; Text=backgroundColor: '#3B82F6',}.Color) at line 1166: backgroundColor: '#3B82F6',
+- $(@{Color=#6366F1; Line=1169; Text=backgroundColor: '#6366F1',}.Color) at line 1169: backgroundColor: '#6366F1',
+- $(@{Color=#FFFFFF; Line=1177; Text=backgroundColor: '#FFFFFF',}.Color) at line 1177: backgroundColor: '#FFFFFF',
+- $(@{Color=#111827; Line=1187; Text=color: '#111827',}.Color) at line 1187: color: '#111827',
+- $(@{Color=#4B5563; Line=1191; Text=color: '#4B5563',}.Color) at line 1191: color: '#4B5563',
+- $(@{Color=#F3F4F6; Line=1194; Text=backgroundColor: '#F3F4F6',}.Color) at line 1194: backgroundColor: '#F3F4F6',
+- $(@{Color=#111827; Line=1202; Text=color: '#111827',}.Color) at line 1202: color: '#111827',
+- $(@{Color=#2563EB; Line=1211; Text=color: '#2563EB',}.Color) at line 1211: color: '#2563EB',
+\n## components\community\QuickPostBar.tsx
+- $(@{Color=#007AFF; Line=467; Text=<ActivityIndicator size="large" color="#007AFF" />}.Color) at line 467: <ActivityIndicator size="large" color="#007AFF" />
+- $(@{Color=#10B981; Line=586; Text=backgroundColor: '#10B981',}.Color) at line 586: backgroundColor: '#10B981',
+- $(@{Color=#3B82F6; Line=589; Text=backgroundColor: '#3B82F6',}.Color) at line 589: backgroundColor: '#3B82F6',
+- $(@{Color=#E5E7EB; Line=601; Text=borderTopColor: '#E5E7EB',}.Color) at line 601: borderTopColor: '#E5E7EB',
+- $(@{Color=#6B7280; Line=608; Text=color: '#6B7280',}.Color) at line 608: color: '#6B7280',
+- $(@{Color=#3B82F6; Line=612; Text=color: '#3B82F6',}.Color) at line 612: color: '#3B82F6',
+- $(@{Color=#6B7280; Line=622; Text=color: '#6B7280',}.Color) at line 622: color: '#6B7280',
+\n## components\community\QuickPostBar.web.tsx
+- $(@{Color=#007AFF; Line=481; Text=<ActivityIndicator size="large" color="#007AFF" />}.Color) at line 481: <ActivityIndicator size="large" color="#007AFF" />
+- $(@{Color=#10B981; Line=625; Text=backgroundColor: '#10B981',}.Color) at line 625: backgroundColor: '#10B981',
+- $(@{Color=#3B82F6; Line=628; Text=backgroundColor: '#3B82F6',}.Color) at line 628: backgroundColor: '#3B82F6',
+- $(@{Color=#E5E7EB; Line=640; Text=borderTopColor: '#E5E7EB',}.Color) at line 640: borderTopColor: '#E5E7EB',
+- $(@{Color=#6B7280; Line=647; Text=color: '#6B7280',}.Color) at line 647: color: '#6B7280',
+- $(@{Color=#3B82F6; Line=651; Text=color: '#3B82F6',}.Color) at line 651: color: '#3B82F6',
+- $(@{Color=#6B7280; Line=661; Text=color: '#6B7280',}.Color) at line 661: color: '#6B7280',
+- $(@{Color=#1F2937; Line=686; Text=color: '#1F2937',}.Color) at line 686: color: '#1F2937',
+- $(@{Color=#6B7280; Line=692; Text=color: '#6B7280',}.Color) at line 692: color: '#6B7280',
+- $(@{Color=#F3F4F6; Line=708; Text=backgroundColor: '#F3F4F6',}.Color) at line 708: backgroundColor: '#F3F4F6',
+- $(@{Color=#3B82F6; Line=711; Text=backgroundColor: '#3B82F6',}.Color) at line 711: backgroundColor: '#3B82F6',
+- $(@{Color=#6B7280; Line=714; Text=color: '#6B7280',}.Color) at line 714: color: '#6B7280',
+\n## components\community\TemplateSelector.tsx
+- $(@{Color=#6B7280; Line=28; Text=<X size={24} color="#6B7280" />}.Color) at line 28: <X size={24} color="#6B7280" />
+- $(@{Color=#E5E7EB; Line=75; Text=borderBottomColor: '#E5E7EB',}.Color) at line 75: borderBottomColor: '#E5E7EB',
+- $(@{Color=#111827; Line=80; Text=color: '#111827',}.Color) at line 80: color: '#111827',
+- $(@{Color=#F9FAFB; Line=94; Text=backgroundColor: '#F9FAFB',}.Color) at line 94: backgroundColor: '#F9FAFB',
+- $(@{Color=#E5E7EB; Line=97; Text=borderColor: '#E5E7EB',}.Color) at line 97: borderColor: '#E5E7EB',
+- $(@{Color=#111827; Line=109; Text=color: '#111827',}.Color) at line 109: color: '#111827',
+- $(@{Color=#6B7280; Line=114; Text=color: '#6B7280',}.Color) at line 114: color: '#6B7280',
+\n## components\community\UpgradePromptModal.tsx
+- $(@{Color=#FBBF24; Line=44; Text=<Sparkles color="#FBBF24" size={18} />}.Color) at line 44: <Sparkles color="#FBBF24" size={18} />
+- $(@{Color=#2563EB; Line=58; Text=<ShieldCheck color="#2563EB" size={20} />}.Color) at line 58: <ShieldCheck color="#2563EB" size={20} />
+- $(@{Color=#10B981; Line=74; Text=<TrendingUp color="#10B981" size={20} />}.Color) at line 74: <TrendingUp color="#10B981" size={20} />
+- $(@{Color=#FFFFFF; Line=122; Text=backgroundColor: '#FFFFFF',}.Color) at line 122: backgroundColor: '#FFFFFF',
+- $(@{Color=#EFF6FF; Line=127; Text=backgroundColor: '#EFF6FF',}.Color) at line 127: backgroundColor: '#EFF6FF',
+- $(@{Color=#FDE68A; Line=137; Text=backgroundColor: '#FDE68A',}.Color) at line 137: backgroundColor: '#FDE68A',
+- $(@{Color=#92400E; Line=146; Text=color: '#92400E',}.Color) at line 146: color: '#92400E',
+- $(@{Color=#1F2937; Line=151; Text=color: '#1F2937',}.Color) at line 151: color: '#1F2937',
+- $(@{Color=#4B5563; Line=156; Text=color: '#4B5563',}.Color) at line 156: color: '#4B5563',
+- $(@{Color=#F9FAFB; Line=164; Text=backgroundColor: '#F9FAFB',}.Color) at line 164: backgroundColor: '#F9FAFB',
+- $(@{Color=#E5E7EB; Line=168; Text=borderColor: '#E5E7EB',}.Color) at line 168: borderColor: '#E5E7EB',
+- $(@{Color=#111827; Line=179; Text=color: '#111827',}.Color) at line 179: color: '#111827',
+- $(@{Color=#2563EB; Line=183; Text=color: '#2563EB',}.Color) at line 183: color: '#2563EB',
+- $(@{Color=#4B5563; Line=188; Text=color: '#4B5563',}.Color) at line 188: color: '#4B5563',
+- $(@{Color=#2563EB; Line=203; Text=backgroundColor: '#2563EB',}.Color) at line 203: backgroundColor: '#2563EB',
+- $(@{Color=#1F2937; Line=207; Text=color: '#1F2937',}.Color) at line 207: color: '#1F2937',
+- $(@{Color=#ECFDF5; Line=214; Text=backgroundColor: '#ECFDF5',}.Color) at line 214: backgroundColor: '#ECFDF5',
+- $(@{Color=#047857; Line=220; Text=color: '#047857',}.Color) at line 220: color: '#047857',
+- $(@{Color=#6B7280; Line=243; Text=color: '#6B7280',}.Color) at line 243: color: '#6B7280',
+\n## components\DeleteAccountModal.tsx
+- $(@{Color=#EF4444; Line=59; Text=<Ionicons name="warning" size={48} color="#EF4444" />}.Color) at line 59: <Ionicons name="warning" size={48} color="#EF4444" />
+- $(@{Color=#6B7280; Line=69; Text=<Ionicons name="close" size={24} color="#6B7280" />}.Color) at line 69: <Ionicons name="close" size={24} color="#6B7280" />
+- $(@{Color=#EF4444; Line=84; Text=<Ionicons name="checkmark-circle" size={20} color="#EF4444" />}.Color) at line 84: <Ionicons name="checkmark-circle" size={20} color="#EF4444" />
+- $(@{Color=#EF4444; Line=88; Text=<Ionicons name="checkmark-circle" size={20} color="#EF4444" />}.Color) at line 88: <Ionicons name="checkmark-circle" size={20} color="#EF4444" />
+- $(@{Color=#EF4444; Line=92; Text=<Ionicons name="checkmark-circle" size={20} color="#EF4444" />}.Color) at line 92: <Ionicons name="checkmark-circle" size={20} color="#EF4444" />
+- $(@{Color=#EF4444; Line=96; Text=<Ionicons name="checkmark-circle" size={20} color="#EF4444" />}.Color) at line 96: <Ionicons name="checkmark-circle" size={20} color="#EF4444" />
+- $(@{Color=#EF4444; Line=100; Text=<Ionicons name="checkmark-circle" size={20} color="#EF4444" />}.Color) at line 100: <Ionicons name="checkmark-circle" size={20} color="#EF4444" />
+- $(@{Color=#EF4444; Line=104; Text=<Ionicons name="checkmark-circle" size={20} color="#EF4444" />}.Color) at line 104: <Ionicons name="checkmark-circle" size={20} color="#EF4444" />
+- $(@{Color=#EF4444; Line=108; Text=<Ionicons name="checkmark-circle" size={20} color="#EF4444" />}.Color) at line 108: <Ionicons name="checkmark-circle" size={20} color="#EF4444" />
+- $(@{Color=#3B82F6; Line=114; Text=<Ionicons name="information-circle" size={20} color="#3B82F6" />}.Color) at line 114: <Ionicons name="information-circle" size={20} color="#3B82F6" />
+- $(@{Color=#DC2626; Line=130; Text=<Ionicons name="alert-circle" size={24} color="#DC2626" />}.Color) at line 130: <Ionicons name="alert-circle" size={24} color="#DC2626" />
+- $(@{Color=#FFFFFF; Line=172; Text=<ActivityIndicator color="#FFFFFF" size="small" />}.Color) at line 172: <ActivityIndicator color="#FFFFFF" size="small" />
+- $(@{Color=#FFFFFF; Line=175; Text=<Ionicons name="trash" size={20} color="#FFFFFF" />}.Color) at line 175: <Ionicons name="trash" size={20} color="#FFFFFF" />
+- $(@{Color=#FFFFFF; Line=198; Text=backgroundColor: '#FFFFFF',}.Color) at line 198: backgroundColor: '#FFFFFF',
+- $(@{Color=#E5E7EB; Line=209; Text=borderBottomColor: '#E5E7EB',}.Color) at line 209: borderBottomColor: '#E5E7EB',
+- $(@{Color=#1F2937; Line=214; Text=color: '#1F2937',}.Color) at line 214: color: '#1F2937',
+- $(@{Color=#4B5563; Line=227; Text=color: '#4B5563',}.Color) at line 227: color: '#4B5563',
+- $(@{Color=#DC2626; Line=233; Text=color: '#DC2626',}.Color) at line 233: color: '#DC2626',
+- $(@{Color=#1F2937; Line=241; Text=color: '#1F2937',}.Color) at line 241: color: '#1F2937',
+- $(@{Color=#4B5563; Line=252; Text=color: '#4B5563',}.Color) at line 252: color: '#4B5563',
+- $(@{Color=#EFF6FF; Line=258; Text=backgroundColor: '#EFF6FF',}.Color) at line 258: backgroundColor: '#EFF6FF',
+- $(@{Color=#1E40AF; Line=265; Text=color: '#1E40AF',}.Color) at line 265: color: '#1E40AF',
+- $(@{Color=#DC2626; Line=272; Text=color: '#DC2626',}.Color) at line 272: color: '#DC2626',
+- $(@{Color=#4B5563; Line=278; Text=color: '#4B5563',}.Color) at line 278: color: '#4B5563',
+- $(@{Color=#FEE2E2; Line=287; Text=backgroundColor: '#FEE2E2',}.Color) at line 287: backgroundColor: '#FEE2E2',
+- $(@{Color=#DC2626; Line=291; Text=borderColor: '#DC2626',}.Color) at line 291: borderColor: '#DC2626',
+- $(@{Color=#991B1B; Line=295; Text=color: '#991B1B',}.Color) at line 295: color: '#991B1B',
+- $(@{Color=#E5E7EB; Line=303; Text=borderTopColor: '#E5E7EB',}.Color) at line 303: borderTopColor: '#E5E7EB',
+- $(@{Color=#D1D5DB; Line=311; Text=borderColor: '#D1D5DB',}.Color) at line 311: borderColor: '#D1D5DB',
+- $(@{Color=#4B5563; Line=317; Text=color: '#4B5563',}.Color) at line 317: color: '#4B5563',
+- $(@{Color=#EF4444; Line=323; Text=backgroundColor: '#EF4444',}.Color) at line 323: backgroundColor: '#EF4444',
+- $(@{Color=#FFFFFF; Line=329; Text=color: '#FFFFFF',}.Color) at line 329: color: '#FFFFFF',
+- $(@{Color=#DC2626; Line=335; Text=backgroundColor: '#DC2626',}.Color) at line 335: backgroundColor: '#DC2626',
+- $(@{Color=#FFFFFF; Line=344; Text=color: '#FFFFFF',}.Color) at line 344: color: '#FFFFFF',
+\n## components\Input.tsx
+- $(@{Color=#94A3B8; Line=33; Text=placeholderTextColor="#94A3B8"}.Color) at line 33: placeholderTextColor="#94A3B8"
+- $(@{Color=#1E293B; Line=48; Text=color: '#1E293B',}.Color) at line 48: color: '#1E293B',
+- $(@{Color=#FFFFFF; Line=52; Text=backgroundColor: '#FFFFFF',}.Color) at line 52: backgroundColor: '#FFFFFF',
+- $(@{Color=#CBD5E1; Line=54; Text=borderColor: '#CBD5E1',}.Color) at line 54: borderColor: '#CBD5E1',
+- $(@{Color=#1E293B; Line=59; Text=color: '#1E293B',}.Color) at line 59: color: '#1E293B',
+- $(@{Color=#EF4444; Line=62; Text=borderColor: '#EF4444',}.Color) at line 62: borderColor: '#EF4444',
+- $(@{Color=#EF4444; Line=66; Text=color: '#EF4444',}.Color) at line 66: color: '#EF4444',
+\n## components\leads\LeadDetailModal.tsx
+- $(@{Color=#0A66C2; Line=83; Text=color: '#0A66C2',}.Color) at line 83: color: '#0A66C2',
+- $(@{Color=#1877F2; Line=89; Text=color: '#1877F2',}.Color) at line 89: color: '#1877F2',
+- $(@{Color=#E4405F; Line=95; Text=color: '#E4405F',}.Color) at line 95: color: '#E4405F',
+- $(@{Color=#10B981; Line=101; Text=color: '#10B981',}.Color) at line 101: color: '#10B981',
+- $(@{Color=#64748B; Line=238; Text=<X size={24} color="#64748B" />}.Color) at line 238: <X size={24} color="#64748B" />
+- $(@{Color=#2563EB; Line=246; Text=<Building2 size={48} color="#2563EB" />}.Color) at line 246: <Building2 size={48} color="#2563EB" />
+- $(@{Color=#64748B; Line=253; Text=<MapPin size={16} color="#64748B" />}.Color) at line 253: <MapPin size={16} color="#64748B" />
+- $(@{Color=#64748B; Line=262; Text=<Briefcase size={16} color="#64748B" />}.Color) at line 262: <Briefcase size={16} color="#64748B" />
+- $(@{Color=#64748B; Line=291; Text=<phone.icon size={18} color="#64748B" />}.Color) at line 291: <phone.icon size={18} color="#64748B" />
+- $(@{Color=#10B981; Line=303; Text=style={[styles.iconButton, { backgroundColor: '#10B98110' }]}}.Color) at line 303: style={[styles.iconButton, { backgroundColor: '#10B98110' }]}
+- $(@{Color=#10B981; Line=306; Text=<MessageCircle size={18} color="#10B981" />}.Color) at line 306: <MessageCircle size={18} color="#10B981" />
+- $(@{Color=#2563EB; Line=310; Text=style={[styles.iconButton, { backgroundColor: '#2563EB10' }]}}.Color) at line 310: style={[styles.iconButton, { backgroundColor: '#2563EB10' }]}
+- $(@{Color=#2563EB; Line=313; Text=<Phone size={18} color="#2563EB" />}.Color) at line 313: <Phone size={18} color="#2563EB" />
+- $(@{Color=#64748B; Line=323; Text=<Mail size={18} color="#64748B" />}.Color) at line 323: <Mail size={18} color="#64748B" />
+- $(@{Color=#2563EB; Line=331; Text=style={[styles.iconButton, { backgroundColor: '#2563EB10' }]}}.Color) at line 331: style={[styles.iconButton, { backgroundColor: '#2563EB10' }]}
+- $(@{Color=#2563EB; Line=334; Text=<Mail size={18} color="#2563EB" />}.Color) at line 334: <Mail size={18} color="#2563EB" />
+- $(@{Color=#EA4335; Line=365; Text=<Navigation size={20} color="#EA4335" />}.Color) at line 365: <Navigation size={20} color="#EA4335" />
+- $(@{Color=#EA4335; Line=366; Text=<Text style={[styles.socialButtonText, { color: '#EA4335' }]}>}.Color) at line 366: <Text style={[styles.socialButtonText, { color: '#EA4335' }]}>
+- $(@{Color=#2563EB; Line=397; Text=<Edit3 size={18} color="#2563EB" />}.Color) at line 397: <Edit3 size={18} color="#2563EB" />
+- $(@{Color=#94A3B8; Line=410; Text=placeholderTextColor="#94A3B8"}.Color) at line 410: placeholderTextColor="#94A3B8"
+- $(@{Color=#F8FAFC; Line=460; Text=backgroundColor: '#F8FAFC',}.Color) at line 460: backgroundColor: '#F8FAFC',
+- $(@{Color=#E5E7EB; Line=471; Text=borderBottomColor: '#E5E7EB',}.Color) at line 471: borderBottomColor: '#E5E7EB',
+- $(@{Color=#1E293B; Line=476; Text=color: '#1E293B',}.Color) at line 476: color: '#1E293B',
+- $(@{Color=#DBEAFE; Line=501; Text=backgroundColor: '#DBEAFE',}.Color) at line 501: backgroundColor: '#DBEAFE',
+- $(@{Color=#1E293B; Line=509; Text=color: '#1E293B',}.Color) at line 509: color: '#1E293B',
+- $(@{Color=#64748B; Line=521; Text=color: '#64748B',}.Color) at line 521: color: '#64748B',
+- $(@{Color=#1E293B; Line=538; Text=color: '#1E293B',}.Color) at line 538: color: '#1E293B',
+- $(@{Color=#F1F5F9; Line=547; Text=borderBottomColor: '#F1F5F9',}.Color) at line 547: borderBottomColor: '#F1F5F9',
+- $(@{Color=#94A3B8; Line=560; Text=color: '#94A3B8',}.Color) at line 560: color: '#94A3B8',
+- $(@{Color=#1E293B; Line=566; Text=color: '#1E293B',}.Color) at line 566: color: '#1E293B',
+- $(@{Color=#F8FAFC; Line=591; Text=backgroundColor: '#F8FAFC',}.Color) at line 591: backgroundColor: '#F8FAFC',
+- $(@{Color=#E2E8F0; Line=593; Text=borderColor: '#E2E8F0',}.Color) at line 593: borderColor: '#E2E8F0',
+- $(@{Color=#64748B; Line=602; Text=color: '#64748B',}.Color) at line 602: color: '#64748B',
+- $(@{Color=#64748B; Line=607; Text=color: '#64748B',}.Color) at line 607: color: '#64748B',
+- $(@{Color=#F59E0B; Line=619; Text=backgroundColor: '#F59E0B', // Orange background (same as PostCard)}.Color) at line 619: backgroundColor: '#F59E0B', // Orange background (same as PostCard)
+- $(@{Color=#F59E0B; Line=623; Text=shadowColor: '#F59E0B',}.Color) at line 623: shadowColor: '#F59E0B',
+- $(@{Color=#FFFFFF; Line=633; Text=color: '#FFFFFF',}.Color) at line 633: color: '#FFFFFF',
+- $(@{Color=#DBEAFE; Line=651; Text=backgroundColor: '#DBEAFE',}.Color) at line 651: backgroundColor: '#DBEAFE',
+- $(@{Color=#2563EB; Line=656; Text=color: '#2563EB',}.Color) at line 656: color: '#2563EB',
+- $(@{Color=#F8FAFC; Line=659; Text=backgroundColor: '#F8FAFC',}.Color) at line 659: backgroundColor: '#F8FAFC',
+- $(@{Color=#E2E8F0; Line=661; Text=borderColor: '#E2E8F0',}.Color) at line 661: borderColor: '#E2E8F0',
+- $(@{Color=#1E293B; Line=665; Text=color: '#1E293B',}.Color) at line 665: color: '#1E293B',
+- $(@{Color=#F1F5F9; Line=677; Text=backgroundColor: '#F1F5F9',}.Color) at line 677: backgroundColor: '#F1F5F9',
+- $(@{Color=#64748B; Line=683; Text=color: '#64748B',}.Color) at line 683: color: '#64748B',
+- $(@{Color=#10B981; Line=693; Text=backgroundColor: '#10B981',}.Color) at line 693: backgroundColor: '#10B981',
+\n## components\StatusBadge.tsx
+- $(@{Color=#3B82F6; Line=10; Text=new: { color: '#3B82F6', label: 'New' },}.Color) at line 10: new: { color: '#3B82F6', label: 'New' },
+- $(@{Color=#EAB308; Line=11; Text=contacted: { color: '#EAB308', label: 'Contacted' },}.Color) at line 11: contacted: { color: '#EAB308', label: 'Contacted' },
+- $(@{Color=#8B5CF6; Line=12; Text=in_progress: { color: '#8B5CF6', label: 'In Progress' },}.Color) at line 12: in_progress: { color: '#8B5CF6', label: 'In Progress' },
+- $(@{Color=#10B981; Line=13; Text=won: { color: '#10B981', label: 'Won' },}.Color) at line 13: won: { color: '#10B981', label: 'Won' },
+- $(@{Color=#EF4444; Line=14; Text=lost: { color: '#EF4444', label: 'Lost' },}.Color) at line 14: lost: { color: '#EF4444', label: 'Lost' },
+\n## components\web\WebFooter.tsx
+- $(@{Color=#F9FAFB; Line=70; Text=backgroundColor: '#F9FAFB',}.Color) at line 70: backgroundColor: '#F9FAFB',
+- $(@{Color=#E5E7EB; Line=72; Text=borderTopColor: '#E5E7EB',}.Color) at line 72: borderTopColor: '#E5E7EB',
+- $(@{Color=#2563EB; Line=92; Text=color: '#2563EB',}.Color) at line 92: color: '#2563EB',
+- $(@{Color=#6B7280; Line=97; Text=color: '#6B7280',}.Color) at line 97: color: '#6B7280',
+- $(@{Color=#111827; Line=103; Text=color: '#111827',}.Color) at line 103: color: '#111827',
+- $(@{Color=#6B7280; Line=108; Text=color: '#6B7280',}.Color) at line 108: color: '#6B7280',
+- $(@{Color=#E5E7EB; Line=121; Text=borderTopColor: '#E5E7EB',}.Color) at line 121: borderTopColor: '#E5E7EB',
+- $(@{Color=#9CA3AF; Line=126; Text=color: '#9CA3AF',}.Color) at line 126: color: '#9CA3AF',
+\n## components\web\WebHeader.tsx
+- $(@{Color=#64748B; Line=64; Text=<Globe size={20} color="#64748B" />}.Color) at line 64: <Globe size={20} color="#64748B" />
+- $(@{Color=#1F2937; Line=117; Text=<X size={28} color="#1F2937" />}.Color) at line 117: <X size={28} color="#1F2937" />
+- $(@{Color=#1F2937; Line=119; Text=<Menu size={28} color="#1F2937" />}.Color) at line 119: <Menu size={28} color="#1F2937" />
+- $(@{Color=#FFFFFF; Line=193; Text=backgroundColor: '#FFFFFF',}.Color) at line 193: backgroundColor: '#FFFFFF',
+- $(@{Color=#E5E7EB; Line=195; Text=borderBottomColor: '#E5E7EB',}.Color) at line 195: borderBottomColor: '#E5E7EB',
+- $(@{Color=#2563EB; Line=247; Text=color: '#2563EB',}.Color) at line 247: color: '#2563EB',
+- $(@{Color=#F8FAFC; Line=283; Text=backgroundColor: '#F8FAFC',}.Color) at line 283: backgroundColor: '#F8FAFC',
+- $(@{Color=#E2E8F0; Line=288; Text=backgroundColor: '#E2E8F0',}.Color) at line 288: backgroundColor: '#E2E8F0',
+- $(@{Color=#475569; Line=295; Text=color: '#475569',}.Color) at line 295: color: '#475569',
+- $(@{Color=#FFFFFF; Line=301; Text=backgroundColor: '#FFFFFF',}.Color) at line 301: backgroundColor: '#FFFFFF',
+- $(@{Color=#F8FAFC; Line=317; Text=backgroundColor: '#F8FAFC',}.Color) at line 317: backgroundColor: '#F8FAFC',
+- $(@{Color=#EFF6FF; Line=322; Text=backgroundColor: '#EFF6FF',}.Color) at line 322: backgroundColor: '#EFF6FF',
+- $(@{Color=#475569; Line=327; Text=color: '#475569',}.Color) at line 327: color: '#475569',
+- $(@{Color=#2563EB; Line=330; Text=color: '#2563EB',}.Color) at line 330: color: '#2563EB',
+- $(@{Color=#374151; Line=345; Text=color: '#374151',}.Color) at line 345: color: '#374151',
+- $(@{Color=#2563EB; Line=351; Text=color: '#2563EB',}.Color) at line 351: color: '#2563EB',
+- $(@{Color=#2563EB; Line=361; Text=color: '#2563EB',}.Color) at line 361: color: '#2563EB',
+- $(@{Color=#2563EB; Line=367; Text=backgroundColor: '#2563EB',}.Color) at line 367: backgroundColor: '#2563EB',
+- $(@{Color=#1D4ED8; Line=372; Text=backgroundColor: '#1d4ed8',}.Color) at line 372: backgroundColor: '#1d4ed8',
+- $(@{Color=#FFFFFF; Line=379; Text=color: '#FFFFFF',}.Color) at line 379: color: '#FFFFFF',
+- $(@{Color=#FFFFFF; Line=383; Text=backgroundColor: '#FFFFFF',}.Color) at line 383: backgroundColor: '#FFFFFF',
+- $(@{Color=#E5E7EB; Line=385; Text=borderTopColor: '#E5E7EB',}.Color) at line 385: borderTopColor: '#E5E7EB',
+- $(@{Color=#374151; Line=399; Text=color: '#374151',}.Color) at line 399: color: '#374151',
+- $(@{Color=#E5E7EB; Line=404; Text=backgroundColor: '#E5E7EB',}.Color) at line 404: backgroundColor: '#E5E7EB',
+- $(@{Color=#F3F4F6; Line=408; Text=backgroundColor: '#F3F4F6',}.Color) at line 408: backgroundColor: '#F3F4F6',
+- $(@{Color=#2563EB; Line=416; Text=color: '#2563EB',}.Color) at line 416: color: '#2563EB',
+- $(@{Color=#2563EB; Line=421; Text=backgroundColor: '#2563EB',}.Color) at line 421: backgroundColor: '#2563EB',
+- $(@{Color=#FFFFFF; Line=429; Text=color: '#FFFFFF',}.Color) at line 429: color: '#FFFFFF',
+\n## lib\theme.tsx
+- $(@{Color=#2563EB; Line=77; Text=primary: '#2563eb',}.Color) at line 77: primary: '#2563eb',
+- $(@{Color=#1E40AF; Line=78; Text=primaryDark: '#1e40af',}.Color) at line 78: primaryDark: '#1e40af',
+- $(@{Color=#8B5CF6; Line=79; Text=secondary: '#8b5cf6',}.Color) at line 79: secondary: '#8b5cf6',
+- $(@{Color=#F9FAFB; Line=80; Text=background: '#f9fafb',}.Color) at line 80: background: '#f9fafb',
+- $(@{Color=#FFFFFF; Line=81; Text=surface: '#ffffff',}.Color) at line 81: surface: '#ffffff',
+- $(@{Color=#FFFFFF; Line=82; Text=card: '#ffffff',}.Color) at line 82: card: '#ffffff',
+- $(@{Color=#111827; Line=83; Text=text: '#111827',}.Color) at line 83: text: '#111827',
+- $(@{Color=#6B7280; Line=84; Text=textSecondary: '#6b7280',}.Color) at line 84: textSecondary: '#6b7280',
+- $(@{Color=#E5E7EB; Line=85; Text=border: '#e5e7eb',}.Color) at line 85: border: '#e5e7eb',
+- $(@{Color=#EF4444; Line=86; Text=error: '#ef4444',}.Color) at line 86: error: '#ef4444',
+- $(@{Color=#10B981; Line=87; Text=success: '#10b981',}.Color) at line 87: success: '#10b981',
+- $(@{Color=#F59E0B; Line=88; Text=warning: '#f59e0b',}.Color) at line 88: warning: '#f59e0b',
+- $(@{Color=#3B82F6; Line=89; Text=info: '#3b82f6',}.Color) at line 89: info: '#3b82f6',
+- $(@{Color=#FFFFFF; Line=90; Text=white: '#ffffff',}.Color) at line 90: white: '#ffffff',
+- $(@{Color=#000000; Line=91; Text=black: '#000000',}.Color) at line 91: black: '#000000',
+- $(@{Color=#D1D5DB; Line=92; Text=disabled: '#d1d5db',}.Color) at line 92: disabled: '#d1d5db',
+- $(@{Color=#9CA3AF; Line=93; Text=placeholder: '#9ca3af',}.Color) at line 93: placeholder: '#9ca3af',
+- $(@{Color=#3B82F6; Line=139; Text=primary: '#3b82f6',}.Color) at line 139: primary: '#3b82f6',
+- $(@{Color=#2563EB; Line=140; Text=primaryDark: '#2563eb',}.Color) at line 140: primaryDark: '#2563eb',
+- $(@{Color=#A78BFA; Line=141; Text=secondary: '#a78bfa',}.Color) at line 141: secondary: '#a78bfa',
+- $(@{Color=#111827; Line=142; Text=background: '#111827',}.Color) at line 142: background: '#111827',
+- $(@{Color=#1F2937; Line=143; Text=surface: '#1f2937',}.Color) at line 143: surface: '#1f2937',
+- $(@{Color=#1F2937; Line=144; Text=card: '#1f2937',}.Color) at line 144: card: '#1f2937',
+- $(@{Color=#F9FAFB; Line=145; Text=text: '#f9fafb',}.Color) at line 145: text: '#f9fafb',
+- $(@{Color=#9CA3AF; Line=146; Text=textSecondary: '#9ca3af',}.Color) at line 146: textSecondary: '#9ca3af',
+- $(@{Color=#374151; Line=147; Text=border: '#374151',}.Color) at line 147: border: '#374151',
+- $(@{Color=#F87171; Line=148; Text=error: '#f87171',}.Color) at line 148: error: '#f87171',
+- $(@{Color=#34D399; Line=149; Text=success: '#34d399',}.Color) at line 149: success: '#34d399',
+- $(@{Color=#FBBF24; Line=150; Text=warning: '#fbbf24',}.Color) at line 150: warning: '#fbbf24',
+- $(@{Color=#60A5FA; Line=151; Text=info: '#60a5fa',}.Color) at line 151: info: '#60a5fa',
+- $(@{Color=#FFFFFF; Line=152; Text=white: '#ffffff',}.Color) at line 152: white: '#ffffff',
+- $(@{Color=#000000; Line=153; Text=black: '#000000',}.Color) at line 153: black: '#000000',
+- $(@{Color=#4B5563; Line=154; Text=disabled: '#4b5563',}.Color) at line 154: disabled: '#4b5563',
+- $(@{Color=#6B7280; Line=155; Text=placeholder: '#6b7280',}.Color) at line 155: placeholder: '#6b7280',
+\n## supabase\functions\stripe-redirect\index.ts
+- $(@{Color=#667EEA; Line=40; Text=background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);}.Color) at line 40: background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+- $(@{Color=#667EEA; Line=69; Text=color: #667eea;}.Color) at line 69: color: #667eea;

@@ -208,20 +208,28 @@ export default function RootLayout() {
     }
 
   const inAuthGroup = segments[0] === '(auth)';
+  const inWebGroup = segments[0] === '(web)';
   const isRootScreen = !segments[0];
     console.log('RootLayout: Navigation check:', {
       isAuthenticated,
       inAuthGroup,
+      inWebGroup,
       isRootScreen,
       segments,
       currentPath: segments.join('/'),
     });
 
-    if (!isAuthenticated && !inAuthGroup) {
+    // Web: redirect to landing page on logout
+    if (Platform.OS === 'web' && !isAuthenticated && !inAuthGroup && !inWebGroup) {
+      console.log('RootLayout: Web not authenticated, redirecting to landing');
+      router.replace('/(web)');
+    }
+    // Mobile: redirect to login on logout
+    else if (Platform.OS !== 'web' && !isAuthenticated && !inAuthGroup) {
       console.log('RootLayout: Not authenticated, redirecting to login');
       router.replace('/(auth)/login');
-    } else if (isAuthenticated && (inAuthGroup || isRootScreen)) {
-      // Navigate to tabs if authenticated and either in auth group OR on root screen
+    } else if (isAuthenticated && (inAuthGroup || (isRootScreen && Platform.OS !== 'web'))) {
+      // Navigate to tabs if authenticated and either in auth group OR on root screen (mobile only)
       console.log('RootLayout: Authenticated, redirecting to tabs');
       router.replace('/(tabs)');
     } else {

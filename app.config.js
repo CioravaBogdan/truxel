@@ -45,6 +45,19 @@ export default {
         "INTERNET",
         "POST_NOTIFICATIONS"
       ],
+      // Intent filters for deep linking (OAuth redirects)
+      intentFilters: [
+        {
+          action: "VIEW",
+          data: [
+            {
+              scheme: "truxel",
+              host: "*"
+            }
+          ],
+          category: ["BROWSABLE", "DEFAULT"]
+        }
+      ],
       // Maps disabled - not using MapView in app (Location via Expo Location only)
       // If needed in future, uncomment and use TRUXEL_ prefix:
       // config: {

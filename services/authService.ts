@@ -231,4 +231,40 @@ export const authService = {
   onAuthStateChange(callback: (event: string, session: any) => void) {
     return supabase.auth.onAuthStateChange(callback);
   },
+
+  /**
+   * Delete user account and all associated data (GDPR compliance)
+   * Calls Supabase Edge Function that deletes:
+   * - profiles, user_leads, searches, community_posts, community_interactions
+   * - user_post_usage, transactions, user_search_credits, notification_log
+   * - support_messages, avatar files, auth.users
+   * 
+   * IMPORTANT: Does NOT delete from 'leads' table (public company data)
+   */
+  async deleteAccount(): Promise<void> {
+    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+    
+    if (sessionError || !session) {
+      throw new Error('Not authenticated');
+    }
+
+    // Call Edge Function with user's access token
+    const { data, error } = await supabase.functions.invoke('delete-user-account', {
+      headers: {
+        Authorization: `Bearer ${session.access_token}`,
+      },
+    });
+
+    if (error) {
+      console.error('Delete account error:', error);
+      throw new Error(error.message || 'Failed to delete account');
+    }
+
+    if (!data?.success) {
+      throw new Error('Account deletion failed');
+    }
+
+    // Logout from RevenueCat
+    await logoutRevenueCat();
+  },
 };

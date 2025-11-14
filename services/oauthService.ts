@@ -108,16 +108,15 @@ export async function signInWithApple() {
 export async function signInWithGoogle() {
   try {
     console.log('Starting Google Sign In...');
-    
-    // For Expo Go: Use exp:// scheme
-    // For Development Build: Use truxel:// scheme
-    // For Production: Use truxel:// scheme
-    const redirectTo = Platform.OS === 'web' 
-      ? window.location.origin // Web: use current origin
-      : 'truxel://auth/callback'; // Mobile: use deep link
-    
+
+    // For web: Just use origin - Supabase SDK will auto-detect session from URL fragments
+    // For mobile: Use custom scheme deep link
+    const redirectTo = Platform.OS === 'web'
+      ? window.location.origin // Web: Supabase SDK auto-detects session
+      : 'truxel://auth/callback'; // Mobile: deep link
+
     console.log('Google OAuth redirect URL:', redirectTo);
-    
+
     // Supabase handles the OAuth flow
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
@@ -148,7 +147,7 @@ export async function signInWithGoogle() {
     // Note: The actual sign-in happens in browser
     // User will be redirected back to app after authentication
     // Session will be automatically created by Supabase
-    
+
     return data;
   } catch (error) {
     console.error('Google Sign In error:', error);
@@ -163,7 +162,7 @@ export async function isAppleAuthAvailable(): Promise<boolean> {
   if (Platform.OS !== 'ios') {
     return false;
   }
-  
+
   try {
     return await AppleAuthentication.isAvailableAsync();
   } catch {

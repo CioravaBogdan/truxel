@@ -18,6 +18,7 @@ import { Card } from '@/components/Card';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
 import { ChatSupportModal } from '@/components/ChatSupportModal';
+import DeleteAccountModal from '@/components/DeleteAccountModal';
 import { useAuthStore } from '@/store/authStore';
 import { authService } from '@/services/authService';
 import { getRadiusOptions, type DistanceUnit } from '@/utils/distance';
@@ -110,6 +111,7 @@ export default function ProfileScreen() {
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [showSupportModal, setShowSupportModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedPhoneCountry, setSelectedPhoneCountry] = useState<string>(PHONE_COUNTRIES[0].iso);
   const [phoneNumberLocal, setPhoneNumberLocal] = useState('');
   const [phoneError, setPhoneError] = useState<string | null>(null);
@@ -415,6 +417,39 @@ export default function ProfileScreen() {
           },
         ]
       );
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    try {
+      setIsLoading(true);
+      await authService.deleteAccount();
+      
+      // Clear store and navigate away
+      reset();
+      
+      if (Platform.OS === 'web') {
+        router.replace('/(web)');
+      } else {
+        // On native, user will be auto-logged out
+        router.replace('/(auth)/login');
+      }
+
+      Toast.show({
+        type: 'success',
+        text1: 'Account Deleted',
+        text2: 'Your account and all data have been permanently deleted.',
+      });
+    } catch (error: any) {
+      console.error('Delete account error:', error);
+      Toast.show({
+        type: 'error',
+        text1: 'Deletion Failed',
+        text2: error.message || 'Failed to delete account. Please try again.',
+      });
+    } finally {
+      setIsLoading(false);
+      setShowDeleteModal(false);
     }
   };
 
@@ -830,6 +865,23 @@ export default function ProfileScreen() {
           style={styles.logoutButton}
         />
 
+        {/* Danger Zone - Account Deletion */}
+        <Card style={styles.dangerZone}>
+          <View style={styles.dangerHeader}>
+            <Text style={styles.dangerTitle}>⚠️ Danger Zone</Text>
+            <Text style={styles.dangerDescription}>
+              Permanently delete your account and all associated data. This action cannot be undone.
+            </Text>
+          </View>
+          <TouchableOpacity
+            style={styles.deleteAccountButton}
+            onPress={() => setShowDeleteModal(true)}
+            disabled={isLoading}
+          >
+            <Text style={styles.deleteAccountButtonText}>Delete My Account</Text>
+          </TouchableOpacity>
+        </Card>
+
         <Text style={styles.version}>
           {t('profile.version')} 1.0.0
         </Text>
@@ -839,6 +891,13 @@ export default function ProfileScreen() {
       <ChatSupportModal
         visible={showSupportModal}
         onClose={() => setShowSupportModal(false)}
+      />
+
+      {/* Delete Account Modal */}
+      <DeleteAccountModal
+        visible={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        onConfirm={handleDeleteAccount}
       />
     </SafeAreaView>
   );
@@ -1116,6 +1175,45 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#EF4444',
     marginTop: 8,
+  },
+  // Danger Zone styles
+  dangerZone: {
+    marginTop: 32,
+    marginBottom: 16,
+    borderWidth: 2,
+    borderColor: '#FEE2E2',
+    backgroundColor: '#FEF2F2',
+  },
+  dangerHeader: {
+    marginBottom: 16,
+  },
+  dangerTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#DC2626',
+    marginBottom: 8,
+  },
+  dangerDescription: {
+    fontSize: 14,
+    color: '#991B1B',
+    lineHeight: 20,
+  },
+  deleteAccountButton: {
+    backgroundColor: '#DC2626',
+    paddingVertical: 14,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+    shadowColor: '#DC2626',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  deleteAccountButtonText: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#FFFFFF',
   },
   // Avatar styles
   avatarSection: {

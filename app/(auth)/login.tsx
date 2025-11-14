@@ -7,7 +7,7 @@ import {
   Platform,
   ScrollView,
   TouchableOpacity,
-  Linking,
+  Linking as RNLinking,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
@@ -21,6 +21,8 @@ import { signInWithApple, signInWithGoogle, isAppleAuthAvailable, isGoogleAuthAv
 import { supabase } from '@/lib/supabase';
 import Toast from 'react-native-toast-message';
 import { Truck } from 'lucide-react-native';
+
+WebBrowser.maybeCompleteAuthSession();
 
 interface LoginForm {
   email: string;
@@ -49,7 +51,7 @@ export default function LoginScreen() {
     checkOAuthProviders();
     
     // Listen for deep links (OAuth redirect)
-    const subscription = Linking.addEventListener('url', handleDeepLink);
+  const subscription = RNLinking.addEventListener('url', handleDeepLink);
     
     return () => {
       subscription.remove();
@@ -113,40 +115,52 @@ export default function LoginScreen() {
     try {
       setIsLoading(true);
       const result = await signInWithGoogle();
-      
+
       if (result?.url) {
-        // Use WebBrowser for better OAuth flow on mobile
-        const browserResult = await WebBrowser.openAuthSessionAsync(
-          result.url,
-          'truxel://auth/callback'
-        );
-        
-        if (browserResult.type === 'success') {
-          // Extract tokens from URL
-          const redirectUrl = (browserResult as any).url;
-          if (redirectUrl) {
-            const params = new URLSearchParams(redirectUrl.split('#')[1]);
-            const access_token = params.get('access_token');
-            const refresh_token = params.get('refresh_token');
-            
-            if (access_token && refresh_token) {
-              // Set session manually
-              const { error } = await supabase.auth.setSession({
-                access_token,
-                refresh_token,
-              });
-              
-              if (error) throw error;
-              
-              Toast.show({
-                type: 'success',
-                text1: t('auth.login_success'),
-              });
+        if (Platform.OS === 'web') {
+          // Web: Direct redirect - Supabase will handle session automatically
+          window.location.href = result.url;
+        } else {
+          // Mobile: Use WebBrowser for better OAuth flow
+          const browserResult = await WebBrowser.openAuthSessionAsync(
+            result.url,
+            'truxel://auth/callback'
+          );
+
+          if (browserResult.type === 'success') {
+            // Extract tokens from URL
+            const redirectUrl = (browserResult as any).url;
+            if (redirectUrl) {
+              const params = new URLSearchParams(redirectUrl.split('#')[1]);
+              const access_token = params.get('access_token');
+              const refresh_token = params.get('refresh_token');
+
+              if (access_token && refresh_token) {
+                // Set session manually
+                const { error } = await supabase.auth.setSession({
+                  access_token,
+                  refresh_token,
+                });
+
+                if (error) throw error;
+
+                Toast.show({
+                  type: 'success',
+                  text1: t('auth.login_success'),
+                });
+              }
             }
+          } else if (browserResult.type === 'cancel') {
+            Toast.show({
+              type: 'info',
+              text1: t('common.cancel'),
+              text2: 'Sign in cancelled',
+            });
           }
         }
       }
     } catch (error: any) {
+      console.error('Google Sign In error:', error);
       Toast.show({
         type: 'error',
         text1: t('common.error'),
