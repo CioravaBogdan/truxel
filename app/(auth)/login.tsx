@@ -75,24 +75,11 @@ export default function LoginScreen() {
   };
 
   const buildMobileRedirectUri = () => {
-    const isExpoGo =
-      Constants.appOwnership === 'expo' &&
-      Constants.executionEnvironment === 'storeClient';
-
-    const options: any = {
+    const redirect = makeRedirectUri({
       native: 'truxel://auth/callback',
+      preferLocalhost: true,
       scheme: 'truxel',
-      preferLocalhost: !isExpoGo,
-    };
-
-    if (isExpoGo) {
-      options.useProxy = true;
-      options.projectNameForProxy =
-        Constants.expoConfig?.originalFullName ||
-        `@${Constants.expoConfig?.owner || 'cioravabogdan'}/${Constants.expoConfig?.slug || 'truxel'}`;
-    }
-
-    const redirect = makeRedirectUri(options);
+    });
 
     console.log('=== OAuth Redirect Debug ===');
     console.log('Platform:', Platform.OS);
@@ -100,7 +87,6 @@ export default function LoginScreen() {
     console.log('Execution env:', Constants.executionEnvironment);
     console.log('Expo scheme:', Constants.expoConfig?.scheme);
     console.log('Expo hostUri:', Constants.expoConfig?.hostUri);
-    console.log('Redirect opts:', options);
     console.log('Computed redirectTo:', redirect);
     console.log('============================');
 
