@@ -47,7 +47,8 @@
     "passwords_dont_match": "Паролі не співпадають",
     "login_success": "Вхід успішний",
     "register_success": "Реєстрація успішна",
-    "logout_confirm": "Ви впевнені, що бажаєте вийти?"
+    "logout_confirm": "Ви впевнені, що бажаєте вийти?",
+    "sign_in_with_facebook": "?????? ????? Facebook"
   },
   "directions": {
     "north": "північ",

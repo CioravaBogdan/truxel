@@ -47,7 +47,8 @@
     "passwords_dont_match": "Hasła nie pasują",
     "login_success": "Zalogowano pomyślnie",
     "register_success": "Rejestracja zakończona",
-    "logout_confirm": "Czy na pewno chcesz się wylogować?"
+    "logout_confirm": "Czy na pewno chcesz się wylogować?",
+    "sign_in_with_facebook": "Zaloguj sie przez Facebooka"
   },
   "directions": {
     "north": "Północ",

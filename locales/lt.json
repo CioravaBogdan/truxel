@@ -47,7 +47,8 @@
     "passwords_dont_match": "Slaptažodžiai nesutampa",
     "login_success": "Sėkmingai prisijungta",
     "register_success": "Registracija sėkminga",
-    "logout_confirm": "Ar tikrai norite atsijungti?"
+    "logout_confirm": "Ar tikrai norite atsijungti?",
+    "sign_in_with_facebook": "Prisijunkite su Facebook"
   },
   "directions": {
     "north": "Šiaurė",

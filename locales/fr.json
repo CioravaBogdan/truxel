@@ -47,7 +47,8 @@
     "passwords_dont_match": "Les mots de passe ne correspondent pas",
     "login_success": "Connexion réussie",
     "register_success": "Inscription réussie",
-    "logout_confirm": "Êtes-vous sûr de vouloir vous déconnecter ?"
+    "logout_confirm": "Êtes-vous sûr de vouloir vous déconnecter ?",
+    "sign_in_with_facebook": "Se connecter avec Facebook"
   },
   "directions": {
     "north": "Nord",

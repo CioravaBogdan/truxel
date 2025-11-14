@@ -47,7 +47,8 @@
     "passwords_dont_match": "Parolele nu coincid",
     "login_success": "Autentificare reușită",
     "register_success": "Înregistrare reușită",
-    "logout_confirm": "Ești sigur că vrei să te deconectezi?"
+    "logout_confirm": "Ești sigur că vrei să te deconectezi?",
+    "sign_in_with_facebook": "Autentifica-te cu Facebook"
   },
   "directions": {
     "north": "Nord",

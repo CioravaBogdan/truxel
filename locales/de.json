@@ -47,7 +47,8 @@
     "passwords_dont_match": "Passwörter stimmen nicht überein",
     "login_success": "Anmeldung erfolgreich",
     "register_success": "Registrierung erfolgreich",
-    "logout_confirm": "Sind Sie sicher, dass Sie sich abmelden möchten?"
+    "logout_confirm": "Sind Sie sicher, dass Sie sich abmelden möchten?",
+    "sign_in_with_facebook": "Mit Facebook anmelden"
   },
   "directions": {
     "north": "Norden",

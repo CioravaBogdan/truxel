@@ -47,7 +47,8 @@
     "passwords_dont_match": "Şifreler eşleşmiyor",
     "login_success": "Giriş başarılı",
     "register_success": "Kayıt başarılı",
-    "logout_confirm": "Çıkış yapmak istediğinizden emin misiniz?"
+    "logout_confirm": "Çıkış yapmak istediğinizden emin misiniz?",
+    "sign_in_with_facebook": "Facebook ile giris yap"
   },
   "directions": {
     "north": "Kuzey",

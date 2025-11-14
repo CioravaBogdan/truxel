@@ -39,6 +39,7 @@ export default function LoginScreen() {
   const [isLoading, setIsLoading] = useState(false);
   const [isAppleAvailable, setIsAppleAvailable] = useState(false);
   const [isGoogleAvailable, setIsGoogleAvailable] = useState(false);
+  const [isFacebookAvailable, setIsFacebookAvailable] = useState(false);
 
   const {
     control,
@@ -67,6 +68,7 @@ export default function LoginScreen() {
     const googleAvailable = isGoogleAuthAvailable();
     setIsAppleAvailable(appleAvailable);
     setIsGoogleAvailable(googleAvailable);
+    setIsFacebookAvailable(true);
   };
 
   const handleDeepLink = ({ url }: { url: string }) => {
@@ -134,14 +136,14 @@ export default function LoginScreen() {
     }
   };
 
-  const handleGoogleSignIn = async () => {
+  const handleOAuthProviderSignIn = async (provider: 'google' | 'facebook') => {
     try {
       setIsLoading(true);
 
       if (Platform.OS === 'web') {
         // Web: Use direct redirect flow
         const { data, error } = await supabase.auth.signInWithOAuth({
-          provider: 'google',
+          provider,
           options: {
             redirectTo: window.location.origin,
           },
@@ -160,7 +162,7 @@ export default function LoginScreen() {
         }
 
         const { data, error } = await supabase.auth.signInWithOAuth({
-          provider: 'google',
+          provider,
           options: {
             redirectTo,
             skipBrowserRedirect: true,
@@ -177,7 +179,7 @@ export default function LoginScreen() {
           throw error;
         }
 
-        console.log('🔀 Supabase returned OAuth URL:', data?.url);
+        console.log(`🔀 Supabase returned ${provider} OAuth URL:`, data?.url);
 
         if (data?.url) {
           console.log('🔗 Opening OAuth URL...');
@@ -233,7 +235,7 @@ export default function LoginScreen() {
         }
       }
     } catch (error: any) {
-      console.error('❌ Google Sign In error:', error);
+      console.error(`❌ ${provider} Sign In error:`, error);
       Toast.show({
         type: 'error',
         text1: t('common.error'),
@@ -243,6 +245,10 @@ export default function LoginScreen() {
       setIsLoading(false);
     }
   };
+
+  const handleGoogleSignIn = () => handleOAuthProviderSignIn('google');
+
+  const handleFacebookSignIn = () => handleOAuthProviderSignIn('facebook');
 
   return (
     <KeyboardAvoidingView
@@ -348,6 +354,22 @@ export default function LoginScreen() {
             </TouchableOpacity>
           )}
 
+          {/* Facebook Sign In Button */}
+          {isFacebookAvailable && (
+            <TouchableOpacity
+              style={styles.facebookButton}
+              onPress={handleFacebookSignIn}
+              disabled={isLoading}
+            >
+              <View style={styles.facebookButtonContent}>
+                <Text style={styles.facebookIcon}>f</Text>
+                <Text style={styles.facebookButtonText}>
+                  {t('auth.sign_in_with_facebook')}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          )}
+
           <Button
             title={t('auth.no_account')}
             onPress={() => router.push('/(auth)/register')}
@@ -437,6 +459,30 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     color: '#1E293B',
+  },
+  facebookButton: {
+    width: '100%',
+    height: 50,
+    backgroundColor: '#1877F2',
+    borderRadius: 8,
+    marginBottom: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  facebookButtonContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  facebookIcon: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#FFFFFF',
+  },
+  facebookButtonText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#FFFFFF',
   },
   registerButton: {
     marginTop: 8,

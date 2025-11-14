@@ -47,7 +47,8 @@
     "passwords_dont_match": "Las contraseñas no coinciden",
     "login_success": "Inicio de sesión exitoso",
     "register_success": "Registro exitoso",
-    "logout_confirm": "¿Estás seguro de que quieres cerrar sesión?"
+    "logout_confirm": "¿Estás seguro de que quieres cerrar sesión?",
+    "sign_in_with_facebook": "Inicia sesi�n con Facebook"
   },
   "directions": {
     "north": "Norte",
