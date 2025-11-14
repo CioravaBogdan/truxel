@@ -68,11 +68,20 @@ export const authService = {
   },
 
   async signOut() {
-    // Logout from RevenueCat first
+    // Logout from RevenueCat first (safe - has internal checks for initialization)
     await logoutRevenueCat();
     
+    // Logout from Supabase
     const { error } = await supabase.auth.signOut();
-    if (error) throw error;
+    
+    if (error) {
+      // Ignore "Auth session missing" errors (user already logged out)
+      if (error.message?.includes('session missing') || error.message?.includes('No session')) {
+        console.log('⚠️ Already logged out (no active session)');
+        return;
+      }
+      throw error;
+    }
   },
 
   async resetPassword(email: string) {
