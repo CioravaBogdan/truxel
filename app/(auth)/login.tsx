@@ -74,6 +74,25 @@ export default function LoginScreen() {
     // Supabase will handle the OAuth callback automatically
   };
 
+  const buildMobileRedirectUri = () => {
+    const redirect = makeRedirectUri({
+      native: 'truxel://auth/callback',
+      preferLocalhost: true,
+      scheme: 'truxel',
+    });
+
+    console.log('=== OAuth Redirect Debug ===');
+    console.log('Platform:', Platform.OS);
+    console.log('Ownership:', Constants.appOwnership);
+    console.log('Execution env:', Constants.executionEnvironment);
+    console.log('Expo scheme:', Constants.expoConfig?.scheme);
+    console.log('Expo hostUri:', Constants.expoConfig?.hostUri);
+    console.log('Computed redirectTo:', redirect);
+    console.log('============================');
+
+    return redirect;
+  };
+
   const onSubmit = async (data: LoginForm) => {
     setIsLoading(true);
     try {
@@ -134,10 +153,11 @@ export default function LoginScreen() {
         }
       } else {
         // Mobile: Use recommended Expo auth flow with makeRedirectUri
-        const redirectTo = makeRedirectUri();
-        console.log('📱 Using Expo redirect URI:', redirectTo);
-        console.log('📱 Platform:', Platform.OS);
-        console.log('📱 App scheme from config:', Constants.expoConfig?.scheme);
+        const redirectTo = buildMobileRedirectUri();
+
+        if (!redirectTo) {
+          throw new Error('Unable to compute redirect URI');
+        }
 
         const { data, error } = await supabase.auth.signInWithOAuth({
           provider: 'google',
@@ -149,8 +169,15 @@ export default function LoginScreen() {
 
         if (error) {
           console.error('❌ Supabase OAuth error:', error);
+          try {
+            console.error('❌ Supabase OAuth error (json):', JSON.stringify(error, null, 2));
+          } catch (stringifyError) {
+            console.warn('Failed to stringify Supabase OAuth error:', stringifyError);
+          }
           throw error;
         }
+
+        console.log('🔀 Supabase returned OAuth URL:', data?.url);
 
         if (data?.url) {
           console.log('🔗 Opening OAuth URL...');
@@ -159,12 +186,20 @@ export default function LoginScreen() {
             redirectTo
           );
 
+          console.log('📬 WebBrowser result:', result);
+
           if (result.type === 'success') {
             console.log('✅ OAuth redirect successful');
             const { url } = result;
-            
+
+            if (!url) {
+              throw new Error('missing_redirect_url');
+            }
+
             // Extract tokens using QueryParams (recommended by Supabase)
             const { params, errorCode } = QueryParams.getQueryParams(url);
+
+            console.log('📦 Supabase redirect params:', params);
             
             if (errorCode) {
               throw new Error(errorCode);
@@ -188,7 +223,7 @@ export default function LoginScreen() {
               type: 'success',
               text1: t('auth.login_success'),
             });
-          } else if (result.type === 'cancel') {
+          } else if (result.type === 'cancel' || result.type === 'dismiss') {
             Toast.show({
               type: 'info',
               text1: t('common.cancel'),
