@@ -995,9 +995,42 @@ export default function LeadsScreen() {
         onClose={() => {
           setModalVisible(false);
           setSelectedLead(null);
-          // Stay on My Leads tab when closing modal
-          setSelectedTab('mybook');
         }}
+        onAddToMyBook={selectedTab === 'search' ? async (lead) => {
+          if (!user) return;
+          
+          try {
+            // Create a CommunityPost-like structure from Lead (search result)
+            const communityPost = {
+              id: lead.id,
+              user_id: user.id,
+              post_type: 'LOAD_AVAILABLE' as const,
+              status: 'active' as const,
+              origin_city: lead.city || '',
+              origin_country: lead.country || '',
+              origin_lat: lead.latitude || 0,
+              origin_lng: lead.longitude || 0,
+              template_key: 'custom',
+              metadata: {},
+              created_at: new Date().toISOString(),
+              profile: {
+                full_name: lead.contact_person_name || lead.company_name,
+                company_name: lead.company_name,
+                phone_number: lead.phone || '',
+                email: lead.email || '',
+              }
+            } as CommunityPost;
+            
+            // Use existing handleAddToMyBook function
+            await handleAddToMyBook(communityPost);
+            
+            // Close modal after successful save
+            setModalVisible(false);
+            setSelectedLead(null);
+          } catch (error) {
+            console.error('Error adding to My Book from modal:', error);
+          }
+        } : undefined}
       />
     </SafeAreaView>
   );

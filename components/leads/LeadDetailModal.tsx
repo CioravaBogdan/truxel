@@ -21,6 +21,7 @@ import {
   MessageCircle,
   Globe,
   Navigation,
+  Package,
 } from 'lucide-react-native';
 import { Lead } from '@/types/database.types';
 import { useAuthStore } from '@/store/authStore';
@@ -34,13 +35,17 @@ interface LeadDetailModalProps {
   lead: Lead | null;
   visible: boolean;
   onClose: () => void;
+  onAddToMyBook?: (lead: Lead) => void;
 }
 
-export default function LeadDetailModal({ lead, visible, onClose }: LeadDetailModalProps) {
+export default function LeadDetailModal({ lead, visible, onClose, onAddToMyBook }: LeadDetailModalProps) {
   const { t } = useTranslation();
   const { profile } = useAuthStore();
 
   if (!lead) return null;
+  
+  // Check if this lead is already in My Book (converted from community)
+  const isAlreadyInMyBook = lead.source_type === 'community';
 
   // Collect all phone numbers (work + mobile)
   const phoneNumbers = [
@@ -198,6 +203,20 @@ export default function LeadDetailModal({ lead, visible, onClose }: LeadDetailMo
               </View>
             )}
           </View>
+
+          {/* Add to My Book Button - Only show if not already in My Book and callback provided */}
+          {onAddToMyBook && !isAlreadyInMyBook && (
+            <View style={styles.addToMyBookContainer}>
+              <TouchableOpacity 
+                style={styles.addToMyBookButton} 
+                onPress={() => onAddToMyBook(lead)}
+                accessibilityLabel={t('leads.add_to_mybook')}
+              >
+                <Package size={18} color="#FFF" />
+                <Text style={styles.addToMyBookText}>{t('leads.add_to_mybook')}</Text>
+              </TouchableOpacity>
+            </View>
+          )}
 
           {/* Contact Section */}
           {(phoneNumbers.length > 0 || emails.length > 0) && (
@@ -473,5 +492,33 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#64748B',
     lineHeight: 22,
+  },
+  addToMyBookContainer: {
+    marginTop: 16,
+    marginHorizontal: 16,
+    alignItems: 'center',
+  },
+  addToMyBookButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    backgroundColor: '#F59E0B', // Orange background (same as PostCard)
+    paddingHorizontal: 20,
+    paddingVertical: 14,
+    borderRadius: 12,
+    shadowColor: '#F59E0B',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 4,
+    minWidth: 200,
+    justifyContent: 'center',
+  },
+  addToMyBookText: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#FFFFFF',
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
   },
 });
