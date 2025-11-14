@@ -125,8 +125,8 @@ export const searchesService = {
       .from('searches')
       .insert({
         user_id: userId,
-        keywords: params.keywords,
-        address: params.address,
+        search_keywords: params.keywords,
+        search_address: params.address,
         latitude: params.latitude,
         longitude: params.longitude,
         radius_km: profile.search_radius_km || 5,
