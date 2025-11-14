@@ -230,10 +230,24 @@ export const leadsService = {
   },
 
   /**
+   * Update last_contacted_at timestamp (when user contacts lead via any method)
+   * @param userLeadId - ID from user_leads table (not leads.id!)
+   */
+  async updateLastContacted(userLeadId: string, userId: string): Promise<void> {
+    const { error } = await supabase
+      .from('user_leads')
+      .update({ last_contacted_at: new Date().toISOString() })
+      .eq('id', userLeadId)
+      .eq('user_id', userId); // Security: ensure user owns this relationship
+
+    if (error) throw error;
+  },
+
+  /**
    * Update user-specific lead notes (in user_leads junction table)
    * @param userLeadId - ID from user_leads table (not leads.id!)
    */
-  async updateLeadNotes(userLeadId: string, notes: string, userId: string): Promise<void> {
+  async updateLeadNotes(userLeadId: string, userId: string, notes: string | null): Promise<void> {
     const { error } = await supabase
       .from('user_leads')
       .update({ user_notes: notes })

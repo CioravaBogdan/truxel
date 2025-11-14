@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
   ScrollView,
   Linking,
+  TextInput,
+  ActivityIndicator,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
@@ -22,6 +24,8 @@ import {
   Globe,
   Navigation,
   Package,
+  Save,
+  Edit3,
 } from 'lucide-react-native';
 import { Lead } from '@/types/database.types';
 import { useAuthStore } from '@/store/authStore';
@@ -30,17 +34,32 @@ import {
   safeOpenEmail,
   safeOpenPhone,
 } from '@/utils/safeNativeModules';
+import { leadsService } from '@/services/leadsService';
 
 interface LeadDetailModalProps {
   lead: Lead | null;
   visible: boolean;
   onClose: () => void;
   onAddToMyBook?: (lead: Lead) => void;
+  onNotesUpdated?: () => void; // Callback to reload leads after saving notes
 }
 
-export default function LeadDetailModal({ lead, visible, onClose, onAddToMyBook }: LeadDetailModalProps) {
+export default function LeadDetailModal({ lead, visible, onClose, onAddToMyBook, onNotesUpdated }: LeadDetailModalProps) {
   const { t } = useTranslation();
-  const { profile } = useAuthStore();
+  const { profile, user } = useAuthStore();
+  
+  // Notes editor state
+  const [isEditingNotes, setIsEditingNotes] = useState(false);
+  const [notesText, setNotesText] = useState('');
+  const [isSavingNotes, setIsSavingNotes] = useState(false);
+  
+  // Initialize notes text when modal opens
+  React.useEffect(() => {
+    if (lead) {
+      setNotesText(lead.user_notes || '');
+      setIsEditingNotes(false);
+    }
+  }, [lead]);
 
   if (!lead) return null;
   
@@ -159,6 +178,48 @@ export default function LeadDetailModal({ lead, visible, onClose, onAddToMyBook 
         type: 'error',
         text1: 'Could not open Maps',
       });
+    }
+  };
+  
+  const handleSaveNotes = async () => {
+    if (!user || !(lead as any).user_lead_id) {
+      Toast.show({
+        type: 'error',
+        text1: 'Cannot save notes',
+        text2: 'User lead ID not found',
+      });
+      return;
+    }
+    
+    setIsSavingNotes(true);
+    try {
+      await leadsService.updateLeadNotes(
+        (lead as any).user_lead_id,
+        user.id,
+        notesText.trim() || null
+      );
+      
+      Toast.show({
+        type: 'success',
+        text1: 'Notes saved',
+        text2: 'Your notes have been updated',
+      });
+      
+      setIsEditingNotes(false);
+      
+      // Trigger reload of leads list
+      if (onNotesUpdated) {
+        onNotesUpdated();
+      }
+    } catch (error) {
+      console.error('Error saving notes:', error);
+      Toast.show({
+        type: 'error',
+        text1: 'Failed to save notes',
+        text2: 'Please try again',
+      });
+    } finally {
+      setIsSavingNotes(false);
     }
   };
 
@@ -324,13 +385,66 @@ export default function LeadDetailModal({ lead, visible, onClose, onAddToMyBook 
             </View>
           )}
 
-          {/* Notes */}
-          {lead.user_notes && (
-            <View style={styles.section}>
-              <Text style={styles.sectionTitle}>📝 {t('leads.notes')}</Text>
-              <Text style={styles.notesText}>{lead.user_notes}</Text>
+          {/* Notes Editor */}
+          <View style={styles.section}>
+            <View style={styles.notesHeader}>
+              <Text style={styles.sectionTitle}>📝 {t('leads.notes', 'Notes')}</Text>
+              {!isEditingNotes && (
+                <TouchableOpacity
+                  onPress={() => setIsEditingNotes(true)}
+                  style={styles.editButton}
+                >
+                  <Edit3 size={18} color="#2563EB" />
+                  <Text style={styles.editButtonText}>Edit</Text>
+                </TouchableOpacity>
+              )}
             </View>
-          )}
+            
+            {isEditingNotes ? (
+              <>
+                <TextInput
+                  style={styles.notesInput}
+                  value={notesText}
+                  onChangeText={setNotesText}
+                  placeholder="Add notes about this lead..."
+                  placeholderTextColor="#94A3B8"
+                  multiline
+                  numberOfLines={6}
+                  textAlignVertical="top"
+                />
+                <View style={styles.notesActions}>
+                  <TouchableOpacity
+                    style={styles.cancelButton}
+                    onPress={() => {
+                      setNotesText(lead?.user_notes || '');
+                      setIsEditingNotes(false);
+                    }}
+                  >
+                    <Text style={styles.cancelButtonText}>Cancel</Text>
+                  </TouchableOpacity>
+                  
+                  <TouchableOpacity
+                    style={styles.saveButton}
+                    onPress={handleSaveNotes}
+                    disabled={isSavingNotes}
+                  >
+                    {isSavingNotes ? (
+                      <ActivityIndicator size="small" color="#FFF" />
+                    ) : (
+                      <>
+                        <Save size={18} color="#FFF" />
+                        <Text style={styles.saveButtonText}>Save</Text>
+                      </>
+                    )}
+                  </TouchableOpacity>
+                </View>
+              </>
+            ) : (
+              <Text style={styles.notesText}>
+                {notesText || 'No notes yet. Tap Edit to add notes about this lead.'}
+              </Text>
+            )}
+          </View>
 
           {/* Bottom padding */}
           <View style={{ height: 40 }} />
@@ -519,5 +633,68 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     textTransform: 'uppercase',
     letterSpacing: 0.5,
+  },
+  // Notes Editor Styles
+  notesHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  editButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 8,
+    backgroundColor: '#DBEAFE',
+  },
+  editButtonText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#2563EB',
+  },
+  notesInput: {
+    backgroundColor: '#F8FAFC',
+    borderWidth: 1.5,
+    borderColor: '#E2E8F0',
+    borderRadius: 12,
+    padding: 12,
+    fontSize: 15,
+    color: '#1E293B',
+    minHeight: 120,
+    marginBottom: 12,
+  },
+  notesActions: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  cancelButton: {
+    flex: 1,
+    paddingVertical: 12,
+    borderRadius: 10,
+    backgroundColor: '#F1F5F9',
+    alignItems: 'center',
+  },
+  cancelButtonText: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: '#64748B',
+  },
+  saveButton: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
+    paddingVertical: 12,
+    borderRadius: 10,
+    backgroundColor: '#10B981',
+  },
+  saveButtonText: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#FFF',
   },
 });

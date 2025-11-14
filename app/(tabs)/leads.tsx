@@ -11,6 +11,7 @@ import {
   Modal,
   Platform,
   Linking,
+  Image,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -21,7 +22,6 @@ import {
   showNativeModuleError
 } from '@/utils/safeNativeModules';
 import { Card } from '@/components/Card';
-import { StatusBadge } from '@/components/StatusBadge';
 import { Input } from '@/components/Input';
 import { useAuthStore } from '@/store/authStore';
 import { useLeadsStore } from '@/store/leadsStore';
@@ -39,7 +39,6 @@ import {
   Phone, 
   MessageCircle, 
   MapPin, 
-  Share2, 
   Download, 
   Search as SearchIcon,
   Zap,
@@ -50,6 +49,25 @@ import {
 } from 'lucide-react-native';
 import { Lead } from '@/types/database.types';
 import type { CommunityPost, Country, City } from '@/types/community.types';
+
+// Helper function to format "last contacted" time
+const formatLastContacted = (lastContactedAt: string | null): string => {
+  if (!lastContactedAt) return 'New';
+  
+  const now = new Date();
+  const contacted = new Date(lastContactedAt);
+  const diffMs = now.getTime() - contacted.getTime();
+  const diffMins = Math.floor(diffMs / 60000);
+  const diffHours = Math.floor(diffMs / 3600000);
+  const diffDays = Math.floor(diffMs / 86400000);
+  
+  if (diffMins < 60) return `${diffMins}m ago`;
+  if (diffHours < 24) return `${diffHours}h ago`;
+  if (diffDays === 1) return 'Yesterday';
+  if (diffDays < 7) return `${diffDays}d ago`;
+  if (diffDays < 30) return `${Math.floor(diffDays / 7)}w ago`;
+  return `${Math.floor(diffDays / 30)}mo ago`;
+};
 
 export default function LeadsScreen() {
   const { t } = useTranslation();
@@ -309,6 +327,15 @@ export default function LeadsScreen() {
 
     if (!result.success) {
       showNativeModuleError('Error', result.userMessage);
+    } else if (user && (lead as any).user_lead_id) {
+      // Update last_contacted_at timestamp
+      try {
+        await leadsService.updateLastContacted((lead as any).user_lead_id, user.id);
+        // Reload leads to refresh UI
+        await loadLeads();
+      } catch (error) {
+        console.error('Error updating last contacted:', error);
+      }
     }
   };
 
@@ -344,6 +371,15 @@ export default function LeadsScreen() {
         text1: 'WhatsApp Error',
         text2: result.userMessage 
       });
+    } else if (user && (lead as any).user_lead_id) {
+      // Update last_contacted_at timestamp
+      try {
+        await leadsService.updateLastContacted((lead as any).user_lead_id, user.id);
+        // Reload leads to refresh UI
+        await loadLeads();
+      } catch (error) {
+        console.error('Error updating last contacted:', error);
+      }
     }
   };
 
@@ -548,8 +584,6 @@ export default function LeadsScreen() {
 
   // Render functions for different card types
   const renderLeadCard = ({ item: lead }: { item: Lead }) => {
-    // Check if this lead is from My Book (converted from community post)
-    const isMyBookLead = lead.source_type === 'community';
     
     const handleLeadPress = () => {
       setSelectedLead(lead);
@@ -557,147 +591,129 @@ export default function LeadsScreen() {
       setSourceTab(selectedTab); // Track current tab when opening modal
     };
     
+    // Get image URL (google_url_photo or default)
+    const imageUrl = (lead as any).google_url_photo || 'https://via.placeholder.com/80x80.png?text=Company';
+    
+    // Format last contacted time
+    const lastContactedText = formatLastContacted((lead as any).last_contacted_at || null);
+    
     return (
       <TouchableOpacity onPress={handleLeadPress} activeOpacity={0.7}>
         <Card style={styles.leadCard}>
-        <View style={styles.leadHeader}>
-          <View style={styles.leadHeaderLeft}>
-            <Text style={styles.leadName}>{lead.company_name}</Text>
-            {lead.city && (
-              <View style={styles.leadLocation}>
-                <MapPin size={14} color="#64748B" />
-                <Text style={styles.leadCity}>{lead.city}</Text>
-              </View>
-            )}
+          {/* Header with Image, Company Info, and Actions */}
+          <View style={styles.leadCardHeader}>
+            {/* Company Image */}
+            <Image 
+              source={{ uri: imageUrl }} 
+              style={styles.leadImage}
+              defaultSource={require('@/assets/images/icon.png')}
+            />
+            
+            {/* Company Info */}
+            <View style={styles.leadInfo}>
+              <Text style={styles.leadName} numberOfLines={1}>{lead.company_name}</Text>
+              {lead.city && (
+                <View style={styles.leadLocation}>
+                  <MapPin size={12} color="#64748B" />
+                  <Text style={styles.leadCity} numberOfLines={1}>{lead.city}</Text>
+                </View>
+              )}
+              {lead.industry && (
+                <Text style={styles.leadIndustry} numberOfLines={1}>{lead.industry}</Text>
+              )}
+            </View>
+            
+            {/* Last Contacted Badge */}
+            <View style={styles.lastContactedBadge}>
+              <Text style={[
+                styles.lastContactedText,
+                lastContactedText === 'New' && styles.lastContactedTextNew
+              ]}>
+                {lastContactedText}
+              </Text>
+            </View>
           </View>
-          <View style={styles.leadHeaderRight}>
-            {isMyBookLead && selectedTab === 'mybook' && (
+
+          {/* Contact Actions Row (Email, WhatsApp, Phone, Maps) */}
+          <View style={styles.contactActionsRow}>
+            {lead.email && (
               <TouchableOpacity
-                style={styles.bookmarkButton}
-                onPress={() => handleDeleteFromMyBook(lead)}
+                style={styles.contactChip}
+                onPress={() => handleSendEmail(lead)}
               >
-                <BookMarked size={20} color="#F59E0B" fill="#F59E0B" />
+                <Mail size={16} color="#2563EB" />
+                <Text style={[styles.chipText, { color: '#2563EB' }]}>Email</Text>
               </TouchableOpacity>
             )}
-            <StatusBadge status={lead.status} />
+            {(lead.phone || lead.whatsapp) && (
+              <TouchableOpacity
+                style={styles.contactChip}
+                onPress={() => handleSendWhatsApp(lead)}
+              >
+                <MessageCircle size={16} color="#10B981" />
+                <Text style={[styles.chipText, { color: '#10B981' }]}>WhatsApp</Text>
+              </TouchableOpacity>
+            )}
+            {lead.phone && (
+              <TouchableOpacity
+                style={styles.contactChip}
+                onPress={async () => {
+                  if (!lead.phone) return;
+                  const result = await safeOpenPhone(lead.phone, 'Cannot make phone call');
+                  if (!result.success) {
+                    Toast.show({
+                      type: 'error',
+                      text1: 'Phone Error',
+                      text2: result.userMessage
+                    });
+                  } else if (user && (lead as any).user_lead_id) {
+                    // Update last_contacted_at timestamp
+                    try {
+                      await leadsService.updateLastContacted((lead as any).user_lead_id, user.id);
+                      // Reload leads to refresh UI
+                      await loadLeads();
+                    } catch (error) {
+                      console.error('Error updating last contacted:', error);
+                    }
+                  }
+                }}
+              >
+                <Phone size={16} color="#F59E0B" />
+                <Text style={[styles.chipText, { color: '#F59E0B' }]}>Call</Text>
+              </TouchableOpacity>
+            )}
+            {((lead as any).google_url_place || (lead.latitude && lead.longitude)) && (
+              <TouchableOpacity
+                style={styles.contactChip}
+                onPress={() => {
+                  try {
+                    const url = (lead as any).google_url_place 
+                      ? (lead as any).google_url_place
+                      : `https://www.google.com/maps/search/?api=1&query=${lead.latitude},${lead.longitude}`;
+                    Linking.openURL(url);
+                  } catch {
+                    Toast.show({
+                      type: 'error',
+                      text1: 'Could not open Maps',
+                    });
+                  }
+                }}
+              >
+                <MapPin size={16} color="#EA4335" />
+                <Text style={[styles.chipText, { color: '#EA4335' }]}>Maps</Text>
+              </TouchableOpacity>
+            )}
           </View>
-        </View>
 
-      {/* Primary Actions Row: Email, WhatsApp, Phone, Share */}
-      <View style={styles.leadActions}>
-        {lead.email && (
-          <TouchableOpacity
-            style={styles.actionButton}
-            onPress={() => handleSendEmail(lead)}
-          >
-            <Mail size={20} color="#2563EB" />
-          </TouchableOpacity>
-        )}
-        {(lead.phone || lead.whatsapp) && (
-          <TouchableOpacity
-            style={styles.actionButton}
-            onPress={() => handleSendWhatsApp(lead)}
-          >
-            <MessageCircle size={20} color="#10B981" />
-          </TouchableOpacity>
-        )}
-        {lead.phone && (
-          <TouchableOpacity
-            style={styles.actionButton}
-            onPress={async () => {
-              if (!lead.phone) return;
-              const result = await safeOpenPhone(lead.phone, 'Cannot make phone call');
-              if (!result.success) {
-                Toast.show({
-                  type: 'error',
-                  text1: 'Phone Error',
-                  text2: result.userMessage
-                });
-              }
-            }}
-          >
-            <Phone size={20} color="#F59E0B" />
-          </TouchableOpacity>
-        )}
-        <TouchableOpacity
-          style={styles.actionButton}
-          onPress={() => handleShareLead(lead)}
-        >
-          <Share2 size={20} color="#8B5CF6" />
-        </TouchableOpacity>
-      </View>
-
-      {/* Secondary Actions Row: Social Media + Google Maps */}
-      <View style={styles.socialActions}>
-        {lead.linkedin_profile_url && (
-          <TouchableOpacity
-            style={styles.socialButton}
-            onPress={() => Linking.openURL(lead.linkedin_profile_url!)}
-          >
-            <Globe size={16} color="#0A66C2" />
-            <Text style={[styles.socialButtonText, { color: '#0A66C2' }]}>LinkedIn</Text>
-          </TouchableOpacity>
-        )}
-        {lead.facebook && (
-          <TouchableOpacity
-            style={styles.socialButton}
-            onPress={() => Linking.openURL(lead.facebook!)}
-          >
-            <Globe size={16} color="#1877F2" />
-            <Text style={[styles.socialButtonText, { color: '#1877F2' }]}>Facebook</Text>
-          </TouchableOpacity>
-        )}
-        {lead.instagram && (
-          <TouchableOpacity
-            style={styles.socialButton}
-            onPress={() => Linking.openURL(lead.instagram!)}
-          >
-            <Globe size={16} color="#E4405F" />
-            <Text style={[styles.socialButtonText, { color: '#E4405F' }]}>Instagram</Text>
-          </TouchableOpacity>
-        )}
-        {lead.website && (
-          <TouchableOpacity
-            style={styles.socialButton}
-            onPress={() => Linking.openURL(lead.website!)}
-          >
-            <Globe size={16} color="#10B981" />
-            <Text style={[styles.socialButtonText, { color: '#10B981' }]}>Website</Text>
-          </TouchableOpacity>
-        )}
-        {((lead as any).google_url_place || (lead.latitude && lead.longitude)) && (
-          <TouchableOpacity
-            style={styles.socialButton}
-            onPress={() => {
-              try {
-                // Prefer google_url_place, fallback to lat/lng
-                const url = (lead as any).google_url_place 
-                  ? (lead as any).google_url_place
-                  : `https://www.google.com/maps/search/?api=1&query=${lead.latitude},${lead.longitude}`;
-                
-                console.log('[Maps Button] Opening URL:', url);
-                Linking.openURL(url);
-              } catch (error) {
-                console.error('[Maps Button] Error:', error);
-                Toast.show({
-                  type: 'error',
-                  text1: 'Could not open Maps',
-                });
-              }
-            }}
-          >
-            <MapPin size={16} color="#EA4335" />
-            <Text style={[styles.socialButtonText, { color: '#EA4335' }]}>Maps</Text>
-          </TouchableOpacity>
-        )}
-      </View>
-
-        {lead.user_notes && (
-          <Text style={styles.leadNotes} numberOfLines={2}>
-            {lead.user_notes}
-          </Text>
-        )}
-      </Card>
+          {/* Notes Preview (if available) */}
+          {lead.user_notes && (
+            <View style={styles.notesPreview}>
+              <Text style={styles.notesText} numberOfLines={2}>
+                💭 {lead.user_notes}
+              </Text>
+            </View>
+          )}
+        </Card>
       </TouchableOpacity>
     );
   };
@@ -1005,6 +1021,7 @@ export default function LeadsScreen() {
           }
           setSourceTab(null);
         }}
+        onNotesUpdated={loadLeads} // Reload leads after notes are saved
         onAddToMyBook={selectedLead && selectedLead.source_type !== 'community' ? async (lead) => {
           if (!user) return;
 
@@ -1312,5 +1329,73 @@ const styles = StyleSheet.create({
   },
   hotLeadCardWrapper: {
     marginBottom: 12,
+  },
+  // New Lead Card Header with Image
+  leadCardHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
+    gap: 12,
+  },
+  leadImage: {
+    width: 60,
+    height: 60,
+    borderRadius: 8,
+    backgroundColor: '#F1F5F9',
+  },
+  leadInfo: {
+    flex: 1,
+    gap: 4,
+  },
+  leadIndustry: {
+    fontSize: 12,
+    color: '#94A3B8',
+  },
+  lastContactedBadge: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 6,
+    backgroundColor: '#F1F5F9',
+  },
+  lastContactedText: {
+    fontSize: 11,
+    fontWeight: '600',
+    color: '#64748B',
+  },
+  lastContactedTextNew: {
+    color: '#10B981',
+  },
+  // Contact Actions Row (Chips)
+  contactActionsRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+    marginBottom: 8,
+  },
+  contactChip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    backgroundColor: '#F8FAFC',
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    gap: 6,
+  },
+  chipText: {
+    fontSize: 13,
+    fontWeight: '600',
+  },
+  // Notes Preview
+  notesPreview: {
+    paddingTop: 8,
+    borderTopWidth: 1,
+    borderTopColor: '#F1F5F9',
+  },
+  notesText: {
+    fontSize: 13,
+    color: '#64748B',
+    fontStyle: 'italic',
   },
 });
