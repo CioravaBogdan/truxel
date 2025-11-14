@@ -164,7 +164,7 @@ export default function LeadDetailModal({ lead, visible, onClose }: LeadDetailMo
       presentationStyle="fullScreen"
       onRequestClose={onClose}
     >
-      <SafeAreaView style={styles.container} edges={['top']}>
+      <SafeAreaView style={styles.container} edges={['bottom']}>
         {/* Header */}
         <View style={styles.header}>
           <Text style={styles.headerTitle}>{t('leads.lead_details')}</Text>
@@ -332,6 +332,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     paddingVertical: 16,
+    paddingTop: 60, // Add extra top padding to avoid status bar overlap
     backgroundColor: 'white',
     borderBottomWidth: 1,
     borderBottomColor: '#E5E7EB',
