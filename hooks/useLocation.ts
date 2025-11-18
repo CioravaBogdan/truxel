@@ -1,11 +1,12 @@
 import * as Location from 'expo-location';
+import { Platform } from 'react-native';
 import { safeRequestLocationPermissions, safeGetCurrentPosition, safeReverseGeocode } from '@/utils/safeNativeModules';
 
 /**
  * Mobile Location Hook
  * Uses Expo Location for iOS and Android with safe wrappers to prevent crashes
- * Uses Lowest accuracy for both platforms for fastest location fetch
- * Lowest = network-based location (1-3 seconds on both iOS and Android)
+ * Android: Uses Low accuracy for faster network-based location
+ * iOS: Uses Balanced accuracy (Low causes issues on some iOS versions)
  */
 export const useLocation = () => {
   const getCurrentLocation = async () => {
@@ -14,11 +15,10 @@ export const useLocation = () => {
       throw new Error('Permission to access location was denied');
     }
 
-    // Android: Use Lowest accuracy (network location) for speed (~1-2 seconds)
-    // iOS: Use Lowest accuracy for speed (uses significant location changes)
-    // Note: iOS doesn't support Accuracy.Low, use Lowest instead
+    // Android: Low accuracy is fast and works well (network-based)
+    // iOS: Balanced accuracy to avoid native module crashes
     const location = await safeGetCurrentPosition({
-      accuracy: Location.Accuracy.Lowest,
+      accuracy: Platform.OS === 'android' ? Location.Accuracy.Low : Location.Accuracy.Balanced,
     });
 
     if (!location) {

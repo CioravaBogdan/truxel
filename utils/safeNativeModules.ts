@@ -195,8 +195,8 @@ export async function safeRequestLocationPermissions(): Promise<Location.Permiss
  * Safe wrapper for Location.getCurrentPositionAsync
  * Returns location or null if error/denied
  * 
- * Uses Lowest accuracy by default for fastest response on both platforms
- * Lowest = network-based location (1-3 seconds)
+ * Android: Uses Low accuracy by default (fast, network-based)
+ * iOS: Uses Balanced accuracy (prevents native crashes)
  * 
  * @param options - Location options
  * @returns Location object or null
@@ -210,10 +210,10 @@ export async function safeGetCurrentPosition(
       return null;
     }
 
-    // Use Lowest accuracy for fastest response (network-based)
-    // Works on both iOS and Android
+    // Default to Balanced accuracy if no options provided
+    // Caller (useLocation hook) handles platform-specific accuracy
     const defaultOptions: Location.LocationOptions = {
-      accuracy: Location.Accuracy.Lowest,
+      accuracy: Location.Accuracy.Balanced,
     };
 
     const location = await Location.getCurrentPositionAsync(options || defaultOptions);
