@@ -77,9 +77,12 @@ export default function LoginScreen() {
   };
 
   const buildMobileRedirectUri = () => {
+    // IMPORTANT: For Facebook OAuth in Expo Go, we MUST use custom scheme
+    // Facebook does NOT allow localhost URLs (exp://localhost:8081)
+    // So we force 'truxel://auth/callback' even in development
     const redirect = makeRedirectUri({
       native: 'truxel://auth/callback',
-      preferLocalhost: true,
+      preferLocalhost: false, // CRITICAL: Facebook rejects localhost URLs
       scheme: 'truxel',
     });
 
