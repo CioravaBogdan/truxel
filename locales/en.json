@@ -539,93 +539,93 @@
       "signup": "Sign Up"
     },
     "hero": {
-      "title": "Take Control of Your Trucking Business",
-      "subtitle": "No more waiting on brokers. Find shippers directly around you, even in dead zones. Send personalized messages via WhatsApp, email, or call with one tap.",
+      "title": "Built by Drivers, For Drivers",
+      "subtitle": "Stop paying broker fees. Truxel gives you the power to discover shippers around you and the opportunity to connect directly—no more knocking on warehouse doors.",
       "cta_primary": "Start Free Trial",
-      "trust_badge": "Built for Owner-Operators Across North America",
+      "trust_badge": "Founded by an Owner-Operator | 100% Independent",
       "trust_features": {
-        "no_broker_fees": "No Broker Fees",
-        "dead_zones": "Find Shippers in Dead Zones",
-        "instant_contact": "Instant Contact Methods"
+        "no_broker_fees": "Zero Broker Fees",
+        "dead_zones": "Find Loads in Dead Zones",
+        "instant_contact": "Direct Contact Opportunity"
       }
     },
     "cta": {
-      "learn_more": "Learn More"
+      "learn_more": "See How It Works"
     },
     "features": {
       "title": "Everything You Need to Grow",
       "subtitle": "Powerful features designed for truck drivers",
-      "gps_title": "GPS-Based Search",
-      "gps_desc": "Find nearby companies instantly using real-time location",
+      "gps_title": "Find Clients Where You Park",
+      "gps_desc": "Stuck in an industrial zone? Our GPS search finds factories and warehouses around you instantly. No more deadhead miles.",
       "instant_contact_title": "Instant Contact",
       "instant_contact_desc": "Connect via WhatsApp, email, or phone in one tap",
-      "community_title": "Driver Community",
-      "community_desc": "Post your availability and find loads from other drivers",
-      "leads_title": "Company Leads",
-      "leads_desc": "Discover freight companies and logistics partners",
-      "templates_title": "Quick Templates",
-      "templates_desc": "Use pre-built messages to contact companies faster",
+      "community_title": "Real Drivers, Real Loads",
+      "community_desc": "A community built on trust. Share availability and loads directly with other owner-operators. No fake listings.",
+      "leads_title": "Your Data, Your Business",
+      "leads_desc": "Save your leads, build your book of business. Export everything to CSV. We don't lock you in.",
+      "templates_title": "Professional Outreach",
+      "templates_desc": "Don't like cold calling? Use our pre-translated templates to contact shippers via WhatsApp or Email professionally.",
       "linkedin_title": "LinkedIn Integration",
-      "linkedin_desc": "Find decision-makers and contact info instantly",
+      "linkedin_desc": "Skip the gatekeeper. Find the person who signs the checks instantly.",
       "ai_title": "AI Matching",
-      "ai_desc": "Smart recommendations based on your routes and preferences",
+      "ai_desc": "Our system learns your favorite routes and suggests loads before you even search.",
       "notifications_title": "Smart Notifications",
       "notifications_desc": "Get alerts when companies post loads near you",
       "multilang_title": "Multi-Language",
       "multilang_desc": "Available in English, Romanian, Polish, Turkish, Spanish, and more"
     },
     "features_page": {
-      "hero_title": "Powerful Features for Truck Drivers",
-      "hero_subtitle": "Everything you need to find clients, manage leads, and grow your logistics business",
+      "hero_title": "Built by a Driver, For Drivers",
+      "hero_subtitle": "Stop paying broker fees. Truxel gives you the power to discover shippers around you and the opportunity to connect directly—no more knocking on warehouse doors.",
       "core": {
-        "title": "Core Features",
-        "subtitle": "Available on all plans, including the free trial",
+        "title": "Tools for Independence",
+        "subtitle": "Everything I wished I had when I was on the road.",
         "details": {
           "gps": [
             "Automatic location detection",
-            "5km search radius",
-            "Real-time GPS tracking",
-            "Search anywhere you drive"
+            "Search industrial zones instantly",
+            "Find direct shippers nearby",
+            "Avoid empty return trips"
           ],
           "community": [
-            "Post driver availability",
-            "Find available routes",
-            "Connect with fellow truckers",
-            "Real-time community feed"
+            "Post truck availability",
+            "Find loads from colleagues",
+            "No broker fees",
+            "Verified driver network"
           ],
           "leads": [
-            "Unlimited lead storage",
-            "Status tracking (New, Contacted, Won, Lost)",
-            "Add custom notes",
-            "CSV export functionality"
+            "Own your contact list",
+            "Export to CSV anytime",
+            "Track negotiation status",
+            "No hidden walls"
           ],
           "templates": [
-            "Pre-filled email templates",
-            "WhatsApp message templates",
-            "Auto-populate your contact info",
-            "Professional messaging"
+            "Multi-language support",
+            "WhatsApp direct integration",
+            "Professional email formats",
+            "Break language barriers"
           ]
         }
       },
       "how": {
-        "title": "How It Works",
-        "subtitle": "Start finding clients in 4 simple steps",
+        "title": "Your Road, Your Rules",
+        "subtitle": "Start finding your own clients in minutes",
         "steps": {
           "step1": {
-            "title": "Download & Sign Up",
-            "desc": "Install Truxel from App Store or Google Play. Create your free account and get 5 trial searches."
+            "title": "Join the Brotherhood",
+            "desc": "Create your free account. No credit card needed to start."
           },
           "step2": {
-            "title": "Enable GPS & Search",
-            "desc": "Turn on your location and let Truxel find companies within 5km automatically."
+            "title": "Spot Local Shippers",
+            "desc": "Our GPS shows you every factory and warehouse nearby."
           },
           "step3": {
-            "title": "View Results",
-            "desc": "Browse company details, contact information, and exact locations on the map."
+            "title": "Get the Direct Line",
+            "desc": "Unlock phone numbers and emails of decision makers."
           },
           "step4": {
-            "title": "Make Contact",
-            "desc": "Reach out via email, WhatsApp, or phone using our pre-filled templates."
+            "title": "Close the Deal",
+            "desc": "Call or WhatsApp them directly. You set the price."
           }
         }
       },
@@ -638,13 +638,13 @@
         "title": "Additional Features"
       },
       "cta": {
-        "title": "Ready to Get Started?",
-        "subtitle": "Download Truxel today and start finding clients instantly with 5 free trial searches",
+        "title": "Take the Wheel of Your Business",
+        "subtitle": "Join thousands of drivers who stopped waiting for brokers. Start your free trial now.",
         "secondary": "View Pricing"
       }
     },
     "footer": {
-      "tagline": "The future of logistics networking",
+      "tagline": "Connecting carriers directly with shippers.",
       "product": "Product",
       "company": "Company",
       "legal": "Legal",
@@ -680,31 +680,31 @@
       "a8": "Absolutely. We use industry-standard encryption, secure EU servers via Supabase, and are fully GDPR compliant. Your data is never shared with third parties without your consent."
     },
     "problem_solution": {
-      "problem_title": "Stop Depending on Freight Brokers",
-      "problem_desc": "As an owner-operator, you shouldn't have to wait for load boards or pay broker fees. You deserve direct access to shippers in your area, especially in dead zones where opportunities are hidden.",
-      "solution_title": "Find Shippers Directly - No Door Knocking",
-      "solution_desc": "Your business, your control. Use GPS to discover local shippers within miles of your location. Reach out instantly with personalized messages - no cold calling, no guessing games."
+      "problem_title": "The Broker Trap Ends Here",
+      "problem_desc": "You drive the miles, they take the profit. We know the struggle of waiting for load boards and deadhead miles. It's time to take back control.",
+      "solution_title": "Your Opportunity, No Middlemen",
+      "solution_desc": "Discover shippers around you. Reach out instantly without knocking on doors. You negotiate the rates. This is the tool I wish I had when I was on the road."
     },
     "how_it_works": {
-      "title": "How It Works",
-      "subtitle": "Start finding clients in 4 simple steps",
-      "step1_title": "Download & Register",
-      "step1_desc": "Get started with a free account in minutes",
-      "step2_title": "Find Local Shippers",
-      "step2_desc": "Use GPS or manual search to discover companies",
-      "step3_title": "Get Contact Details",
-      "step3_desc": "Access phone, email, and LinkedIn profiles",
-      "step4_title": "Reach Out Instantly",
-      "step4_desc": "Connect via WhatsApp, email, or phone with one tap"
+      "title": "Your Road, Your Rules",
+      "subtitle": "Start finding your own clients in minutes",
+      "step1_title": "Join the Brotherhood",
+      "step1_desc": "Create your free account. No credit card needed to start.",
+      "step2_title": "Spot Local Shippers",
+      "step2_desc": "Our GPS shows you every factory and warehouse nearby.",
+      "step3_title": "Get the Direct Line",
+      "step3_desc": "Unlock phone numbers and emails of decision makers.",
+      "step4_title": "Close the Deal",
+      "step4_desc": "Call or WhatsApp them directly. You set the price."
     },
     "social_proof": {
-      "title": "Trusted by Drivers Across Europe",
-      "testimonial1": "Finally found direct shippers in my area. No more broker fees eating my profit!",
-      "testimonial1_author": "Mike T., Owner-Operator, Texas",
+      "title": "Drivers Are Taking Back Control",
+      "testimonial1": "Finally, a tool that puts the driver first. No more begging for loads.",
+      "testimonial1_author": "Mike T., Owner-Operator",
       "testimonial2": "I was stuck in a dead zone and found 3 local shippers within 20 minutes. This pays for itself.",
-      "testimonial2_author": "James R., Independent Driver, Ohio",
+      "testimonial2_author": "James R., Independent Driver",
         "testimonial3": "One-tap messaging is brilliant. I can reach out to shippers while I'm at a truck stop.",
-        "testimonial3_author": "Sarah K., Fleet Owner, California",
+        "testimonial3_author": "Sarah K., Fleet Owner",
         "stat_values": {
           "drivers": "1000+",
           "companies": "5000+",
@@ -738,7 +738,7 @@
     "about": {
       "hero_badge": "Built by drivers, for drivers",
       "hero_title": "Logistics without middlemen starts with Truxel",
-      "hero_subtitle": "Our founder spent years on European roads, knocking on warehouse doors and waiting for brokers to pick up. Truxel is the platform he wished he had: direct shipper access, instant outreach, and real community support.",
+      "hero_subtitle": "Our founder spent years on European roads, knocking on warehouse doors and waiting for brokers to pick up. Truxel is the platform he wished he had: direct connection to shippers, instant outreach, and real community support.",
       "hero_cta": "Create your free account",
       "hero_secondary_cta": "Talk to the team",
       "founder_quote": "I wanted a way to find shippers while I was still parked at the loading dock. Truxel lets every driver control their pipeline without paying broker fees.",
@@ -749,7 +749,7 @@
       "mission_title": "Every kilometer should pay",
       "mission_subtitle": "We believe drivers should never sit idle when cargo needs moving.",
       "mission": {
-        "point1": "Direct access to shippers without brokers or hidden fees.",
+        "point1": "Direct connection to shippers without brokers or hidden fees.",
         "point2": "Tools designed for life on the road: fast, mobile, multilingual.",
         "point3": "A community where drivers help drivers with real opportunities."
       },
@@ -809,7 +809,7 @@
         }
       },
       "cta_title": "Let’s build your next lane together",
-      "cta_subtitle": "Join the Truxel network and get direct access to shippers, drivers, and data that keeps your trucks moving.",
+      "cta_subtitle": "Join the Truxel network and get the opportunity to connect with shippers, drivers, and data that keeps your trucks moving.",
       "cta_primary": "Start today",
       "cta_secondary": "See pricing"
     },
@@ -912,7 +912,7 @@
     "pricing": {
       "hero_badge": "Free trial included",
       "hero_title": "Find loads. Secure contracts. Grow your logistics business.",
-      "hero_subtitle": "Built for owner-operators, fleet managers, and freight forwarders who want direct access to shippers without paying broker fees.",
+      "hero_subtitle": "Built for owner-operators, fleet managers, and freight forwarders who want to connect directly with shippers without paying broker fees.",
       "hero_feature1": "Instant onboarding. No credit card required.",
       "hero_feature2": "Cancel anytime. Keep your data forever.",
       "hero_feature3": "5 free searches to test the platform.",

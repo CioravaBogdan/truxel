@@ -99,9 +99,7 @@ export default function PricingScreen() {
   // RevenueCat state (for native builds)
   const [rcSubscriptions, setRcSubscriptions] = useState<OfferingPackage[]>([]);
   const [rcSearchPacks, setRcSearchPacks] = useState<OfferingPackage[]>([]);
-  const [userCurrency, setUserCurrency] = useState<'EUR' | 'USD'>('EUR');
   const [purchasingPackage, setPurchasingPackage] = useState<string | null>(null);
-  const [debugError, setDebugError] = useState<string | null>(null); // Add debug error state
   
   // Coupon state (Stripe only - not used in RevenueCat native IAP)
   const [couponCode, setCouponCode] = useState('');
@@ -129,11 +127,6 @@ export default function PricingScreen() {
         updatedProfile.subscription_tier !== 'trial' &&
         updatedProfile.subscription_tier !== previousTier
       ) {
-        console.log('Subscription status changed:', {
-          from: previousTier,
-          to: updatedProfile.subscription_tier,
-        });
-
         Toast.show({
           type: 'success',
           text1: t('subscription.activated'),
@@ -214,7 +207,6 @@ export default function PricingScreen() {
 
     // Check exact match first
     if (mapping[cleanId]) {
-      console.log(`📋 Tier mapping: ${identifier} → ${mapping[cleanId]}`);
       return mapping[cleanId];
     }
 
@@ -231,7 +223,6 @@ export default function PricingScreen() {
       tierName = 'standard';
     }
 
-    console.log(`⚠️ Tier fallback used: ${identifier} → ${tierName}`);
     return tierName;
   };
 
@@ -304,17 +295,8 @@ export default function PricingScreen() {
     
     try {
       setIsLoading(true);
-      console.log('📦 Loading RevenueCat offerings for user:', profile.user_id);
       
       const offerings = await getRevenueCatOfferings(profile.user_id);
-      
-      // ✅ FIX: Filter to show ONLY user's currency (no duplicates)
-      // 🔍 DEBUG: Log ALL package identifiers BEFORE filtering
-      console.log('🔍 ALL subscriptions BEFORE filter:', offerings.subscriptions.map(p => ({
-        id: p.identifier,
-        currency: p.product.currencyCode,
-        price: p.product.priceString
-      })));
       
       // ON MOBILE: Trust getOfferings() which returns all available store packages
       // ON WEB: Filter by currency to avoid showing mixed currencies
@@ -326,29 +308,16 @@ export default function PricingScreen() {
         ? offerings.searchPacks.filter((pkg) => pkg.product.currencyCode === offerings.userCurrency)
         : offerings.searchPacks;
       
-      // 🔍 DEBUG: Log AFTER currency filter (before tier dedup)
-      console.log('🔍 AFTER currency filter (BEFORE tier dedup):', userSubscriptions.map(p => ({
-        id: p.identifier,
-        tierName: getTierName(p.identifier),
-        currency: p.product.currencyCode
-      })));
-      
       // ✅ DEDUPLICATE: If multiple packages map to same tier, keep only first one
       const seenTiers = new Set<string>();
       const dedupedSubscriptions = userSubscriptions.filter((pkg) => {
         const tierName = getTierName(pkg.identifier);
         if (seenTiers.has(tierName)) {
-          console.log(`🗑️ Removing duplicate tier: ${tierName} (package: ${pkg.identifier})`);
           return false; // Skip duplicate
         }
         seenTiers.add(tierName);
         return true; // Keep first occurrence
       });
-      
-      console.log('🔍 AFTER tier deduplication:', dedupedSubscriptions.map(p => ({
-        id: p.identifier,
-        tierName: getTierName(p.identifier)
-      })));
       
       // ✅ DEDUPLICATE search packs by identifier AND tier name
       const seenSearchPacks = new Set<string>();
@@ -357,7 +326,6 @@ export default function PricingScreen() {
         // If it's a known search pack type, deduplicate by type
         if (tierName === 'search_pack') {
           if (seenSearchPacks.has('search_pack')) {
-            console.log(`🗑️ Removing duplicate search pack type: ${tierName} (package: ${pkg.identifier})`);
             return false;
           }
           seenSearchPacks.add('search_pack');
@@ -367,29 +335,17 @@ export default function PricingScreen() {
         // Fallback: deduplicate by identifier
         const packName = pkg.identifier;
         if (seenSearchPacks.has(packName)) {
-          console.log(`🗑️ Removing duplicate search pack: ${packName}`);
           return false;
         }
         seenSearchPacks.add(packName);
         return true;
       });
       
-      console.log('🔍 Search packs after dedup:', dedupedSearchPacks.map(p => p.identifier));
-      
       setRcSubscriptions(dedupedSubscriptions);
       setRcSearchPacks(dedupedSearchPacks);
-      setUserCurrency(offerings.userCurrency);
       
-      console.log('✅ RevenueCat offerings loaded:', {
-        subscriptions: dedupedSubscriptions.length,
-        searchPacks: dedupedSearchPacks.length,
-        currency: offerings.userCurrency,
-        currencyFiltered: `${offerings.subscriptions.length - userSubscriptions.length} packages removed`,
-        tierDeduped: `${userSubscriptions.length - dedupedSubscriptions.length} duplicate tiers removed`
-      });
     } catch (error: any) {
       console.error('❌ RevenueCat error:', error);
-      setDebugError(error.message); // Capture error for debug UI
       Toast.show({
         type: 'error',
         text1: t('common.error'),
@@ -403,7 +359,6 @@ export default function PricingScreen() {
   }, [t, profile?.user_id]);
 
   useEffect(() => {
-    console.log('📦 PricingScreen mounted - Loading RevenueCat offerings (Universal)');
     loadRevenueCatOfferings();
     
     
@@ -588,12 +543,10 @@ export default function PricingScreen() {
 
     try {
       setPurchasingPackage(pkg.identifier);
-      console.log('🛒 RevenueCat purchase:', pkg.identifier, 'for user:', profile.user_id);
       
       const info = await purchaseRevenueCatPackage(pkg, profile.user_id);
       
       const newTier = getUserTier(info);
-      console.log('✅ Purchase successful! New tier:', newTier);
       
       // Refresh profile to update local state
       await authStore.refreshProfile?.();
@@ -633,12 +586,10 @@ export default function PricingScreen() {
     
     try {
       setIsLoading(true);
-      console.log('🔄 Restoring RevenueCat purchases for user:', profile.user_id);
       
       const info = await restoreRevenueCatPurchases(profile.user_id);
       
       const tier = getUserTier(info);
-      console.log('✅ Purchases restored! Tier:', tier);
       
       await authStore.refreshProfile?.();
       
@@ -1383,25 +1334,21 @@ export default function PricingScreen() {
           <Text style={[styles.supportButtonSubtext, { color: theme.colors.info }]}>{t('support.need_help_choosing')}</Text>
         </TouchableOpacity>
 
-        {/* DEBUG INFO - Visible only when no subscriptions found */}
+        {/* Empty State - Visible only when no subscriptions found */}
         {rcSubscriptions.length === 0 && !isLoading && (
-          <View style={[styles.debugContainer, { backgroundColor: theme.colors.error + '10', borderColor: theme.colors.error + '40' }]}>
-            <Text style={[styles.debugTitle, { color: theme.colors.error }]}>⚠️ Debug Info (No Packages Found)</Text>
-            <Text style={[styles.debugText, { color: theme.colors.error }]}>User ID: {profile?.user_id || 'Not logged in'}</Text>
-            <Text style={[styles.debugText, { color: theme.colors.error }]}>Currency: {userCurrency}</Text>
-            <Text style={[styles.debugText, { color: theme.colors.error }]}>Platform: {Platform.OS}</Text>
-            <Text style={[styles.debugText, { color: theme.colors.error }]}>Error: {debugError || 'None'}</Text>
-            <Text style={[styles.debugText, { color: theme.colors.error }]}>
-              Check:
-              1. App Store Connect &quot;Paid Apps Agreement&quot;
-              2. RevenueCat &quot;Offering&quot; is Current
-              3. Product IDs match exactly
+          <View style={styles.emptyStateContainer}>
+            <Shield size={48} color={theme.colors.textSecondary} />
+            <Text style={[styles.emptyStateTitle, { color: theme.colors.text }]}>
+              {t('pricing.no_plans_available')}
+            </Text>
+            <Text style={[styles.emptyStateText, { color: theme.colors.textSecondary }]}>
+              {t('pricing.no_plans_desc') || 'We are unable to load subscription plans at the moment. Please try again later.'}
             </Text>
             <Button 
-              title="Retry Loading" 
+              title={t('common.retry') || "Retry"} 
               onPress={loadRevenueCatOfferings} 
               variant="outline"
-              style={{ marginTop: 10 }}
+              style={{ marginTop: 16 }}
             />
           </View>
         )}
@@ -1742,20 +1689,22 @@ const styles = StyleSheet.create({
     fontSize: 14,
     opacity: 0.8,
   },
-  debugContainer: {
-    padding: 16,
-    margin: 16,
-    borderWidth: 1,
-    borderRadius: 12,
+  emptyStateContainer: {
+    padding: 32,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 12,
+    marginTop: 24,
   },
-  debugTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 8,
+  emptyStateTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    textAlign: 'center',
   },
-  debugText: {
-    fontSize: 12,
-    marginBottom: 4,
-    fontFamily: Platform.OS === 'ios' ? 'Courier' : 'monospace',
+  emptyStateText: {
+    fontSize: 14,
+    textAlign: 'center',
+    lineHeight: 20,
+    maxWidth: 300,
   },
 });

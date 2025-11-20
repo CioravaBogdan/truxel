@@ -538,93 +538,93 @@
       "signup": "Înscrieți-vă"
     },
     "hero": {
-      "title": "Preluați controlul asupra afacerii dvs. de transport cu camioane",
-      "subtitle": "Nu mai așteptați brokeri. Găsiți expeditori direct în jurul vostru, chiar și în zonele moarte. Trimiteți mesaje personalizate prin WhatsApp, e-mail sau apelați cu o singură atingere.",
+      "title": "Creat de Șoferi, Pentru Șoferi",
+      "subtitle": "Nu mai plăti comisioane la brokeri. Truxel îți oferă acces direct la expeditori și o comunitate care te ajută să rămâi în mișcare.",
       "cta_primary": "Începeți proba gratuită",
-      "trust_badge": "Construit pentru proprietarii-operatori din America de Nord",
+      "trust_badge": "Fondat de un Owner-Operator | 100% Independent",
       "trust_features": {
-        "no_broker_fees": "Fără comisioane de broker",
-        "dead_zones": "Găsiți expeditori în zonele moarte",
-        "instant_contact": "Metode de contact instantanee"
+        "no_broker_fees": "Zero Comisioane Broker",
+        "dead_zones": "Găsește Curse în Zone Moarte",
+        "instant_contact": "Contact Direct Expeditor"
       }
     },
     "cta": {
-      "learn_more": "Află mai multe"
+      "learn_more": "Vezi Cum Funcționează"
     },
     "features": {
       "title": "Tot ce ai nevoie pentru a crește",
       "subtitle": "Caracteristici puternice concepute pentru șoferii de camion",
-      "gps_title": "Căutare bazată pe GPS",
-      "gps_desc": "Găsiți instantaneu companiile din apropiere folosind locația în timp real",
+      "gps_title": "Găsește Clienți Unde Parchezi",
+      "gps_desc": "Ești într-o zonă industrială și nu ai cursă? GPS-ul nostru găsește fabrici și depozite în jurul tău instant. Fără kilometri pe gol.",
       "instant_contact_title": "Contact instantaneu",
       "instant_contact_desc": "Conectați-vă prin WhatsApp, e-mail sau telefon dintr-o singură atingere",
-      "community_title": "Comunitatea șoferilor",
-      "community_desc": "Postați disponibilitatea dvs. și găsiți încărcături de la alți șoferi",
-      "leads_title": "Oferte de companie",
-      "leads_desc": "Descoperiți companiile de transport de marfă și partenerii logistici",
-      "templates_title": "Șabloane rapide",
-      "templates_desc": "Utilizați mesaje predefinite pentru a contacta companiile mai rapid",
+      "community_title": "Șoferi Reali, Curse Reale",
+      "community_desc": "O comunitate bazată pe încredere. Postează disponibilitatea și găsește mărfuri de la alți colegi. Fără postări false.",
+      "leads_title": "Datele Tale, Afacerea Ta",
+      "leads_desc": "Salvează-ți contactele, construiește-ți propria listă de clienți. Exportă totul în CSV. Nu te ținem legat.",
+      "templates_title": "Abordare Profesionistă",
+      "templates_desc": "Nu-ți place să bați la uși? Folosește șabloanele noastre traduse pentru a contacta expeditorii pe WhatsApp sau Email cu profesionalism.",
       "linkedin_title": "Integrare LinkedIn",
-      "linkedin_desc": "Găsiți factorii de decizie și informații de contact instantaneu",
+      "linkedin_desc": "Sari peste secretară. Găsește persoana care semnează contractele instant.",
       "ai_title": "Potrivire AI",
-      "ai_desc": "Recomandări inteligente bazate pe rutele și preferințele dvs",
+      "ai_desc": "Sistemul nostru învață rutele tale preferate și îți sugerează mărfuri înainte să cauți.",
       "notifications_title": "Notificări inteligente",
       "notifications_desc": "Primiți alerte atunci când companiile postează încărcături în apropierea dvs",
       "multilang_title": "Multi-limbi",
       "multilang_desc": "Disponibil în engleză, română, poloneză, turcă, spaniolă și multe altele"
     },
     "features_page": {
-      "hero_title": "Caracteristici puternice pentru șoferii de camion",
-      "hero_subtitle": "Tot ce aveți nevoie pentru a găsi clienți, a gestiona clienții potențiali și a vă dezvolta afacerea de logistică",
+      "hero_title": "Creat de un Șofer, Pentru Șoferi",
+      "hero_subtitle": "Nu mai plăti comisioane la casele de expediții. Truxel îți dă puterea să găsești clienți direct în jurul tău și să negociezi de la egal la egal.",
       "core": {
-        "title": "Caracteristici de bază",
-        "subtitle": "Disponibil pentru toate planurile, inclusiv pentru perioada de încercare gratuită",
+        "title": "Unelte pentru Independență",
+        "subtitle": "Tot ce mi-am dorit să am când eram pe comunitate.",
         "details": {
           "gps": [
-            "Detectarea automată a locației",
-            "5 km rază de căutare",
-            "Urmărire GPS în timp real",
-            "Căutați oriunde conduceți"
+            "Detectare automată a locației",
+            "Caută zone industriale instant",
+            "Găsește expeditori direcți",
+            "Evită cursele pe gol"
           ],
           "community": [
-            "Postați disponibilitatea șoferului",
-            "Găsiți rute disponibile",
-            "Conectează-te cu colegii de camion",
-            "Flux comunitar în timp real"
+            "Postează disponibilitatea camionului",
+            "Găsește mărfuri de la colegi",
+            "Fără comisioane de intermediere",
+            "Rețea de șoferi verificați"
           ],
           "leads": [
-            "Stocare nelimitată de lead-uri",
-            "Urmărirea stării (nou, contactat, câștigat, pierdut)",
-            "Adăugați note personalizate",
-            "Funcționalitate de export CSV"
+            "Deții lista ta de contacte",
+            "Exportă în CSV oricând",
+            "Urmărește statusul negocierii",
+            "Fără bariere ascunse"
           ],
           "templates": [
-            "Șabloane de e-mail precompletate",
-            "Șabloane de mesaje WhatsApp",
-            "Completați automat informațiile dvs. de contact",
-            "Mesaje profesionale"
+            "Suport multi-lingvistic",
+            "Integrare directă WhatsApp",
+            "Formate profesionale de email",
+            "Depășește bariera lingvistică"
           ]
         }
       },
       "how": {
-        "title": "Cum funcționează",
-        "subtitle": "Începeți să găsiți clienți în 4 pași simpli",
+        "title": "Drumul Tău, Regulile Tale",
+        "subtitle": "Începe să-ți găsești proprii clienți în câteva minute",
         "steps": {
           "step1": {
-            "title": "Descărcați și înregistrați-vă",
-            "desc": "Instalați Truxel din App Store sau Google Play. Creați-vă contul gratuit și obțineți 5 căutări de probă."
+            "title": "Intră în Frăție",
+            "desc": "Creează-ți cont gratuit. Nu ai nevoie de card pentru a începe."
           },
           "step2": {
-            "title": "Activați GPS și căutare",
-            "desc": "Activați-vă locația și lăsați Truxel să găsească automat companii pe o rază de 5 km."
+            "title": "Găsește Expeditori Locali",
+            "desc": "GPS-ul nostru îți arată fiecare fabrică și depozit din apropiere."
           },
           "step3": {
-            "title": "Vedeți rezultatele",
-            "desc": "Răsfoiți detaliile companiei, informațiile de contact și locațiile exacte de pe hartă."
+            "title": "Obține Linia Directă",
+            "desc": "Deblochează numere de telefon și email-uri ale celor care decid."
           },
           "step4": {
-            "title": "Faceți Contact",
-            "desc": "Contactați prin e-mail, WhatsApp sau telefon folosind șabloanele noastre precompletate."
+            "title": "Închide Deal-ul",
+            "desc": "Sună sau scrie-le pe WhatsApp direct. Tu faci prețul."
           }
         }
       },
@@ -637,13 +637,13 @@
         "title": "Caracteristici suplimentare"
       },
       "cta": {
-        "title": "Sunteți gata să începeți?",
-        "subtitle": "Descărcați Truxel astăzi și începeți să găsiți clienți instantaneu cu 5 căutări de probă gratuite",
+        "title": "Preia Volanul Afacerii Tale",
+        "subtitle": "Alătură-te miilor de șoferi care au încetat să mai aștepte după brokeri. Începe perioada de probă acum.",
         "secondary": "Vedeți prețurile"
       }
     },
     "footer": {
-      "tagline": "Viitorul rețelelor logistice",
+      "tagline": "Conectăm transportatorii direct cu expeditorii.",
       "product": "Produs",
       "company": "Companie",
       "legal": "Legal",
@@ -679,31 +679,31 @@
       "a8": "Absolut. Utilizăm criptare standard din industrie, servere securizate din UE prin Supabase și respectăm pe deplin GDPR. Datele dumneavoastră nu sunt niciodată partajate cu terți fără consimțământul dumneavoastră."
     },
     "problem_solution": {
-      "problem_title": "Nu mai depindeți de brokerii de marfă",
-      "problem_desc": "În calitate de proprietar-operator, nu ar trebui să așteptați panouri de încărcare sau să plătiți comisioane de broker. Meritați acces direct la expeditorii din zona dvs., în special în zonele moarte, unde oportunitățile sunt ascunse.",
-      "solution_title": "Găsiți direct expeditori - Fără ciocănirea la ușă",
-      "solution_desc": "Afacerea ta, controlul tău. Utilizați GPS-ul pentru a descoperi expeditorii locali la o rază de mile de locație. Ajungeți instantaneu cu mesaje personalizate - fără apeluri la rece, fără jocuri de ghicire."
+      "problem_title": "Capcana Brokerilor Se Termină Aici",
+      "problem_desc": "Tu faci kilometrii, ei iau profitul. Știm cum e să aștepți pe bursele de transport și să mergi pe gol. E timpul să preiei controlul.",
+      "solution_title": "Acces Direct, Fără Intermediari",
+      "solution_desc": "Găsește expeditori direct pe ruta ta. Negociază-ți propriile tarife. Păstrează 100% din profit. Aceasta este unealta pe care mi-aș fi dorit-o când eram pe drum."
     },
     "how_it_works": {
-      "title": "Cum funcționează",
-      "subtitle": "Începeți să găsiți clienți în 4 pași simpli",
-      "step1_title": "Descărcați și înregistrați-vă",
-      "step1_desc": "Începeți cu un cont gratuit în câteva minute",
-      "step2_title": "Găsiți expeditori locali",
-      "step2_desc": "Utilizați GPS sau căutarea manuală pentru a descoperi companii",
-      "step3_title": "Obțineți detalii de contact",
-      "step3_desc": "Accesați profiluri de telefon, e-mail și LinkedIn",
-      "step4_title": "Ajungeți instantaneu",
-      "step4_desc": "Conectați-vă prin WhatsApp, e-mail sau telefon cu o singură atingere"
+      "title": "Drumul Tău, Regulile Tale",
+      "subtitle": "Începe să-ți găsești proprii clienți în câteva minute",
+      "step1_title": "Intră în Frăție",
+      "step1_desc": "Creează-ți cont gratuit. Nu ai nevoie de card pentru a începe.",
+      "step2_title": "Găsește Expeditori Locali",
+      "step2_desc": "GPS-ul nostru îți arată fiecare fabrică și depozit din apropiere.",
+      "step3_title": "Obține Linia Directă",
+      "step3_desc": "Deblochează numere de telefon și email-uri ale celor care decid.",
+      "step4_title": "Închide Deal-ul",
+      "step4_desc": "Sună sau scrie-le pe WhatsApp direct. Tu faci prețul."
     },
     "social_proof": {
-      "title": "Încrederea șoferilor din toată Europa",
-      "testimonial1": "În sfârșit am găsit expeditori direcți în zona mea. Gata cu comisioanele de broker care îmi mănâncă profitul!",
-      "testimonial1_author": "Mike T., proprietar-operator, Texas",
+      "title": "Șoferii Preiau Controlul",
+      "testimonial1": "În sfârșit, o unealtă care pune șoferul pe primul loc. Gata cu cerșitul de curse.",
+      "testimonial1_author": "Mike T., Owner-Operator",
       "testimonial2": "Am fost blocat într-o zonă moartă și am găsit 3 expeditori locali în 20 de minute. Acest lucru se plătește de la sine.",
-      "testimonial2_author": "James R., șofer independent, Ohio",
+      "testimonial2_author": "James R., Șofer Independent",
       "testimonial3": "Mesageria cu o singură atingere este genială. Pot contacta expeditorii în timp ce sunt la o stație de camioane.",
-      "testimonial3_author": "Sarah K., proprietar de flotă, California",
+      "testimonial3_author": "Sarah K., Proprietar de Flotă",
       "stat_values": {
         "drivers": "1000+",
         "companies": "5000+",

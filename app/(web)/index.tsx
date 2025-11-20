@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Platform, Linking } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Platform, Linking, Image } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useRouter } from 'expo-router';
 import {
@@ -94,16 +94,16 @@ export default function LandingPage() {
   ];
 
   const heroGradient = theme.mode === 'dark'
-    ? 'linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%)'
-    : 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #bae6fd 100%)';
+    ? 'linear-gradient(135deg, #020617 0%, #0F172A 50%, #331800 100%)' // Deep Navy fading into a passionate dark orange/brown
+    : 'linear-gradient(135deg, #1e3a5f 0%, #2563ea 50%, #0fb988 100%)'; // Radiant Blue/Teal
 
   const howItWorksGradient = theme.mode === 'dark'
-    ? 'linear-gradient(180deg, #0f172a 0%, #1e293b 50%, #334155 100%)'
-    : 'linear-gradient(180deg, #FFFFFF 0%, #f0f9ff 50%, #e0f2fe 100%)';
+    ? 'linear-gradient(180deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)'
+    : 'linear-gradient(180deg, #FFFFFF 0%, #e0f2fe 50%, #f0f9ff 100%)'; // Light Blue
 
   const socialProofGradient = theme.mode === 'dark'
     ? 'linear-gradient(180deg, #0f172a 0%, #1e293b 100%)'
-    : 'linear-gradient(180deg, #FFFFFF 0%, #fef3f2 100%)';
+    : 'linear-gradient(180deg, #FFFFFF 0%, #e0f2fe 100%)'; // Light Blue
 
   return (
     <ScrollView style={[styles.container, { backgroundColor: theme.colors.background }]}>
@@ -115,8 +115,8 @@ export default function LandingPage() {
           <View style={styles.floatingShape3} />
         </View>
         <View style={styles.section}>
-          <Text style={[styles.heroTitle, { color: theme.colors.text }]}>{t('web.hero.title')}</Text>
-          <Text style={[styles.heroSubtitle, { color: theme.colors.textSecondary }]}>{t('web.hero.subtitle')}</Text>
+          <Text style={[styles.heroTitle, { color: Platform.OS === 'web' ? '#FFFFFF' : theme.colors.text }]}>{t('web.hero.title')}</Text>
+          <Text style={[styles.heroSubtitle, { color: Platform.OS === 'web' ? 'rgba(255, 255, 255, 0.9)' : theme.colors.textSecondary }]}>{t('web.hero.subtitle')}</Text>
           <View style={styles.heroButtons}>
             <TouchableOpacity
               style={styles.primaryButton}
@@ -125,10 +125,19 @@ export default function LandingPage() {
               <Text style={styles.primaryButtonText}>{t('web.hero.cta_primary')}</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={[styles.secondaryButton, { backgroundColor: theme.colors.card, borderColor: theme.colors.primary }]}
+              style={[
+                styles.secondaryButton, 
+                { 
+                  backgroundColor: Platform.OS === 'web' ? 'rgba(255,255,255,0.1)' : theme.colors.card, 
+                  borderColor: Platform.OS === 'web' ? '#FFFFFF' : theme.colors.primary 
+                }
+              ]}
               onPress={() => router.push('/(web)/features')}
             >
-              <Text style={[styles.secondaryButtonText, { color: theme.colors.primary }]}>{t('web.cta.learn_more')}</Text>
+              <Text style={[
+                styles.secondaryButtonText, 
+                { color: Platform.OS === 'web' ? '#FFFFFF' : theme.colors.primary }
+              ]}>{t('web.cta.learn_more')}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -266,16 +275,24 @@ export default function LandingPage() {
             </View>
             <View style={styles.storeButtonsRow}>
               <TouchableOpacity
-                style={styles.downloadStoreButton}
                 onPress={() => Linking.openURL('https://apps.apple.com')}
+                style={styles.storeBadgeContainer}
               >
-                <Text style={styles.downloadStoreButtonText}>{t('web.final_cta.download_ios')}</Text>
+                <Image 
+                  source={require('@/assets/images/download_apple_store.svg')} 
+                  style={styles.storeBadge}
+                  resizeMode="contain"
+                />
               </TouchableOpacity>
               <TouchableOpacity
-                style={styles.downloadStoreButton}
                 onPress={() => Linking.openURL('https://play.google.com')}
+                style={styles.storeBadgeContainer}
               >
-                <Text style={styles.downloadStoreButtonText}>{t('web.final_cta.download_android')}</Text>
+                <Image 
+                  source={require('@/assets/images/download_google_store.svg')} 
+                  style={styles.storeBadge}
+                  resizeMode="contain"
+                />
               </TouchableOpacity>
             </View>
             <View style={styles.finalCtaStats}>
@@ -348,10 +365,10 @@ const styles = StyleSheet.create({
     width: 300,
     height: 300,
     borderRadius: 150,
-    backgroundColor: 'rgba(37, 99, 234, 0.08)',
+    backgroundColor: 'rgba(255, 87, 34, 0.15)', // Passionate Orange
     ...(Platform.OS === 'web' && {
       animation: 'float 20s ease-in-out infinite',
-      filter: 'blur(40px)',
+      filter: 'blur(60px)',
     }),
   },
   floatingShape2: {
@@ -361,10 +378,10 @@ const styles = StyleSheet.create({
     width: 250,
     height: 250,
     borderRadius: 125,
-    backgroundColor: 'rgba(15, 185, 136, 0.08)',
+    backgroundColor: 'rgba(15, 23, 42, 0.05)', // Subtle Navy
     ...(Platform.OS === 'web' && {
       animation: 'float 15s ease-in-out infinite reverse',
-      filter: 'blur(40px)',
+      filter: 'blur(50px)',
     }),
   },
   floatingShape3: {
@@ -374,10 +391,10 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     borderRadius: 100,
-    backgroundColor: 'rgba(255, 107, 53, 0.1)',
+    backgroundColor: 'rgba(255, 87, 34, 0.1)', // Passionate Orange
     ...(Platform.OS === 'web' && {
       animation: 'float 18s ease-in-out infinite',
-      filter: 'blur(35px)',
+      filter: 'blur(45px)',
     }),
   },
   heroTitle: {
@@ -789,9 +806,9 @@ const styles = StyleSheet.create({
     position: 'relative',
     overflow: 'hidden',
     ...(Platform.OS === 'web' && {
-      background: 'linear-gradient(135deg, #1e3a5f 0%, #2563ea 50%, #0fb988 100%)',
+      background: 'linear-gradient(135deg, #ff6b35 0%, #ff8c42 50%, #ff5722 100%)', // Passionate Orange
     }),
-    backgroundColor: '#2563ea',
+    backgroundColor: '#ff6b35',
   },
   finalCtaBackground: {
     position: 'absolute',
@@ -808,7 +825,7 @@ const styles = StyleSheet.create({
     width: 400,
     height: 400,
     borderRadius: 200,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    backgroundColor: 'rgba(255, 255, 255, 0.15)',
     ...(Platform.OS === 'web' && {
       animation: 'float 25s ease-in-out infinite',
     }),
@@ -820,7 +837,7 @@ const styles = StyleSheet.create({
     width: 350,
     height: 350,
     borderRadius: 175,
-    backgroundColor: 'rgba(15, 185, 136, 0.15)',
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
     ...(Platform.OS === 'web' && {
       animation: 'float 20s ease-in-out infinite reverse',
     }),
@@ -834,13 +851,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   finalCtaBadge: {
-    backgroundColor: 'rgba(255, 107, 53, 0.95)',
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
     paddingHorizontal: 24,
     paddingVertical: 12,
     borderRadius: 50,
     marginBottom: 24,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.4)',
     ...(Platform.OS === 'web' && {
-      boxShadow: '0 10px 30px -5px rgba(255, 107, 53, 0.5)',
+      backdropFilter: 'blur(10px)',
+      boxShadow: '0 10px 30px -5px rgba(0, 0, 0, 0.1)',
     }),
   },
   finalCtaBadgeText: {
@@ -907,18 +927,30 @@ const styles = StyleSheet.create({
   },
   storeButtonsRow: {
     flexDirection: 'row',
-    gap: 16,
+    gap: 24,
     flexWrap: 'wrap',
     justifyContent: 'center',
     marginBottom: 48,
     ...(Platform.OS === 'web' && {
       '@media (max-width: 600px)': {
         flexDirection: 'column',
-        alignItems: 'stretch',
+        alignItems: 'center',
         width: '100%',
-        maxWidth: 400,
       },
     }),
+  },
+  storeBadgeContainer: {
+    ...(Platform.OS === 'web' && {
+      transition: 'transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+      cursor: 'pointer',
+      ':hover': {
+        transform: 'scale(1.05)',
+      },
+    }),
+  },
+  storeBadge: {
+    width: 220,
+    height: 66,
   },
   signUpCtaButton: {
     paddingHorizontal: 56,
@@ -927,8 +959,8 @@ const styles = StyleSheet.create({
     minWidth: 280,
     alignItems: 'center',
     ...(Platform.OS === 'web' && {
-      background: 'linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%)',
-      boxShadow: '0 20px 50px -10px rgba(255, 107, 53, 0.6)',
+      backgroundColor: '#FFFFFF',
+      boxShadow: '0 20px 50px -10px rgba(0, 0, 0, 0.2), 0 0 0 4px rgba(255, 255, 255, 0.3)',
       transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
       cursor: 'pointer',
       '@media (max-width: 600px)': {
@@ -936,50 +968,13 @@ const styles = StyleSheet.create({
         paddingVertical: 20,
       },
     }),
-    backgroundColor: '#ff6b35',
+    backgroundColor: '#FFFFFF',
   },
   signUpCtaButtonText: {
     fontSize: 20,
-    fontWeight: '900',
-    color: '#FFFFFF',
+    fontWeight: '800',
+    color: '#ff6b35',
     letterSpacing: 0.5,
-    ...(Platform.OS === 'web' && {
-      textShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
-      '@media (max-width: 600px)': {
-        fontSize: 18,
-      },
-    }),
-  },
-  downloadStoreButton: {
-    backgroundColor: 'rgba(255, 255, 255, 0.15)',
-    paddingHorizontal: 32,
-    paddingVertical: 16,
-    borderRadius: 14,
-    minWidth: 200,
-    alignItems: 'center',
-    borderWidth: 2,
-    borderColor: 'rgba(255, 255, 255, 0.3)',
-    ...(Platform.OS === 'web' && {
-      backdropFilter: 'blur(10px)',
-      boxShadow: '0 8px 24px -4px rgba(0, 0, 0, 0.2)',
-      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-      cursor: 'pointer',
-      '@media (max-width: 600px)': {
-        width: '100%',
-        paddingVertical: 14,
-      },
-    }),
-  },
-  downloadStoreButtonText: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#FFFFFF',
-    letterSpacing: 0.3,
-    ...(Platform.OS === 'web' && {
-      '@media (max-width: 600px)': {
-        fontSize: 15,
-      },
-    }),
   },
   finalCtaStats: {
     flexDirection: 'row',
