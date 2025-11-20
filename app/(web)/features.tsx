@@ -66,11 +66,13 @@ export default function FeaturesPage() {
       icon: Linkedin,
       title: t('web.features.linkedin_title'),
       desc: t('web.features.linkedin_desc'),
+      highlight: true
     },
     {
       icon: Brain,
       title: t('web.features.ai_title'),
       desc: t('web.features.ai_desc'),
+      highlight: true
     },
   ];
 
@@ -148,12 +150,11 @@ export default function FeaturesPage() {
               <Shield size={24} color="#94A3B8" />
               <Text style={styles.trustText}>{t('web.hero.trust_features.no_broker_fees')}</Text>
             </View>
-            <View style={styles.trustDivider} />
+            {/* Removed vertical divider to avoid confusion */}
             <View style={styles.trustItem}>
               <Map size={24} color="#94A3B8" />
               <Text style={styles.trustText}>{t('web.hero.trust_features.dead_zones')}</Text>
             </View>
-            <View style={styles.trustDivider} />
             <View style={styles.trustItem}>
               <Phone size={24} color="#94A3B8" />
               <Text style={styles.trustText}>{t('web.hero.trust_features.instant_contact')}</Text>
@@ -163,7 +164,7 @@ export default function FeaturesPage() {
       </LinearGradient>
 
       {/* Core Features Grid */}
-      <View style={[styles.section, { backgroundColor: theme.colors.background }]}>
+      <View style={[styles.section, { backgroundColor: '#F8FAFC' }]}>
         <View style={styles.sectionHeader}>
           <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>
             {t('web.features_page.core.title')}
@@ -177,7 +178,7 @@ export default function FeaturesPage() {
           {coreFeatures.map((feature, index) => {
             const Icon = feature.icon;
             return (
-              <View key={index} style={[styles.card, { backgroundColor: theme.colors.card, shadowColor: theme.colors.text }]}>
+              <View key={index} style={[styles.card, { backgroundColor: '#FFFFFF', borderColor: '#E2E8F0' }]}>
                 <LinearGradient
                   colors={feature.gradient}
                   style={styles.iconContainer}
@@ -195,8 +196,8 @@ export default function FeaturesPage() {
                 <View style={styles.detailsList}>
                   {feature.details.map((detail, idx) => (
                     <View key={idx} style={styles.detailItem}>
-                      <View style={[styles.checkCircle, { backgroundColor: theme.colors.success + '20' }]}>
-                        <Check size={12} color={theme.colors.success} />
+                      <View style={[styles.checkCircle, { backgroundColor: '#ECFDF5' }]}>
+                        <Check size={12} color="#10B981" />
                       </View>
                       <Text style={[styles.detailText, { color: theme.colors.textSecondary }]}>{detail}</Text>
                     </View>
@@ -214,7 +215,7 @@ export default function FeaturesPage() {
           <Text style={[styles.sectionTitle, { color: '#FFFFFF' }]}>
             {t('web.features_page.how.title')}
           </Text>
-          <Text style={[styles.sectionSubtitle, { color: '#94A3B8' }]}>
+          <Text style={[styles.sectionSubtitle, { color: '#E2E8F0', fontWeight: '500' }]}>
             {t('web.features_page.how.subtitle')}
           </Text>
         </View>
@@ -233,7 +234,7 @@ export default function FeaturesPage() {
                   </View>
                 </View>
                 <Text style={styles.stepTitle}>{item.title}</Text>
-                <Text style={styles.stepDesc}>{item.desc}</Text>
+                <Text style={[styles.stepDesc, { color: '#CBD5E1' }]}>{item.desc}</Text>
                 {index < howItWorks.length - 1 && !isMobile && (
                   <View style={styles.connectorLine} />
                 )}
@@ -244,7 +245,7 @@ export default function FeaturesPage() {
       </View>
 
       {/* Pro Features - Split Layout */}
-      <View style={[styles.section, { backgroundColor: theme.colors.background }]}>
+      <View style={[styles.section, { backgroundColor: '#FFFFFF' }]}>
         <View style={styles.proContainer}>
           <View style={styles.proHeader}>
             <View style={[styles.badge, { backgroundColor: theme.colors.secondary }]}>
@@ -262,9 +263,12 @@ export default function FeaturesPage() {
             {proFeatures.map((feature, index) => {
               const Icon = feature.icon;
               return (
-                <View key={index} style={[styles.proCard, { borderColor: theme.colors.border }]}>
-                  <View style={[styles.proIconBox, { backgroundColor: theme.colors.primary + '10' }]}>
-                    <Icon size={40} color={theme.colors.primary} />
+                <View key={index} style={[styles.proCard, { 
+                  borderColor: theme.colors.secondary,
+                  backgroundColor: '#FFF7ED' // Very light orange tint
+                }]}>
+                  <View style={[styles.proIconBox, { backgroundColor: '#FFFFFF' }]}>
+                    <Icon size={40} color={theme.colors.secondary} />
                   </View>
                   <View style={styles.proContent}>
                     <Text style={[styles.proTitle, { color: theme.colors.text }]}>{feature.title}</Text>
@@ -452,11 +456,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   card: {
-    flex: 1,
+    width: isMobile ? '100%' : '45%', // Force 2 columns on desktop
     minWidth: 300,
-    maxWidth: 500,
     padding: 32,
     borderRadius: 24,
+    borderWidth: 1,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.05,
     shadowRadius: 12,
@@ -566,7 +570,7 @@ const styles = StyleSheet.create({
   },
   stepDesc: {
     fontSize: 16,
-    color: '#94A3B8',
+    color: '#CBD5E1', // Lighter for better contrast
     textAlign: 'center',
     lineHeight: 24,
   },
@@ -611,7 +615,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: 32,
     borderRadius: 24,
-    borderWidth: 1,
+    borderWidth: 2, // Thicker border for Pro
     gap: 24,
     alignItems: 'flex-start',
   },
