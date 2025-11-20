@@ -6,8 +6,9 @@
 1. **Do not delete or rewrite working logic unless the user explicitly requests it.** When in doubt, ask.
 2. **Prefer additive changes.** Wrap fixes behind feature flags or helper functions when possible.
 3. **Explain every modification.** Reference files/lines and why the change is required.
-4. **Respect scope.** If the user mentions “search credits”, do not change community UI unless instructed.
+4. **Respect scope.** If the user mentions "search credits", do not change community UI unless instructed.
 5. **Test or explain why you cannot.** Say exactly which command you ran (or why it was skipped).
+6. **⚠️ NEVER push to GitHub without explicit user approval.** User will say "github push" or "push la git" when ready. Do NOT commit/push during debugging or after fixes unless specifically instructed.
 
 ## 2. Core Stack Overview
 - Expo Router + React Native (Expo SDK 54), TypeScript, Zustand, i18next.
