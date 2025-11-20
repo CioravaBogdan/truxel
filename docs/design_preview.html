@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Truxel Design System - Highway Theme</title>
+    <style>
+        :root {
+            /* Brand Colors */
+            --primary: #1565C0; /* Highway Blue */
+            --primary-dark: #0D47A1;
+            --accent: #FFC107; /* Signal Amber */
+            --accent-hover: #FFB300;
+            
+            /* Neutrals */
+            --bg-page: #F8FAFC; /* Slate 50 */
+            --bg-surface: #FFFFFF;
+            --text-main: #0F172A; /* Slate 900 */
+            --text-secondary: #64748B; /* Slate 500 */
+            --border: #E2E8F0;
+            
+            /* Semantic */
+            --success: #10B981;
+            --error: #EF4444;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            margin: 0;
+            padding: 40px;
+            line-height: 1.5;
+        }
+
+        h1, h2, h3 {
+            color: var(--text-main);
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Color Swatches */
+        .palette-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .swatch {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border);
+        }
+
+        .swatch-color {
+            height: 100px;
+            width: 100%;
+        }
+
+        .swatch-info {
+            padding: 12px;
+        }
+
+        .swatch-name {
+            font-weight: 600;
+            font-size: 14px;
+            display: block;
+        }
+
+        .swatch-hex {
+            color: var(--text-secondary);
+            font-size: 12px;
+            font-family: monospace;
+        }
+
+        /* Components */
+        .component-section {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            margin-bottom: 40px;
+            border: 1px solid var(--border);
+        }
+
+        /* Buttons */
+        .btn-row {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        .btn-primary:hover { background-color: var(--primary-dark); }
+
+        .btn-accent {
+            background-color: var(--accent);
+            color: var(--text-main); /* Dark text on yellow for contrast */
+        }
+        .btn-accent:hover { background-color: var(--accent-hover); }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        .btn-outline:hover { background-color: #EFF6FF; }
+
+        /* Mockup Card */
+        .mockup-card {
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            max-width: 400px;
+            background: white;
+        }
+
+        .tag {
+            background: #EFF6FF;
+            color: var(--primary);
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .price {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+        
+        .location {
+            display: flex;
+            align-items: center;
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div style="text-align: center; margin-bottom: 60px;">
+        <h1 style="font-size: 48px; margin-bottom: 10px; color: var(--primary);">TRUXEL</h1>
+        <p style="font-size: 20px; color: var(--text-secondary);">"The Digital Truck Stop" - Design System Preview</p>
+    </div>
+
+    <h2>1. Highway Palette</h2>
+    <p style="color: var(--text-secondary); margin-bottom: 20px;">High contrast, reliable, and visible in daylight.</p>
+    
+    <div class="palette-grid">
+        <div class="swatch">
+            <div class="swatch-color" style="background: var(--primary);"></div>
+            <div class="swatch-info">
+                <span class="swatch-name">Highway Blue</span>
+                <span class="swatch-hex">#1565C0</span>
+            </div>
+        </div>
+        <div class="swatch">
+            <div class="swatch-color" style="background: var(--accent);"></div>
+            <div class="swatch-info">
+                <span class="swatch-name">Signal Amber</span>
+                <span class="swatch-hex">#FFC107</span>
+            </div>
+        </div>
+        <div class="swatch">
+            <div class="swatch-color" style="background: var(--text-main);"></div>
+            <div class="swatch-info">
+                <span class="swatch-name">Asphalt (Text)</span>
+                <span class="swatch-hex">#0F172A</span>
+            </div>
+        </div>
+        <div class="swatch">
+            <div class="swatch-color" style="background: var(--bg-page); border-bottom: 1px solid #eee;"></div>
+            <div class="swatch-info">
+                <span class="swatch-name">Morning Sky (Bg)</span>
+                <span class="swatch-hex">#F8FAFC</span>
+            </div>
+        </div>
+    </div>
+
+    <h2>2. Buttons & Actions</h2>
+    <div class="component-section">
+        <div class="btn-row">
+            <button class="btn btn-primary">Primary Action</button>
+            <button class="btn btn-accent">Call to Action</button>
+            <button class="btn btn-outline">Secondary</button>
+        </div>
+        <p style="margin-top: 20px; font-size: 14px; color: var(--text-secondary);">
+            <strong>Note:</strong> Buttons are large and "tappable" for drivers. The Amber accent is used sparingly for the most important action on the screen.
+        </p>
+    </div>
+
+    <h2>3. UI Card Mockup (Lead Example)</h2>
+    <div class="component-section" style="background: var(--bg-page); display: flex; justify-content: center;">
+        
+        <!-- Card Mockup -->
+        <div class="mockup-card">
+            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 16px;">
+                <div>
+                    <span class="tag">New Lead</span>
+                    <h3 style="margin: 8px 0 4px 0; font-size: 18px;">2018 Freightliner Cascadia</h3>
+                    <div class="location">📍 Dallas, TX • 450k miles</div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 20px;">
+                <div class="price">$42,500</div>
+                <p style="font-size: 14px; color: var(--text-secondary); margin: 4px 0 0 0;">Seller: Mike's Truck Sales</p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <button class="btn btn-outline" style="width: 100%; font-size: 14px;">View Details</button>
+                <button class="btn btn-accent" style="width: 100%; font-size: 14px;">Contact Seller</button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

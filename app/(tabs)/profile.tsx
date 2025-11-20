@@ -32,8 +32,12 @@ import {
   MapPin,
   Factory,
   Camera,
+  Moon,
+  Sun,
+  Monitor,
 } from 'lucide-react-native';
 import i18n, { supportedLanguages } from '@/lib/i18n';
+import { useTheme, Theme } from '@/lib/theme';
 
 const LANGUAGE_DETAILS: Record<
   string,
@@ -68,6 +72,9 @@ const SUBSCRIPTION_TIERS: Record<string, any> = {
   trial: { name: 'Trial', searches: 5 },
   standard: { name: 'Standard', searches: 30, price: 29.99 },
   pro: { name: 'Pro', searches: 50, price: 49.99 },
+  fleet_manager: { name: 'Fleet Manager', searches: 30, price: 29.99 },
+  pro_freighter: { name: 'Pro Freighter', searches: 50, price: 49.99 },
+  premium: { name: 'Premium', searches: 999, price: 99.99 },
 };
 
 const TRUCK_TYPES = [
@@ -125,6 +132,8 @@ const PHONE_COUNTRIES = [
 
 export default function ProfileScreen() {
   const { t } = useTranslation();
+  const { theme, setThemeMode, themeMode } = useTheme();
+  const styles = useMemo(() => createStyles(theme), [theme]);
   const { profile, reset, refreshProfile } = useAuthStore();
   const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -135,9 +144,6 @@ export default function ProfileScreen() {
   const [selectedPhoneCountry, setSelectedPhoneCountry] = useState<string>(PHONE_COUNTRIES[0].iso);
   const [phoneNumberLocal, setPhoneNumberLocal] = useState('');
   const [phoneError, setPhoneError] = useState<string | null>(null);
-  
-  console.log('ProfileScreen MOUNTED');
-  console.log('Profile from store:', profile);
   
   // Form state
   const [fullName, setFullName] = useState('');
@@ -251,16 +257,8 @@ export default function ProfileScreen() {
   // Load profile data into form
   // FIXED: Only depend on profile?.user_id to prevent re-renders on any profile field change
   useEffect(() => {
-    console.log('useEffect triggered, profile:', profile);
     // Only load from profile if we don't have unsaved changes
     if (profile && !hasUnsavedChanges) {
-      console.log('Loading profile data into form:', {
-        full_name: profile.full_name,
-        company_name: profile.company_name,
-        truck_type: profile.truck_type,
-        search_radius_km: profile.search_radius_km,
-        preferred_industries: profile.preferred_industries,
-      });
       setFullName(profile.full_name || '');
       setCompanyName(profile.company_name || '');
       setTruckType(profile.truck_type || null);
@@ -285,10 +283,8 @@ export default function ProfileScreen() {
         setPhoneNumberLocal('');
       }
       setPhoneError(null);
-    } else {
-      console.log('Skipping profile load - has unsaved changes or no profile');
     }
-  }, [profile?.user_id, hasUnsavedChanges, sortedDialCodes]);
+  }, [profile, hasUnsavedChanges, sortedDialCodes]);
 
   // Toggle industry selection (max 5)
   const toggleIndustry = (industry: string) => {
@@ -337,7 +333,6 @@ export default function ProfileScreen() {
 
     try {
       setIsSaving(true);
-      console.log('Saving profile with industries:', selectedIndustries);
       await authService.updateProfile(profile.user_id, {
         full_name: fullName,
         company_name: companyName || undefined,
@@ -477,7 +472,7 @@ export default function ProfileScreen() {
     return (
       <SafeAreaView style={styles.container} edges={['top']}>
         <View style={[styles.scrollContent, { justifyContent: 'center', alignItems: 'center', flex: 1 }]}>
-          <ActivityIndicator size="large" color="#2563EB" />
+          <ActivityIndicator size="large" color={theme.colors.primary} />
           <Text style={{ marginTop: 16, fontSize: 16, color: '#64748B' }}>
             {t('common.loading')}
           </Text>
@@ -494,20 +489,11 @@ export default function ProfileScreen() {
       : profile.monthly_searches_used;
   const searchesTotal = tierInfo.searches;
 
-  console.log('Profile Screen - Profile data:', {
-    hasProfile: !!profile,
-    fullName: profile?.full_name,
-    email: profile?.email,
-    truckType: profile?.truck_type,
-    searchRadius: profile?.search_radius_km,
-    industries: profile?.preferred_industries,
-  });
-
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
+    <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]} edges={['top']}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.header}>
-          <Text style={styles.title}>{t('profile.title')}</Text>
+          <Text style={[styles.title, { color: theme.colors.text }]}>{t('profile.title')}</Text>
         </View>
 
         {/* Avatar Section */}
@@ -628,7 +614,7 @@ export default function ProfileScreen() {
         {/* Truck Type Selection */}
         <Card style={styles.section}>
           <View style={styles.sectionHeader}>
-            <Truck size={24} color="#2563EB" />
+            <Truck size={24} color={theme.colors.primary} />
             <Text style={styles.sectionTitle}>{t('profile.truck_type')}</Text>
           </View>
           <Text style={styles.sectionDescription}>
@@ -664,7 +650,7 @@ export default function ProfileScreen() {
         {/* Search Radius Selection */}
         <Card style={styles.section}>
           <View style={styles.sectionHeader}>
-            <MapPin size={24} color="#2563EB" />
+            <MapPin size={24} color={theme.colors.primary} />
             <Text style={styles.sectionTitle}>{t('profile.search_radius')}</Text>
           </View>
           <Text style={styles.sectionDescription}>
@@ -707,7 +693,7 @@ export default function ProfileScreen() {
         {/* Distance Unit Selection */}
         <Card style={styles.section}>
           <View style={styles.sectionHeader}>
-            <MapPin size={24} color="#2563EB" />
+            <MapPin size={24} color={theme.colors.primary} />
             <Text style={styles.sectionTitle}>{t('profile.distance_unit')}</Text>
           </View>
           <Text style={styles.sectionDescription}>
@@ -760,7 +746,7 @@ export default function ProfileScreen() {
         {/* Industry Preferences */}
         <Card style={styles.section}>
           <View style={styles.sectionHeader}>
-            <Factory size={24} color="#2563EB" />
+            <Factory size={24} color={theme.colors.primary} />
             <Text style={styles.sectionTitle}>
               {t('profile.preferred_industries')}
             </Text>
@@ -801,6 +787,7 @@ export default function ProfileScreen() {
           onPress={handleSaveProfile}
           loading={isSaving}
           style={styles.saveButton}
+          variant="secondary"
         />
 
         <Card style={styles.section}>
@@ -817,7 +804,7 @@ export default function ProfileScreen() {
                 </Text>
               )}
             </View>
-            <CreditCard size={32} color="#2563EB" />
+            <CreditCard size={32} color={theme.colors.primary} />
           </View>
 
           <View style={styles.searchesProgress}>
@@ -831,7 +818,7 @@ export default function ProfileScreen() {
               <View
                 style={[
                   styles.progressFill,
-                  { width: `${(searchesUsed / searchesTotal) * 100}%` },
+                  { width: `${(searchesUsed / searchesTotal) * 100}%`, backgroundColor: theme.colors.secondary },
                 ]}
               />
             </View>
@@ -847,6 +834,45 @@ export default function ProfileScreen() {
               variant="outline"
             />
           )}
+        </Card>
+
+        <Card style={styles.section}>
+          <Text style={styles.sectionTitle}>Appearance</Text>
+          <View style={styles.radiusContainer}>
+            <TouchableOpacity
+              style={[
+                styles.radiusButton,
+                themeMode === 'light' && styles.radiusButtonSelected,
+                { borderColor: themeMode === 'light' ? theme.colors.primary : theme.colors.border, backgroundColor: theme.colors.card }
+              ]}
+              onPress={() => setThemeMode('light')}
+            >
+              <Sun size={20} color={themeMode === 'light' ? theme.colors.primary : theme.colors.textSecondary} />
+              <Text style={[styles.radiusText, themeMode === 'light' && { color: theme.colors.primary }]}>Light</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.radiusButton,
+                themeMode === 'dark' && styles.radiusButtonSelected,
+                { borderColor: themeMode === 'dark' ? theme.colors.primary : theme.colors.border, backgroundColor: theme.colors.card }
+              ]}
+              onPress={() => setThemeMode('dark')}
+            >
+              <Moon size={20} color={themeMode === 'dark' ? theme.colors.primary : theme.colors.textSecondary} />
+              <Text style={[styles.radiusText, themeMode === 'dark' && { color: theme.colors.primary }]}>Dark</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.radiusButton,
+                themeMode === 'auto' && styles.radiusButtonSelected,
+                { borderColor: themeMode === 'auto' ? theme.colors.primary : theme.colors.border, backgroundColor: theme.colors.card }
+              ]}
+              onPress={() => setThemeMode('auto')}
+            >
+              <Monitor size={20} color={themeMode === 'auto' ? theme.colors.primary : theme.colors.textSecondary} />
+              <Text style={[styles.radiusText, themeMode === 'auto' && { color: theme.colors.primary }]}>Auto</Text>
+            </TouchableOpacity>
+          </View>
         </Card>
 
         <Card style={styles.section}>
@@ -878,10 +904,13 @@ export default function ProfileScreen() {
 
         {/* Support Button */}
         <TouchableOpacity
-          style={styles.supportButton}
+          style={[styles.supportButtonStyle, { shadowColor: theme.colors.info, backgroundColor: theme.colors.card }]}
           onPress={() => setShowSupportModal(true)}
+          activeOpacity={0.7}
         >
-          <Text style={styles.supportButtonText}>💬 {t('support.title')}</Text>
+          <View style={[styles.supportButtonContent, { borderColor: theme.colors.info }]}>
+            <Text style={[styles.supportButtonText, { color: theme.colors.info }]}>💬 {t('support.title')}</Text>
+          </View>
         </TouchableOpacity>
 
         <Button
@@ -930,10 +959,10 @@ export default function ProfileScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: Theme) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8FAFC',
+    backgroundColor: theme.colors.background,
   },
   scrollContent: {
     padding: 16,
@@ -944,15 +973,15 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: '700',
-    color: '#1E293B',
+    color: theme.colors.text,
   },
   section: {
     marginBottom: 16,
   },
   sectionTitle: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: '600',
-    color: '#1E293B',
+    color: theme.colors.text,
     marginBottom: 16,
   },
   infoRow: {
@@ -960,16 +989,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#F1F5F9',
+    borderBottomColor: theme.colors.border,
   },
   infoText: {
     fontSize: 16,
-    color: '#1E293B',
+    color: theme.colors.text,
     marginLeft: 12,
   },
   helperText: {
     fontSize: 13,
-    color: '#64748B',
+    color: theme.colors.textSecondary,
     marginBottom: 12,
   },
   subscriptionHeader: {
@@ -981,11 +1010,11 @@ const styles = StyleSheet.create({
   subscriptionTier: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#1E293B',
+    color: theme.colors.text,
   },
   subscriptionPrice: {
     fontSize: 14,
-    color: '#64748B',
+    color: theme.colors.textSecondary,
     marginTop: 4,
   },
   searchesProgress: {
@@ -993,18 +1022,18 @@ const styles = StyleSheet.create({
   },
   searchesText: {
     fontSize: 14,
-    color: '#64748B',
+    color: theme.colors.textSecondary,
     marginBottom: 8,
   },
   progressBar: {
     height: 8,
-    backgroundColor: '#F1F5F9',
+    backgroundColor: theme.colors.border,
     borderRadius: 4,
     overflow: 'hidden',
   },
   progressFill: {
     height: '100%',
-    backgroundColor: '#2563EB',
+    backgroundColor: theme.colors.primary,
   },
   languageGrid: {
     flexDirection: 'row',
@@ -1014,305 +1043,359 @@ const styles = StyleSheet.create({
   languageButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 8,
-    borderWidth: 1.5,
-    borderColor: '#E2E8F0',
-    backgroundColor: '#FFFFFF',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: theme.colors.border,
+    backgroundColor: theme.colors.card,
+    shadowColor: theme.shadows.small.shadowColor,
+    shadowOffset: theme.shadows.small.shadowOffset,
+    shadowOpacity: theme.shadows.small.shadowOpacity,
+    shadowRadius: theme.shadows.small.shadowRadius,
+    elevation: 2,
+    flexGrow: 1,
+    justifyContent: 'center',
   },
   languageButtonActive: {
-    borderColor: '#2563EB',
-    backgroundColor: '#EFF6FF',
+    borderColor: theme.colors.primary,
+    backgroundColor: theme.mode === 'dark' ? theme.colors.primary + '15' : theme.colors.primary + '10',
+    borderWidth: 2,
   },
   languageFlag: {
-    fontSize: 20,
-    marginRight: 8,
+    fontSize: 24,
+    marginRight: 12,
   },
   languageName: {
-    fontSize: 14,
-    color: '#64748B',
-  },
-  languageNameActive: {
-    color: '#2563EB',
+    fontSize: 16,
+    color: theme.colors.textSecondary,
     fontWeight: '600',
   },
-  supportButton: {
-    backgroundColor: '#007AFF',
-    padding: 16,
-    borderRadius: 12,
-    alignItems: 'center',
-    marginTop: 16,
-    marginHorizontal: 16,
-    shadowColor: '#000',
+  languageNameActive: {
+    color: theme.colors.primary,
+    fontWeight: '700',
+  },
+  supportButtonStyle: {
+    marginTop: 24,
+    marginBottom: 16,
+    borderRadius: 16,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
   },
+  supportButtonContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 16,
+    borderRadius: 16,
+    borderWidth: 2,
+    gap: 8,
+  },
   supportButtonText: {
     fontSize: 16,
-    color: '#fff',
-    fontWeight: '600',
+    fontWeight: '700',
   },
   logoutButton: {
-    marginTop: 8,
+    marginTop: 16,
   },
   version: {
-    fontSize: 12,
-    color: '#94A3B8',
+    fontSize: 13,
+    color: theme.colors.textSecondary,
     textAlign: 'center',
-    marginTop: 24,
+    marginTop: 32,
+    marginBottom: 16,
   },
   // New form styles
   formGroup: {
-    marginBottom: 16,
+    marginBottom: 20,
   },
   label: {
-    fontSize: 14,
+    fontSize: 15,
     fontWeight: '600',
-    color: '#475569',
+    color: theme.colors.text,
     marginBottom: 8,
   },
   sectionHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
-    marginBottom: 8,
+    gap: 12,
+    marginBottom: 12,
   },
   sectionDescription: {
-    fontSize: 14,
-    color: '#64748B',
-    marginBottom: 16,
+    fontSize: 15,
+    color: theme.colors.textSecondary,
+    marginBottom: 20,
+    lineHeight: 22,
   },
   chipContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 8,
+    gap: 10,
   },
   chip: {
-    paddingVertical: 8,
+    paddingVertical: 10,
     paddingHorizontal: 16,
-    borderRadius: 20,
-    borderWidth: 1.5,
-    borderColor: '#E2E8F0',
-    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: theme.colors.border,
+    backgroundColor: theme.colors.card,
   },
   chipSelected: {
-    borderColor: '#2563EB',
-    backgroundColor: '#EFF6FF',
+    borderColor: theme.colors.secondary,
+    backgroundColor: theme.mode === 'dark' ? theme.colors.secondary + '20' : theme.colors.secondary + '10',
+    borderWidth: 2,
   },
   chipText: {
-    fontSize: 14,
-    color: '#64748B',
+    fontSize: 15,
+    color: theme.colors.textSecondary,
     fontWeight: '500',
   },
   chipTextSelected: {
-    color: '#2563EB',
-    fontWeight: '600',
+    color: theme.colors.secondary,
+    fontWeight: '700',
   },
   radiusWarning: {
-    backgroundColor: '#FEF3C7',
-    borderLeftWidth: 3,
-    borderLeftColor: '#F59E0B',
-    padding: 12,
-    marginBottom: 16,
+    backgroundColor: theme.colors.warning + '15',
+    borderLeftWidth: 4,
+    borderLeftColor: theme.colors.warning,
+    padding: 16,
+    marginBottom: 20,
     borderRadius: 8,
   },
   radiusWarningText: {
-    fontSize: 13,
-    color: '#92400E',
-    lineHeight: 18,
+    fontSize: 14,
+    color: theme.colors.warning,
+    lineHeight: 20,
+    fontWeight: '500',
   },
   radiusContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    gap: 8,
+    gap: 12,
   },
   radiusButton: {
     flex: 1,
-    paddingVertical: 12,
-    borderRadius: 8,
-    borderWidth: 1.5,
-    borderColor: '#E2E8F0',
-    backgroundColor: '#FFFFFF',
+    paddingVertical: 16,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: theme.colors.border,
+    backgroundColor: theme.colors.card,
     alignItems: 'center',
+    shadowColor: theme.shadows.small.shadowColor,
+    shadowOffset: theme.shadows.small.shadowOffset,
+    shadowOpacity: theme.shadows.small.shadowOpacity,
+    shadowRadius: theme.shadows.small.shadowRadius,
+    elevation: 2,
   },
   radiusButtonSelected: {
-    borderColor: '#2563EB',
-    backgroundColor: '#EFF6FF',
+    borderColor: theme.colors.secondary,
+    backgroundColor: theme.mode === 'dark' ? theme.colors.secondary + '20' : theme.colors.secondary + '10',
+    borderWidth: 2,
   },
   radiusText: {
-    fontSize: 14,
-    color: '#64748B',
-    fontWeight: '500',
-  },
-  radiusTextSelected: {
-    color: '#2563EB',
+    fontSize: 16,
+    color: theme.colors.textSecondary,
     fontWeight: '600',
   },
+  radiusTextSelected: {
+    color: theme.colors.secondary,
+    fontWeight: '700',
+  },
   saveButton: {
-    marginTop: 8,
-    marginBottom: 24,
+    marginTop: 12,
+    marginBottom: 32,
+    height: 56,
+    borderRadius: 16,
+    shadowColor: theme.colors.secondary,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 3,
   },
   phoneCountryList: {
-    paddingVertical: 4,
+    paddingVertical: 8,
     paddingRight: 16,
   },
   phoneCountryChip: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 16,
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    borderRadius: 20,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
-    backgroundColor: '#FFFFFF',
-    marginRight: 8,
+    borderColor: theme.colors.border,
+    backgroundColor: theme.colors.card,
+    marginRight: 10,
   },
   phoneCountryChipActive: {
-    borderColor: '#2563EB',
-    backgroundColor: '#EFF6FF',
+    borderColor: theme.colors.secondary,
+    backgroundColor: theme.mode === 'dark' ? theme.colors.secondary + '20' : theme.colors.secondary + '10',
+    borderWidth: 2,
   },
   phoneCountryText: {
-    fontSize: 14,
-    color: '#475569',
+    fontSize: 15,
+    color: theme.colors.textSecondary,
     fontWeight: '500',
   },
   phoneCountryTextActive: {
-    color: '#1D4ED8',
+    color: theme.colors.secondary,
+    fontWeight: '700',
   },
   phoneInputRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 12,
-    borderWidth: 1.5,
-    borderColor: '#CBD5E1',
-    borderRadius: 10,
+    marginTop: 16,
+    borderWidth: 1,
+    borderColor: theme.colors.border,
+    borderRadius: 12,
     overflow: 'hidden',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: theme.colors.card,
+    height: 56,
   },
   phoneDialCode: {
-    paddingHorizontal: 14,
-    paddingVertical: 12,
-    backgroundColor: '#F8FAFC',
+    paddingHorizontal: 16,
+    height: '100%',
+    justifyContent: 'center',
+    backgroundColor: theme.colors.background,
     borderRightWidth: 1,
-    borderRightColor: '#E2E8F0',
+    borderRightColor: theme.colors.border,
   },
   phoneDialCodeText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#1E293B',
+    color: theme.colors.text,
   },
   phoneNumberInput: {
     flex: 1,
-    paddingVertical: 12,
+    height: '100%',
     paddingHorizontal: 16,
     fontSize: 16,
-    color: '#1E293B',
+    color: theme.colors.text,
   },
   errorText: {
-    fontSize: 12,
-    color: '#EF4444',
+    fontSize: 13,
+    color: theme.colors.error,
     marginTop: 8,
+    fontWeight: '500',
   },
   // Danger Zone styles
   dangerZone: {
-    marginTop: 32,
-    marginBottom: 16,
-    borderWidth: 2,
-    borderColor: '#FEE2E2',
-    backgroundColor: '#FEF2F2',
+    marginTop: 40,
+    marginBottom: 24,
+    borderWidth: 1,
+    borderColor: theme.colors.error,
+    backgroundColor: theme.mode === 'dark' ? 'rgba(239, 68, 68, 0.1)' : '#FEF2F2',
+    borderRadius: 16,
   },
   dangerHeader: {
-    marginBottom: 16,
+    marginBottom: 20,
   },
   dangerTitle: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: '700',
-    color: '#DC2626',
+    color: theme.colors.error,
     marginBottom: 8,
   },
   dangerDescription: {
-    fontSize: 14,
-    color: '#991B1B',
-    lineHeight: 20,
+    fontSize: 15,
+    color: theme.colors.text,
+    lineHeight: 22,
+    opacity: 0.8,
   },
   deleteAccountButton: {
-    backgroundColor: '#DC2626',
-    paddingVertical: 14,
-    paddingHorizontal: 20,
-    borderRadius: 10,
+    backgroundColor: theme.colors.error,
+    paddingVertical: 16,
+    paddingHorizontal: 24,
+    borderRadius: 12,
     alignItems: 'center',
-    shadowColor: '#DC2626',
-    shadowOffset: { width: 0, height: 2 },
+    shadowColor: theme.colors.error,
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
-    shadowRadius: 4,
-    elevation: 3,
+    shadowRadius: 8,
+    elevation: 4,
   },
   deleteAccountButtonText: {
     fontSize: 16,
     fontWeight: '700',
     color: '#FFFFFF',
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
   },
   // Avatar styles
   avatarSection: {
-    marginBottom: 24,
+    marginBottom: 32,
     alignItems: 'center',
-    paddingVertical: 24,
+    paddingVertical: 32,
+    borderRadius: 24,
+    shadowColor: theme.shadows.medium.shadowColor,
+    shadowOffset: theme.shadows.medium.shadowOffset,
+    shadowOpacity: theme.shadows.medium.shadowOpacity,
+    shadowRadius: theme.shadows.medium.shadowRadius,
+    elevation: 4,
   },
   avatarContainer: {
     position: 'relative',
-    marginBottom: 16,
+    marginBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.2,
+    shadowRadius: 16,
+    elevation: 8,
   },
   avatarImage: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    backgroundColor: '#E5E7EB',
+    width: 128,
+    height: 128,
+    borderRadius: 64,
+    backgroundColor: theme.colors.border,
+    borderWidth: 4,
+    borderColor: theme.colors.card,
   },
   avatarPlaceholder: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    backgroundColor: '#E5E7EB',
+    width: 128,
+    height: 128,
+    borderRadius: 64,
+    backgroundColor: theme.colors.primary,
     justifyContent: 'center',
     alignItems: 'center',
+    borderWidth: 4,
+    borderColor: theme.colors.card,
   },
   avatarPlaceholderText: {
     fontSize: 48,
     fontWeight: '700',
-    color: '#6B7280',
+    color: '#fff',
   },
   cameraButton: {
     position: 'absolute',
-    bottom: 0,
-    right: 0,
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: '#2563EB',
+    bottom: 4,
+    right: 4,
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: theme.colors.secondary,
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 3,
-    borderColor: '#FFFFFF',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    borderWidth: 4,
+    borderColor: theme.colors.card,
+    shadowColor: theme.colors.secondary,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 4,
   },
   avatarInfo: {
     alignItems: 'center',
   },
   avatarName: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: '700',
-    color: '#1E293B',
-    marginBottom: 4,
+    color: theme.colors.text,
+    marginBottom: 6,
   },
   avatarEmail: {
-    fontSize: 14,
-    color: '#64748B',
+    fontSize: 16,
+    color: theme.colors.textSecondary,
   },
 });

@@ -13,12 +13,12 @@ import {
   Quote,
 } from 'lucide-react-native';
 import { WebFooter } from '@/components/web/WebFooter';
-
-const BRAND_ORANGE = '#FF6B35';
+import { useTheme } from '@/lib/theme';
 
 export default function AboutUs() {
   const { t } = useTranslation();
   const router = useRouter();
+  const { theme } = useTheme();
 
   const timelineItems = useMemo(
     () => [
@@ -83,150 +83,149 @@ export default function AboutUs() {
   );
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.hero}>
-        <View style={styles.heroOverlay} />
+    <ScrollView style={[styles.container, { backgroundColor: theme.colors.background }]}>
+      <View style={[styles.hero, { backgroundColor: theme.colors.background }]}>
         <View style={styles.section}>
           <View style={styles.heroContent}>
-            <View style={styles.heroBadge}>
-              <Truck size={18} color={BRAND_ORANGE} />
-              <Text style={styles.heroBadgeText}>{t('web.about.hero_badge')}</Text>
+            <View style={[styles.heroBadge, { backgroundColor: theme.colors.primary + '1F' }]}>
+              <Truck size={18} color={theme.colors.primary} />
+              <Text style={[styles.heroBadgeText, { color: theme.colors.primary }]}>{t('web.about.hero_badge')}</Text>
             </View>
-            <Text style={styles.heroTitle}>{t('web.about.hero_title')}</Text>
-            <Text style={styles.heroSubtitle}>{t('web.about.hero_subtitle')}</Text>
+            <Text style={[styles.heroTitle, { color: theme.colors.text }]}>{t('web.about.hero_title')}</Text>
+            <Text style={[styles.heroSubtitle, { color: theme.colors.textSecondary }]}>{t('web.about.hero_subtitle')}</Text>
 
             <View style={styles.heroButtons}>
               <TouchableOpacity
-                style={styles.heroPrimary}
+                style={[styles.heroPrimary, { backgroundColor: theme.colors.secondary }]}
                 onPress={() => router.push('/(auth)/register')}
               >
                 <Text style={styles.heroPrimaryText}>{t('web.about.hero_cta')}</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={styles.heroSecondary}
+                style={[styles.heroSecondary, { borderColor: theme.colors.border, backgroundColor: theme.colors.card }]}
                 onPress={() => router.push('/(web)/contact')}
               >
-                <Text style={styles.heroSecondaryText}>{t('web.about.hero_secondary_cta')}</Text>
+                <Text style={[styles.heroSecondaryText, { color: theme.colors.text }]}>{t('web.about.hero_secondary_cta')}</Text>
               </TouchableOpacity>
             </View>
 
-            <View style={styles.quoteCard}>
-              <Quote size={24} color={BRAND_ORANGE} />
-              <Text style={styles.quoteText}>{t('web.about.founder_quote')}</Text>
-              <Text style={styles.quoteAuthor}>{t('web.founder.name')}</Text>
-              <Text style={styles.quoteRole}>{t('web.founder.role')}</Text>
+            <View style={[styles.quoteCard, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}>
+              <Quote size={24} color={theme.colors.secondary} />
+              <Text style={[styles.quoteText, { color: theme.colors.text }]}>{t('web.about.founder_quote')}</Text>
+              <Text style={[styles.quoteAuthor, { color: theme.colors.text }]}>{t('web.founder.name')}</Text>
+              <Text style={[styles.quoteRole, { color: theme.colors.textSecondary }]}>{t('web.founder.role')}</Text>
             </View>
           </View>
         </View>
       </View>
 
-      <View style={[styles.section, styles.storySection]}>
-        <Text style={styles.sectionEyebrow}>{t('web.about.journey_badge')}</Text>
-        <Text style={styles.sectionTitle}>{t('web.about.journey_title')}</Text>
-        <Text style={styles.sectionSubtitle}>{t('web.about.journey_subtitle')}</Text>
+      <View style={[styles.section, styles.storySection, { backgroundColor: theme.colors.background }]}>
+        <Text style={[styles.sectionEyebrow, { color: theme.colors.secondary }]}>{t('web.about.journey_badge')}</Text>
+        <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>{t('web.about.journey_title')}</Text>
+        <Text style={[styles.sectionSubtitle, { color: theme.colors.textSecondary }]}>{t('web.about.journey_subtitle')}</Text>
 
         <View style={styles.timelineGrid}>
           {timelineItems.map((item) => {
             const Icon = item.icon;
             return (
-              <View key={item.titleKey} style={styles.timelineCard}>
-                <View style={styles.timelineIcon}>
-                  <Icon size={24} color={BRAND_ORANGE} />
+              <View key={item.titleKey} style={[styles.timelineCard, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}>
+                <View style={[styles.timelineIcon, { backgroundColor: `${theme.colors.secondary}1F` }]}>
+                  <Icon size={24} color={theme.colors.secondary} />
                 </View>
-                <Text style={styles.timelineTitle}>{t(item.titleKey)}</Text>
-                <Text style={styles.timelineDesc}>{t(item.descKey)}</Text>
+                <Text style={[styles.timelineTitle, { color: theme.colors.text }]}>{t(item.titleKey)}</Text>
+                <Text style={[styles.timelineDesc, { color: theme.colors.textSecondary }]}>{t(item.descKey)}</Text>
               </View>
             );
           })}
         </View>
       </View>
 
-      <View style={[styles.section, styles.missionSection]}>
-        <View style={styles.missionCard}>
-          <Text style={styles.sectionEyebrow}>{t('web.about.mission_badge')}</Text>
-          <Text style={styles.sectionTitle}>{t('web.about.mission_title')}</Text>
-          <Text style={styles.sectionSubtitle}>{t('web.about.mission_subtitle')}</Text>
+      <View style={[styles.section, styles.missionSection, { backgroundColor: theme.colors.surface }]}>
+        <View style={[styles.missionCard, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}>
+          <Text style={[styles.sectionEyebrow, { color: theme.colors.secondary }]}>{t('web.about.mission_badge')}</Text>
+          <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>{t('web.about.mission_title')}</Text>
+          <Text style={[styles.sectionSubtitle, { color: theme.colors.textSecondary }]}>{t('web.about.mission_subtitle')}</Text>
 
           <View style={styles.missionList}>
             {missionPoints.map((key) => (
               <View key={key} style={styles.missionItem}>
-                <View style={styles.missionBullet}>
+                <View style={[styles.missionBullet, { backgroundColor: theme.colors.secondary }]}>
                   <Sparkles size={16} color="#FFFFFF" />
                 </View>
-                <Text style={styles.missionText}>{t(key)}</Text>
+                <Text style={[styles.missionText, { color: theme.colors.textSecondary }]}>{t(key)}</Text>
               </View>
             ))}
           </View>
         </View>
 
-        <View style={styles.coverageCard}>
-          <Text style={styles.coverageTitle}>{t('web.about.coverage_title')}</Text>
-          <Text style={styles.coverageSubtitle}>{t('web.about.coverage_subtitle')}</Text>
+        <View style={[styles.coverageCard, { backgroundColor: theme.colors.card }]}>
+          <Text style={[styles.coverageTitle, { color: theme.colors.text }]}>{t('web.about.coverage_title')}</Text>
+          <Text style={[styles.coverageSubtitle, { color: theme.colors.textSecondary }]}>{t('web.about.coverage_subtitle')}</Text>
           <View style={styles.coverageList}>
             {coverageCountries.map((country) => (
               <View key={country} style={styles.coverageItem}>
-                <MapPin size={18} color={BRAND_ORANGE} />
-                <Text style={styles.coverageText}>{country}</Text>
+                <MapPin size={18} color={theme.colors.secondary} />
+                <Text style={[styles.coverageText, { color: theme.colors.text }]}>{country}</Text>
               </View>
             ))}
           </View>
-          <Text style={styles.coverageFooter}>{t('web.about.coverage_footer')}</Text>
+          <Text style={[styles.coverageFooter, { color: theme.colors.textSecondary }]}>{t('web.about.coverage_footer')}</Text>
         </View>
       </View>
 
-      <View style={[styles.section, styles.valuesSection]}>
-        <Text style={styles.sectionEyebrow}>{t('web.about.values_badge')}</Text>
-        <Text style={styles.sectionTitle}>{t('web.about.values_title')}</Text>
-        <Text style={styles.sectionSubtitle}>{t('web.about.values_subtitle')}</Text>
+      <View style={[styles.section, styles.valuesSection, { backgroundColor: theme.colors.background }]}>
+        <Text style={[styles.sectionEyebrow, { color: theme.colors.secondary }]}>{t('web.about.values_badge')}</Text>
+        <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>{t('web.about.values_title')}</Text>
+        <Text style={[styles.sectionSubtitle, { color: theme.colors.textSecondary }]}>{t('web.about.values_subtitle')}</Text>
 
         <View style={styles.valuesGrid}>
           {valueCards.map((value) => {
             const Icon = value.icon;
             return (
-              <View key={value.titleKey} style={styles.valueCard}>
-                <View style={styles.valueIcon}>
-                  <Icon size={28} color={BRAND_ORANGE} />
+              <View key={value.titleKey} style={[styles.valueCard, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}>
+                <View style={[styles.valueIcon, { backgroundColor: `${theme.colors.secondary}1F` }]}>
+                  <Icon size={28} color={theme.colors.secondary} />
                 </View>
-                <Text style={styles.valueTitle}>{t(value.titleKey)}</Text>
-                <Text style={styles.valueDesc}>{t(value.descKey)}</Text>
+                <Text style={[styles.valueTitle, { color: theme.colors.text }]}>{t(value.titleKey)}</Text>
+                <Text style={[styles.valueDesc, { color: theme.colors.textSecondary }]}>{t(value.descKey)}</Text>
               </View>
             );
           })}
         </View>
       </View>
 
-      <View style={[styles.section, styles.impactSection]}>
-        <Text style={styles.sectionEyebrow}>{t('web.about.impact_badge')}</Text>
-        <Text style={styles.sectionTitle}>{t('web.about.impact_title')}</Text>
-        <Text style={styles.sectionSubtitle}>{t('web.about.impact_subtitle')}</Text>
+      <View style={[styles.section, styles.impactSection, { backgroundColor: theme.colors.surface }]}>
+        <Text style={[styles.sectionEyebrow, { color: theme.colors.secondary }]}>{t('web.about.impact_badge')}</Text>
+        <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>{t('web.about.impact_title')}</Text>
+        <Text style={[styles.sectionSubtitle, { color: theme.colors.textSecondary }]}>{t('web.about.impact_subtitle')}</Text>
 
         <View style={styles.statsGrid}>
           {impactStats.map((stat) => (
             <View key={stat.label} style={styles.statCard}>
-              <Text style={styles.statNumber}>{stat.value}</Text>
-              <Text style={styles.statLabel}>{stat.label}</Text>
+              <Text style={[styles.statNumber, { color: theme.colors.text }]}>{stat.value}</Text>
+              <Text style={[styles.statLabel, { color: theme.colors.textSecondary }]}>{stat.label}</Text>
             </View>
           ))}
         </View>
       </View>
 
-      <View style={[styles.section, styles.ctaSection]}>
-        <View style={styles.ctaContent}>
-          <Text style={styles.ctaTitle}>{t('web.about.cta_title')}</Text>
-          <Text style={styles.ctaSubtitle}>{t('web.about.cta_subtitle')}</Text>
+      <View style={[styles.section, styles.ctaSection, { backgroundColor: theme.colors.background }]}>
+        <View style={[styles.ctaContent, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}>
+          <Text style={[styles.ctaTitle, { color: theme.colors.text }]}>{t('web.about.cta_title')}</Text>
+          <Text style={[styles.ctaSubtitle, { color: theme.colors.textSecondary }]}>{t('web.about.cta_subtitle')}</Text>
 
           <View style={styles.heroButtons}>
             <TouchableOpacity
-              style={[styles.heroPrimary, styles.ctaPrimary]}
+              style={[styles.heroPrimary, styles.ctaPrimary, { backgroundColor: theme.colors.secondary }]}
               onPress={() => router.push('/(auth)/register')}
             >
               <Text style={styles.heroPrimaryText}>{t('web.about.cta_primary')}</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={[styles.heroSecondary, styles.ctaSecondary]}
+              style={[styles.heroSecondary, styles.ctaSecondary, { borderColor: theme.colors.border }]}
               onPress={() => router.push('/(web)/pricing_web')}
             >
-              <Text style={styles.heroSecondaryText}>{t('web.about.cta_secondary')}</Text>
+              <Text style={[styles.heroSecondaryText, { color: theme.colors.text }]}>{t('web.about.cta_secondary')}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -237,10 +236,9 @@ export default function AboutUs() {
   );
 }
 
-const rawStyles = {
+const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0F172A',
   },
   section: {
     maxWidth: 1200,
@@ -261,18 +259,7 @@ const rawStyles = {
   },
   hero: {
     position: 'relative',
-    backgroundColor: '#0F172A',
     overflow: 'hidden',
-  },
-  heroOverlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    ...(Platform.OS === 'web' && {
-      backgroundImage: 'linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(15, 23, 42, 0.8) 40%, rgba(15, 23, 42, 0.6) 100%)',
-    }),
   },
   heroContent: {
     position: 'relative',
@@ -287,19 +274,16 @@ const rawStyles = {
     paddingVertical: 8,
     paddingHorizontal: 18,
     borderRadius: 999,
-    backgroundColor: 'rgba(255, 255, 255, 0.06)',
   },
   heroBadgeText: {
     fontSize: 14,
     fontWeight: '700',
     letterSpacing: 0.4,
-    color: '#FFFFFF',
     textTransform: 'uppercase',
   },
   heroTitle: {
     fontSize: 48,
     fontWeight: '900',
-    color: '#FFFFFF',
     lineHeight: 56,
     maxWidth: 760,
     ...(Platform.OS === 'web' && {
@@ -311,7 +295,6 @@ const rawStyles = {
   },
   heroSubtitle: {
     fontSize: 20,
-    color: 'rgba(255, 255, 255, 0.82)',
     lineHeight: 32,
     maxWidth: 720,
   },
@@ -324,7 +307,6 @@ const rawStyles = {
     paddingVertical: 18,
     paddingHorizontal: 36,
     borderRadius: 14,
-    backgroundColor: BRAND_ORANGE,
     ...(Platform.OS === 'web' && {
       cursor: 'pointer',
       transition: 'transform 0.2s ease, box-shadow 0.2s ease',
@@ -345,8 +327,6 @@ const rawStyles = {
     paddingHorizontal: 36,
     borderRadius: 14,
     borderWidth: 2,
-    borderColor: 'rgba(255,255,255,0.25)',
-    backgroundColor: 'rgba(255, 255, 255, 0.04)',
     ...(Platform.OS === 'web' && {
       cursor: 'pointer',
       transition: 'border-color 0.2s ease, transform 0.2s ease',
@@ -359,35 +339,28 @@ const rawStyles = {
   heroSecondaryText: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#FFFFFF',
     letterSpacing: 0.4,
   },
   quoteCard: {
-    backgroundColor: 'rgba(255, 255, 255, 0.08)',
     padding: 24,
     borderRadius: 20,
     gap: 12,
     maxWidth: 640,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.08)',
   },
   quoteText: {
     fontSize: 18,
-    color: '#E2E8F0',
     lineHeight: 28,
     fontStyle: 'italic',
   },
   quoteAuthor: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#FFFFFF',
   },
   quoteRole: {
     fontSize: 14,
-    color: 'rgba(255,255,255,0.7)',
   },
   sectionEyebrow: {
-    color: BRAND_ORANGE,
     fontWeight: '700',
     textTransform: 'uppercase',
     letterSpacing: 1.4,
@@ -397,7 +370,6 @@ const rawStyles = {
   sectionTitle: {
     fontSize: 40,
     fontWeight: '900',
-    color: '#0F172A',
     marginBottom: 12,
     textAlign: 'left',
     ...(Platform.OS === 'web' && {
@@ -408,13 +380,11 @@ const rawStyles = {
   },
   sectionSubtitle: {
     fontSize: 18,
-    color: '#475569',
     lineHeight: 28,
     maxWidth: 760,
     marginBottom: 32,
   },
   storySection: {
-    backgroundColor: '#FFFFFF',
   },
   timelineGrid: {
     flexDirection: 'row',
@@ -426,9 +396,7 @@ const rawStyles = {
     minWidth: 260,
     padding: 28,
     borderRadius: 20,
-    backgroundColor: '#F8FAFC',
     borderWidth: 1,
-    borderColor: '#E2E8F0',
     gap: 12,
   },
   timelineIcon: {
@@ -437,20 +405,16 @@ const rawStyles = {
     borderRadius: 16,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(255, 107, 53, 0.12)',
   },
   timelineTitle: {
     fontSize: 20,
     fontWeight: '700',
-    color: '#0F172A',
   },
   timelineDesc: {
     fontSize: 16,
-    color: '#475569',
     lineHeight: 24,
   },
   missionSection: {
-    backgroundColor: '#F8FAFC',
     flexDirection: 'row',
     gap: 32,
     flexWrap: 'wrap',
@@ -458,11 +422,9 @@ const rawStyles = {
   missionCard: {
     flex: 1,
     minWidth: 340,
-    backgroundColor: '#FFFFFF',
     padding: 32,
     borderRadius: 24,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
   },
   missionList: {
     marginTop: 24,
@@ -477,20 +439,17 @@ const rawStyles = {
     width: 32,
     height: 32,
     borderRadius: 12,
-    backgroundColor: BRAND_ORANGE,
     alignItems: 'center',
     justifyContent: 'center',
   },
   missionText: {
     fontSize: 16,
-    color: '#475569',
     lineHeight: 24,
     flex: 1,
   },
   coverageCard: {
     flex: 1,
     minWidth: 260,
-    backgroundColor: '#0F172A',
     padding: 32,
     borderRadius: 24,
     gap: 16,
@@ -498,11 +457,9 @@ const rawStyles = {
   coverageTitle: {
     fontSize: 24,
     fontWeight: '800',
-    color: '#FFFFFF',
   },
   coverageSubtitle: {
     fontSize: 16,
-    color: 'rgba(255,255,255,0.8)',
     lineHeight: 24,
   },
   coverageList: {
@@ -516,16 +473,13 @@ const rawStyles = {
   },
   coverageText: {
     fontSize: 16,
-    color: '#FFFFFF',
     fontWeight: '600',
   },
   coverageFooter: {
     fontSize: 14,
-    color: 'rgba(255,255,255,0.65)',
     marginTop: 8,
   },
   valuesSection: {
-    backgroundColor: '#FFFFFF',
   },
   valuesGrid: {
     flexDirection: 'row',
@@ -535,11 +489,9 @@ const rawStyles = {
   valueCard: {
     flex: 1,
     minWidth: 250,
-    backgroundColor: '#F8FAFC',
     borderRadius: 20,
     padding: 28,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
     gap: 12,
   },
   valueIcon: {
@@ -548,20 +500,16 @@ const rawStyles = {
     borderRadius: 16,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(255, 107, 53, 0.12)',
   },
   valueTitle: {
     fontSize: 20,
     fontWeight: '800',
-    color: '#0F172A',
   },
   valueDesc: {
     fontSize: 16,
-    color: '#475569',
     lineHeight: 24,
   },
   impactSection: {
-    backgroundColor: '#F8FAFC',
   },
   statsGrid: {
     flexDirection: 'row',
@@ -577,46 +525,35 @@ const rawStyles = {
   statNumber: {
     fontSize: 44,
     fontWeight: '900',
-    color: '#0F172A',
   },
   statLabel: {
     fontSize: 16,
-    color: '#475569',
     textAlign: 'center',
     lineHeight: 22,
   },
   ctaSection: {
-    backgroundColor: '#0F172A',
   },
   ctaContent: {
-    backgroundColor: '#111C33',
     borderRadius: 32,
     padding: 48,
     alignItems: 'center',
     gap: 20,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.08)',
   },
   ctaTitle: {
     fontSize: 36,
     fontWeight: '900',
-    color: '#FFFFFF',
     textAlign: 'center',
   },
   ctaSubtitle: {
     fontSize: 18,
-    color: 'rgba(255,255,255,0.75)',
     textAlign: 'center',
     lineHeight: 28,
     maxWidth: 640,
     marginBottom: 12,
   },
   ctaPrimary: {
-    backgroundColor: BRAND_ORANGE,
   },
   ctaSecondary: {
-    borderColor: 'rgba(255,255,255,0.45)',
   },
-} as const;
-
-const styles = StyleSheet.create(rawStyles as Record<string, any>);
+});

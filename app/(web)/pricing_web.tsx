@@ -4,14 +4,13 @@ import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { WebFooter } from '@/components/web/WebFooter';
 import { Check, Compass, Shield, Truck, Zap } from 'lucide-react-native';
+import { useTheme } from '@/lib/theme';
 
 type Currency = 'EUR' | 'USD';
 
-const BRAND_ORANGE = '#FF6B35';
-
 interface FeatureKey {
   id: string;
-  params?: Record<string, number>;
+  params?: Record<string, any>;
 }
 
 interface PricingTier {
@@ -23,73 +22,6 @@ interface PricingTier {
   popular?: boolean;
   featureKeys: FeatureKey[];
 }
-
-const PRICING_TIERS: PricingTier[] = [
-  {
-    id: 'standard',
-    translationKey: 'standard',
-    priceEUR: '29.99',
-    priceUSD: '29.99',
-    accentColor: BRAND_ORANGE,
-    featureKeys: [
-      { id: 'feature_searches', params: { count: 30 } },
-      { id: 'feature_posts', params: { daily: 5, monthly: 30 } },
-      { id: 'feature_filters' },
-      { id: 'feature_saves' },
-    ],
-  },
-  {
-    id: 'pro',
-    translationKey: 'pro',
-    priceEUR: '49.99',
-    priceUSD: '49.99',
-    accentColor: '#2563EB',
-    popular: true,
-    featureKeys: [
-      { id: 'feature_searches', params: { count: 50 } },
-      { id: 'feature_posts', params: { daily: 10, monthly: 100 } },
-      { id: 'feature_linkedin' },
-      { id: 'feature_ai' },
-      { id: 'feature_research' },
-      { id: 'feature_priority' },
-      { id: 'feature_export' },
-    ],
-  },
-  {
-    id: 'fleet_manager',
-    translationKey: 'fleet',
-    priceEUR: '29.99',
-    priceUSD: '29.99',
-    accentColor: '#0EA5E9',
-    featureKeys: [
-      { id: 'feature_searches', params: { count: 30 } },
-      { id: 'feature_posts', params: { daily: 30, monthly: 900 } },
-      { id: 'feature_concurrent', params: { count: 30 } },
-      { id: 'feature_duration', params: { hours: 72 } },
-      { id: 'feature_tools' },
-      { id: 'feature_saved', params: { count_saved: 100 } },
-    ],
-  },
-  {
-    id: 'pro_freighter',
-    translationKey: 'freighter',
-    priceEUR: '49.99',
-    priceUSD: '49.99',
-    accentColor: '#0EA765',
-    featureKeys: [
-      { id: 'feature_searches', params: { count: 50 } },
-      { id: 'feature_posts', params: { daily: 50, monthly: 1500 } },
-      { id: 'feature_linkedin' },
-      { id: 'feature_ai' },
-      { id: 'feature_research' },
-      { id: 'feature_concurrent', params: { count: 50 } },
-      { id: 'feature_duration', params: { hours: 72 } },
-      { id: 'feature_analytics' },
-      { id: 'feature_support' },
-      { id: 'feature_saved', params: { count_saved: 200 } },
-    ],
-  },
-];
 
 const ICONS = {
   standard: Truck,
@@ -112,8 +44,76 @@ const FAQ_ITEMS = [
 export default function WebPricingPage() {
   const router = useRouter();
   const { t } = useTranslation();
+  const { theme } = useTheme();
   const [currency, setCurrency] = useState<Currency>('USD');
   const [expandedFaq, setExpandedFaq] = useState<number | null>(0);
+
+  const PRICING_TIERS: PricingTier[] = useMemo(() => [
+    {
+      id: 'standard',
+      translationKey: 'standard',
+      priceEUR: '29.99',
+      priceUSD: '29.99',
+      accentColor: theme.colors.secondary,
+      featureKeys: [
+        { id: 'feature_searches', params: { count: 30 } },
+        { id: 'feature_posts', params: { daily: 5, monthly: 30 } },
+        { id: 'feature_filters' },
+        { id: 'feature_saves' },
+      ],
+    },
+    {
+      id: 'pro',
+      translationKey: 'pro',
+      priceEUR: '49.99',
+      priceUSD: '49.99',
+      accentColor: '#2563EB',
+      popular: true,
+      featureKeys: [
+        { id: 'feature_searches', params: { count: 50 } },
+        { id: 'feature_posts', params: { daily: 10, monthly: 100 } },
+        { id: 'feature_linkedin' },
+        { id: 'feature_ai' },
+        { id: 'feature_research' },
+        { id: 'feature_priority' },
+        { id: 'feature_export' },
+      ],
+    },
+    {
+      id: 'fleet_manager',
+      translationKey: 'fleet',
+      priceEUR: '29.99',
+      priceUSD: '29.99',
+      accentColor: '#0EA5E9',
+      featureKeys: [
+        { id: 'feature_searches', params: { count: 30 } },
+        { id: 'feature_posts', params: { daily: 30, monthly: 900 } },
+        { id: 'feature_concurrent', params: { count: 30 } },
+        { id: 'feature_duration', params: { hours: 72 } },
+        { id: 'feature_tools' },
+        { id: 'feature_saved', params: { count_saved: 100 } },
+      ],
+    },
+    {
+      id: 'pro_freighter',
+      translationKey: 'freighter',
+      priceEUR: '49.99',
+      priceUSD: '49.99',
+      accentColor: '#0EA765',
+      featureKeys: [
+        { id: 'feature_searches', params: { count: 50 } },
+        { id: 'feature_posts', params: { daily: 50, monthly: 1500 } },
+        { id: 'feature_linkedin' },
+        { id: 'feature_ai' },
+        { id: 'feature_research' },
+        { id: 'feature_concurrent', params: { count: 50 } },
+        { id: 'feature_duration', params: { hours: 72 } },
+        { id: 'feature_analytics' },
+        { id: 'feature_support' },
+        { id: 'feature_saved', params: { count_saved: 200 } },
+      ],
+    },
+  ], [theme.colors.secondary]);
 
   if (Platform.OS !== 'web') {
     return null;
@@ -129,58 +129,81 @@ export default function WebPricingPage() {
   );
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <View style={styles.webContainer}>
-        <View style={styles.hero}>
+        <View style={[
+          styles.hero, 
+          { 
+            backgroundColor: theme.mode === 'dark' ? theme.colors.surface : '#FFF7F2',
+            ...(Platform.OS === 'web' ? {
+              backgroundImage: `linear-gradient(135deg, ${theme.colors.secondary} 0%, ${theme.colors.secondary}DD 100%)`,
+              boxShadow: `0 25px 50px -12px ${theme.colors.secondary}59`,
+            } : {})
+          }
+        ]}>
           <View style={styles.heroContent}>
             <View style={styles.heroBadge}>
-              <Truck size={16} color={BRAND_ORANGE} />
-              <Text style={styles.heroBadgeText}>{t('web.pricing.hero_badge')}</Text>
+              <Truck size={16} color={theme.colors.white} />
+              <Text style={[styles.heroBadgeText, { color: theme.colors.white }]}>{t('web.pricing.hero_badge')}</Text>
             </View>
 
-            <Text style={styles.heroTitle}>{t('web.pricing.hero_title')}</Text>
-            <Text style={styles.heroSubtitle}>{t('web.pricing.hero_subtitle')}</Text>
+            <Text style={[styles.heroTitle, { color: theme.colors.white }]}>{t('web.pricing.hero_title')}</Text>
+            <Text style={[styles.heroSubtitle, { color: 'rgba(255,255,255,0.85)' }]}>{t('web.pricing.hero_subtitle')}</Text>
 
             <View style={styles.heroHighlights}>
               {heroHighlights.map((item, index) => {
                 const Icon = item.icon;
                 return (
                   <View key={index} style={styles.heroHighlight}>
-                    <Icon size={18} color={BRAND_ORANGE} />
-                    <Text style={styles.heroHighlightText}>{item.text}</Text>
+                    <Icon size={18} color={theme.colors.white} />
+                    <Text style={[styles.heroHighlightText, { color: theme.colors.white }]}>{item.text}</Text>
                   </View>
                 );
               })}
             </View>
 
             <TouchableOpacity
-              style={styles.heroCta}
+              style={[styles.heroCta, { backgroundColor: theme.colors.white }]}
               onPress={() => router.push('/(auth)/register')}
             >
-              <Text style={styles.heroCtaText}>{t('web.pricing.hero_cta')}</Text>
+              <Text style={[styles.heroCtaText, { color: theme.colors.secondary }]}>{t('web.pricing.hero_cta')}</Text>
             </TouchableOpacity>
           </View>
         </View>
 
         <View style={styles.currencySection}>
-          <Text style={styles.currencyLabel}>{t('web.pricing.currency_label')}</Text>
-          <View style={styles.currencyToggle}>
+          <Text style={[styles.currencyLabel, { color: theme.colors.text }]}>{t('web.pricing.currency_label')}</Text>
+          <View style={[styles.currencyToggle, { backgroundColor: theme.colors.card }]}>
             <TouchableOpacity
-              style={[styles.currencyButton, currency === 'EUR' && styles.currencyButtonActive]}
+              style={[
+                styles.currencyButton, 
+                currency === 'EUR' && { backgroundColor: theme.colors.secondary }
+              ]}
               onPress={() => setCurrency('EUR')}
             >
               <Text
-                style={[styles.currencyText, currency === 'EUR' && styles.currencyTextActive]}
+                style={[
+                  styles.currencyText, 
+                  { color: theme.colors.textSecondary },
+                  currency === 'EUR' && { color: theme.colors.white }
+                ]}
               >
                 {t('web.pricing.currency_eur')}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={[styles.currencyButton, currency === 'USD' && styles.currencyButtonActive]}
+              style={[
+                styles.currencyButton, 
+                currency === 'USD' && { backgroundColor: theme.colors.secondary }
+              ]}
               onPress={() => setCurrency('USD')}
             >
               <Text
-                style={[styles.currencyText, currency === 'USD' && styles.currencyTextActive]}
+                style={[
+                  styles.currencyText, 
+                  { color: theme.colors.textSecondary },
+                  currency === 'USD' && { color: theme.colors.white }
+                ]}
               >
                 {t('web.pricing.currency_usd')}
               </Text>
@@ -200,7 +223,11 @@ export default function WebPricingPage() {
                 key={tier.id}
                 style={[
                   styles.pricingCard,
-                  tier.popular && styles.pricingCardPopular,
+                  { 
+                    backgroundColor: theme.colors.card,
+                    borderColor: theme.colors.border,
+                  },
+                  tier.popular && { borderColor: tier.accentColor, borderWidth: 2 },
                 ]}
               >
                 <View style={styles.cardHeader}>
@@ -208,27 +235,27 @@ export default function WebPricingPage() {
                     <IconComponent size={24} color={tier.accentColor} />
                   </View>
                   <View style={styles.cardTitleBlock}>
-                    <Text style={styles.tierName}>{t(`${cardKey}.title`)}</Text>
-                    <Text style={styles.tierTagline}>{t(`${cardKey}.tagline`)}</Text>
+                    <Text style={[styles.tierName, { color: theme.colors.text }]}>{t(`${cardKey}.title`)}</Text>
+                    <Text style={[styles.tierTagline, { color: theme.colors.textSecondary }]}>{t(`${cardKey}.tagline`)}</Text>
                   </View>
                   {tier.popular && (
-                    <View style={styles.popularChip}>
-                      <Text style={styles.popularChipText}>{t('web.pricing.cta_popular')}</Text>
+                    <View style={[styles.popularChip, { backgroundColor: `${tier.accentColor}1A` }]}>
+                      <Text style={[styles.popularChipText, { color: tier.accentColor }]}>{t('web.pricing.cta_popular')}</Text>
                     </View>
                   )}
                 </View>
 
                 <View style={styles.priceRow}>
                   <Text style={[styles.priceSymbol, { color: tier.accentColor }]}>{priceSymbol}</Text>
-                  <Text style={styles.priceValue}>{price}</Text>
-                  <Text style={styles.pricePeriod}>{t('web.pricing.per_month')}</Text>
+                  <Text style={[styles.priceValue, { color: theme.colors.text }]}>{price}</Text>
+                  <Text style={[styles.pricePeriod, { color: theme.colors.textSecondary }]}>{t('web.pricing.per_month')}</Text>
                 </View>
 
                 <View style={styles.featuresContainer}>
                   {tier.featureKeys.map((feature) => (
                     <View key={feature.id} style={styles.featureRow}>
                       <Check size={18} color={tier.accentColor} style={styles.featureIcon} />
-                      <Text style={styles.featureText}>
+                      <Text style={[styles.featureText, { color: theme.colors.textSecondary }]}>
                         {t(`${cardKey}.${feature.id}`, feature.params)}
                       </Text>
                     </View>
@@ -239,7 +266,7 @@ export default function WebPricingPage() {
                   style={[styles.ctaButton, { backgroundColor: tier.accentColor }]}
                   onPress={() => router.push('/(auth)/register')}
                 >
-                  <Text style={styles.ctaButtonText}>{t('web.pricing.cta')}</Text>
+                  <Text style={[styles.ctaButtonText, { color: '#FFFFFF' }]}>{t('web.pricing.cta')}</Text>
                 </TouchableOpacity>
               </View>
             );
@@ -247,23 +274,23 @@ export default function WebPricingPage() {
         </View>
 
         <View style={styles.faqSection}>
-          <Text style={styles.faqTitle}>{t('web.pricing.faq_title')}</Text>
+          <Text style={[styles.faqTitle, { color: theme.colors.text }]}>{t('web.pricing.faq_title')}</Text>
 
           {FAQ_ITEMS.map((item, index) => (
             <TouchableOpacity
               key={item.questionKey}
-              style={styles.faqItem}
+              style={[styles.faqItem, { backgroundColor: theme.colors.card }]}
               onPress={() => setExpandedFaq(expandedFaq === index ? null : index)}
             >
               <View style={styles.faqHeader}>
-                <Text style={styles.faqQuestion}>{t(`web.pricing.faq.${item.questionKey}`)}</Text>
-                <Text style={styles.faqIcon}>{expandedFaq === index ? '−' : '+'}</Text>
+                <Text style={[styles.faqQuestion, { color: theme.colors.text }]}>{t(`web.pricing.faq.${item.questionKey}`)}</Text>
+                <Text style={[styles.faqIcon, { color: theme.colors.secondary }]}>{expandedFaq === index ? '−' : '+'}</Text>
               </View>
 
               {expandedFaq === index && (
-                <View style={styles.faqAnswerBlock}>
+                <View style={[styles.faqAnswerBlock, { borderTopColor: theme.colors.border }]}>
                   {item.answerKeys.map((answerKey) => (
-                    <Text key={answerKey} style={styles.faqAnswerText}>
+                    <Text key={answerKey} style={[styles.faqAnswerText, { color: theme.colors.textSecondary }]}>
                       {t(`web.pricing.faq.${answerKey}`)}
                     </Text>
                   ))}
@@ -282,7 +309,6 @@ export default function WebPricingPage() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8FAFC',
   },
   webContainer: {
     maxWidth: 1200,
@@ -295,12 +321,6 @@ const styles = StyleSheet.create({
     marginBottom: 56,
     borderRadius: 24,
     padding: 40,
-    backgroundColor: '#FFF7F2',
-    ...(Platform.OS === 'web' && {
-      backgroundImage: 'linear-gradient(135deg, #FF6B35 0%, #FF9156 100%)',
-      color: '#FFFFFF',
-      boxShadow: '0 25px 50px -12px rgba(255, 107, 53, 0.35)',
-    }),
   },
   heroContent: {
     gap: 24,
@@ -318,13 +338,11 @@ const styles = StyleSheet.create({
   heroBadgeText: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#FFFFFF',
     letterSpacing: 0.4,
   },
   heroTitle: {
     fontSize: 44,
     fontWeight: '800',
-    color: '#FFFFFF',
     lineHeight: 52,
     ...(Platform.OS === 'web' && {
       '@media (max-width: 768px)': {
@@ -335,7 +353,6 @@ const styles = StyleSheet.create({
   },
   heroSubtitle: {
     fontSize: 18,
-    color: 'rgba(255,255,255,0.85)',
     lineHeight: 28,
     maxWidth: 640,
   },
@@ -355,12 +372,10 @@ const styles = StyleSheet.create({
   },
   heroHighlightText: {
     fontSize: 15,
-    color: '#FFFFFF',
     maxWidth: 240,
   },
   heroCta: {
     alignSelf: 'flex-start',
-    backgroundColor: '#FFFFFF',
     paddingVertical: 14,
     paddingHorizontal: 32,
     borderRadius: 999,
@@ -376,7 +391,6 @@ const styles = StyleSheet.create({
   heroCtaText: {
     fontSize: 16,
     fontWeight: '700',
-    color: BRAND_ORANGE,
     letterSpacing: 0.4,
   },
   currencySection: {
@@ -387,11 +401,9 @@ const styles = StyleSheet.create({
   currencyLabel: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#1F2937',
   },
   currencyToggle: {
     flexDirection: 'row',
-    backgroundColor: '#FFFFFF',
     borderRadius: 12,
     padding: 4,
     gap: 4,
@@ -408,16 +420,9 @@ const styles = StyleSheet.create({
       transition: 'all 0.2s ease',
     }),
   },
-  currencyButtonActive: {
-    backgroundColor: BRAND_ORANGE,
-  },
   currencyText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#64748B',
-  },
-  currencyTextActive: {
-    color: '#FFFFFF',
   },
   pricingGrid: {
     flexDirection: 'row',
@@ -432,12 +437,10 @@ const styles = StyleSheet.create({
     }),
   },
   pricingCard: {
-    backgroundColor: '#FFFFFF',
     borderRadius: 24,
     padding: 32,
     width: '48%',
     borderWidth: 1,
-    borderColor: '#E2E8F0',
     gap: 24,
     ...(Platform.OS === 'web' && {
       transition: 'all 0.3s ease',
@@ -450,10 +453,6 @@ const styles = StyleSheet.create({
         width: '100%',
       },
     }),
-  },
-  pricingCardPopular: {
-    borderWidth: 2,
-    borderColor: BRAND_ORANGE,
   },
   cardHeader: {
     flexDirection: 'row',
@@ -472,7 +471,6 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   popularChip: {
-    backgroundColor: 'rgba(255, 107, 53, 0.12)',
     paddingVertical: 6,
     paddingHorizontal: 14,
     borderRadius: 999,
@@ -480,17 +478,14 @@ const styles = StyleSheet.create({
   popularChipText: {
     fontSize: 12,
     fontWeight: '700',
-    color: BRAND_ORANGE,
     letterSpacing: 0.6,
   },
   tierName: {
     fontSize: 22,
     fontWeight: '700',
-    color: '#0F172A',
   },
   tierTagline: {
     fontSize: 15,
-    color: '#64748B',
   },
   priceRow: {
     flexDirection: 'row',
@@ -504,11 +499,9 @@ const styles = StyleSheet.create({
   priceValue: {
     fontSize: 44,
     fontWeight: '800',
-    color: '#0F172A',
   },
   pricePeriod: {
     fontSize: 16,
-    color: '#94A3B8',
     marginBottom: 6,
   },
   featuresContainer: {
@@ -525,7 +518,6 @@ const styles = StyleSheet.create({
   },
   featureText: {
     fontSize: 15,
-    color: '#475569',
     flex: 1,
     lineHeight: 22,
   },
@@ -545,7 +537,6 @@ const styles = StyleSheet.create({
   ctaButtonText: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#FFFFFF',
     letterSpacing: 0.5,
   },
   faqSection: {
@@ -555,12 +546,10 @@ const styles = StyleSheet.create({
   faqTitle: {
     fontSize: 32,
     fontWeight: '800',
-    color: '#0F172A',
     textAlign: 'center',
     marginBottom: 32,
   },
   faqItem: {
-    backgroundColor: '#FFFFFF',
     borderRadius: 12,
     padding: 24,
     marginBottom: 16,
@@ -581,25 +570,21 @@ const styles = StyleSheet.create({
   faqQuestion: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#1E293B',
     flex: 1,
   },
   faqIcon: {
     fontSize: 26,
     fontWeight: '600',
-    color: BRAND_ORANGE,
     marginLeft: 16,
   },
   faqAnswerBlock: {
     marginTop: 16,
     paddingTop: 16,
     borderTopWidth: 1,
-    borderTopColor: '#E2E8F0',
     gap: 12,
   },
   faqAnswerText: {
     fontSize: 15,
-    color: '#475569',
     lineHeight: 24,
   },
 });

@@ -7,6 +7,7 @@ import {
   Brain, Bell, Zap, TrendingUp, Target, Star, CheckCircle
 } from 'lucide-react-native';
 import { WebFooter } from '@/components/web/WebFooter';
+import { useTheme } from '@/lib/theme';
 
 if (Platform.OS === 'web') {
   const style = document.createElement('style');
@@ -32,6 +33,7 @@ if (Platform.OS === 'web') {
 export default function LandingPage() {
   const router = useRouter();
   const { t } = useTranslation();
+  const { theme } = useTheme();
 
   const trustFeatureKeys = [
     'web.hero.trust_features.no_broker_fees',
@@ -91,18 +93,30 @@ export default function LandingPage() {
     },
   ];
 
+  const heroGradient = theme.mode === 'dark'
+    ? 'linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%)'
+    : 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #bae6fd 100%)';
+
+  const howItWorksGradient = theme.mode === 'dark'
+    ? 'linear-gradient(180deg, #0f172a 0%, #1e293b 50%, #334155 100%)'
+    : 'linear-gradient(180deg, #FFFFFF 0%, #f0f9ff 50%, #e0f2fe 100%)';
+
+  const socialProofGradient = theme.mode === 'dark'
+    ? 'linear-gradient(180deg, #0f172a 0%, #1e293b 100%)'
+    : 'linear-gradient(180deg, #FFFFFF 0%, #fef3f2 100%)';
+
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={[styles.container, { backgroundColor: theme.colors.background }]}>
       {/* Hero Section */}
-      <View style={styles.hero}>
+      <View style={[styles.hero, Platform.OS === 'web' && { background: heroGradient } as any]}>
         <View style={styles.heroBackground}>
           <View style={styles.floatingShape1} />
           <View style={styles.floatingShape2} />
           <View style={styles.floatingShape3} />
         </View>
         <View style={styles.section}>
-          <Text style={styles.heroTitle}>{t('web.hero.title')}</Text>
-          <Text style={styles.heroSubtitle}>{t('web.hero.subtitle')}</Text>
+          <Text style={[styles.heroTitle, { color: theme.colors.text }]}>{t('web.hero.title')}</Text>
+          <Text style={[styles.heroSubtitle, { color: theme.colors.textSecondary }]}>{t('web.hero.subtitle')}</Text>
           <View style={styles.heroButtons}>
             <TouchableOpacity
               style={styles.primaryButton}
@@ -111,17 +125,17 @@ export default function LandingPage() {
               <Text style={styles.primaryButtonText}>{t('web.hero.cta_primary')}</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={styles.secondaryButton}
+              style={[styles.secondaryButton, { backgroundColor: theme.colors.card, borderColor: theme.colors.primary }]}
               onPress={() => router.push('/(web)/features')}
             >
-              <Text style={styles.secondaryButtonText}>{t('web.cta.learn_more')}</Text>
+              <Text style={[styles.secondaryButtonText, { color: theme.colors.primary }]}>{t('web.cta.learn_more')}</Text>
             </TouchableOpacity>
           </View>
         </View>
       </View>
 
       {/* Trust Badge Section */}
-      <View style={styles.trustSection}>
+      <View style={[styles.trustSection, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}>
         <View style={styles.trustContent}>
           <View style={styles.trustIconGroup}>
             <Star size={32} color="#ff6b35" fill="#ff6b35" />
@@ -130,12 +144,12 @@ export default function LandingPage() {
             <Star size={32} color="#ff6b35" fill="#ff6b35" />
             <Star size={32} color="#ff6b35" fill="#ff6b35" />
           </View>
-          <Text style={styles.trustTitle}>{t('web.hero.trust_badge')}</Text>
+          <Text style={[styles.trustTitle, { color: theme.colors.text }]}>{t('web.hero.trust_badge')}</Text>
           <View style={styles.trustFeatures}>
             {trustFeatureKeys.map((key) => (
               <View key={key} style={styles.trustFeatureItem}>
-                <CheckCircle size={20} color="#0fb988" />
-                <Text style={styles.trustFeatureText}>{t(key)}</Text>
+                <CheckCircle size={20} color={theme.colors.success} />
+                <Text style={[styles.trustFeatureText, { color: theme.colors.textSecondary }]}>{t(key)}</Text>
               </View>
             ))}
           </View>
@@ -143,48 +157,48 @@ export default function LandingPage() {
       </View>
 
       {/* Problem-Solution Section */}
-      <View style={[styles.section, styles.problemSolution]}>
+      <View style={[styles.section, styles.problemSolution, { backgroundColor: theme.colors.background }]}>
         <View style={styles.twoColumn}>
           <View style={styles.column}>
-            <Text style={styles.sectionTitle}>{t('web.problem_solution.problem_title')}</Text>
-            <Text style={styles.sectionText}>{t('web.problem_solution.problem_desc')}</Text>
+            <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>{t('web.problem_solution.problem_title')}</Text>
+            <Text style={[styles.sectionText, { color: theme.colors.textSecondary }]}>{t('web.problem_solution.problem_desc')}</Text>
           </View>
           <View style={styles.column}>
-            <Text style={styles.sectionTitle}>{t('web.problem_solution.solution_title')}</Text>
-            <Text style={styles.sectionText}>{t('web.problem_solution.solution_desc')}</Text>
+            <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>{t('web.problem_solution.solution_title')}</Text>
+            <Text style={[styles.sectionText, { color: theme.colors.textSecondary }]}>{t('web.problem_solution.solution_desc')}</Text>
           </View>
         </View>
       </View>
 
       {/* How It Works */}
-      <View style={[styles.section, styles.howItWorks]}>
-        <Text style={styles.mainTitle}>{t('web.how_it_works.title')}</Text>
-        <Text style={styles.mainSubtitle}>{t('web.how_it_works.subtitle')}</Text>
+      <View style={[styles.section, styles.howItWorks, Platform.OS === 'web' && { background: howItWorksGradient } as any]}>
+        <Text style={[styles.mainTitle, { color: theme.colors.text }]}>{t('web.how_it_works.title')}</Text>
+        <Text style={[styles.mainSubtitle, { color: theme.colors.textSecondary }]}>{t('web.how_it_works.subtitle')}</Text>
         <View style={styles.steps}>
           {[1, 2, 3, 4].map((num) => (
             <View key={num} style={styles.step}>
               <View style={styles.stepNumber}>
                 <Text style={styles.stepNumberText}>{num}</Text>
               </View>
-              <Text style={styles.stepTitle}>{t(`web.how_it_works.step${num}_title`)}</Text>
-              <Text style={styles.stepDesc}>{t(`web.how_it_works.step${num}_desc`)}</Text>
+              <Text style={[styles.stepTitle, { color: theme.colors.text }]}>{t(`web.how_it_works.step${num}_title`)}</Text>
+              <Text style={[styles.stepDesc, { color: theme.colors.textSecondary }]}>{t(`web.how_it_works.step${num}_desc`)}</Text>
             </View>
           ))}
         </View>
       </View>
 
       {/* Features Grid */}
-      <View style={[styles.section, styles.features]}>
-        <Text style={styles.mainTitle}>{t('web.features.title')}</Text>
-        <Text style={styles.mainSubtitle}>{t('web.features.subtitle')}</Text>
+      <View style={[styles.section, styles.features, { backgroundColor: theme.colors.background }]}>
+        <Text style={[styles.mainTitle, { color: theme.colors.text }]}>{t('web.features.title')}</Text>
+        <Text style={[styles.mainSubtitle, { color: theme.colors.textSecondary }]}>{t('web.features.subtitle')}</Text>
         <View style={styles.featuresGrid}>
           {features.map((feature, index) => {
             const Icon = feature.icon;
             return (
-              <View key={index} style={styles.featureCard}>
-                <Icon size={32} color="#2563EB" />
-                <Text style={styles.featureTitle}>{feature.title}</Text>
-                <Text style={styles.featureDesc}>{feature.desc}</Text>
+              <View key={index} style={[styles.featureCard, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}>
+                <Icon size={32} color={theme.colors.primary} />
+                <Text style={[styles.featureTitle, { color: theme.colors.text }]}>{feature.title}</Text>
+                <Text style={[styles.featureDesc, { color: theme.colors.textSecondary }]}>{feature.desc}</Text>
               </View>
             );
           })}
@@ -192,37 +206,37 @@ export default function LandingPage() {
       </View>
 
       {/* Social Proof */}
-      <View style={[styles.section, styles.socialProof]}>
-        <Text style={styles.mainTitle}>{t('web.social_proof.title')}</Text>
+      <View style={[styles.section, styles.socialProof, Platform.OS === 'web' && { background: socialProofGradient } as any]}>
+        <Text style={[styles.mainTitle, { color: theme.colors.text }]}>{t('web.social_proof.title')}</Text>
         <View style={styles.testimonials}>
           {[1, 2, 3].map((num) => (
-            <View key={num} style={styles.testimonialCard}>
-              <Text style={styles.testimonialText}>"{t(`web.social_proof.testimonial${num}`)}"</Text>
-              <Text style={styles.testimonialAuthor}>{t(`web.social_proof.testimonial${num}_author`)}</Text>
+            <View key={num} style={[styles.testimonialCard, { backgroundColor: theme.colors.card }]}>
+              <Text style={[styles.testimonialText, { color: theme.colors.text }]}>"{t(`web.social_proof.testimonial${num}`)}"</Text>
+              <Text style={[styles.testimonialAuthor, { color: theme.colors.primary }]}>{t(`web.social_proof.testimonial${num}_author`)}</Text>
             </View>
           ))}
         </View>
         <View style={styles.stats}>
           {socialProofStats.map((stat) => (
             <View key={stat.labelKey} style={styles.statItem}>
-              <Text style={styles.statNumber}>{t(stat.valueKey)}</Text>
-              <Text style={styles.statLabel}>{t(stat.labelKey)}</Text>
+              <Text style={[styles.statNumber, { color: theme.colors.primary }]}>{t(stat.valueKey)}</Text>
+              <Text style={[styles.statLabel, { color: theme.colors.textSecondary }]}>{t(stat.labelKey)}</Text>
             </View>
           ))}
         </View>
       </View>
 
       {/* FAQ */}
-      <View style={[styles.section, styles.faq]}>
-        <Text style={styles.mainTitle}>{t('web.faq.title')}</Text>
+      <View style={[styles.section, styles.faq, { backgroundColor: theme.colors.background }]}>
+        <Text style={[styles.mainTitle, { color: theme.colors.text }]}>{t('web.faq.title')}</Text>
         <View style={styles.faqGrid}>
           {faqs.map((faq, index) => {
             const Icon = faq.icon;
             return (
-              <View key={index} style={styles.faqCard}>
-                <Icon size={32} color="#2563EB" />
-                <Text style={styles.faqQuestion}>{faq.q}</Text>
-                <Text style={styles.faqAnswer}>{faq.a}</Text>
+              <View key={index} style={[styles.faqCard, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}>
+                <Icon size={32} color={theme.colors.primary} />
+                <Text style={[styles.faqQuestion, { color: theme.colors.text }]}>{faq.q}</Text>
+                <Text style={[styles.faqAnswer, { color: theme.colors.textSecondary }]}>{faq.a}</Text>
               </View>
             );
           })}
@@ -284,7 +298,6 @@ export default function LandingPage() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
   },
   section: {
     maxWidth: 1200,
@@ -313,7 +326,6 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     minHeight: 600,
     ...(Platform.OS === 'web' && {
-      background: 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #bae6fd 100%)',
       '@media (max-width: 768px)': {
         paddingVertical: 60,
         minHeight: 500,
@@ -374,7 +386,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 24,
     letterSpacing: -1.5,
-    color: '#0f172a',
     alignSelf: 'center',
     width: '100%',
     ...(Platform.OS === 'web' && {
@@ -392,7 +403,6 @@ const styles = StyleSheet.create({
   },
   heroSubtitle: {
     fontSize: 20,
-    color: '#334155',
     textAlign: 'center',
     marginBottom: 40,
     maxWidth: 800,
@@ -455,12 +465,10 @@ const styles = StyleSheet.create({
     }),
   },
   secondaryButton: {
-    backgroundColor: 'rgba(255, 255, 255, 0.95)',
     paddingHorizontal: 48,
     paddingVertical: 20,
     borderRadius: 16,
     borderWidth: 2,
-    borderColor: '#2563ea',
     minWidth: 200,
     alignItems: 'center',
     ...(Platform.OS === 'web' && {
@@ -475,15 +483,12 @@ const styles = StyleSheet.create({
   secondaryButtonText: {
     fontSize: 19,
     fontWeight: '800',
-    color: '#2563ea',
     letterSpacing: 0.5,
   },
   trustSection: {
-    backgroundColor: '#FFFFFF',
     paddingVertical: 56,
     borderTopWidth: 1,
     borderBottomWidth: 1,
-    borderColor: '#E2E8F0',
     ...(Platform.OS === 'web' && {
       '@media (max-width: 768px)': {
         paddingVertical: 40,
@@ -505,7 +510,6 @@ const styles = StyleSheet.create({
   trustTitle: {
     fontSize: 32,
     fontWeight: '800',
-    color: '#1E293B',
     textAlign: 'center',
     marginBottom: 32,
     letterSpacing: -0.5,
@@ -540,7 +544,6 @@ const styles = StyleSheet.create({
   trustFeatureText: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#475569',
     ...(Platform.OS === 'web' && {
       '@media (max-width: 768px)': {
         fontSize: 16,
@@ -548,7 +551,6 @@ const styles = StyleSheet.create({
     }),
   },
   problemSolution: {
-    backgroundColor: '#FFFFFF',
   },
   twoColumn: {
     flexDirection: 'row',
@@ -562,7 +564,6 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 32,
     fontWeight: '700',
-    color: '#1E293B',
     marginBottom: 16,
     ...(Platform.OS === 'web' && {
       '@media (max-width: 768px)': {
@@ -575,7 +576,6 @@ const styles = StyleSheet.create({
   },
   sectionText: {
     fontSize: 18,
-    color: '#64748B',
     lineHeight: 27,
     ...(Platform.OS === 'web' && {
       '@media (max-width: 768px)': {
@@ -587,10 +587,6 @@ const styles = StyleSheet.create({
   howItWorks: {
     position: 'relative',
     overflow: 'hidden',
-    ...(Platform.OS === 'web' && {
-      background: 'linear-gradient(180deg, #FFFFFF 0%, #f0f9ff 50%, #e0f2fe 100%)',
-    }),
-    backgroundColor: '#f0f9ff',
   },
   mainTitle: {
     fontSize: 48,
@@ -598,7 +594,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 24,
     letterSpacing: -1.5,
-    color: '#0f172a',
     ...(Platform.OS === 'web' && {
       '@media (max-width: 768px)': {
         fontSize: 36,
@@ -612,7 +607,6 @@ const styles = StyleSheet.create({
   mainSubtitle: {
     fontSize: 20,
     fontWeight: '500',
-    color: '#334155',
     textAlign: 'center',
     marginBottom: 64,
     ...(Platform.OS === 'web' && {
@@ -662,19 +656,16 @@ const styles = StyleSheet.create({
   stepTitle: {
     fontSize: 22,
     fontWeight: '800',
-    color: '#0F172A',
     marginBottom: 12,
     textAlign: 'center',
   },
   stepDesc: {
     fontSize: 17,
     fontWeight: '500',
-    color: '#475569',
     textAlign: 'center',
     lineHeight: 26,
   },
   features: {
-    backgroundColor: '#FFFFFF',
     position: 'relative',
   },
   featuresGrid: {
@@ -687,10 +678,8 @@ const styles = StyleSheet.create({
     minWidth: 250,
     maxWidth: 380,
     padding: 32,
-    backgroundColor: '#FFFFFF',
     borderRadius: 20,
     borderWidth: 2,
-    borderColor: 'rgba(37, 99, 234, 0.15)',
     ...(Platform.OS === 'web' && {
       boxShadow: '0 10px 30px -5px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(37, 99, 234, 0.05)',
       transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
@@ -703,23 +692,17 @@ const styles = StyleSheet.create({
   featureTitle: {
     fontSize: 22,
     fontWeight: '800',
-    color: '#0F172A',
     marginTop: 20,
     marginBottom: 12,
   },
   featureDesc: {
     fontSize: 17,
     fontWeight: '500',
-    color: '#475569',
     lineHeight: 26,
   },
   socialProof: {
     position: 'relative',
     overflow: 'hidden',
-    ...(Platform.OS === 'web' && {
-      background: 'linear-gradient(180deg, #FFFFFF 0%, #fef3f2 100%)',
-    }),
-    backgroundColor: '#fef3f2',
   },
   testimonials: {
     flexDirection: 'row',
@@ -731,7 +714,6 @@ const styles = StyleSheet.create({
     flex: 1,
     minWidth: 280,
     padding: 24,
-    backgroundColor: '#FFFFFF',
     borderRadius: 12,
     ...(Platform.OS === 'web' && {
       boxShadow: '0 1px 3px 0 rgb(0 0 0 / 0.1)',
@@ -743,7 +725,6 @@ const styles = StyleSheet.create({
   },
   testimonialText: {
     fontSize: 16,
-    color: '#1E293B',
     marginBottom: 16,
     lineHeight: 24,
     fontStyle: 'italic',
@@ -751,7 +732,6 @@ const styles = StyleSheet.create({
   testimonialAuthor: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#2563EB',
   },
   stats: {
     flexDirection: 'row',
@@ -765,15 +745,12 @@ const styles = StyleSheet.create({
   statNumber: {
     fontSize: 48,
     fontWeight: '700',
-    color: '#2563EB',
     marginBottom: 8,
   },
   statLabel: {
     fontSize: 16,
-    color: '#64748B',
   },
   faq: {
-    backgroundColor: '#FFFFFF',
     position: 'relative',
   },
   faqGrid: {
@@ -786,10 +763,8 @@ const styles = StyleSheet.create({
     minWidth: 250,
     maxWidth: 380,
     padding: 32,
-    backgroundColor: '#FFFFFF',
     borderRadius: 20,
     borderWidth: 2,
-    borderColor: 'rgba(37, 99, 234, 0.15)',
     ...(Platform.OS === 'web' && {
       boxShadow: '0 10px 30px -5px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(37, 99, 234, 0.05)',
       transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
@@ -802,14 +777,12 @@ const styles = StyleSheet.create({
   faqQuestion: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#0F172A',
     marginTop: 20,
     marginBottom: 12,
   },
   faqAnswer: {
     fontSize: 16,
     fontWeight: '500',
-    color: '#475569',
     lineHeight: 24,
   },
   finalCtaContainer: {

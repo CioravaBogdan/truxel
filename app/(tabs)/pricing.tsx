@@ -17,7 +17,6 @@ import { Button } from '@/components/Button';
 import { ChatSupportModal } from '@/components/ChatSupportModal';
 import { useAuthStore } from '@/store/authStore';
 import { stripeService } from '@/services/stripeService';
-import Constants from 'expo-constants';
 import Toast from 'react-native-toast-message';
 import {
   CreditCard,
@@ -33,20 +32,16 @@ import {
 } from 'lucide-react-native';
 import { SubscriptionTierData, AdditionalSearchPack } from '@/types/database.types';
 import * as WebBrowser from 'expo-web-browser';
+import { useTheme } from '@/lib/theme';
 
 // Import RevenueCat for native builds
 import { 
   getOfferings as getRevenueCatOfferings,
   purchasePackage as purchaseRevenueCatPackage,
   restorePurchases as restoreRevenueCatPurchases,
-  getCustomerInfo,
   getUserTier,
   type OfferingPackage 
 } from '@/services/revenueCatService';
-import type { CustomerInfo } from 'react-native-purchases';
-
-// TRUXEL: Use ONLY RevenueCat for all platforms (iOS, Android, Web)
-const USE_REVENUECAT_ONLY = true;
 
 type TierCommunityMeta = {
   daily?: number;
@@ -88,6 +83,7 @@ const TIER_COMMUNITY_META: Record<string, TierCommunityMeta> = {
 
 export default function PricingScreen() {
   const { t } = useTranslation();
+  const { theme } = useTheme();
   const authStore = useAuthStore();
   const profile = authStore?.profile;
   const session = authStore?.session;
@@ -103,7 +99,6 @@ export default function PricingScreen() {
   // RevenueCat state (for native builds)
   const [rcSubscriptions, setRcSubscriptions] = useState<OfferingPackage[]>([]);
   const [rcSearchPacks, setRcSearchPacks] = useState<OfferingPackage[]>([]);
-  const [rcCustomerInfo, setRcCustomerInfo] = useState<CustomerInfo | null>(null);
   const [userCurrency, setUserCurrency] = useState<'EUR' | 'USD'>('EUR');
   const [purchasingPackage, setPurchasingPackage] = useState<string | null>(null);
   const [debugError, setDebugError] = useState<string | null>(null); // Add debug error state
@@ -385,9 +380,6 @@ export default function PricingScreen() {
       setRcSearchPacks(dedupedSearchPacks);
       setUserCurrency(offerings.userCurrency);
       
-      const info = await getCustomerInfo(profile.user_id);
-      setRcCustomerInfo(info as any);
-      
       console.log('✅ RevenueCat offerings loaded:', {
         subscriptions: dedupedSubscriptions.length,
         searchPacks: dedupedSearchPacks.length,
@@ -599,7 +591,6 @@ export default function PricingScreen() {
       console.log('🛒 RevenueCat purchase:', pkg.identifier, 'for user:', profile.user_id);
       
       const info = await purchaseRevenueCatPackage(pkg, profile.user_id);
-      setRcCustomerInfo(info as any);
       
       const newTier = getUserTier(info);
       console.log('✅ Purchase successful! New tier:', newTier);
@@ -645,7 +636,6 @@ export default function PricingScreen() {
       console.log('🔄 Restoring RevenueCat purchases for user:', profile.user_id);
       
       const info = await restoreRevenueCatPurchases(profile.user_id);
-      setRcCustomerInfo(info as any);
       
       const tier = getUserTier(info);
       console.log('✅ Purchases restored! Tier:', tier);
@@ -865,19 +855,19 @@ export default function PricingScreen() {
   const getTierIcon = (tierName: string) => {
     switch (tierName) {
       case 'standard':
-        return <Zap size={32} color="#2563EB" />;
+        return <Zap size={32} color={theme.colors.secondary} />;
       case 'pro':
-        return <Sparkles size={32} color="#7C3AED" />;
+        return <Sparkles size={32} color={theme.colors.secondary} />;
       case 'fleet_manager':
-        return <Users size={32} color="#059669" />; // Green for fleet management
+        return <Users size={32} color={theme.colors.secondary} />; // Orange for fleet management too
       case 'pro_freighter':
-        return <TrendingUp size={32} color="#DC2626" />; // Red/Premium for Pro Freighter
+        return <TrendingUp size={32} color={theme.colors.secondary} />; // Orange for Pro Freighter
       case 'premium':
-        return <Shield size={32} color="#DC2626" />;
+        return <Shield size={32} color={theme.colors.secondary} />;
       case 'search_pack':
-        return <Check size={32} color="#10B981" />; // Green checkmark for addon
+        return <Check size={32} color={theme.colors.success} />; // Green checkmark for addon
       default:
-        return <CreditCard size={32} color="#64748B" />;
+        return <CreditCard size={32} color={theme.colors.textSecondary} />;
     }
   };
 
@@ -958,22 +948,22 @@ export default function PricingScreen() {
 
     if (usageStats.percent >= 80) {
       return {
-        icon: <TrendingUp size={20} color="#DC2626" />,
+        icon: <TrendingUp size={20} color={theme.colors.error} />,
         text: `You've used ${usageStats.percent}% of your monthly searches. Consider upgrading for more capacity.`,
       };
     }
 
     return {
-      icon: <TrendingDown size={20} color="#10B981" />,
+      icon: <TrendingDown size={20} color={theme.colors.success} />,
       text: `Keep going! ${usageStats.remaining} searches left this month.`,
     };
-  }, [usageStats]);
+  }, [usageStats, theme.colors.error, theme.colors.success]);
 
   if (isLoading) {
     return (
       <SafeAreaView style={styles.container} edges={['top']}>
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#2563EB" />
+          <ActivityIndicator size="large" color={theme.colors.primary} />
         </View>
       </SafeAreaView>
     );
@@ -996,23 +986,23 @@ export default function PricingScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
+    <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]} edges={['top']}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.header}>
-          <CreditCard size={40} color="#2563EB" />
-          <Text style={styles.title}>{t('pricing.title')}</Text>
-          <Text style={styles.subtitle}>{t('pricing.subtitle')}</Text>
+          <CreditCard size={40} color={theme.colors.primary} />
+          <Text style={[styles.title, { color: theme.colors.text }]}>{t('pricing.title')}</Text>
+          <Text style={[styles.subtitle, { color: theme.colors.textSecondary }]}>{t('pricing.subtitle')}</Text>
         </View>
 
         {profile?.subscription_tier !== 'trial' && profile?.subscription_status && (
-          <Card style={styles.currentSubscriptionCard}>
+          <Card style={[styles.currentSubscriptionCard, { backgroundColor: theme.colors.primary + '10', borderColor: theme.colors.primary + '40' }]}>
             <View style={styles.currentSubscriptionHeader}>
-              <Shield size={24} color="#2563EB" />
+              <Shield size={24} color={theme.colors.primary} />
               <View style={styles.currentSubscriptionInfo}>
-                <Text style={styles.currentSubscriptionTitle}>
+                <Text style={[styles.currentSubscriptionTitle, { color: theme.colors.text }]}>
                   {t(`pricing.tier_${profile.subscription_tier}`)} Plan
                 </Text>
-                <Text style={styles.currentSubscriptionStatus}>
+                <Text style={[styles.currentSubscriptionStatus, { color: theme.colors.textSecondary }]}>
                   {profile.subscription_status === 'active'
                     ? `${t('subscription.renews_on')} ${
                         profile.stripe_current_period_end
@@ -1023,18 +1013,18 @@ export default function PricingScreen() {
                 </Text>
               </View>
             </View>
-            <View style={styles.creditInfo}>
-              <Text style={styles.creditLabel}>
+            <View style={[styles.creditInfo, { borderTopColor: theme.colors.border }]}>
+              <Text style={[styles.creditLabel, { color: theme.colors.textSecondary }]}>
                 {t('subscription.searches_remaining')}
               </Text>
-              <Text style={styles.creditValue}>
+              <Text style={[styles.creditValue, { color: theme.colors.text }]}>
                 {profile.available_search_credits || 0}
               </Text>
             </View>
             {usageInsight && (
-              <View style={styles.usageInsight}>
+              <View style={[styles.usageInsight, { backgroundColor: theme.colors.info + '20' }]}>
                 {usageInsight.icon}
-                <Text style={styles.usageInsightText}>{usageInsight.text}</Text>
+                <Text style={[styles.usageInsightText, { color: theme.colors.text }]}>{usageInsight.text}</Text>
               </View>
             )}
           </Card>
@@ -1103,13 +1093,13 @@ export default function PricingScreen() {
                   key={pkg.identifier}
                   style={
                     isActive
-                      ? { ...styles.tierCard, ...styles.currentTierCard }
+                      ? [{ ...styles.tierCard, ...styles.currentTierCard }, { borderColor: theme.colors.primary }]
                       : styles.tierCard
                   }
                 >
                   {isActive && (
-                    <View style={styles.currentBadge}>
-                      <Text style={styles.currentBadgeText}>
+                    <View style={[styles.currentBadge, { backgroundColor: theme.colors.success }]}>
+                      <Text style={[styles.currentBadgeText, { color: theme.colors.white }]}>
                         {t('pricing.current_plan')}
                       </Text>
                     </View>
@@ -1117,12 +1107,12 @@ export default function PricingScreen() {
 
                   <View style={styles.tierHeader}>
                     {getTierIcon(tierName)}
-                    <Text style={styles.tierName}>
+                    <Text style={[styles.tierName, { color: theme.colors.text }]}>
                       {t(`pricing.tier_${tierName}`)}
                     </Text>
-                    <Text style={styles.tierPrice}>
+                    <Text style={[styles.tierPrice, { color: theme.colors.secondary }]}>
                       {pkg.product.priceString}
-                      <Text style={styles.tierPriceUnit}>
+                      <Text style={[styles.tierPriceUnit, { color: theme.colors.textSecondary }]}>
                         /{t('pricing.month')}
                       </Text>
                     </Text>
@@ -1132,8 +1122,8 @@ export default function PricingScreen() {
                   <View style={styles.featuresContainer}>
                     {features.map((feature, index) => (
                       <View key={index} style={styles.featureRow}>
-                        <Check size={20} color="#10B981" />
-                        <Text style={styles.featureText}>{feature}</Text>
+                        <Check size={20} color={theme.colors.success} />
+                        <Text style={[styles.featureText, { color: theme.colors.text }]}>{feature}</Text>
                       </View>
                     ))}
                   </View>
@@ -1143,7 +1133,7 @@ export default function PricingScreen() {
                     onPress={() => handleRevenueCatPurchase(pkg)}
                     loading={purchasingPackage === pkg.identifier}
                     disabled={isActive}
-                    variant={isActive ? 'outline' : 'primary'}
+                    variant={isActive ? 'outline' : 'secondary'}
                   />
                 </Card>
               );
@@ -1286,14 +1276,14 @@ export default function PricingScreen() {
         {/* RevenueCat Search Packs (Universal) */}
         {rcSearchPacks.length > 0 && (
           <>
-            <View style={styles.divider} />
+            <View style={[styles.divider, { backgroundColor: theme.colors.border }]} />
 
             <View style={styles.section}>
-              <Users size={32} color="#2563EB" />
-              <Text style={styles.sectionTitle}>
+              <Users size={32} color={theme.colors.primary} />
+              <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>
                 {t('pricing.additional_searches')}
               </Text>
-              <Text style={styles.sectionSubtitle}>
+              <Text style={[styles.sectionSubtitle, { color: theme.colors.textSecondary }]}>
                 {t('pricing.additional_searches_desc')}
               </Text>
             </View>
@@ -1302,12 +1292,12 @@ export default function PricingScreen() {
               {rcSearchPacks.map((pkg) => (
                 <Card key={pkg.identifier} style={styles.packCard}>
                   <View style={styles.packHeader}>
-                    <Text style={styles.packName}>
+                    <Text style={[styles.packName, { color: theme.colors.text }]}>
                       {getTierName(pkg.identifier) === 'search_pack' 
                         ? `25 ${t('pricing.searches')}` 
                         : pkg.product.title}
                     </Text>
-                    <Text style={styles.packPrice}>{pkg.product.priceString}</Text>
+                    <Text style={[styles.packPrice, { color: theme.colors.primary }]}>{pkg.product.priceString}</Text>
                   </View>
 
                   <Button
@@ -1380,28 +1370,28 @@ export default function PricingScreen() {
           </>
         )}
 
-        <View style={styles.footer}>
-          <Text style={styles.footerText}>{t('pricing.footer_note')}</Text>
+        <View style={[styles.footer, { backgroundColor: theme.colors.surface }]}>
+          <Text style={[styles.footerText, { color: theme.colors.textSecondary }]}>{t('pricing.footer_note')}</Text>
         </View>
 
         {/* Support Button */}
         <TouchableOpacity
-          style={styles.supportButton}
+          style={[styles.supportButton, { backgroundColor: theme.colors.info + '10', borderColor: theme.colors.info + '40' }]}
           onPress={() => setShowSupportModal(true)}
         >
-          <Text style={styles.supportButtonText}>💬 {t('support.title')}</Text>
-          <Text style={styles.supportButtonSubtext}>{t('support.need_help_choosing')}</Text>
+          <Text style={[styles.supportButtonText, { color: theme.colors.info }]}>💬 {t('support.title')}</Text>
+          <Text style={[styles.supportButtonSubtext, { color: theme.colors.info }]}>{t('support.need_help_choosing')}</Text>
         </TouchableOpacity>
 
         {/* DEBUG INFO - Visible only when no subscriptions found */}
         {rcSubscriptions.length === 0 && !isLoading && (
-          <View style={styles.debugContainer}>
-            <Text style={styles.debugTitle}>⚠️ Debug Info (No Packages Found)</Text>
-            <Text style={styles.debugText}>User ID: {profile?.user_id || 'Not logged in'}</Text>
-            <Text style={styles.debugText}>Currency: {userCurrency}</Text>
-            <Text style={styles.debugText}>Platform: {Platform.OS}</Text>
-            <Text style={styles.debugText}>Error: {debugError || 'None'}</Text>
-            <Text style={styles.debugText}>
+          <View style={[styles.debugContainer, { backgroundColor: theme.colors.error + '10', borderColor: theme.colors.error + '40' }]}>
+            <Text style={[styles.debugTitle, { color: theme.colors.error }]}>⚠️ Debug Info (No Packages Found)</Text>
+            <Text style={[styles.debugText, { color: theme.colors.error }]}>User ID: {profile?.user_id || 'Not logged in'}</Text>
+            <Text style={[styles.debugText, { color: theme.colors.error }]}>Currency: {userCurrency}</Text>
+            <Text style={[styles.debugText, { color: theme.colors.error }]}>Platform: {Platform.OS}</Text>
+            <Text style={[styles.debugText, { color: theme.colors.error }]}>Error: {debugError || 'None'}</Text>
+            <Text style={[styles.debugText, { color: theme.colors.error }]}>
               Check:
               1. App Store Connect &quot;Paid Apps Agreement&quot;
               2. RevenueCat &quot;Offering&quot; is Current
@@ -1429,7 +1419,6 @@ export default function PricingScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8FAFC',
   },
   loadingContainer: {
     flex: 1,
@@ -1438,118 +1427,134 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     padding: 16,
+    paddingBottom: 32,
   },
   header: {
-    alignItems: 'center',
-    marginBottom: 32,
+    alignItems: 'flex-start', // Left aligned like Home
+    marginBottom: 24,
+    paddingHorizontal: 8,
   },
   title: {
-    fontSize: 28,
+    fontSize: 28, // 28px like Home
     fontWeight: '700',
-    color: '#1E293B',
     marginTop: 16,
+    marginBottom: 8,
   },
   subtitle: {
     fontSize: 16,
-    color: '#64748B',
-    marginTop: 8,
-    textAlign: 'center',
+    textAlign: 'left', // Left aligned
+    lineHeight: 24,
   },
   tiersContainer: {
-    gap: 16,
+    gap: 20, // Increased gap
   },
   tierCard: {
     padding: 24,
     position: 'relative',
+    borderRadius: 20, // More rounded
+    shadowOffset: { width: 0, height: 4 }, // Deeper shadow
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 4,
+    borderWidth: 1,
+    borderColor: 'transparent', // Default border
   },
   currentTierCard: {
     borderWidth: 2,
-    borderColor: '#2563EB',
+    borderColor: '#2563EB', // Primary color
+    backgroundColor: '#F8FAFC',
   },
   currentBadge: {
     position: 'absolute',
     top: 16,
     right: 16,
-    backgroundColor: '#2563EB',
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 12,
+    zIndex: 1,
   },
   currentBadgeText: {
     fontSize: 12,
-    fontWeight: '600',
-    color: '#FFFFFF',
+    fontWeight: '700',
   },
   tierHeader: {
     alignItems: 'center',
     marginBottom: 24,
+    paddingBottom: 24,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E2E8F0',
   },
   tierName: {
     fontSize: 24,
-    fontWeight: '700',
-    color: '#1E293B',
+    fontWeight: '800', // Bolder
     marginTop: 12,
+    letterSpacing: -0.5,
   },
   tierPrice: {
     fontSize: 40,
-    fontWeight: '700',
-    color: '#2563EB',
+    fontWeight: '800', // Bolder
     marginTop: 8,
+    letterSpacing: -1,
   },
   tierPriceUnit: {
-    fontSize: 18,
-    fontWeight: '400',
+    fontSize: 16,
+    fontWeight: '500',
     color: '#64748B',
   },
   tierDescription: {
     fontSize: 14,
-    color: '#64748B',
     marginTop: 8,
     textAlign: 'center',
+    lineHeight: 20,
   },
   featuresContainer: {
     marginBottom: 24,
-    gap: 12,
+    gap: 16, // Increased gap
   },
   featureRow: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start', // Align top for multi-line
     gap: 12,
   },
   featureText: {
-    fontSize: 16,
-    color: '#1E293B',
+    fontSize: 15, // Slightly larger
     flex: 1,
+    lineHeight: 22,
   },
   buttonGroup: {
     gap: 12,
   },
   divider: {
     height: 1,
-    backgroundColor: '#E2E8F0',
     marginVertical: 32,
+    opacity: 0.5,
   },
   section: {
-    alignItems: 'center',
+    alignItems: 'flex-start', // Left aligned
     marginBottom: 24,
+    paddingHorizontal: 8,
   },
   sectionTitle: {
     fontSize: 24,
     fontWeight: '700',
-    color: '#1E293B',
     marginTop: 12,
   },
   sectionSubtitle: {
-    fontSize: 14,
-    color: '#64748B',
+    fontSize: 15,
     marginTop: 8,
-    textAlign: 'center',
+    textAlign: 'left',
+    lineHeight: 22,
   },
   packsContainer: {
     gap: 16,
   },
   packCard: {
     padding: 20,
+    borderRadius: 16,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2,
   },
   packHeader: {
     flexDirection: 'row',
@@ -1558,21 +1563,18 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   packName: {
-    fontSize: 20,
-    fontWeight: '600',
-    color: '#1E293B',
+    fontSize: 18,
+    fontWeight: '700',
   },
   packPrice: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: '700',
-    color: '#2563EB',
   },
   currentSubscriptionCard: {
     padding: 20,
     marginBottom: 24,
-    backgroundColor: '#EFF6FF',
     borderWidth: 1,
-    borderColor: '#BFDBFE',
+    borderRadius: 16,
   },
   currentSubscriptionHeader: {
     flexDirection: 'row',
@@ -1586,12 +1588,10 @@ const styles = StyleSheet.create({
   currentSubscriptionTitle: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#1E293B',
     marginBottom: 4,
   },
   currentSubscriptionStatus: {
     fontSize: 14,
-    color: '#64748B',
   },
   creditInfo: {
     flexDirection: 'row',
@@ -1599,51 +1599,47 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 16,
     borderTopWidth: 1,
-    borderTopColor: '#E2E8F0',
     marginTop: 12,
   },
   usageInsight: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
-    backgroundColor: '#E0F2FE',
     borderRadius: 12,
     padding: 12,
     marginTop: 16,
   },
   usageInsightText: {
     flex: 1,
-    color: '#1E293B',
     fontSize: 14,
+    fontWeight: '500',
   },
   creditLabel: {
     fontSize: 14,
-    color: '#64748B',
+    fontWeight: '500',
   },
   creditValue: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#1E293B',
+    fontSize: 20,
+    fontWeight: '700',
   },
   footer: {
     marginTop: 32,
-    padding: 16,
-    backgroundColor: '#F1F5F9',
-    borderRadius: 8,
+    padding: 20,
+    borderRadius: 16,
+    alignItems: 'center',
   },
   footerText: {
-    fontSize: 12,
-    color: '#64748B',
+    fontSize: 13,
     textAlign: 'center',
-    lineHeight: 18,
+    lineHeight: 20,
+    opacity: 0.8,
   },
   // Coupon styles
   couponCard: {
     padding: 20,
     marginBottom: 24,
-    backgroundColor: '#FFFFFF',
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderRadius: 16,
   },
   couponHeader: {
     flexDirection: 'row',
@@ -1654,7 +1650,6 @@ const styles = StyleSheet.create({
   couponTitle: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#1E293B',
   },
   couponInputContainer: {
     flexDirection: 'row',
@@ -1664,12 +1659,9 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 48,
     borderWidth: 1,
-    borderColor: '#CBD5E1',
-    borderRadius: 8,
+    borderRadius: 12,
     paddingHorizontal: 16,
     fontSize: 16,
-    color: '#1E293B',
-    backgroundColor: '#FFFFFF',
   },
   couponButton: {
     minWidth: 100,
@@ -1679,10 +1671,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: 12,
-    backgroundColor: '#ECFDF5',
-    borderRadius: 8,
+    borderRadius: 12,
     borderWidth: 1,
-    borderColor: '#10B981',
   },
   couponAppliedInfo: {
     flexDirection: 'row',
@@ -1692,12 +1682,11 @@ const styles = StyleSheet.create({
   couponAppliedText: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#059669',
   },
   couponError: {
     fontSize: 12,
-    color: '#EF4444',
     marginTop: 8,
+    color: '#EF4444',
   },
   // Price with discount styles
   priceWithDiscountContainer: {
@@ -1707,21 +1696,21 @@ const styles = StyleSheet.create({
   originalPrice: {
     fontSize: 18,
     fontWeight: '400',
-    color: '#94A3B8',
     textDecorationLine: 'line-through',
     marginBottom: 4,
+    opacity: 0.6,
   },
   discountBadge: {
-    backgroundColor: '#10B981',
     paddingHorizontal: 12,
     paddingVertical: 4,
     borderRadius: 12,
     marginTop: 8,
+    backgroundColor: '#DCFCE7',
   },
   discountBadgeText: {
     fontSize: 12,
     fontWeight: '700',
-    color: '#FFFFFF',
+    color: '#166534',
   },
   // Search pack discount styles
   packPriceContainer: {
@@ -1730,49 +1719,42 @@ const styles = StyleSheet.create({
   packOriginalPrice: {
     fontSize: 16,
     fontWeight: '400',
-    color: '#94A3B8',
     textDecorationLine: 'line-through',
     marginBottom: 2,
+    opacity: 0.6,
   },
   // Support button styles
   supportButton: {
-    backgroundColor: '#F0F9FF',
-    padding: 16,
-    borderRadius: 12,
+    padding: 20,
+    borderRadius: 16,
     alignItems: 'center',
-    marginTop: 16,
-    marginHorizontal: 16,
-    marginBottom: 16,
+    marginTop: 8,
+    marginBottom: 32,
     borderWidth: 1,
-    borderColor: '#BFDBFE',
+    borderStyle: 'dashed',
   },
   supportButtonText: {
     fontSize: 16,
-    color: '#1E40AF',
-    fontWeight: '600',
+    fontWeight: '700',
     marginBottom: 4,
   },
   supportButtonSubtext: {
-    fontSize: 13,
-    color: '#60A5FA',
+    fontSize: 14,
+    opacity: 0.8,
   },
   debugContainer: {
     padding: 16,
     margin: 16,
-    backgroundColor: '#FEF2F2',
     borderWidth: 1,
-    borderColor: '#FCA5A5',
-    borderRadius: 8,
+    borderRadius: 12,
   },
   debugTitle: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#DC2626',
     marginBottom: 8,
   },
   debugText: {
     fontSize: 12,
-    color: '#7F1D1D',
     marginBottom: 4,
     fontFamily: Platform.OS === 'ios' ? 'Courier' : 'monospace',
   },

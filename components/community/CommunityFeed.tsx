@@ -23,6 +23,7 @@ import CitySearchModal from './CitySearchModal';
 import CountryPickerModal from './CommunityFiltersModal';
 import { CommunityPost, City, Country } from '../../types/community.types';
 import { cityService } from '../../services/cityService';
+import { useTheme } from '@/lib/theme';
 
 interface CommunityFeedProps {
   customHeader?: React.ReactNode;
@@ -30,6 +31,7 @@ interface CommunityFeedProps {
 
 export default function CommunityFeed({ customHeader }: CommunityFeedProps = {}) {
   const { t } = useTranslation();
+  const { theme } = useTheme();
   const { user } = useAuthStore();
   const {
     posts,
@@ -207,25 +209,25 @@ export default function CommunityFeed({ customHeader }: CommunityFeedProps = {})
       <View style={styles.emptyContainer}>
         {selectedTab === 'availability' ? (
           <>
-            <Truck size={48} color="#D1D5DB" />
-            <Text style={styles.emptyTitle}>{t('community.no_drivers_available')}</Text>
-            <Text style={styles.emptyText}>
+            <Truck size={48} color={theme.colors.textSecondary} />
+            <Text style={[styles.emptyTitle, { color: theme.colors.text }]}>{t('community.no_drivers_available')}</Text>
+            <Text style={[styles.emptyText, { color: theme.colors.textSecondary }]}>
               {t('community.be_first_to_post')}
             </Text>
           </>
         ) : selectedTab === 'routes' ? (
           <>
-            <Package size={48} color="#D1D5DB" />
-            <Text style={styles.emptyTitle}>{t('community.no_routes_available')}</Text>
-            <Text style={styles.emptyText}>
+            <Package size={48} color={theme.colors.textSecondary} />
+            <Text style={[styles.emptyTitle, { color: theme.colors.text }]}>{t('community.no_routes_available')}</Text>
+            <Text style={[styles.emptyText, { color: theme.colors.textSecondary }]}>
               {t('community.post_route_to_find_drivers')}
             </Text>
           </>
         ) : (
           <>
-            <Bookmark size={48} color="#D1D5DB" />
-            <Text style={styles.emptyTitle}>{t('community.no_saved_posts')}</Text>
-            <Text style={styles.emptyText}>
+            <Bookmark size={48} color={theme.colors.textSecondary} />
+            <Text style={[styles.emptyTitle, { color: theme.colors.text }]}>{t('community.no_saved_posts')}</Text>
+            <Text style={[styles.emptyText, { color: theme.colors.textSecondary }]}>
               {t('community.save_posts_hint')}
             </Text>
           </>
@@ -239,7 +241,7 @@ export default function CommunityFeed({ customHeader }: CommunityFeedProps = {})
 
     return (
       <View style={styles.footerLoader}>
-        <ActivityIndicator size="small" color="#3B82F6" />
+        <ActivityIndicator size="small" color={theme.colors.primary} />
       </View>
     );
   };
@@ -254,47 +256,47 @@ export default function CommunityFeed({ customHeader }: CommunityFeedProps = {})
 
       {/* Community Stats */}
       {useCommunityStore.getState().communityStats && (
-        <View style={styles.statsBar}>
-          <Text style={styles.statsTitle}>{t('community.title')}</Text>
+        <View style={[styles.statsBar, { backgroundColor: theme.colors.card }]}>
+          <Text style={[styles.statsTitle, { color: theme.colors.textSecondary }]}>{t('community.title')}</Text>
           <View style={styles.statsRow}>
             <View style={styles.stat}>
-              <Text style={styles.statValue}>
+              <Text style={[styles.statValue, { color: theme.colors.text }]}>
                 {useCommunityStore.getState().communityStats?.activePosts || 0}
               </Text>
-              <Text style={styles.statLabel}>{t('community.active')}</Text>
+              <Text style={[styles.statLabel, { color: theme.colors.textSecondary }]}>{t('community.active')}</Text>
             </View>
             <View style={styles.stat}>
-              <Text style={styles.statValue}>
+              <Text style={[styles.statValue, { color: theme.colors.text }]}>
                 {useCommunityStore.getState().communityStats?.contacts || 0}
               </Text>
-              <Text style={styles.statLabel}>{t('community.contacts')}</Text>
+              <Text style={[styles.statLabel, { color: theme.colors.textSecondary }]}>{t('community.contacts')}</Text>
             </View>
             <View style={styles.stat}>
-              <Text style={styles.statValue}>
+              <Text style={[styles.statValue, { color: theme.colors.text }]}>
                 {useCommunityStore.getState().communityStats?.conversions || 0}
               </Text>
-              <Text style={styles.statLabel}>{t('community.leads')}</Text>
+              <Text style={[styles.statLabel, { color: theme.colors.textSecondary }]}>{t('community.leads')}</Text>
             </View>
           </View>
         </View>
       )}
 
       {/* Tabs - 2 side-by-side + 1 full-width below */}
-      <View style={styles.tabsContainer}>
+      <View style={[styles.tabsContainer, { backgroundColor: theme.colors.card, shadowColor: theme.shadows.small.shadowColor }]}>
         {/* Top row: Available Drivers + Available Loads */}
         <View style={styles.tabsRow}>
           <TouchableOpacity
             style={[
               styles.tabHalf, 
-              { backgroundColor: selectedTab === 'availability' ? '#10B981' : '#D1FAE5' },
-              selectedTab === 'availability' && styles.activeTab
+              { backgroundColor: selectedTab === 'availability' ? theme.colors.secondary : theme.colors.secondary + '20' },
+              selectedTab === 'availability' && [styles.activeTab, { shadowColor: theme.shadows.small.shadowColor }]
             ]}
             onPress={() => setSelectedTab('availability')}
           >
-            <Truck size={20} color={selectedTab === 'availability' ? 'white' : '#059669'} />
+            <Truck size={20} color={selectedTab === 'availability' ? 'white' : theme.colors.secondary} />
             <Text style={[
               styles.tabText,
-              { color: selectedTab === 'availability' ? 'white' : '#059669' },
+              { color: selectedTab === 'availability' ? 'white' : theme.colors.secondary },
               selectedTab === 'availability' && styles.activeTabText
             ]}>
               {t('community.available_drivers').toUpperCase()}
@@ -303,15 +305,15 @@ export default function CommunityFeed({ customHeader }: CommunityFeedProps = {})
           <TouchableOpacity
             style={[
               styles.tabHalf, 
-              { backgroundColor: selectedTab === 'routes' ? '#3B82F6' : '#DBEAFE' },
-              selectedTab === 'routes' && styles.activeTab
+              { backgroundColor: selectedTab === 'routes' ? theme.colors.info : theme.colors.info + '20' },
+              selectedTab === 'routes' && [styles.activeTab, { shadowColor: theme.shadows.small.shadowColor }]
             ]}
             onPress={() => setSelectedTab('routes')}
           >
-            <Package size={20} color={selectedTab === 'routes' ? 'white' : '#2563EB'} />
+            <Package size={20} color={selectedTab === 'routes' ? 'white' : theme.colors.info} />
             <Text style={[
               styles.tabText,
-              { color: selectedTab === 'routes' ? 'white' : '#2563EB' },
+              { color: selectedTab === 'routes' ? 'white' : theme.colors.info },
               selectedTab === 'routes' && styles.activeTabText
             ]}>
               {t('community.available_loads').toUpperCase()}
@@ -323,15 +325,15 @@ export default function CommunityFeed({ customHeader }: CommunityFeedProps = {})
         <TouchableOpacity
           style={[
             styles.tabFull, 
-            { backgroundColor: selectedTab === 'saved' ? '#F59E0B' : '#FEF3C7' },
-            selectedTab === 'saved' && styles.activeTab
+            { backgroundColor: selectedTab === 'saved' ? theme.colors.warning : theme.colors.warning + '20' },
+            selectedTab === 'saved' && [styles.activeTab, { shadowColor: theme.shadows.small.shadowColor }]
           ]}
           onPress={() => setSelectedTab('saved')}
         >
-          <Bookmark size={20} color={selectedTab === 'saved' ? 'white' : '#D97706'} />
+          <Bookmark size={20} color={selectedTab === 'saved' ? 'white' : theme.colors.warning} />
           <Text style={[
             styles.tabText,
-            { color: selectedTab === 'saved' ? 'white' : '#D97706' },
+            { color: selectedTab === 'saved' ? 'white' : theme.colors.warning },
             selectedTab === 'saved' && styles.activeTabText
           ]}>
             {t('community.saved').toUpperCase()}
@@ -340,21 +342,21 @@ export default function CommunityFeed({ customHeader }: CommunityFeedProps = {})
       </View>
 
       {/* Filter Bar */}
-      <View style={styles.filterBar}>
+      <View style={[styles.filterBar, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}>
         {isInitializingFilters ? (
-          <ActivityIndicator size="small" color="#10B981" />
+          <ActivityIndicator size="small" color={theme.colors.primary} />
         ) : (
           <>
             {/* Country Filter */}
             <TouchableOpacity
-              style={styles.filterControl}
+              style={[styles.filterControl, { backgroundColor: theme.colors.background, borderColor: theme.colors.border }]}
               onPress={handleCountryPress}
             >
-              <Globe size={14} color="#6B7280" />
+              <Globe size={14} color={theme.colors.textSecondary} />
               <View style={styles.filterLabelContainer}>
-                <Text style={styles.filterLabel}>{t('community.country')}</Text>
+                <Text style={[styles.filterLabel, { color: theme.colors.textSecondary }]}>{t('community.country')}</Text>
                 <Text 
-                  style={selectedCountry ? styles.filterValueSelected : styles.filterValuePlaceholder}
+                  style={selectedCountry ? [styles.filterValueSelected, { color: theme.colors.text }] : [styles.filterValuePlaceholder, { color: theme.colors.textSecondary }]}
                   numberOfLines={1}
                   ellipsizeMode="tail"
                 >
@@ -367,24 +369,24 @@ export default function CommunityFeed({ customHeader }: CommunityFeedProps = {})
                   onPress={handleClearCountry}
                   hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                 >
-                  <Text style={styles.clearButtonText}>✕</Text>
+                  <Text style={[styles.clearButtonText, { color: theme.colors.textSecondary }]}>✕</Text>
                 </TouchableOpacity>
               )}
             </TouchableOpacity>
 
             {/* City Filter */}
             <TouchableOpacity
-              style={[styles.filterControl, !selectedCountry && styles.filterControlDisabled]}
+              style={[styles.filterControl, { backgroundColor: theme.colors.background, borderColor: theme.colors.border }, !selectedCountry && styles.filterControlDisabled]}
               onPress={handleCityPress}
               disabled={!selectedCountry}
             >
-              <MapPin size={14} color={selectedCountry ? "#6B7280" : "#D1D5DB"} />
+              <MapPin size={14} color={selectedCountry ? theme.colors.textSecondary : theme.colors.border} />
               <View style={styles.filterLabelContainer}>
-                <Text style={[styles.filterLabel, !selectedCountry && styles.filterLabelDisabled]}>
+                <Text style={[styles.filterLabel, { color: theme.colors.textSecondary }, !selectedCountry && styles.filterLabelDisabled]}>
                   {t('community.city')}
                 </Text>
                 <Text 
-                  style={selectedCity ? styles.filterValueSelected : styles.filterValuePlaceholder}
+                  style={selectedCity ? [styles.filterValueSelected, { color: theme.colors.text }] : [styles.filterValuePlaceholder, { color: theme.colors.textSecondary }]}
                   numberOfLines={1}
                   ellipsizeMode="tail"
                 >
@@ -397,7 +399,7 @@ export default function CommunityFeed({ customHeader }: CommunityFeedProps = {})
                   onPress={handleClearCity}
                   hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                 >
-                  <Text style={styles.clearButtonText}>✕</Text>
+                  <Text style={[styles.clearButtonText, { color: theme.colors.textSecondary }]}>✕</Text>
                 </TouchableOpacity>
               )}
             </TouchableOpacity>
@@ -407,10 +409,10 @@ export default function CommunityFeed({ customHeader }: CommunityFeedProps = {})
 
       {/* Error Message */}
       {error && (
-        <View style={styles.errorContainer}>
-          <Text style={styles.errorText}>{error}</Text>
+        <View style={[styles.errorContainer, { backgroundColor: theme.colors.error + '20' }]}>
+          <Text style={[styles.errorText, { color: theme.colors.error }]}>{error}</Text>
           <TouchableOpacity onPress={clearError}>
-            <Text style={styles.errorDismiss}>Închide</Text>
+            <Text style={[styles.errorDismiss, { color: theme.colors.error }]}>Închide</Text>
           </TouchableOpacity>
         </View>
       )}
@@ -429,6 +431,7 @@ export default function CommunityFeed({ customHeader }: CommunityFeedProps = {})
     clearError,
     setSelectedTab,
     t,
+    theme,
   ]);
 
   return (
@@ -452,7 +455,8 @@ export default function CommunityFeed({ customHeader }: CommunityFeedProps = {})
                 void refreshPosts();
               }
             }}
-            colors={['#3B82F6']}
+            colors={[theme.colors.secondary]}
+            tintColor={theme.colors.secondary}
           />
         }
         onEndReached={loadMorePosts}
@@ -493,7 +497,6 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   statsBar: {
-    backgroundColor: 'white',
     padding: 16,
     marginBottom: 12,
     borderRadius: 12,
@@ -502,7 +505,6 @@ const styles = StyleSheet.create({
   statsTitle: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#6B7280',
     marginBottom: 12,
   },
   statsRow: {
@@ -515,20 +517,16 @@ const styles = StyleSheet.create({
   statValue: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#111827',
   },
   statLabel: {
     fontSize: 12,
-    color: '#6B7280',
     marginTop: 2,
   },
   tabsContainer: {
-    backgroundColor: 'white',
     marginHorizontal: 16,
     borderRadius: 12,
     padding: 6,
     marginBottom: 12,
-    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -541,12 +539,10 @@ const styles = StyleSheet.create({
   },
   tabs: {
     flexDirection: 'row',
-    backgroundColor: 'white',
     marginHorizontal: 16,
     borderRadius: 12,
     padding: 6,
     marginBottom: 12,
-    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -579,7 +575,6 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   activeTab: {
-    shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.08,
     shadowRadius: 2,
@@ -588,33 +583,27 @@ const styles = StyleSheet.create({
   tabText: {
     fontSize: 14,
     fontWeight: '600',
-    color: 'white',
   },
   activeTabText: {
-    color: 'white',
     fontWeight: '700',
   },
   filterBar: {
     flexDirection: 'row', // Horizontal layout like tabs
-    backgroundColor: 'white',
     paddingHorizontal: 16,
     paddingVertical: 10,
     marginBottom: 12,
     gap: 8, // Space between controls
     borderTopWidth: 1,
     borderBottomWidth: 1,
-    borderColor: '#E5E7EB',
   },
   filterControl: {
     flex: 1, // Equal width for both controls
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#F9FAFB',
     borderRadius: 8,
     padding: 8,
     gap: 8,
     borderWidth: 1,
-    borderColor: '#E5E7EB',
   },
   filterControlDisabled: {
     opacity: 0.5,
@@ -625,28 +614,24 @@ const styles = StyleSheet.create({
   },
   filterLabel: {
     fontSize: 10,
-    color: '#6B7280',
     fontWeight: '500',
     marginBottom: 2,
   },
   filterLabelDisabled: {
-    color: '#D1D5DB',
+    // Removed hardcoded color
   },
   filterValueSelected: {
     fontSize: 12,
-    color: '#111827',
     fontWeight: '600',
   },
   filterValuePlaceholder: {
     fontSize: 12,
-    color: '#9CA3AF',
   },
   clearButton: {
     padding: 4,
   },
   clearButtonText: {
     fontSize: 18,
-    color: '#6B7280',
     fontWeight: '600',
   },
   emptyContainer: {
@@ -658,13 +643,11 @@ const styles = StyleSheet.create({
   emptyTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#374151',
     marginTop: 16,
     marginBottom: 8,
   },
   emptyText: {
     fontSize: 14,
-    color: '#6B7280',
     textAlign: 'center',
   },
   footerLoader: {
@@ -672,7 +655,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   errorContainer: {
-    backgroundColor: '#FEE2E2',
     padding: 12,
     marginHorizontal: 16,
     marginBottom: 12,
@@ -682,12 +664,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   errorText: {
-    color: '#DC2626',
     fontSize: 14,
     flex: 1,
   },
   errorDismiss: {
-    color: '#DC2626',
     fontWeight: '600',
     marginLeft: 8,
   },

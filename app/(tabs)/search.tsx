@@ -5,6 +5,7 @@ import {
   StyleSheet,
   ScrollView,
   ActivityIndicator,
+  TouchableOpacity,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -19,7 +20,8 @@ import { useAuthStore } from '@/store/authStore';
 import { searchesService } from '@/services/searchesService';
 import { Search as SearchType } from '@/types/database.types';
 import Toast from 'react-native-toast-message';
-import { MapPin, Crosshair, Search, Clock, CheckCircle, AlertCircle } from 'lucide-react-native';
+import { MapPin, Crosshair, Clock, CheckCircle, AlertCircle } from 'lucide-react-native';
+import { useTheme } from '@/lib/theme';
 
 // Configure notifications SAFELY (wrapped in try-catch to prevent iOS crash)
 try {
@@ -38,6 +40,7 @@ try {
 
 export default function SearchScreen() {
   const { t } = useTranslation();
+  const { theme } = useTheme();
   const { user, profile } = useAuthStore();
   const [keywords, setKeywords] = useState('');
   const [keywordsList, setKeywordsList] = useState<string[]>([]);
@@ -333,43 +336,42 @@ export default function SearchScreen() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'pending':
-        return '#F59E0B';
+        return theme.colors.warning;
       case 'completed':
-        return '#10B981';
+        return theme.colors.success;
       case 'failed':
-        return '#EF4444';
+        return theme.colors.error;
       default:
-        return '#64748B';
+        return theme.colors.textSecondary;
     }
   };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'pending':
-        return <Clock size={20} color="#F59E0B" />;
+        return <Clock size={20} color={theme.colors.warning} />;
       case 'completed':
-        return <CheckCircle size={20} color="#10B981" />;
+        return <CheckCircle size={20} color={theme.colors.success} />;
       case 'failed':
-        return <AlertCircle size={20} color="#EF4444" />;
+        return <AlertCircle size={20} color={theme.colors.error} />;
       default:
         return null;
     }
   };
 
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
+    <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]} edges={['top']}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.header}>
-          <Search size={32} color="#2563EB" />
-          <Text style={styles.title}>{t('search.title')}</Text>
-          <Text style={styles.subtitle}>
+          <Text style={[styles.title, { color: theme.colors.text }]}>{t('search.title')}</Text>
+          <Text style={[styles.subtitle, { color: theme.colors.textSecondary }]}>
             {t('home.searches_remaining', { count: searchesRemaining })}
           </Text>
         </View>
 
         {/* Active Search Status Card */}
         {activeSearch && (
-          <Card style={StyleSheet.flatten([styles.statusCard, { borderColor: getStatusColor(activeSearch.status) }])}>
+          <Card style={StyleSheet.flatten([styles.statusCard, { borderColor: getStatusColor(activeSearch.status), backgroundColor: theme.colors.card }])}>
             <View style={styles.statusHeader}>
               {getStatusIcon(activeSearch.status)}
               <Text style={StyleSheet.flatten([styles.statusTitle, { color: getStatusColor(activeSearch.status) }])}>
@@ -380,63 +382,75 @@ export default function SearchScreen() {
             </View>
 
             <View style={styles.statusDetails}>
-              <Text style={styles.statusLabel}>{t('search.keywords')}:</Text>
-              <Text style={styles.statusValue}>{activeSearch.search_keywords}</Text>
+              <Text style={[styles.statusLabel, { color: theme.colors.textSecondary }]}>{t('search.keywords')}:</Text>
+              <Text style={[styles.statusValue, { color: theme.colors.text }]}>{activeSearch.search_keywords}</Text>
             </View>
 
             <View style={styles.statusDetails}>
-              <Text style={styles.statusLabel}>{t('search.location')}:</Text>
-              <Text style={styles.statusValue}>{activeSearch.search_address}</Text>
+              <Text style={[styles.statusLabel, { color: theme.colors.textSecondary }]}>{t('search.location')}:</Text>
+              <Text style={[styles.statusValue, { color: theme.colors.text }]}>{activeSearch.search_address}</Text>
             </View>
 
             {activeSearch.status === 'pending' && (
-              <View style={styles.processingInfo}>
-                <ActivityIndicator size="small" color="#F59E0B" />
+              <View style={[styles.processingInfo, { backgroundColor: theme.colors.warning + '20' }]}>
+                <ActivityIndicator size="small" color={theme.colors.warning} />
                 <View style={styles.timerContainer}>
-                  <Clock size={16} color="#64748B" />
-                  <Text style={styles.timerText}>{formatTime(elapsedTime)}</Text>
-                  <Text style={styles.estimateText}>/ ~5:00 {t('search.estimated')}</Text>
+                  <Clock size={16} color={theme.colors.textSecondary} />
+                  <Text style={[styles.timerText, { color: theme.colors.warning }]}>{formatTime(elapsedTime)}</Text>
+                  <Text style={[styles.estimateText, { color: theme.colors.warning }]}>/ ~5:00 {t('search.estimated')}</Text>
                 </View>
               </View>
             )}
 
             {activeSearch.status === 'completed' && (
-              <View style={styles.completedInfo}>
-                <CheckCircle size={16} color="#10B981" />
-                <Text style={styles.completedText}>
+              <View style={[styles.completedInfo, { backgroundColor: theme.colors.success + '20' }]}>
+                <CheckCircle size={16} color={theme.colors.success} />
+                <Text style={[styles.completedText, { color: theme.colors.success }]}>
                   {t('search.check_leads_tab')}
                 </Text>
               </View>
             )}
 
             {activeSearch.status === 'failed' && activeSearch.error_message && (
-              <View style={styles.errorInfo}>
-                <AlertCircle size={16} color="#EF4444" />
-                <Text style={styles.errorText}>{activeSearch.error_message}</Text>
+              <View style={[styles.errorInfo, { backgroundColor: theme.colors.error + '20' }]}>
+                <AlertCircle size={16} color={theme.colors.error} />
+                <Text style={[styles.errorText, { color: theme.colors.error }]}>{activeSearch.error_message}</Text>
               </View>
             )}
           </Card>
         )}
 
         <Card style={styles.section}>
-          <Text style={styles.sectionTitle}>{t('search.location_method')}</Text>
+          <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>{t('search.location_method')}</Text>
 
-          <Button
-            title={t('search.use_current_location')}
+          <TouchableOpacity
             onPress={handleUseCurrentLocation}
-            variant="outline"
-            style={styles.locationButton}
-            loading={isLoading}
-          />
+            style={[styles.locationButtonStyle, { shadowColor: theme.colors.primary, backgroundColor: theme.colors.card }]}
+            activeOpacity={0.7}
+            disabled={isLoading}
+          >
+            <View style={[styles.locationButtonContent, { borderColor: theme.colors.primary }]}>
+              {isLoading ? (
+                <ActivityIndicator size="small" color={theme.colors.primary} />
+              ) : (
+                <>
+                  <Crosshair size={20} color={theme.colors.primary} />
+                  <Text style={[styles.locationButtonText, { color: theme.colors.primary }]}>
+                    {t('search.use_current_location')}
+                  </Text>
+                </>
+              )}
+            </View>
+          </TouchableOpacity>
 
           {address && (
-            <View style={styles.locationResult}>
-              <MapPin size={16} color="#10B981" />
+            <View style={[styles.locationResult, { backgroundColor: theme.colors.success + '10' }]}>
+              <MapPin size={16} color={theme.colors.success} />
               <View style={styles.locationInfo}>
-                <Text style={styles.locationText}>{address}</Text>
+                <Text style={[styles.locationText, { color: theme.colors.success }]}>{address}</Text>
                 <View style={styles.radiusInfo}>
-                  <Crosshair size={14} color="#10B981" />
-                  <Text style={styles.radiusText}>
+                  <Crosshair size={14} color={theme.colors.success} />
+                  <Text style={[styles.radiusText, { color: theme.colors.success }]}>
                     {formatDistance(
                       profile?.search_radius_km || 5,
                       profile?.preferred_distance_unit || 'km',
@@ -451,18 +465,19 @@ export default function SearchScreen() {
 
         <Card style={styles.section}>
           <View style={styles.keywordsHeader}>
-            <Text style={styles.sectionTitle}>{t('search.keywords')}</Text>
-            <View style={styles.keywordCounter}>
+            <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>{t('search.keywords')}</Text>
+            <View style={[styles.keywordCounter, { backgroundColor: theme.colors.background, borderColor: theme.colors.border }]}>
               <Text style={[
                 styles.counterText,
-                keywordsList.length > 5 && styles.counterTextError
+                { color: theme.colors.textSecondary },
+                keywordsList.length > 5 && { color: theme.colors.error }
               ]}>
                 {keywordsList.length} / 5
               </Text>
             </View>
           </View>
           
-          <Text style={styles.keywordsHint}>
+          <Text style={[styles.keywordsHint, { color: theme.colors.textSecondary }]}>
             {t('search.keywords_hint')}
           </Text>
           
@@ -471,22 +486,22 @@ export default function SearchScreen() {
             value={keywords}
             onChangeText={setKeywords}
             multiline
-            style={keywordsList.length > 5 ? styles.inputError : undefined}
+            style={keywordsList.length > 5 ? { borderColor: theme.colors.error, borderWidth: 2 } : undefined}
           />
           
           {/* Visual Keywords Display */}
           {keywordsList.length > 0 && (
-            <View style={styles.keywordsPreview}>
-              <Text style={styles.previewLabel}>{t('search.your_keywords')}:</Text>
+            <View style={[styles.keywordsPreview, { backgroundColor: theme.colors.background, borderColor: theme.colors.border }]}>
+              <Text style={[styles.previewLabel, { color: theme.colors.textSecondary }]}>{t('search.your_keywords')}:</Text>
               <View style={styles.keywordTags}>
                 {keywordsList.slice(0, 5).map((keyword, index) => (
-                  <View key={index} style={styles.keywordTag}>
-                    <Text style={styles.keywordTagText}>{keyword}</Text>
+                  <View key={index} style={[styles.keywordTag, { backgroundColor: theme.colors.secondary + '20', borderColor: theme.colors.secondary + '40' }]}>
+                    <Text style={[styles.keywordTagText, { color: theme.colors.secondary }]}>{keyword}</Text>
                   </View>
                 ))}
                 {keywordsList.length > 5 && (
-                  <View style={styles.keywordTagError}>
-                    <Text style={styles.keywordTagTextError}>
+                  <View style={[styles.keywordTagError, { backgroundColor: theme.colors.error + '20', borderColor: theme.colors.error + '40' }]}>
+                    <Text style={[styles.keywordTagTextError, { color: theme.colors.error }]}>
                       +{keywordsList.length - 5} {t('search.too_many')}
                     </Text>
                   </View>
@@ -496,36 +511,51 @@ export default function SearchScreen() {
           )}
 
           {/* Cost Info */}
-          <View style={styles.costInfo}>
-            <Crosshair size={20} color="#64748B" />
-            <Text style={styles.costText}>
+          <View style={[styles.costInfo, { backgroundColor: theme.colors.background }]}>
+            <Crosshair size={20} color={theme.colors.textSecondary} />
+            <Text style={[styles.costText, { color: theme.colors.textSecondary }]}>
               {t('search.search_cost', { remaining: searchesRemaining })}
             </Text>
           </View>
 
-          {/* Start Search Button - Directly under keywords */}
-          <Button
-            title={t('search.start_search')}
+          {/* Start Search Button - Big Gradient Style */}
+          <TouchableOpacity
             onPress={handleStartSearch}
-            loading={isLoading}
-            disabled={!latitude || !longitude || !keywords.trim() || searchesRemaining === 0}
-          />
+            style={[styles.searchButton, { shadowColor: theme.colors.primary }]}
+            activeOpacity={0.85}
+            disabled={!latitude || !longitude || !keywords.trim() || searchesRemaining === 0 || isLoading}
+          >
+            <View style={[
+              styles.searchButtonGradient, 
+              { 
+                backgroundColor: theme.colors.secondary,
+                borderColor: theme.colors.primary,
+                opacity: (!latitude || !longitude || !keywords.trim() || searchesRemaining === 0 || isLoading) ? 0.5 : 1
+              }
+            ]}>
+              {isLoading ? (
+                <ActivityIndicator size="large" color={theme.colors.white} />
+              ) : (
+                <Text style={[styles.searchButtonText, { color: theme.colors.white }]}>{t('search.start_search')}</Text>
+              )}
+            </View>
+          </TouchableOpacity>
         </Card>
 
         {/* Quick Search Section */}
         {profile?.preferred_industries && profile.preferred_industries.length > 0 && (
-          <Card style={styles.quickSearchCard}>
+          <Card style={[styles.quickSearchCard, { backgroundColor: theme.colors.secondary + '10', borderColor: theme.colors.secondary }]}>
             <View style={styles.quickSearchHeader}>
-              <Text style={styles.quickSearchTitle}>{t('search.quick_search')}</Text>
-              <Text style={styles.quickSearchSubtitle}>{t('search.quick_search_description')}</Text>
+              <Text style={[styles.quickSearchTitle, { color: theme.colors.secondary }]}>{t('search.quick_search')}</Text>
+              <Text style={[styles.quickSearchSubtitle, { color: theme.colors.textSecondary }]}>{t('search.quick_search_description')}</Text>
             </View>
             
             <View style={styles.savedDomainsContainer}>
-              <Text style={styles.savedDomainsLabel}>{t('search.your_saved_domains')}:</Text>
+              <Text style={[styles.savedDomainsLabel, { color: theme.colors.textSecondary }]}>{t('search.your_saved_domains')}:</Text>
               <View style={styles.domainsList}>
                 {profile.preferred_industries.map((domain, index) => (
-                  <View key={index} style={styles.domainTag}>
-                    <Text style={styles.domainTagText}>{domain}</Text>
+                  <View key={index} style={[styles.domainTag, { backgroundColor: theme.colors.secondary + '20', borderColor: theme.colors.secondary + '40' }]}>
+                    <Text style={[styles.domainTagText, { color: theme.colors.secondary }]}>{domain}</Text>
                   </View>
                 ))}
               </View>
@@ -549,53 +579,63 @@ export default function SearchScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8FAFC',
   },
   scrollContent: {
     padding: 16,
   },
   header: {
-    alignItems: 'center',
     marginBottom: 24,
   },
   title: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: '700',
-    color: '#1E293B',
-    marginTop: 8,
+    marginBottom: 4,
   },
   subtitle: {
-    fontSize: 14,
-    color: '#64748B',
-    marginTop: 4,
+    fontSize: 16,
   },
   section: {
-    marginBottom: 16,
+    marginBottom: 24,
   },
   sectionTitle: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: '600',
-    color: '#1E293B',
-    marginBottom: 12,
+    marginBottom: 16,
   },
-  locationButton: {
-    marginBottom: 12,
+  locationButtonStyle: {
+    marginBottom: 16,
+    borderRadius: 16,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  locationButtonContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 16,
+    borderRadius: 16,
+    borderWidth: 2,
+    gap: 8,
+  },
+  locationButtonText: {
+    fontSize: 16,
+    fontWeight: '700',
   },
   locationResult: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    padding: 12,
-    backgroundColor: '#F0FDF4',
-    borderRadius: 8,
+    padding: 16,
+    borderRadius: 12,
   },
   locationInfo: {
     flex: 1,
-    marginLeft: 8,
+    marginLeft: 12,
   },
   locationText: {
-    fontSize: 14,
-    color: '#166534',
-    fontWeight: '500',
+    fontSize: 15,
+    fontWeight: '600',
     marginBottom: 4,
   },
   radiusInfo: {
@@ -604,59 +644,78 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   radiusText: {
-    fontSize: 12,
-    color: '#15803D',
-    marginLeft: 4,
+    fontSize: 13,
+    marginLeft: 6,
     fontWeight: '600',
   },
   costInfo: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginVertical: 16,
+    marginVertical: 20,
     padding: 12,
-    backgroundColor: '#F8FAFC',
-    borderRadius: 8,
+    borderRadius: 12,
   },
   costText: {
-    fontSize: 14,
-    color: '#64748B',
+    fontSize: 15,
     marginLeft: 8,
+    fontWeight: '500',
+  },
+  // Search Button Styles (Matching Home)
+  searchButton: {
+    marginBottom: 8,
+    borderRadius: 16,
+    overflow: 'hidden',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 6,
+  },
+  searchButtonGradient: {
+    height: 80, // Slightly smaller than Home (112) but still big
+    borderWidth: 2,
+    borderRadius: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  searchButtonText: {
+    fontSize: 20,
+    fontWeight: '700',
+    textTransform: 'uppercase',
+    letterSpacing: 1,
   },
   statusCard: {
-    marginBottom: 16,
+    marginBottom: 24,
     borderWidth: 2,
+    borderRadius: 16,
   },
   statusHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 12,
+    marginBottom: 16,
   },
   statusTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    marginLeft: 8,
+    fontSize: 20,
+    fontWeight: '700',
+    marginLeft: 12,
   },
   statusDetails: {
     flexDirection: 'row',
-    marginBottom: 8,
+    marginBottom: 12,
   },
   statusLabel: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: '#64748B',
-    width: 80,
+    fontSize: 15,
+    fontWeight: '600',
+    width: 90,
   },
   statusValue: {
-    fontSize: 14,
-    color: '#1E293B',
+    fontSize: 15,
     flex: 1,
   },
   processingInfo: {
-    marginTop: 12,
-    padding: 12,
-    backgroundColor: '#FEF3C7',
-    borderRadius: 8,
+    marginTop: 16,
+    padding: 16,
+    borderRadius: 12,
     alignItems: 'center',
   },
   timerContainer: {
@@ -665,169 +724,144 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   timerText: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#92400E',
+    fontSize: 18,
+    fontWeight: '700',
     marginHorizontal: 8,
   },
   estimateText: {
-    fontSize: 12,
-    color: '#78350F',
+    fontSize: 13,
   },
   completedInfo: {
-    marginTop: 12,
-    padding: 12,
-    backgroundColor: '#D1FAE5',
-    borderRadius: 8,
+    marginTop: 16,
+    padding: 16,
+    borderRadius: 12,
     flexDirection: 'row',
     alignItems: 'center',
   },
   completedText: {
-    fontSize: 14,
-    color: '#065F46',
-    marginLeft: 8,
+    fontSize: 15,
+    marginLeft: 12,
     flex: 1,
+    fontWeight: '600',
   },
   errorInfo: {
-    marginTop: 12,
-    padding: 12,
-    backgroundColor: '#FEE2E2',
-    borderRadius: 8,
+    marginTop: 16,
+    padding: 16,
+    borderRadius: 12,
     flexDirection: 'row',
     alignItems: 'center',
   },
   errorText: {
-    fontSize: 14,
-    color: '#991B1B',
-    marginLeft: 8,
+    fontSize: 15,
+    marginLeft: 12,
     flex: 1,
+    fontWeight: '600',
   },
   quickSearchCard: {
-    marginBottom: 16,
-    backgroundColor: '#EFF6FF',
+    marginBottom: 24,
     borderWidth: 1,
-    borderColor: '#3B82F6',
+    borderRadius: 16,
   },
   quickSearchHeader: {
-    marginBottom: 12,
-  },
-  quickSearchTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#1E40AF',
-    marginBottom: 4,
-  },
-  quickSearchSubtitle: {
-    fontSize: 14,
-    color: '#64748B',
-    lineHeight: 20,
-  },
-  savedDomainsContainer: {
     marginBottom: 16,
   },
+  quickSearchTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+    marginBottom: 6,
+  },
+  quickSearchSubtitle: {
+    fontSize: 15,
+    lineHeight: 22,
+  },
+  savedDomainsContainer: {
+    marginBottom: 20,
+  },
   savedDomainsLabel: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: '#475569',
-    marginBottom: 8,
+    fontSize: 15,
+    fontWeight: '600',
+    marginBottom: 12,
   },
   domainsList: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 8,
+    gap: 10,
   },
   domainTag: {
-    backgroundColor: '#DBEAFE',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 16,
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 20,
     borderWidth: 1,
-    borderColor: '#93C5FD',
   },
   domainTagText: {
-    fontSize: 13,
-    color: '#1E40AF',
-    fontWeight: '500',
+    fontSize: 14,
+    fontWeight: '600',
   },
   quickSearchButton: {
-    backgroundColor: '#3B82F6',
+    marginTop: 8,
   },
   // Keywords Section Styles
   keywordsHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 8,
+    marginBottom: 12,
   },
   keywordCounter: {
-    backgroundColor: '#F1F5F9',
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
   },
   counterText: {
     fontSize: 13,
     fontWeight: '600',
-    color: '#64748B',
   },
   counterTextError: {
-    color: '#EF4444',
+    // Removed hardcoded color
   },
   keywordsHint: {
-    fontSize: 13,
-    color: '#64748B',
-    marginBottom: 12,
-    lineHeight: 18,
+    fontSize: 14,
+    marginBottom: 16,
+    lineHeight: 20,
   },
   inputError: {
-    borderColor: '#EF4444',
     borderWidth: 2,
   },
   keywordsPreview: {
-    marginTop: 12,
-    padding: 12,
-    backgroundColor: '#F8FAFC',
-    borderRadius: 8,
+    marginTop: 16,
+    padding: 16,
+    borderRadius: 12,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
   },
   previewLabel: {
-    fontSize: 12,
+    fontSize: 13,
     fontWeight: '600',
-    color: '#475569',
-    marginBottom: 8,
+    marginBottom: 12,
   },
   keywordTags: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 8,
+    gap: 10,
   },
   keywordTag: {
-    backgroundColor: '#DBEAFE',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 16,
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 20,
     borderWidth: 1,
-    borderColor: '#93C5FD',
   },
   keywordTagText: {
-    fontSize: 13,
-    color: '#1E40AF',
-    fontWeight: '500',
+    fontSize: 14,
+    fontWeight: '600',
   },
   keywordTagError: {
-    backgroundColor: '#FEE2E2',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 16,
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 20,
     borderWidth: 1,
-    borderColor: '#FCA5A5',
   },
   keywordTagTextError: {
-    fontSize: 13,
-    color: '#991B1B',
-    fontWeight: '600',
+    fontSize: 14,
+    fontWeight: '700',
   },
 });

@@ -12,6 +12,7 @@ import {
 import { Search, X, Check } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 import { Country } from '@/types/community.types';
+import { useTheme } from '../../lib/theme';
 
 interface CountryPickerModalProps {
   visible: boolean;
@@ -74,6 +75,7 @@ export default function CountryPickerModal({
   selectedCountryCode,
 }: CountryPickerModalProps) {
   const { t } = useTranslation();
+  const { theme } = useTheme();
   const [searchQuery, setSearchQuery] = useState('');
 
   // Filter countries based on search
@@ -107,21 +109,22 @@ export default function CountryPickerModal({
       presentationStyle="pageSheet"
       onRequestClose={onClose}
     >
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
         {/* Header */}
-        <View style={styles.header}>
-          <Text style={styles.title}>{t('community.select_country')}</Text>
+        <View style={[styles.header, { backgroundColor: theme.colors.card, borderBottomColor: theme.colors.border }]}>
+          <Text style={[styles.title, { color: theme.colors.text }]}>{t('community.select_country')}</Text>
           <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-            <X size={24} color="#6B7280" />
+            <X size={24} color={theme.colors.textSecondary} />
           </TouchableOpacity>
         </View>
 
         {/* Search Bar */}
-        <View style={styles.searchContainer}>
-          <Search size={20} color="#9CA3AF" />
+        <View style={[styles.searchContainer, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}>
+          <Search size={20} color={theme.colors.textSecondary} />
           <TextInput
-            style={styles.searchInput}
+            style={[styles.searchInput, { color: theme.colors.text }]}
             placeholder={t('community.search_country')}
+            placeholderTextColor={theme.colors.placeholder}
             value={searchQuery}
             onChangeText={setSearchQuery}
             autoCorrect={false}
@@ -129,15 +132,15 @@ export default function CountryPickerModal({
           />
           {searchQuery.length > 0 && (
             <TouchableOpacity onPress={() => setSearchQuery('')}>
-              <X size={20} color="#9CA3AF" />
+              <X size={20} color={theme.colors.textSecondary} />
             </TouchableOpacity>
           )}
         </View>
 
         {/* Clear Filter Button */}
         {selectedCountryCode && onClear && (
-          <TouchableOpacity style={styles.clearFilterButton} onPress={handleClear}>
-            <Text style={styles.clearFilterText}>{t('community.clear_filter')}</Text>
+          <TouchableOpacity style={[styles.clearFilterButton, { backgroundColor: theme.colors.error + '20' }]} onPress={handleClear}>
+            <Text style={[styles.clearFilterText, { color: theme.colors.error }]}>{t('community.clear_filter')}</Text>
           </TouchableOpacity>
         )}
 
@@ -149,23 +152,31 @@ export default function CountryPickerModal({
             const isSelected = item.code === selectedCountryCode;
             return (
               <TouchableOpacity
-                style={[styles.countryItem, isSelected && styles.selectedCountryItem]}
+                style={[
+                  styles.countryItem, 
+                  { backgroundColor: theme.colors.card },
+                  isSelected && { backgroundColor: theme.colors.primary + '20', borderColor: theme.colors.primary, borderWidth: 1 }
+                ]}
                 onPress={() => handleSelect(item)}
               >
                 <View style={styles.countryInfo}>
                   <Text style={styles.countryFlag}>{getFlagEmoji(item.code)}</Text>
-                  <Text style={[styles.countryName, isSelected && styles.selectedCountryName]}>
+                  <Text style={[
+                    styles.countryName, 
+                    { color: theme.colors.text },
+                    isSelected && { color: theme.colors.primary }
+                  ]}>
                     {item.name}
                   </Text>
-                  <Text style={styles.countryCode}>{item.code}</Text>
+                  <Text style={[styles.countryCode, { color: theme.colors.textSecondary }]}>{item.code}</Text>
                 </View>
-                {isSelected && <Check size={20} color="#10B981" />}
+                {isSelected && <Check size={20} color={theme.colors.primary} />}
               </TouchableOpacity>
             );
           }}
           ListEmptyComponent={
             <View style={styles.emptyContainer}>
-              <Text style={styles.emptyText}>{t('community.no_countries_found')}</Text>
+              <Text style={[styles.emptyText, { color: theme.colors.textSecondary }]}>{t('community.no_countries_found')}</Text>
             </View>
           }
           contentContainerStyle={styles.listContent}
@@ -187,7 +198,6 @@ function getFlagEmoji(countryCode: string): string {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F9FAFB',
   },
   header: {
     flexDirection: 'row',
@@ -195,14 +205,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 16,
     paddingVertical: 12,
-    backgroundColor: 'white',
     borderBottomWidth: 1,
-    borderBottomColor: '#E5E7EB',
   },
   title: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#111827',
   },
   closeButton: {
     padding: 4,
@@ -210,7 +217,6 @@ const styles = StyleSheet.create({
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'white',
     marginHorizontal: 16,
     marginTop: 12,
     marginBottom: 8,
@@ -218,16 +224,13 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#E5E7EB',
     gap: 8,
   },
   searchInput: {
     flex: 1,
     fontSize: 16,
-    color: '#111827',
   },
   clearFilterButton: {
-    backgroundColor: '#FEE2E2',
     marginHorizontal: 16,
     marginBottom: 8,
     paddingVertical: 10,
@@ -235,7 +238,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   clearFilterText: {
-    color: '#DC2626',
     fontSize: 14,
     fontWeight: '600',
   },
@@ -246,7 +248,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: 'white',
     marginHorizontal: 16,
     marginVertical: 4,
     paddingHorizontal: 16,
@@ -254,9 +255,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   selectedCountryItem: {
-    backgroundColor: '#F0FDF4',
-    borderWidth: 1,
-    borderColor: '#10B981',
+    // Removed hardcoded styles
   },
   countryInfo: {
     flexDirection: 'row',
@@ -268,16 +267,13 @@ const styles = StyleSheet.create({
   },
   countryName: {
     fontSize: 16,
-    color: '#111827',
     fontWeight: '500',
   },
   selectedCountryName: {
-    color: '#10B981',
     fontWeight: '600',
   },
   countryCode: {
     fontSize: 12,
-    color: '#9CA3AF',
     fontWeight: '500',
   },
   emptyContainer: {
@@ -287,7 +283,6 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     fontSize: 14,
-    color: '#6B7280',
     textAlign: 'center',
   },
 });

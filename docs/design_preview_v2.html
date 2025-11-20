@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Truxel Design Variants - Logo Inspired</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #1e293b;
+            margin: 0;
+            padding: 40px;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 { text-align: center; margin-bottom: 10px; color: #0f172a; }
+        p.subtitle { text-align: center; color: #64748b; margin-bottom: 50px; }
+
+        .variant-section {
+            margin-bottom: 60px;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .variant-header {
+            padding: 20px 30px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .variant-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .variant-content {
+            padding: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        /* Mockup Styles */
+        .mockup-phone {
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 20px;
+            background: var(--bg-page);
+        }
+
+        .card {
+            background: var(--bg-surface);
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 16px;
+            border: 1px solid var(--border-color, transparent);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            margin-top: 8px;
+            text-align: center;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        /* Color Swatches */
+        .swatches {
+            display: flex;
+            gap: 10px;
+        }
+        .swatch {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* --- VARIANT 1: NEON HIGHWAY (Dark Header, Neon Orange) --- */
+        .v1 {
+            --primary: #0F172A; /* Deep Navy from Logo Background */
+            --accent: #FF5722; /* Neon Orange from Logo Border */
+            --bg-page: #F1F5F9;
+            --bg-surface: #FFFFFF;
+            --text: #0F172A;
+        }
+        .v1 .mockup-header {
+            background: var(--primary);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: bold;
+            border-bottom: 3px solid var(--accent); /* The Neon Line */
+        }
+        .v1 .btn-primary { background: var(--primary); color: white; }
+        .v1 .btn-accent { background: var(--accent); color: white; }
+        .v1 .tag { background: #FFE4D6; color: var(--accent); }
+
+        /* --- VARIANT 2: ELECTRIC BLUE (Vibrant Blue, Sunset Orange) --- */
+        .v2 {
+            --primary: #2563EB; /* Vibrant Blue from Pin Highlight */
+            --accent: #F97316; /* Sunset Orange */
+            --bg-page: #F8FAFC;
+            --bg-surface: #FFFFFF;
+            --text: #1E293B;
+        }
+        .v2 .mockup-header {
+            background: white;
+            color: var(--primary);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: 800;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 4px rgba(37, 99, 235, 0.1);
+        }
+        .v2 .btn-primary { 
+            background: linear-gradient(135deg, #2563EB, #1D4ED8); 
+            color: white; 
+            box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.3);
+        }
+        .v2 .btn-accent { 
+            background: white; 
+            border: 2px solid var(--accent); 
+            color: var(--accent); 
+        }
+        .v2 .tag { background: #EFF6FF; color: var(--primary); }
+
+        /* --- VARIANT 3: DARK MODE (Night Drive) --- */
+        .v3 {
+            --primary: #38BDF8; /* Cyan/Light Blue from Text Glow */
+            --accent: #FF6D00; /* Bright Neon Orange */
+            --bg-page: #0F172A; /* Deep Navy Background */
+            --bg-surface: #1E293B; /* Lighter Navy Card */
+            --text: #F8FAFC;
+            --border-color: #334155;
+        }
+        .v3 .mockup-phone { background: var(--bg-page); color: var(--text); }
+        .v3 .card { background: var(--bg-surface); color: var(--text); border-color: var(--border-color); }
+        .v3 .mockup-header {
+            background: var(--bg-surface);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: bold;
+            border: 1px solid var(--accent); /* Neon Border like Logo */
+            box-shadow: 0 0 10px rgba(255, 109, 0, 0.2);
+        }
+        .v3 .btn-primary { background: var(--primary); color: #0F172A; font-weight: 800; }
+        .v3 .btn-accent { background: var(--accent); color: white; }
+        .v3 .tag { background: rgba(56, 189, 248, 0.2); color: var(--primary); }
+        .v3 h3 { color: white; }
+        .v3 p { color: #94A3B8; }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Truxel Design Variants</h1>
+    <p class="subtitle">Inspired by the Neon & Map Pin Logo</p>
+
+    <!-- VARIANT 1 -->
+    <div class="variant-section v1">
+        <div class="variant-header">
+            <span class="variant-title">Option 1: "The Professional"</span>
+            <div class="swatches">
+                <div class="swatch" style="background: #0F172A;"></div>
+                <div class="swatch" style="background: #FF5722;"></div>
+            </div>
+        </div>
+        <div class="variant-content">
+            <div>
+                <h3>Concept</h3>
+                <p>Uses the <strong>Deep Navy</strong> from the logo background as the primary brand color. The <strong>Neon Orange</strong> is used strictly for high-priority actions (like the logo border). This feels grounded, serious, and very "trucking industry".</p>
+                <ul>
+                    <li><strong>Primary:</strong> Navy Blue (#0F172A)</li>
+                    <li><strong>Accent:</strong> Deep Orange (#FF5722)</li>
+                </ul>
+            </div>
+            <div class="mockup-phone">
+                <div class="mockup-header">TRUXEL</div>
+                <div class="card">
+                    <span class="tag">New Lead</span>
+                    <h3 style="margin: 5px 0;">2020 Peterbilt 579</h3>
+                    <p style="margin: 5px 0; font-size: 14px; color: #64748B;">Dallas, TX • $55,000</p>
+                    <button class="btn btn-primary">View Details</button>
+                    <button class="btn btn-accent">Contact Seller</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- VARIANT 2 -->
+    <div class="variant-section v2">
+        <div class="variant-header">
+            <span class="variant-title">Option 2: "Daylight Express"</span>
+            <div class="swatches">
+                <div class="swatch" style="background: #2563EB;"></div>
+                <div class="swatch" style="background: #F97316;"></div>
+            </div>
+        </div>
+        <div class="variant-content">
+            <div>
+                <h3>Concept</h3>
+                <p>Pulls the <strong>Vibrant Blue</strong> from the map pin for a cleaner, more modern tech look. The accent is a <strong>Sunset Orange</strong>, which is friendlier than the neon red-orange. Very clean, very "app-like".</p>
+                <ul>
+                    <li><strong>Primary:</strong> Electric Blue (#2563EB)</li>
+                    <li><strong>Accent:</strong> Sunset Orange (#F97316)</li>
+                </ul>
+            </div>
+            <div class="mockup-phone">
+                <div class="mockup-header">TRUXEL</div>
+                <div class="card">
+                    <span class="tag">New Lead</span>
+                    <h3 style="margin: 5px 0;">2020 Peterbilt 579</h3>
+                    <p style="margin: 5px 0; font-size: 14px; color: #64748B;">Dallas, TX • $55,000</p>
+                    <button class="btn btn-primary">View Details</button>
+                    <button class="btn btn-accent">Contact Seller</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- VARIANT 3 -->
+    <div class="variant-section v3">
+        <div class="variant-header">
+            <span class="variant-title">Option 3: "Night Haul" (Dark Mode)</span>
+            <div class="swatches">
+                <div class="swatch" style="background: #0F172A;"></div>
+                <div class="swatch" style="background: #FF6D00;"></div>
+                <div class="swatch" style="background: #38BDF8;"></div>
+            </div>
+        </div>
+        <div class="variant-content">
+            <div>
+                <h3>Concept</h3>
+                <p>Directly mimics the <strong>Neon Logo</strong>. Dark background, glowing borders, and bright Cyan/Orange text. This is high-contrast and perfect for night driving, but might be heavy for daytime use.</p>
+                <ul>
+                    <li><strong>Background:</strong> Midnight (#0F172A)</li>
+                    <li><strong>Accent:</strong> Neon Orange (#FF6D00)</li>
+                    <li><strong>Text:</strong> Cyan Glow (#38BDF8)</li>
+                </ul>
+            </div>
+            <div class="mockup-phone">
+                <div class="mockup-header">TRUXEL</div>
+                <div class="card">
+                    <span class="tag">New Lead</span>
+                    <h3 style="margin: 5px 0;">2020 Peterbilt 579</h3>
+                    <p style="margin: 5px 0; font-size: 14px;">Dallas, TX • $55,000</p>
+                    <button class="btn btn-primary">View Details</button>
+                    <button class="btn btn-accent">Contact Seller</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

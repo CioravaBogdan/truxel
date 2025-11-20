@@ -35,6 +35,7 @@ import {
   safeOpenPhone,
 } from '@/utils/safeNativeModules';
 import { leadsService } from '@/services/leadsService';
+import { useTheme } from '@/lib/theme';
 
 interface LeadDetailModalProps {
   lead: Lead | null;
@@ -46,6 +47,7 @@ interface LeadDetailModalProps {
 
 export default function LeadDetailModal({ lead, visible, onClose, onAddToMyBook, onNotesUpdated }: LeadDetailModalProps) {
   const { t } = useTranslation();
+  const { theme } = useTheme();
   const { profile, user } = useAuthStore();
   
   // Notes editor state
@@ -230,28 +232,28 @@ export default function LeadDetailModal({ lead, visible, onClose, onAddToMyBook,
       presentationStyle="fullScreen"
       onRequestClose={onClose}
     >
-      <SafeAreaView style={styles.container} edges={['bottom']}>
+      <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]} edges={['bottom']}>
         {/* Header */}
-        <View style={styles.header}>
-          <Text style={styles.headerTitle}>{t('leads.lead_details')}</Text>
+        <View style={[styles.header, { backgroundColor: theme.colors.surface, borderBottomColor: theme.colors.border }]}>
+          <Text style={[styles.headerTitle, { color: theme.colors.text }]}>{t('leads.lead_details')}</Text>
           <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-            <X size={24} color="#64748B" />
+            <X size={24} color={theme.colors.textSecondary} />
           </TouchableOpacity>
         </View>
 
         <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
           {/* Company Info Card */}
-          <View style={styles.companyCard}>
-            <View style={styles.avatarContainer}>
-              <Building2 size={48} color="#2563EB" />
+          <View style={[styles.companyCard, { backgroundColor: theme.colors.surface }]}>
+            <View style={[styles.avatarContainer, { backgroundColor: theme.colors.primary + '15' }]}>
+              <Building2 size={48} color={theme.colors.primary} />
             </View>
             
-            <Text style={styles.companyName}>{lead.company_name}</Text>
+            <Text style={[styles.companyName, { color: theme.colors.text }]}>{lead.company_name}</Text>
             
             {lead.city && (
               <View style={styles.infoRow}>
-                <MapPin size={16} color="#64748B" />
-                <Text style={styles.infoText}>
+                <MapPin size={16} color={theme.colors.textSecondary} />
+                <Text style={[styles.infoText, { color: theme.colors.textSecondary }]}>
                   {lead.city}{lead.country ? `, ${lead.country}` : ''}
                 </Text>
               </View>
@@ -259,8 +261,8 @@ export default function LeadDetailModal({ lead, visible, onClose, onAddToMyBook,
             
             {lead.industry && (
               <View style={styles.infoRow}>
-                <Briefcase size={16} color="#64748B" />
-                <Text style={styles.infoText}>{lead.industry}</Text>
+                <Briefcase size={16} color={theme.colors.textSecondary} />
+                <Text style={[styles.infoText, { color: theme.colors.textSecondary }]}>{lead.industry}</Text>
               </View>
             )}
           </View>
@@ -269,7 +271,7 @@ export default function LeadDetailModal({ lead, visible, onClose, onAddToMyBook,
           {onAddToMyBook && !isAlreadyInMyBook && (
             <View style={styles.addToMyBookContainer}>
               <TouchableOpacity 
-                style={styles.addToMyBookButton} 
+                style={[styles.addToMyBookButton, { backgroundColor: theme.colors.secondary, shadowColor: theme.colors.secondary }]} 
                 onPress={() => onAddToMyBook(lead)}
                 accessibilityLabel={t('leads.add_to_mybook')}
               >
@@ -281,19 +283,19 @@ export default function LeadDetailModal({ lead, visible, onClose, onAddToMyBook,
 
           {/* Contact Section */}
           {(phoneNumbers.length > 0 || emails.length > 0) && (
-            <View style={styles.section}>
-              <Text style={styles.sectionTitle}>📞 {t('leads.contact_info')}</Text>
+            <View style={[styles.section, { backgroundColor: theme.colors.surface }]}>
+              <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>📞 {t('leads.contact_info')}</Text>
               
               {/* Phone Numbers */}
               {phoneNumbers.map((phone, idx) => (
-                <View key={`phone-${idx}`} style={styles.contactItem}>
+                <View key={`phone-${idx}`} style={[styles.contactItem, { borderBottomColor: theme.colors.border }]}>
                   <View style={styles.contactInfo}>
-                    <phone.icon size={18} color="#64748B" />
+                    <phone.icon size={18} color={theme.colors.textSecondary} />
                     <View style={styles.contactTextContainer}>
-                      <Text style={styles.contactLabel}>
+                      <Text style={[styles.contactLabel, { color: theme.colors.textSecondary }]}>
                         {phone.type === 'work' ? 'Work Phone' : 'Mobile / WhatsApp'}
                       </Text>
-                      <Text style={styles.contactValue}>{phone.number}</Text>
+                      <Text style={[styles.contactValue, { color: theme.colors.text }]}>{phone.number}</Text>
                     </View>
                   </View>
                   
@@ -307,10 +309,10 @@ export default function LeadDetailModal({ lead, visible, onClose, onAddToMyBook,
                       </TouchableOpacity>
                     )}
                     <TouchableOpacity
-                      style={[styles.iconButton, { backgroundColor: '#2563EB10' }]}
+                      style={[styles.iconButton, { backgroundColor: theme.colors.primary + '10' }]}
                       onPress={() => handleCall(phone.number!)}
                     >
-                      <Phone size={18} color="#2563EB" />
+                      <Phone size={18} color={theme.colors.primary} />
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -318,20 +320,20 @@ export default function LeadDetailModal({ lead, visible, onClose, onAddToMyBook,
 
               {/* Emails */}
               {emails.map((email, idx) => (
-                <View key={`email-${idx}`} style={styles.contactItem}>
+                <View key={`email-${idx}`} style={[styles.contactItem, { borderBottomColor: theme.colors.border }]}>
                   <View style={styles.contactInfo}>
-                    <Mail size={18} color="#64748B" />
+                    <Mail size={18} color={theme.colors.textSecondary} />
                     <View style={styles.contactTextContainer}>
-                      <Text style={styles.contactLabel}>Email</Text>
-                      <Text style={styles.contactValue}>{email}</Text>
+                      <Text style={[styles.contactLabel, { color: theme.colors.textSecondary }]}>Email</Text>
+                      <Text style={[styles.contactValue, { color: theme.colors.text }]}>{email}</Text>
                     </View>
                   </View>
                   
                   <TouchableOpacity
-                    style={[styles.iconButton, { backgroundColor: '#2563EB10' }]}
+                    style={[styles.iconButton, { backgroundColor: theme.colors.primary + '10' }]}
                     onPress={() => handleEmail(email!)}
                   >
-                    <Mail size={18} color="#2563EB" />
+                    <Mail size={18} color={theme.colors.primary} />
                   </TouchableOpacity>
                 </View>
               ))}
@@ -340,14 +342,14 @@ export default function LeadDetailModal({ lead, visible, onClose, onAddToMyBook,
 
           {/* Social Media & Maps */}
           {(socialLinks.length > 0 || (lead as any).google_url_place || lead.latitude) && (
-            <View style={styles.section}>
-              <Text style={styles.sectionTitle}>🌐 {t('leads.view_website', 'Online Presence')}</Text>
+            <View style={[styles.section, { backgroundColor: theme.colors.surface }]}>
+              <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>🌐 {t('leads.view_website', 'Online Presence')}</Text>
               
               <View style={styles.socialGrid}>
                 {socialLinks.map((link, idx) => (
                   <TouchableOpacity
                     key={idx}
-                    style={styles.socialButton}
+                    style={[styles.socialButton, { backgroundColor: theme.colors.background, borderColor: theme.colors.border }]}
                     onPress={() => Linking.openURL(link.url!)}
                   >
                     <link.icon size={20} color={link.color} />
@@ -359,7 +361,7 @@ export default function LeadDetailModal({ lead, visible, onClose, onAddToMyBook,
                 
                 {((lead as any).google_url_place || lead.latitude) && (
                   <TouchableOpacity
-                    style={styles.socialButton}
+                    style={[styles.socialButton, { backgroundColor: theme.colors.background, borderColor: theme.colors.border }]}
                     onPress={handleMaps}
                   >
                     <Navigation size={20} color="#EA4335" />
@@ -374,11 +376,11 @@ export default function LeadDetailModal({ lead, visible, onClose, onAddToMyBook,
 
           {/* Address */}
           {lead.address && (
-            <View style={styles.section}>
-              <Text style={styles.sectionTitle}>📍 {t('leads.location')}</Text>
-              <Text style={styles.addressText}>{lead.address}</Text>
+            <View style={[styles.section, { backgroundColor: theme.colors.surface }]}>
+              <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>📍 {t('leads.location')}</Text>
+              <Text style={[styles.addressText, { color: theme.colors.textSecondary }]}>{lead.address}</Text>
               {lead.city && (
-                <Text style={styles.addressText}>
+                <Text style={[styles.addressText, { color: theme.colors.textSecondary }]}>
                   {lead.city}{lead.country ? `, ${lead.country}` : ''}
                 </Text>
               )}
@@ -386,16 +388,16 @@ export default function LeadDetailModal({ lead, visible, onClose, onAddToMyBook,
           )}
 
           {/* Notes Editor */}
-          <View style={styles.section}>
+          <View style={[styles.section, { backgroundColor: theme.colors.surface }]}>
             <View style={styles.notesHeader}>
-              <Text style={styles.sectionTitle}>📝 {t('leads.notes', 'Notes')}</Text>
+              <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>📝 {t('leads.notes', 'Notes')}</Text>
               {!isEditingNotes && (
                 <TouchableOpacity
                   onPress={() => setIsEditingNotes(true)}
-                  style={styles.editButton}
+                  style={[styles.editButton, { backgroundColor: theme.colors.primary + '15' }]}
                 >
-                  <Edit3 size={18} color="#2563EB" />
-                  <Text style={styles.editButtonText}>Edit</Text>
+                  <Edit3 size={18} color={theme.colors.primary} />
+                  <Text style={[styles.editButtonText, { color: theme.colors.primary }]}>Edit</Text>
                 </TouchableOpacity>
               )}
             </View>
@@ -403,28 +405,28 @@ export default function LeadDetailModal({ lead, visible, onClose, onAddToMyBook,
             {isEditingNotes ? (
               <>
                 <TextInput
-                  style={styles.notesInput}
+                  style={[styles.notesInput, { backgroundColor: theme.colors.background, borderColor: theme.colors.border, color: theme.colors.text }]}
                   value={notesText}
                   onChangeText={setNotesText}
                   placeholder="Add notes about this lead..."
-                  placeholderTextColor="#94A3B8"
+                  placeholderTextColor={theme.colors.textSecondary}
                   multiline
                   numberOfLines={6}
                   textAlignVertical="top"
                 />
                 <View style={styles.notesActions}>
                   <TouchableOpacity
-                    style={styles.cancelButton}
+                    style={[styles.cancelButton, { backgroundColor: theme.colors.background }]}
                     onPress={() => {
                       setNotesText(lead?.user_notes || '');
                       setIsEditingNotes(false);
                     }}
                   >
-                    <Text style={styles.cancelButtonText}>Cancel</Text>
+                    <Text style={[styles.cancelButtonText, { color: theme.colors.textSecondary }]}>Cancel</Text>
                   </TouchableOpacity>
                   
                   <TouchableOpacity
-                    style={styles.saveButton}
+                    style={[styles.saveButton, { backgroundColor: theme.colors.success }]}
                     onPress={handleSaveNotes}
                     disabled={isSavingNotes}
                   >
@@ -440,7 +442,7 @@ export default function LeadDetailModal({ lead, visible, onClose, onAddToMyBook,
                 </View>
               </>
             ) : (
-              <Text style={styles.notesText}>
+              <Text style={[styles.notesText, { color: theme.colors.textSecondary }]}>
                 {notesText || 'No notes yet. Tap Edit to add notes about this lead.'}
               </Text>
             )}
@@ -457,7 +459,6 @@ export default function LeadDetailModal({ lead, visible, onClose, onAddToMyBook,
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8FAFC',
   },
   header: {
     flexDirection: 'row',
@@ -466,14 +467,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 16,
     paddingTop: 60, // Add extra top padding to avoid status bar overlap
-    backgroundColor: 'white',
     borderBottomWidth: 1,
-    borderBottomColor: '#E5E7EB',
   },
   headerTitle: {
     fontSize: 20,
     fontWeight: '700',
-    color: '#1E293B',
   },
   closeButton: {
     padding: 4,
@@ -482,7 +480,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   companyCard: {
-    backgroundColor: 'white',
     padding: 24,
     marginTop: 16,
     marginHorizontal: 16,
@@ -498,7 +495,6 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 40,
-    backgroundColor: '#DBEAFE',
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 16,
@@ -506,7 +502,6 @@ const styles = StyleSheet.create({
   companyName: {
     fontSize: 24,
     fontWeight: '700',
-    color: '#1E293B',
     textAlign: 'center',
     marginBottom: 12,
   },
@@ -518,10 +513,8 @@ const styles = StyleSheet.create({
   },
   infoText: {
     fontSize: 15,
-    color: '#64748B',
   },
   section: {
-    backgroundColor: 'white',
     marginTop: 16,
     marginHorizontal: 16,
     padding: 20,
@@ -535,7 +528,6 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#1E293B',
     marginBottom: 16,
   },
   contactItem: {
@@ -544,7 +536,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#F1F5F9',
   },
   contactInfo: {
     flexDirection: 'row',
@@ -557,13 +548,11 @@ const styles = StyleSheet.create({
   },
   contactLabel: {
     fontSize: 12,
-    color: '#94A3B8',
     fontWeight: '500',
     marginBottom: 2,
   },
   contactValue: {
     fontSize: 15,
-    color: '#1E293B',
     fontWeight: '600',
   },
   contactActions: {
@@ -588,9 +577,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 16,
     borderRadius: 12,
-    backgroundColor: '#F8FAFC',
     borderWidth: 1.5,
-    borderColor: '#E2E8F0',
     gap: 8,
   },
   socialButtonText: {
@@ -599,12 +586,10 @@ const styles = StyleSheet.create({
   },
   addressText: {
     fontSize: 15,
-    color: '#64748B',
     lineHeight: 22,
   },
   notesText: {
     fontSize: 15,
-    color: '#64748B',
     lineHeight: 22,
   },
   addToMyBookContainer: {
@@ -616,11 +601,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
-    backgroundColor: '#F59E0B', // Orange background (same as PostCard)
     paddingHorizontal: 20,
     paddingVertical: 14,
     borderRadius: 12,
-    shadowColor: '#F59E0B',
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.3,
     shadowRadius: 6,
@@ -648,21 +631,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 8,
-    backgroundColor: '#DBEAFE',
   },
   editButtonText: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#2563EB',
   },
   notesInput: {
-    backgroundColor: '#F8FAFC',
     borderWidth: 1.5,
-    borderColor: '#E2E8F0',
     borderRadius: 12,
     padding: 12,
     fontSize: 15,
-    color: '#1E293B',
     minHeight: 120,
     marginBottom: 12,
   },
@@ -674,13 +652,11 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: 12,
     borderRadius: 10,
-    backgroundColor: '#F1F5F9',
     alignItems: 'center',
   },
   cancelButtonText: {
     fontSize: 15,
     fontWeight: '600',
-    color: '#64748B',
   },
   saveButton: {
     flex: 1,
@@ -690,7 +666,6 @@ const styles = StyleSheet.create({
     gap: 6,
     paddingVertical: 12,
     borderRadius: 10,
-    backgroundColor: '#10B981',
   },
   saveButtonText: {
     fontSize: 15,

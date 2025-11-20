@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useColorScheme } from 'react-native';
+import { useColorScheme, Platform } from 'react-native';
 
 const THEME_KEY = 'app_theme_preference';
 
@@ -69,28 +69,29 @@ export interface Theme {
 }
 
 /**
- * Light Theme (Current Design)
+ * Light Theme (The Professional - Navy/Orange)
+ * Matches "Option 1" from design_preview_v2.html
  */
 export const lightTheme: Theme = {
   mode: 'light',
   colors: {
-    primary: '#2563eb',
-    primaryDark: '#1e40af',
-    secondary: '#8b5cf6',
-    background: '#f9fafb',
-    surface: '#ffffff',
-    card: '#ffffff',
-    text: '#111827',
-    textSecondary: '#6b7280',
-    border: '#e5e7eb',
-    error: '#ef4444',
-    success: '#10b981',
-    warning: '#f59e0b',
-    info: '#3b82f6',
-    white: '#ffffff',
+    primary: '#0F172A', // Deep Navy (Option 1)
+    primaryDark: '#020617', // Darker Navy
+    secondary: '#FF5722', // Neon Orange (Option 1)
+    background: Platform.OS === 'web' ? '#FFFFFF' : '#F1F5F9', // White on web, Light Gray on mobile
+    surface: '#FFFFFF', // Pure White
+    card: '#FFFFFF',
+    text: '#0F172A', // Navy Text
+    textSecondary: '#64748B', // Slate 500
+    border: '#E2E8F0', // Slate 200
+    error: '#EF4444',
+    success: '#10B981',
+    warning: '#F59E0B',
+    info: '#0EA5E9',
+    white: '#FFFFFF',
     black: '#000000',
-    disabled: '#d1d5db',
-    placeholder: '#9ca3af',
+    disabled: '#94A3B8',
+    placeholder: '#CBD5E1',
   },
   spacing: {
     xs: 4,
@@ -100,59 +101,60 @@ export const lightTheme: Theme = {
     xl: 32,
   },
   borderRadius: {
-    sm: 4,
-    md: 8,
-    lg: 12,
+    sm: 6, // Slightly softer corners
+    md: 10,
+    lg: 16,
     full: 9999,
   },
   shadows: {
     small: {
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 1 },
-      shadowOpacity: 0.05,
-      shadowRadius: 2,
+      shadowColor: '#64748B', // Softer shadow color
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.08,
+      shadowRadius: 4,
       elevation: 2,
     },
     medium: {
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.1,
-      shadowRadius: 4,
+      shadowColor: '#64748B',
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.12,
+      shadowRadius: 8,
       elevation: 4,
     },
     large: {
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 4 },
-      shadowOpacity: 0.15,
-      shadowRadius: 8,
+      shadowColor: '#64748B',
+      shadowOffset: { width: 0, height: 8 },
+      shadowOpacity: 0.16,
+      shadowRadius: 16,
       elevation: 8,
     },
   },
 };
 
 /**
- * Dark Theme
+ * Dark Theme (Night Haul - Midnight/Neon)
+ * Matches "Option 3" from design_preview_v2.html
  */
 export const darkTheme: Theme = {
   mode: 'dark',
   colors: {
-    primary: '#3b82f6',
-    primaryDark: '#2563eb',
-    secondary: '#a78bfa',
-    background: '#111827',
-    surface: '#1f2937',
-    card: '#1f2937',
-    text: '#f9fafb',
-    textSecondary: '#9ca3af',
-    border: '#374151',
-    error: '#f87171',
-    success: '#34d399',
-    warning: '#fbbf24',
-    info: '#60a5fa',
-    white: '#ffffff',
+    primary: '#38BDF8', // Cyan Glow (Option 3)
+    primaryDark: '#0284C7',
+    secondary: '#FF6D00', // Neon Orange (Option 3)
+    background: '#0F172A', // Deep Navy (Option 3)
+    surface: '#1E293B', // Lighter Navy Card (Option 3)
+    card: '#1E293B',
+    text: '#F8FAFC', // Slate 50
+    textSecondary: '#94A3B8', // Slate 400
+    border: '#334155', // Slate 700
+    error: '#F87171',
+    success: '#34D399',
+    warning: '#FBBF24',
+    info: '#38BDF8',
+    white: '#FFFFFF',
     black: '#000000',
-    disabled: '#4b5563',
-    placeholder: '#6b7280',
+    disabled: '#475569',
+    placeholder: '#64748B',
   },
   spacing: {
     xs: 4,
@@ -162,32 +164,32 @@ export const darkTheme: Theme = {
     xl: 32,
   },
   borderRadius: {
-    sm: 4,
-    md: 8,
-    lg: 12,
+    sm: 6,
+    md: 10,
+    lg: 16,
     full: 9999,
   },
   shadows: {
     small: {
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 1 },
+      shadowColor: '#000000',
+      shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.3,
-      shadowRadius: 2,
-      elevation: 2,
+      shadowRadius: 4,
+      elevation: 3,
     },
     medium: {
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 2 },
+      shadowColor: '#000000',
+      shadowOffset: { width: 0, height: 4 },
       shadowOpacity: 0.4,
-      shadowRadius: 4,
-      elevation: 4,
+      shadowRadius: 8,
+      elevation: 6,
     },
     large: {
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 4 },
+      shadowColor: '#000000',
+      shadowOffset: { width: 0, height: 8 },
       shadowOpacity: 0.5,
-      shadowRadius: 8,
-      elevation: 8,
+      shadowRadius: 16,
+      elevation: 10,
     },
   },
 };

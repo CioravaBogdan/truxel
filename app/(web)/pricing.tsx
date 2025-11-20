@@ -4,6 +4,7 @@ import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { WebFooter } from '@/components/web/WebFooter';
 import { Check, Truck, Zap, Shield, Compass } from 'lucide-react-native';
+import { useTheme } from '@/lib/theme';
 
 type Currency = 'EUR' | 'USD';
 
@@ -16,75 +17,6 @@ interface PricingTier {
   popular?: boolean;
   features: string[];
 }
-
-const BRAND_ORANGE = '#FF6B35';
-
-const TIERS: PricingTier[] = [
-  {
-    id: 'standard',
-    icon: Truck,
-    priceEUR: '29.99',
-    priceUSD: '29.99',
-    accentColor: BRAND_ORANGE,
-    features: [
-      'feature_searches_30',
-      'feature_posts_5_30',
-      'feature_filters',
-      'feature_saved',
-    ],
-  },
-  {
-    id: 'pro',
-    icon: Zap,
-    priceEUR: '49.99',
-    priceUSD: '49.99',
-    accentColor: '#2563EB',
-    popular: true,
-    features: [
-      'feature_searches_50',
-      'feature_posts_10_100',
-      'feature_linkedin',
-      'feature_ai',
-      'feature_research',
-      'feature_priority',
-      'feature_export',
-    ],
-  },
-  {
-    id: 'fleet',
-    icon: Shield,
-    priceEUR: '29.99',
-    priceUSD: '29.99',
-    accentColor: '#0EA5E9',
-    features: [
-      'feature_searches_30',
-      'feature_posts_30_900',
-      'feature_concurrent_30',
-      'feature_duration_72',
-      'feature_workflows',
-      'feature_templates_100',
-    ],
-  },
-  {
-    id: 'freighter',
-    icon: Compass,
-    priceEUR: '49.99',
-    priceUSD: '49.99',
-    accentColor: '#0EA765',
-    features: [
-      'feature_searches_50',
-      'feature_posts_50_1500',
-      'feature_linkedin',
-      'feature_ai_dispatch',
-      'feature_research_multi',
-      'feature_concurrent_50',
-      'feature_duration_72_refresh',
-      'feature_analytics',
-      'feature_support_priority',
-      'feature_templates_200',
-    ],
-  },
-];
 
 const FAQ_ITEMS = [
   {
@@ -112,8 +44,76 @@ const FAQ_ITEMS = [
 export default function WebPricingPage() {
   const { t } = useTranslation();
   const router = useRouter();
+  const { theme } = useTheme();
   const [currency, setCurrency] = useState<Currency>('USD');
   const [expandedFaq, setExpandedFaq] = useState<number | null>(0);
+
+  const TIERS: PricingTier[] = [
+    {
+      id: 'standard',
+      icon: Truck,
+      priceEUR: '29.99',
+      priceUSD: '29.99',
+      accentColor: theme.colors.secondary,
+      features: [
+        'feature_searches_30',
+        'feature_posts_5_30',
+        'feature_filters',
+        'feature_saved',
+      ],
+    },
+    {
+      id: 'pro',
+      icon: Zap,
+      priceEUR: '49.99',
+      priceUSD: '49.99',
+      accentColor: '#2563EB',
+      popular: true,
+      features: [
+        'feature_searches_50',
+        'feature_posts_10_100',
+        'feature_linkedin',
+        'feature_ai',
+        'feature_research',
+        'feature_priority',
+        'feature_export',
+      ],
+    },
+    {
+      id: 'fleet',
+      icon: Shield,
+      priceEUR: '29.99',
+      priceUSD: '29.99',
+      accentColor: '#0EA5E9',
+      features: [
+        'feature_searches_30',
+        'feature_posts_30_900',
+        'feature_concurrent_30',
+        'feature_duration_72',
+        'feature_workflows',
+        'feature_templates_100',
+      ],
+    },
+    {
+      id: 'freighter',
+      icon: Compass,
+      priceEUR: '49.99',
+      priceUSD: '49.99',
+      accentColor: '#0EA765',
+      features: [
+        'feature_searches_50',
+        'feature_posts_50_1500',
+        'feature_linkedin',
+        'feature_ai_dispatch',
+        'feature_research_multi',
+        'feature_concurrent_50',
+        'feature_duration_72_refresh',
+        'feature_analytics',
+        'feature_support_priority',
+        'feature_templates_200',
+      ],
+    },
+  ];
 
   const handleGetStarted = () => {
     if (Platform.OS === 'web') {
@@ -122,9 +122,9 @@ export default function WebPricingPage() {
   };
 
   return (
-    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+    <ScrollView style={[styles.container, { backgroundColor: theme.colors.background }]} showsVerticalScrollIndicator={false}>
       {/* Hero Section */}
-      <View style={styles.hero}>
+      <View style={[styles.hero, { backgroundColor: theme.colors.secondary }]}>
         <View style={styles.badge}>
           <Text style={styles.badgeText}>{t('web.pricing.hero_badge')}</Text>
         </View>
@@ -147,28 +147,28 @@ export default function WebPricingPage() {
           </View>
         </View>
 
-        <TouchableOpacity style={styles.ctaButton} onPress={handleGetStarted}>
-          <Text style={styles.ctaButtonText}>{t('web.pricing.hero_cta')}</Text>
+        <TouchableOpacity style={[styles.ctaButton, { backgroundColor: theme.colors.card }]} onPress={handleGetStarted}>
+          <Text style={[styles.ctaButtonText, { color: theme.colors.secondary }]}>{t('web.pricing.hero_cta')}</Text>
         </TouchableOpacity>
       </View>
 
       {/* Currency Toggle */}
       <View style={styles.currencySection}>
-        <Text style={styles.currencyLabel}>{t('web.pricing.currency_label')}</Text>
-        <View style={styles.currencyToggle}>
+        <Text style={[styles.currencyLabel, { color: theme.colors.text }]}>{t('web.pricing.currency_label')}</Text>
+        <View style={[styles.currencyToggle, { backgroundColor: theme.colors.card, shadowColor: theme.shadows.small.shadowColor }]}>
           <TouchableOpacity
-            style={[styles.currencyButton, currency === 'EUR' && styles.currencyButtonActive]}
+            style={[styles.currencyButton, currency === 'EUR' && { backgroundColor: theme.colors.secondary }]}
             onPress={() => setCurrency('EUR')}
           >
-            <Text style={[styles.currencyButtonText, currency === 'EUR' && styles.currencyButtonTextActive]}>
+            <Text style={[styles.currencyButtonText, { color: currency === 'EUR' ? theme.colors.white : theme.colors.textSecondary }]}>
               {t('web.pricing.currency_eur')}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[styles.currencyButton, currency === 'USD' && styles.currencyButtonActive]}
+            style={[styles.currencyButton, currency === 'USD' && { backgroundColor: theme.colors.secondary }]}
             onPress={() => setCurrency('USD')}
           >
-            <Text style={[styles.currencyButtonText, currency === 'USD' && styles.currencyButtonTextActive]}>
+            <Text style={[styles.currencyButtonText, { color: currency === 'USD' ? theme.colors.white : theme.colors.textSecondary }]}>
               {t('web.pricing.currency_usd')}
             </Text>
           </TouchableOpacity>
@@ -187,6 +187,11 @@ export default function WebPricingPage() {
               key={tier.id}
               style={[
                 styles.pricingCard,
+                { 
+                  backgroundColor: theme.colors.card,
+                  borderColor: theme.colors.border,
+                  shadowColor: theme.shadows.medium.shadowColor 
+                },
                 tier.popular && { borderColor: tier.accentColor, borderWidth: 2 },
               ]}
             >
@@ -200,21 +205,21 @@ export default function WebPricingPage() {
                 <Icon size={28} color={tier.accentColor} strokeWidth={2} />
               </View>
 
-              <Text style={styles.tierTitle}>{t(`web.pricing.cards.${tier.id}.title`)}</Text>
-              <Text style={styles.tierTagline}>{t(`web.pricing.cards.${tier.id}.tagline`)}</Text>
+              <Text style={[styles.tierTitle, { color: theme.colors.text }]}>{t(`web.pricing.cards.${tier.id}.title`)}</Text>
+              <Text style={[styles.tierTagline, { color: theme.colors.textSecondary }]}>{t(`web.pricing.cards.${tier.id}.tagline`)}</Text>
 
               <View style={styles.priceRow}>
                 <Text style={[styles.price, { color: tier.accentColor }]}>
                   {currencySymbol}{price}
                 </Text>
-                <Text style={styles.perMonth}>{t('web.pricing.per_month')}</Text>
+                <Text style={[styles.perMonth, { color: theme.colors.textSecondary }]}>{t('web.pricing.per_month')}</Text>
               </View>
 
               <View style={styles.features}>
                 {tier.features.map((featureKey, index) => (
                   <View key={index} style={styles.feature}>
                     <Check size={18} color={tier.accentColor} strokeWidth={2.5} />
-                    <Text style={styles.featureText}>
+                    <Text style={[styles.featureText, { color: theme.colors.text }]}>
                       {t(`web.pricing.cards.${tier.id}.${featureKey}`)}
                     </Text>
                   </View>
@@ -226,7 +231,7 @@ export default function WebPricingPage() {
                   styles.tierButton,
                   tier.popular
                     ? { backgroundColor: tier.accentColor }
-                    : { backgroundColor: 'white', borderWidth: 2, borderColor: tier.accentColor },
+                    : { backgroundColor: theme.colors.card, borderWidth: 2, borderColor: tier.accentColor },
                 ]}
                 onPress={handleGetStarted}
               >
@@ -246,23 +251,23 @@ export default function WebPricingPage() {
 
       {/* FAQ Section */}
       <View style={styles.faqSection}>
-        <Text style={styles.faqTitle}>{t('web.pricing.faq_title')}</Text>
+        <Text style={[styles.faqTitle, { color: theme.colors.text }]}>{t('web.pricing.faq_title')}</Text>
         
         <View style={styles.faqList}>
           {FAQ_ITEMS.map((item, index) => {
             const isExpanded = expandedFaq === index;
             return (
-              <View key={index} style={styles.faqItem}>
+              <View key={index} style={[styles.faqItem, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}>
                 <TouchableOpacity
                   style={styles.faqQuestion}
                   onPress={() => setExpandedFaq(isExpanded ? null : index)}
                 >
-                  <Text style={styles.faqQuestionText}>{t(`web.pricing.${item.question}`)}</Text>
-                  <Text style={styles.faqIcon}>{isExpanded ? '−' : '+'}</Text>
+                  <Text style={[styles.faqQuestionText, { color: theme.colors.text }]}>{t(`web.pricing.${item.question}`)}</Text>
+                  <Text style={[styles.faqIcon, { color: theme.colors.secondary }]}>{isExpanded ? '−' : '+'}</Text>
                 </TouchableOpacity>
                 {isExpanded && (
                   <View style={styles.faqAnswer}>
-                    <Text style={styles.faqAnswerText}>{t(`web.pricing.${item.answer}`)}</Text>
+                    <Text style={[styles.faqAnswerText, { color: theme.colors.textSecondary }]}>{t(`web.pricing.${item.answer}`)}</Text>
                   </View>
                 )}
               </View>
@@ -279,10 +284,8 @@ export default function WebPricingPage() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8FAFC',
   },
   hero: {
-    backgroundColor: BRAND_ORANGE,
     padding: 48,
     borderRadius: 24,
     margin: 24,
@@ -330,13 +333,11 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   ctaButton: {
-    backgroundColor: 'white',
     paddingHorizontal: 32,
     paddingVertical: 16,
     borderRadius: 12,
   },
   ctaButtonText: {
-    color: BRAND_ORANGE,
     fontSize: 16,
     fontWeight: '600',
   },
@@ -347,15 +348,12 @@ const styles = StyleSheet.create({
   currencyLabel: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#1E293B',
     marginBottom: 16,
   },
   currencyToggle: {
     flexDirection: 'row',
-    backgroundColor: 'white',
     borderRadius: 12,
     padding: 4,
-    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 8,
@@ -366,16 +364,9 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderRadius: 8,
   },
-  currencyButtonActive: {
-    backgroundColor: BRAND_ORANGE,
-  },
   currencyButtonText: {
     fontSize: 15,
     fontWeight: '600',
-    color: '#64748B',
-  },
-  currencyButtonTextActive: {
-    color: 'white',
   },
   pricingGrid: {
     flexDirection: 'row',
@@ -387,13 +378,10 @@ const styles = StyleSheet.create({
   },
   pricingCard: {
     width: 320,
-    backgroundColor: 'white',
     borderRadius: 16,
     padding: 32,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
     position: 'relative',
-    shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
     shadowRadius: 12,
@@ -424,12 +412,10 @@ const styles = StyleSheet.create({
   tierTitle: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#0F172A',
     marginBottom: 8,
   },
   tierTagline: {
     fontSize: 14,
-    color: '#64748B',
     marginBottom: 24,
   },
   priceRow: {
@@ -444,7 +430,6 @@ const styles = StyleSheet.create({
   },
   perMonth: {
     fontSize: 16,
-    color: '#64748B',
   },
   features: {
     gap: 12,
@@ -457,7 +442,6 @@ const styles = StyleSheet.create({
   },
   featureText: {
     fontSize: 15,
-    color: '#334155',
     flex: 1,
     lineHeight: 22,
   },
@@ -480,7 +464,6 @@ const styles = StyleSheet.create({
   faqTitle: {
     fontSize: 32,
     fontWeight: 'bold',
-    color: '#0F172A',
     textAlign: 'center',
     marginBottom: 48,
   },
@@ -488,10 +471,8 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   faqItem: {
-    backgroundColor: 'white',
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
     overflow: 'hidden',
   },
   faqQuestion: {
@@ -503,12 +484,10 @@ const styles = StyleSheet.create({
   faqQuestionText: {
     fontSize: 17,
     fontWeight: '600',
-    color: '#0F172A',
     flex: 1,
   },
   faqIcon: {
     fontSize: 24,
-    color: BRAND_ORANGE,
     fontWeight: 'bold',
     marginLeft: 16,
   },
@@ -519,7 +498,6 @@ const styles = StyleSheet.create({
   },
   faqAnswerText: {
     fontSize: 15,
-    color: '#475569',
     lineHeight: 24,
   },
 });

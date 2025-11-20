@@ -10,6 +10,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { ShieldCheck, Sparkles, TrendingUp } from 'lucide-react-native';
 import { Button } from '../Button';
+import { useTheme } from '../../lib/theme';
 
 interface UpgradePromptModalProps {
   visible: boolean;
@@ -29,6 +30,7 @@ export function UpgradePromptModal({
   trialPostsRemaining,
 }: UpgradePromptModalProps) {
   const { t } = useTranslation();
+  const { theme } = useTheme();
 
   return (
     <Modal
@@ -38,14 +40,14 @@ export function UpgradePromptModal({
       onRequestClose={onClose}
     >
       <View style={styles.backdrop}>
-        <View style={styles.card}>
-          <View style={styles.header}>
-            <View style={styles.badge}>
-              <Sparkles color="#FBBF24" size={18} />
-              <Text style={styles.badgeText}>{t('community.upgrade_modal.badge')}</Text>
+        <View style={[styles.card, { backgroundColor: theme.colors.surface }]}>
+          <View style={[styles.header, { backgroundColor: theme.colors.primary + '10' }]}>
+            <View style={[styles.badge, { backgroundColor: theme.colors.warning + '20' }]}>
+              <Sparkles color={theme.colors.warning} size={18} />
+              <Text style={[styles.badgeText, { color: theme.colors.warning }]}>{t('community.upgrade_modal.badge')}</Text>
             </View>
-            <Text style={styles.title}>{t('community.upgrade_modal.title')}</Text>
-            <Text style={styles.subtitle}>
+            <Text style={[styles.title, { color: theme.colors.text }]}>{t('community.upgrade_modal.title')}</Text>
+            <Text style={[styles.subtitle, { color: theme.colors.textSecondary }]}>
               {t('community.upgrade_modal.subtitle', {
                 remaining: trialPostsRemaining ?? 0,
               })}
@@ -53,26 +55,26 @@ export function UpgradePromptModal({
           </View>
 
           <ScrollView contentContainerStyle={styles.content}>
-            <View style={styles.tierCard}>
+            <View style={[styles.tierCard, { backgroundColor: theme.colors.background, borderColor: theme.colors.border }]}>
               <View style={styles.tierHeader}>
-                <ShieldCheck color="#2563EB" size={20} />
+                <ShieldCheck color={theme.colors.primary} size={20} />
                 <View>
-                  <Text style={styles.tierName}>{t('community.upgrade_modal.tier_name')}</Text>
-                  <Text style={styles.tierPrice}>{t('community.upgrade_modal.tier_price')}</Text>
+                  <Text style={[styles.tierName, { color: theme.colors.text }]}>{t('community.upgrade_modal.tier_name')}</Text>
+                  <Text style={[styles.tierPrice, { color: theme.colors.primary }]}>{t('community.upgrade_modal.tier_price')}</Text>
                 </View>
               </View>
-              <Text style={styles.tierDescription}>{t('community.upgrade_modal.tier_description')}</Text>
+              <Text style={[styles.tierDescription, { color: theme.colors.textSecondary }]}>{t('community.upgrade_modal.tier_description')}</Text>
 
               <View style={styles.featureList}>
-                <FeatureRow text={t('community.upgrade_modal.feature_contacts')} />
-                <FeatureRow text={t('community.upgrade_modal.feature_posts')} />
-                <FeatureRow text={t('community.upgrade_modal.feature_support')} />
+                <FeatureRow text={t('community.upgrade_modal.feature_contacts')} color={theme.colors.text} dotColor={theme.colors.primary} />
+                <FeatureRow text={t('community.upgrade_modal.feature_posts')} color={theme.colors.text} dotColor={theme.colors.primary} />
+                <FeatureRow text={t('community.upgrade_modal.feature_support')} color={theme.colors.text} dotColor={theme.colors.primary} />
               </View>
             </View>
 
-            <View style={styles.secondaryCard}>
-              <TrendingUp color="#10B981" size={20} />
-              <Text style={styles.secondaryText}>{t('community.upgrade_modal.secondary_cta')}</Text>
+            <View style={[styles.secondaryCard, { backgroundColor: theme.colors.secondary + '10' }]}>
+              <TrendingUp color={theme.colors.secondary} size={20} />
+              <Text style={[styles.secondaryText, { color: theme.colors.secondary }]}>{t('community.upgrade_modal.secondary_cta')}</Text>
             </View>
           </ScrollView>
 
@@ -93,7 +95,7 @@ export function UpgradePromptModal({
               accessibilityRole="button"
               accessibilityLabel={t('community.upgrade_modal.not_now')}
             >
-              <Text style={styles.dismissText}>{t('community.upgrade_modal.not_now')}</Text>
+              <Text style={[styles.dismissText, { color: theme.colors.textSecondary }]}>{t('community.upgrade_modal.not_now')}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -102,11 +104,11 @@ export function UpgradePromptModal({
   );
 }
 
-function FeatureRow({ text }: { text: string }) {
+function FeatureRow({ text, color, dotColor }: { text: string, color: string, dotColor: string }) {
   return (
     <View style={styles.featureRow}>
-      <View style={styles.featureDot} />
-      <Text style={styles.featureText}>{text}</Text>
+      <View style={[styles.featureDot, { backgroundColor: dotColor }]} />
+      <Text style={[styles.featureText, { color: color }]}>{text}</Text>
     </View>
   );
 }
@@ -119,12 +121,10 @@ const styles = StyleSheet.create({
     padding: 24,
   },
   card: {
-    backgroundColor: '#FFFFFF',
     borderRadius: 20,
     overflow: 'hidden',
   },
   header: {
-    backgroundColor: '#EFF6FF',
     paddingHorizontal: 24,
     paddingTop: 24,
     paddingBottom: 16,
@@ -134,7 +134,6 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     alignItems: 'center',
     gap: 6,
-    backgroundColor: '#FDE68A',
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 16,
@@ -143,17 +142,14 @@ const styles = StyleSheet.create({
   badgeText: {
     fontSize: 12,
     fontWeight: '700',
-    color: '#92400E',
   },
   title: {
     fontSize: 22,
     fontWeight: '700',
-    color: '#1F2937',
     marginBottom: 4,
   },
   subtitle: {
     fontSize: 14,
-    color: '#4B5563',
   },
   content: {
     paddingHorizontal: 24,
@@ -161,11 +157,9 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   tierCard: {
-    backgroundColor: '#F9FAFB',
     borderRadius: 16,
     padding: 18,
     borderWidth: 1,
-    borderColor: '#E5E7EB',
     gap: 12,
   },
   tierHeader: {
@@ -176,16 +170,13 @@ const styles = StyleSheet.create({
   tierName: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#111827',
   },
   tierPrice: {
     fontSize: 14,
-    color: '#2563EB',
     fontWeight: '600',
   },
   tierDescription: {
     fontSize: 13,
-    color: '#4B5563',
     lineHeight: 18,
   },
   featureList: {
@@ -200,24 +191,20 @@ const styles = StyleSheet.create({
     width: 6,
     height: 6,
     borderRadius: 3,
-    backgroundColor: '#2563EB',
   },
   featureText: {
     fontSize: 13,
-    color: '#1F2937',
     flex: 1,
   },
   secondaryCard: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
-    backgroundColor: '#ECFDF5',
     borderRadius: 16,
     padding: 16,
   },
   secondaryText: {
     fontSize: 13,
-    color: '#047857',
     flex: 1,
     lineHeight: 19,
   },
@@ -240,7 +227,6 @@ const styles = StyleSheet.create({
   dismissText: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#6B7280',
   },
 });
 

@@ -9,6 +9,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { X } from 'lucide-react-native';
 import { PostTemplate } from '../../types/community.types';
+import { useTheme } from '../../lib/theme';
 
 interface TemplateSelectorProps {
   templates: PostTemplate[];
@@ -18,14 +19,15 @@ interface TemplateSelectorProps {
 
 export default function TemplateSelector({ templates, onSelect, onClose }: TemplateSelectorProps) {
   const { t } = useTranslation();
+  const { theme } = useTheme();
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.modal}>
-        <View style={styles.header}>
-          <Text style={styles.title}>{t('community.select_template')}</Text>
+      <View style={[styles.modal, { backgroundColor: theme.colors.surface }]}>
+        <View style={[styles.header, { borderBottomColor: theme.colors.border }]}>
+          <Text style={[styles.title, { color: theme.colors.text }]}>{t('community.select_template')}</Text>
           <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-            <X size={24} color="#6B7280" />
+            <X size={24} color={theme.colors.textSecondary} />
           </TouchableOpacity>
         </View>
 
@@ -33,14 +35,14 @@ export default function TemplateSelector({ templates, onSelect, onClose }: Templ
           {templates.map((template) => (
             <TouchableOpacity
               key={template.key}
-              style={styles.templateCard}
+              style={[styles.templateCard, { backgroundColor: theme.colors.background, borderColor: theme.colors.border }]}
               onPress={() => onSelect(template)}
             >
               <Text style={styles.templateIcon}>{template.icon}</Text>
               <View style={styles.templateContent}>
-                <Text style={styles.templateText}>{t(template.textKey)}</Text>
+                <Text style={[styles.templateText, { color: theme.colors.text }]}>{t(template.textKey)}</Text>
                 {t(`community.template_descriptions.${template.key}`, { defaultValue: '' }) && (
-                  <Text style={styles.templateDescription}>
+                  <Text style={[styles.templateDescription, { color: theme.colors.textSecondary }]}>
                     {t(`community.template_descriptions.${template.key}`)}
                   </Text>
                 )}
@@ -60,7 +62,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   modal: {
-    backgroundColor: 'white',
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     paddingBottom: 34,
@@ -72,12 +73,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 20,
     borderBottomWidth: 1,
-    borderBottomColor: '#E5E7EB',
   },
   title: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#111827',
   },
   closeButton: {
     padding: 4,
@@ -91,10 +90,8 @@ const styles = StyleSheet.create({
     padding: 16,
     marginHorizontal: 16,
     marginVertical: 4,
-    backgroundColor: '#F9FAFB',
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: '#E5E7EB',
   },
   templateIcon: {
     fontSize: 32,
@@ -106,11 +103,9 @@ const styles = StyleSheet.create({
   templateText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#111827',
     marginBottom: 2,
   },
   templateDescription: {
     fontSize: 14,
-    color: '#6B7280',
   },
 });

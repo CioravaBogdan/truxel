@@ -14,11 +14,11 @@ import { Mail, Phone, MapPin, Clock, MessageCircle, Sparkles } from 'lucide-reac
 import { Button } from '@/components/Button';
 import Toast from 'react-native-toast-message';
 import { WebFooter } from '@/components/web/WebFooter';
-
-const BRAND_ORANGE = '#FF6B35';
+import { useTheme } from '@/lib/theme';
 
 export default function ContactPage() {
   const { t } = useTranslation();
+  const { theme } = useTheme();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -126,38 +126,37 @@ export default function ContactPage() {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.hero}>
-        <View style={styles.heroOverlay} />
+    <ScrollView style={[styles.container, { backgroundColor: theme.colors.background }]}>
+      <View style={[styles.hero, { backgroundColor: theme.colors.background }]}>
         <View style={styles.section}>
           <View style={styles.heroContent}>
-            <View style={styles.heroBadge}>
-              <Sparkles size={18} color={BRAND_ORANGE} />
-              <Text style={styles.heroBadgeText}>{t('web.contact.hero_badge')}</Text>
+            <View style={[styles.heroBadge, { backgroundColor: theme.colors.primary + '1F' }]}>
+              <Sparkles size={18} color={theme.colors.primary} />
+              <Text style={[styles.heroBadgeText, { color: theme.colors.primary }]}>{t('web.contact.hero_badge')}</Text>
             </View>
-            <Text style={styles.heroTitle}>{t('web.contact.hero_title')}</Text>
-            <Text style={styles.heroSubtitle}>{t('web.contact.hero_subtitle')}</Text>
+            <Text style={[styles.heroTitle, { color: theme.colors.text }]}>{t('web.contact.hero_title')}</Text>
+            <Text style={[styles.heroSubtitle, { color: theme.colors.textSecondary }]}>{t('web.contact.hero_subtitle')}</Text>
           </View>
         </View>
       </View>
 
-      <View style={[styles.section, styles.cardsSection]}>
-        <Text style={styles.sectionEyebrow}>{t('web.contact.cards_badge')}</Text>
-        <Text style={styles.sectionTitle}>{t('web.contact.cards_title')}</Text>
-        <Text style={styles.sectionSubtitle}>{t('web.contact.cards_subtitle')}</Text>
+      <View style={[styles.section, styles.cardsSection, { backgroundColor: theme.colors.background }]}>
+        <Text style={[styles.sectionEyebrow, { color: theme.colors.secondary }]}>{t('web.contact.cards_badge')}</Text>
+        <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>{t('web.contact.cards_title')}</Text>
+        <Text style={[styles.sectionSubtitle, { color: theme.colors.textSecondary }]}>{t('web.contact.cards_subtitle')}</Text>
 
         <View style={styles.contactGrid}>
           {contactCards.map((card) => {
             const Icon = card.icon;
             const clickable = typeof card.action === 'function';
             const content = (
-              <View style={[styles.contactCard, clickable && styles.contactCardInteractive]}>
-                <View style={styles.contactIcon}>
-                  <Icon size={22} color={BRAND_ORANGE} />
+              <View style={[styles.contactCard, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }, clickable && styles.contactCardInteractive]}>
+                <View style={[styles.contactIcon, { backgroundColor: `${theme.colors.secondary}1F` }]}>
+                  <Icon size={22} color={theme.colors.secondary} />
                 </View>
-                <Text style={styles.contactTitle}>{card.title}</Text>
-                <Text style={styles.contactValue}>{card.value}</Text>
-                <Text style={styles.contactDesc}>{card.description}</Text>
+                <Text style={[styles.contactTitle, { color: theme.colors.text }]}>{card.title}</Text>
+                <Text style={[styles.contactValue, { color: theme.colors.text }]}>{card.value}</Text>
+                <Text style={[styles.contactDesc, { color: theme.colors.textSecondary }]}>{card.description}</Text>
               </View>
             );
 
@@ -174,30 +173,32 @@ export default function ContactPage() {
         </View>
       </View>
 
-      <View style={[styles.section, styles.formSection]}>
+      <View style={[styles.section, styles.formSection, { backgroundColor: theme.colors.surface }]}>
         <View style={styles.formHeader}>
-          <Text style={styles.sectionEyebrow}>{t('web.contact.form_badge')}</Text>
-          <Text style={styles.sectionTitle}>{t('web.contact.form_title')}</Text>
-          <Text style={styles.sectionSubtitle}>{t('web.contact.form_subtitle')}</Text>
+          <Text style={[styles.sectionEyebrow, { color: theme.colors.secondary }]}>{t('web.contact.form_badge')}</Text>
+          <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>{t('web.contact.form_title')}</Text>
+          <Text style={[styles.sectionSubtitle, { color: theme.colors.textSecondary }]}>{t('web.contact.form_subtitle')}</Text>
         </View>
 
-        <View style={styles.form}> 
+        <View style={[styles.form, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}> 
           <View style={styles.inputRow}>
             <View style={styles.inputGroup}>
-              <Text style={styles.label}>{t('web.contact.form.name_label')}</Text>
+              <Text style={[styles.label, { color: theme.colors.text }]}>{t('web.contact.form.name_label')}</Text>
               <TextInput
-                style={styles.input}
+                style={[styles.input, { backgroundColor: theme.colors.background, borderColor: theme.colors.border, color: theme.colors.text }]}
                 placeholder={t('web.contact.form.name_placeholder')}
+                placeholderTextColor={theme.colors.textSecondary}
                 value={formData.name}
                 onChangeText={(text) => setFormData((prev) => ({ ...prev, name: text }))}
                 autoComplete="name"
               />
             </View>
             <View style={styles.inputGroup}>
-              <Text style={styles.label}>{t('web.contact.form.email_label')}</Text>
+              <Text style={[styles.label, { color: theme.colors.text }]}>{t('web.contact.form.email_label')}</Text>
               <TextInput
-                style={styles.input}
+                style={[styles.input, { backgroundColor: theme.colors.background, borderColor: theme.colors.border, color: theme.colors.text }]}
                 placeholder={t('web.contact.form.email_placeholder')}
+                placeholderTextColor={theme.colors.textSecondary}
                 value={formData.email}
                 onChangeText={(text) => setFormData((prev) => ({ ...prev, email: text }))}
                 keyboardType="email-address"
@@ -208,20 +209,22 @@ export default function ContactPage() {
           </View>
 
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>{t('web.contact.form.subject_label')}</Text>
+            <Text style={[styles.label, { color: theme.colors.text }]}>{t('web.contact.form.subject_label')}</Text>
             <TextInput
-              style={styles.input}
+              style={[styles.input, { backgroundColor: theme.colors.background, borderColor: theme.colors.border, color: theme.colors.text }]}
               placeholder={t('web.contact.form.subject_placeholder')}
+              placeholderTextColor={theme.colors.textSecondary}
               value={formData.subject}
               onChangeText={(text) => setFormData((prev) => ({ ...prev, subject: text }))}
             />
           </View>
 
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>{t('web.contact.form.message_label')}</Text>
+            <Text style={[styles.label, { color: theme.colors.text }]}>{t('web.contact.form.message_label')}</Text>
             <TextInput
-              style={[styles.input, styles.textArea]}
+              style={[styles.input, styles.textArea, { backgroundColor: theme.colors.background, borderColor: theme.colors.border, color: theme.colors.text }]}
               placeholder={t('web.contact.form.message_placeholder')}
+              placeholderTextColor={theme.colors.textSecondary}
               value={formData.message}
               onChangeText={(text) => setFormData((prev) => ({ ...prev, message: text }))}
               multiline
@@ -238,19 +241,19 @@ export default function ContactPage() {
         </View>
       </View>
 
-      <View style={[styles.section, styles.audienceSection]}>
-        <Text style={styles.sectionEyebrow}>{t('web.contact.audience_badge')}</Text>
-        <Text style={styles.sectionTitle}>{t('web.contact.audience_title')}</Text>
-        <Text style={styles.sectionSubtitle}>{t('web.contact.audience_subtitle')}</Text>
+      <View style={[styles.section, styles.audienceSection, { backgroundColor: theme.colors.background }]}>
+        <Text style={[styles.sectionEyebrow, { color: theme.colors.secondary }]}>{t('web.contact.audience_badge')}</Text>
+        <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>{t('web.contact.audience_title')}</Text>
+        <Text style={[styles.sectionSubtitle, { color: theme.colors.textSecondary }]}>{t('web.contact.audience_subtitle')}</Text>
 
         <View style={styles.audienceGrid}>
           {audiences.map((audience) => (
-            <View key={audience.title} style={styles.audienceCard}>
-              <Text style={styles.audienceBadge}>{audience.badge}</Text>
-              <Text style={styles.audienceTitle}>{audience.title}</Text>
+            <View key={audience.title} style={[styles.audienceCard, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}>
+              <Text style={[styles.audienceBadge, { backgroundColor: `${theme.colors.secondary}1F`, color: theme.colors.secondary }]}>{audience.badge}</Text>
+              <Text style={[styles.audienceTitle, { color: theme.colors.text }]}>{audience.title}</Text>
               <View style={styles.audienceList}>
                 {audience.bullets.map((bullet) => (
-                  <Text key={bullet} style={styles.audienceItem}>• {bullet}</Text>
+                  <Text key={bullet} style={[styles.audienceItem, { color: theme.colors.textSecondary }]}>• {bullet}</Text>
                 ))}
               </View>
             </View>
@@ -258,22 +261,22 @@ export default function ContactPage() {
         </View>
       </View>
 
-      <View style={[styles.section, styles.bottomCtaSection]}>
-        <View style={styles.bottomCtaCard}>
-          <Text style={styles.bottomCtaTitle}>{t('web.contact.bottom_cta_title')}</Text>
-          <Text style={styles.bottomCtaSubtitle}>{t('web.contact.bottom_cta_subtitle')}</Text>
+      <View style={[styles.section, styles.bottomCtaSection, { backgroundColor: theme.colors.background }]}>
+        <View style={[styles.bottomCtaCard, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}>
+          <Text style={[styles.bottomCtaTitle, { color: theme.colors.text }]}>{t('web.contact.bottom_cta_title')}</Text>
+          <Text style={[styles.bottomCtaSubtitle, { color: theme.colors.textSecondary }]}>{t('web.contact.bottom_cta_subtitle')}</Text>
           <View style={styles.bottomActions}>
             <TouchableOpacity
-              style={styles.bottomPrimary}
+              style={[styles.bottomPrimary, { backgroundColor: theme.colors.secondary }]}
               onPress={() => Linking.openURL('https://cal.com/truxel/demo')}
             >
               <Text style={styles.bottomPrimaryText}>{t('web.contact.bottom_cta_primary')}</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={styles.bottomSecondary}
+              style={[styles.bottomSecondary, { borderColor: theme.colors.border }]}
               onPress={() => Linking.openURL('mailto:office@truxel.io?subject=Partnership%20Inquiry')}
             >
-              <Text style={styles.bottomSecondaryText}>{t('web.contact.bottom_cta_secondary')}</Text>
+              <Text style={[styles.bottomSecondaryText, { color: theme.colors.text }]}>{t('web.contact.bottom_cta_secondary')}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -284,10 +287,9 @@ export default function ContactPage() {
   );
 }
 
-const rawStyles = {
+const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0B1120',
   },
   section: {
     maxWidth: 1200,
@@ -304,22 +306,11 @@ const rawStyles = {
         paddingHorizontal: 20,
         paddingVertical: 48,
       },
-    }),
+    } as any),
   },
   hero: {
     position: 'relative',
-    backgroundColor: '#0B1120',
     overflow: 'hidden',
-  },
-  heroOverlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    ...(Platform.OS === 'web' && {
-      backgroundImage: 'linear-gradient(135deg, rgba(9, 9, 11, 0.95) 0%, rgba(15, 23, 42, 0.92) 35%, rgba(15, 23, 42, 0.85) 100%)',
-    }),
   },
   heroContent: {
     position: 'relative',
@@ -335,34 +326,29 @@ const rawStyles = {
     paddingVertical: 8,
     paddingHorizontal: 18,
     borderRadius: 999,
-    backgroundColor: 'rgba(255, 255, 255, 0.06)',
   },
   heroBadgeText: {
     fontSize: 14,
     fontWeight: '700',
     letterSpacing: 0.4,
-    color: '#FFFFFF',
   },
   heroTitle: {
     fontSize: 44,
     fontWeight: '900',
-    color: '#FFFFFF',
     lineHeight: 52,
     ...(Platform.OS === 'web' && {
       '@media (max-width: 768px)': {
         fontSize: 34,
         lineHeight: 42,
       },
-    }),
+    } as any),
   },
   heroSubtitle: {
     fontSize: 18,
-    color: 'rgba(255,255,255,0.8)',
     lineHeight: 28,
     maxWidth: 640,
   },
   sectionEyebrow: {
-    color: BRAND_ORANGE,
     textTransform: 'uppercase',
     fontWeight: '700',
     letterSpacing: 1.4,
@@ -372,23 +358,20 @@ const rawStyles = {
   sectionTitle: {
     fontSize: 36,
     fontWeight: '900',
-    color: '#F8FAFC',
     marginBottom: 12,
     ...(Platform.OS === 'web' && {
       '@media (max-width: 768px)': {
         fontSize: 30,
       },
-    }),
+    } as any),
   },
   sectionSubtitle: {
     fontSize: 18,
-    color: '#94A3B8',
     lineHeight: 28,
     maxWidth: 720,
     marginBottom: 32,
   },
   cardsSection: {
-    backgroundColor: '#080C16',
   },
   contactGrid: {
     flexDirection: 'row',
@@ -398,11 +381,9 @@ const rawStyles = {
   contactCard: {
     flex: 1,
     minWidth: 240,
-    backgroundColor: '#0F172A',
     borderRadius: 20,
     padding: 28,
     borderWidth: 1,
-    borderColor: 'rgba(148, 163, 184, 0.12)',
     gap: 12,
   },
   contactCardInteractive: {
@@ -412,43 +393,36 @@ const rawStyles = {
         transform: 'translateY(-4px)',
         borderColor: 'rgba(255, 107, 53, 0.35)',
       },
-    }),
+    } as any),
   },
   contactIcon: {
     width: 44,
     height: 44,
     borderRadius: 16,
-    backgroundColor: 'rgba(255, 107, 53, 0.15)',
     alignItems: 'center',
     justifyContent: 'center',
   },
   contactTitle: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#F8FAFC',
   },
   contactValue: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#FFFFFF',
   },
   contactDesc: {
     fontSize: 15,
-    color: '#CBD5F5',
     lineHeight: 22,
   },
   formSection: {
-    backgroundColor: '#0B1120',
   },
   formHeader: {
     marginBottom: 24,
   },
   form: {
-    backgroundColor: '#080C16',
     borderRadius: 24,
     padding: 36,
     borderWidth: 1,
-    borderColor: 'rgba(148, 163, 184, 0.1)',
     gap: 24,
   },
   inputRow: {
@@ -464,23 +438,18 @@ const rawStyles = {
   label: {
     fontSize: 15,
     fontWeight: '600',
-    color: '#E2E8F0',
   },
   input: {
-    backgroundColor: '#0F172A',
     borderWidth: 1,
-    borderColor: 'rgba(148, 163, 184, 0.16)',
     borderRadius: 14,
     paddingHorizontal: 16,
     paddingVertical: 14,
     fontSize: 16,
-    color: '#F8FAFC',
   },
   textArea: {
     minHeight: 160,
   },
   audienceSection: {
-    backgroundColor: '#080C16',
   },
   audienceGrid: {
     flexDirection: 'row',
@@ -490,11 +459,9 @@ const rawStyles = {
   audienceCard: {
     flex: 1,
     minWidth: 260,
-    backgroundColor: '#0F172A',
     borderRadius: 24,
     padding: 28,
     borderWidth: 1,
-    borderColor: 'rgba(148, 163, 184, 0.12)',
     gap: 12,
   },
   audienceBadge: {
@@ -505,14 +472,11 @@ const rawStyles = {
     paddingVertical: 6,
     paddingHorizontal: 12,
     borderRadius: 999,
-    backgroundColor: 'rgba(255, 107, 53, 0.18)',
-    color: BRAND_ORANGE,
     textTransform: 'uppercase',
   },
   audienceTitle: {
     fontSize: 22,
     fontWeight: '800',
-    color: '#F8FAFC',
   },
   audienceList: {
     gap: 8,
@@ -520,30 +484,24 @@ const rawStyles = {
   },
   audienceItem: {
     fontSize: 15,
-    color: '#CBD5F5',
     lineHeight: 22,
   },
   bottomCtaSection: {
-    backgroundColor: '#0B1120',
   },
   bottomCtaCard: {
-    backgroundColor: '#111C33',
     borderRadius: 32,
     padding: 48,
     alignItems: 'center',
     gap: 18,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.08)',
   },
   bottomCtaTitle: {
     fontSize: 32,
     fontWeight: '900',
-    color: '#FFFFFF',
     textAlign: 'center',
   },
   bottomCtaSubtitle: {
     fontSize: 17,
-    color: 'rgba(255,255,255,0.75)',
     textAlign: 'center',
     lineHeight: 26,
     maxWidth: 620,
@@ -559,10 +517,9 @@ const rawStyles = {
     paddingVertical: 16,
     paddingHorizontal: 32,
     borderRadius: 14,
-    backgroundColor: BRAND_ORANGE,
     ...(Platform.OS === 'web' && {
       cursor: 'pointer',
-    }),
+    } as any),
   },
   bottomPrimaryText: {
     fontSize: 16,
@@ -574,16 +531,12 @@ const rawStyles = {
     paddingHorizontal: 32,
     borderRadius: 14,
     borderWidth: 2,
-    borderColor: 'rgba(255,255,255,0.35)',
     ...(Platform.OS === 'web' && {
       cursor: 'pointer',
-    }),
+    } as any),
   },
   bottomSecondaryText: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#FFFFFF',
   },
-} as const;
-
-const styles = StyleSheet.create(rawStyles as Record<string, any>);
+});

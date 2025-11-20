@@ -46,9 +46,11 @@ import {
   Users,
   Truck,
   Globe,
+  Share2,
 } from 'lucide-react-native';
 import { Lead } from '@/types/database.types';
 import type { CommunityPost, Country, City } from '@/types/community.types';
+import { useTheme } from '@/lib/theme';
 
 // Helper function to format "last contacted" time
 const formatLastContacted = (lastContactedAt: string | null): string => {
@@ -71,6 +73,7 @@ const formatLastContacted = (lastContactedAt: string | null): string => {
 
 export default function LeadsScreen() {
   const { t } = useTranslation();
+  const { theme } = useTheme();
   const { user, profile } = useAuthStore();
   // ⚠️ DO NOT destructure Zustand functions (loadSavedPosts, loadConvertedLeads, convertToMyBook)
   // They become stale references after set() calls, causing infinite loops in useEffect
@@ -607,21 +610,21 @@ export default function LeadsScreen() {
             {/* Company Image */}
             <Image 
               source={{ uri: imageUrl }} 
-              style={styles.leadImage}
+              style={[styles.leadImage, { backgroundColor: theme.colors.background }]}
               defaultSource={require('@/assets/images/icon.png')}
             />
             
             {/* Company Info */}
             <View style={styles.leadInfo}>
-              <Text style={styles.leadName} numberOfLines={1}>{lead.company_name}</Text>
+              <Text style={[styles.leadName, { color: theme.colors.text }]} numberOfLines={1}>{lead.company_name}</Text>
               {lead.city && (
                 <View style={styles.leadLocation}>
-                  <MapPin size={12} color="#64748B" />
-                  <Text style={styles.leadCity} numberOfLines={1}>{lead.city}</Text>
+                  <MapPin size={12} color={theme.colors.textSecondary} />
+                  <Text style={[styles.leadCity, { color: theme.colors.textSecondary }]} numberOfLines={1}>{lead.city}</Text>
                 </View>
               )}
               {lead.industry && (
-                <Text style={styles.leadIndustry} numberOfLines={1}>{lead.industry}</Text>
+                <Text style={[styles.leadIndustry, { color: theme.colors.textSecondary }]} numberOfLines={1}>{lead.industry}</Text>
               )}
             </View>
             
@@ -636,14 +639,15 @@ export default function LeadsScreen() {
                   }}
                   hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                 >
-                  <BookMarked size={20} color="#F59E0B" fill="#F59E0B" />
+                  <BookMarked size={20} color={theme.colors.warning} fill={theme.colors.warning} />
                 </TouchableOpacity>
               )}
               
-              <View style={styles.lastContactedBadge}>
+              <View style={[styles.lastContactedBadge, { backgroundColor: theme.colors.background }]}>
                 <Text style={[
                   styles.lastContactedText,
-                  lastContactedText === 'New' && styles.lastContactedTextNew
+                  { color: theme.colors.textSecondary },
+                  lastContactedText === 'New' && { color: theme.colors.success }
                 ]}>
                   {lastContactedText}
                 </Text>
@@ -655,25 +659,25 @@ export default function LeadsScreen() {
           <View style={styles.contactActionsRow}>
             {lead.email && (
               <TouchableOpacity
-                style={styles.contactChip}
+                style={[styles.contactChip, { backgroundColor: theme.colors.background, borderColor: theme.colors.border }]}
                 onPress={() => handleSendEmail(lead)}
               >
-                <Mail size={16} color="#2563EB" />
-                <Text style={[styles.chipText, { color: '#2563EB' }]}>Email</Text>
+                <Mail size={16} color={theme.colors.primary} />
+                <Text style={[styles.chipText, { color: theme.colors.primary }]}>Email</Text>
               </TouchableOpacity>
             )}
             {(lead.phone || lead.whatsapp) && (
               <TouchableOpacity
-                style={styles.contactChip}
+                style={[styles.contactChip, { backgroundColor: theme.colors.background, borderColor: theme.colors.border }]}
                 onPress={() => handleSendWhatsApp(lead)}
               >
-                <MessageCircle size={16} color="#10B981" />
-                <Text style={[styles.chipText, { color: '#10B981' }]}>WhatsApp</Text>
+                <MessageCircle size={16} color={theme.colors.success} />
+                <Text style={[styles.chipText, { color: theme.colors.success }]}>WhatsApp</Text>
               </TouchableOpacity>
             )}
             {lead.phone && (
               <TouchableOpacity
-                style={styles.contactChip}
+                style={[styles.contactChip, { backgroundColor: theme.colors.background, borderColor: theme.colors.border }]}
                 onPress={async () => {
                   if (!lead.phone) return;
                   const result = await safeOpenPhone(lead.phone, 'Cannot make phone call');
@@ -695,13 +699,13 @@ export default function LeadsScreen() {
                   }
                 }}
               >
-                <Phone size={16} color="#F59E0B" />
-                <Text style={[styles.chipText, { color: '#F59E0B' }]}>Call</Text>
+                <Phone size={16} color={theme.colors.warning} />
+                <Text style={[styles.chipText, { color: theme.colors.warning }]}>Call</Text>
               </TouchableOpacity>
             )}
             {((lead as any).google_url_place || (lead.latitude && lead.longitude)) && (
               <TouchableOpacity
-                style={styles.contactChip}
+                style={[styles.contactChip, { backgroundColor: theme.colors.background, borderColor: theme.colors.border }]}
                 onPress={() => {
                   try {
                     const url = (lead as any).google_url_place 
@@ -716,16 +720,23 @@ export default function LeadsScreen() {
                   }
                 }}
               >
-                <MapPin size={16} color="#EA4335" />
-                <Text style={[styles.chipText, { color: '#EA4335' }]}>Maps</Text>
+                <MapPin size={16} color={theme.colors.error} />
+                <Text style={[styles.chipText, { color: theme.colors.error }]}>Maps</Text>
               </TouchableOpacity>
             )}
+            <TouchableOpacity
+              style={[styles.contactChip, { backgroundColor: theme.colors.background, borderColor: theme.colors.border }]}
+              onPress={() => handleShareLead(lead)}
+            >
+              <Share2 size={16} color={theme.colors.secondary} />
+              <Text style={[styles.chipText, { color: theme.colors.secondary }]}>{t('common.share')}</Text>
+            </TouchableOpacity>
           </View>
 
           {/* Notes Preview (if available) */}
           {lead.user_notes && (
-            <View style={styles.notesPreview}>
-              <Text style={styles.notesText} numberOfLines={2}>
+            <View style={[styles.notesPreview, { borderTopColor: theme.colors.border }]}>
+              <Text style={[styles.notesText, { color: theme.colors.textSecondary }]} numberOfLines={2}>
                 💭 {lead.user_notes}
               </Text>
             </View>
@@ -751,30 +762,30 @@ export default function LeadsScreen() {
   );
 
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
+    <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]} edges={['top']}>
       <View style={styles.header}>
-        <Text style={styles.title}>{t('leads.title')}</Text>
+        <Text style={[styles.title, { color: theme.colors.text }]}>{t('leads.title')}</Text>
         <TouchableOpacity onPress={handleExportCSV} disabled={leads.length === 0}>
-          <Download size={24} color={leads.length > 0 ? '#2563EB' : '#CBD5E1'} />
+          <Download size={24} color={leads.length > 0 ? theme.colors.secondary : theme.colors.disabled} />
         </TouchableOpacity>
       </View>
 
       {/* Tabs Container */}
-      <View style={styles.tabsContainer}>
+      <View style={[styles.tabsContainer, { backgroundColor: theme.colors.card, shadowColor: theme.shadows.small.shadowColor }]}>
         {/* Top row: Search Results + Hot Leads */}
         <View style={styles.tabsRow}>
           <TouchableOpacity
             style={[
               styles.tabHalf, 
-              { backgroundColor: selectedTab === 'search' ? '#2563EB' : '#DBEAFE' },
+              { backgroundColor: selectedTab === 'search' ? theme.colors.secondary : theme.colors.secondary + '15' },
               selectedTab === 'search' && styles.activeTab
             ]}
             onPress={() => setSelectedTab('search')}
           >
-            <SearchIcon size={18} color={selectedTab === 'search' ? 'white' : '#2563EB'} />
+            <SearchIcon size={18} color={selectedTab === 'search' ? 'white' : theme.colors.secondary} />
             <Text style={[
               styles.tabText,
-              { color: selectedTab === 'search' ? 'white' : '#2563EB' },
+              { color: selectedTab === 'search' ? 'white' : theme.colors.secondary },
               selectedTab === 'search' && styles.activeTabText
             ]}>
               {t('leads.search_results').toUpperCase()}
@@ -783,15 +794,15 @@ export default function LeadsScreen() {
           <TouchableOpacity
             style={[
               styles.tabHalf, 
-              { backgroundColor: selectedTab === 'hotleads' ? '#F59E0B' : '#FEF3C7' },
+              { backgroundColor: selectedTab === 'hotleads' ? theme.colors.warning : theme.colors.warning + '15' },
               selectedTab === 'hotleads' && styles.activeTab
             ]}
             onPress={() => setSelectedTab('hotleads')}
           >
-            <Zap size={18} color={selectedTab === 'hotleads' ? 'white' : '#D97706'} />
+            <Zap size={18} color={selectedTab === 'hotleads' ? 'white' : theme.colors.warning} />
             <Text style={[
               styles.tabText,
-              { color: selectedTab === 'hotleads' ? 'white' : '#D97706' },
+              { color: selectedTab === 'hotleads' ? 'white' : theme.colors.warning },
               selectedTab === 'hotleads' && styles.activeTabText
             ]}>
               {t('leads.hot_leads').toUpperCase()}
@@ -803,15 +814,15 @@ export default function LeadsScreen() {
         <TouchableOpacity
           style={[
             styles.tabFull, 
-            { backgroundColor: selectedTab === 'mybook' ? '#10B981' : '#D1FAE5' },
+            { backgroundColor: selectedTab === 'mybook' ? theme.colors.success : theme.colors.success + '15' },
             selectedTab === 'mybook' && styles.activeTab
           ]}
           onPress={() => setSelectedTab('mybook')}
         >
-          <BookMarked size={18} color={selectedTab === 'mybook' ? 'white' : '#059669'} />
+          <BookMarked size={18} color={selectedTab === 'mybook' ? 'white' : theme.colors.success} />
           <Text style={[
             styles.tabText,
-            { color: selectedTab === 'mybook' ? 'white' : '#059669' },
+            { color: selectedTab === 'mybook' ? 'white' : theme.colors.success },
             selectedTab === 'mybook' && styles.activeTabText
           ]}>
             {t('leads.my_book').toUpperCase()}
@@ -820,21 +831,21 @@ export default function LeadsScreen() {
       </View>
 
       {/* Country + City Filter Bar (identical to Community Feed) */}
-      <View style={styles.filterBar}>
+      <View style={[styles.filterBar, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}>
         {isInitializingFilters ? (
-          <ActivityIndicator size="small" color="#10B981" />
+          <ActivityIndicator size="small" color={theme.colors.primary} />
         ) : (
           <>
             {/* Country Filter */}
             <TouchableOpacity
-              style={styles.filterControl}
+              style={[styles.filterControl, { backgroundColor: theme.colors.background, borderColor: theme.colors.border }]}
               onPress={handleCountryPress}
             >
-              <Globe size={14} color="#6B7280" />
+              <Globe size={14} color={theme.colors.textSecondary} />
               <View style={styles.filterLabelContainer}>
-                <Text style={styles.filterLabel}>{t('community.country')}</Text>
+                <Text style={[styles.filterLabel, { color: theme.colors.textSecondary }]}>{t('community.country')}</Text>
                 <Text 
-                  style={selectedCountry ? styles.filterValueSelected : styles.filterValuePlaceholder}
+                  style={selectedCountry ? [styles.filterValueSelected, { color: theme.colors.text }] : [styles.filterValuePlaceholder, { color: theme.colors.textSecondary }]}
                   numberOfLines={1}
                   ellipsizeMode="tail"
                 >
@@ -847,24 +858,28 @@ export default function LeadsScreen() {
                   onPress={handleClearCountry}
                   hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                 >
-                  <Text style={styles.clearButtonText}>✕</Text>
+                  <Text style={[styles.clearButtonText, { color: theme.colors.textSecondary }]}>✕</Text>
                 </TouchableOpacity>
               )}
             </TouchableOpacity>
 
             {/* City Filter */}
             <TouchableOpacity
-              style={[styles.filterControl, !selectedCountry && styles.filterControlDisabled]}
+              style={[
+                styles.filterControl, 
+                { backgroundColor: theme.colors.background, borderColor: theme.colors.border },
+                !selectedCountry && styles.filterControlDisabled
+              ]}
               onPress={handleCityPress}
               disabled={!selectedCountry}
             >
-              <MapPin size={14} color={selectedCountry ? "#6B7280" : "#D1D5DB"} />
+              <MapPin size={14} color={selectedCountry ? theme.colors.textSecondary : theme.colors.disabled} />
               <View style={styles.filterLabelContainer}>
-                <Text style={[styles.filterLabel, !selectedCountry && styles.filterLabelDisabled]}>
+                <Text style={[styles.filterLabel, !selectedCountry && { color: theme.colors.disabled }]}>
                   {t('community.city')}
                 </Text>
                 <Text 
-                  style={selectedCity ? styles.filterValueSelected : styles.filterValuePlaceholder}
+                  style={selectedCity ? [styles.filterValueSelected, { color: theme.colors.text }] : [styles.filterValuePlaceholder, { color: theme.colors.textSecondary }]}
                   numberOfLines={1}
                   ellipsizeMode="tail"
                 >
@@ -877,7 +892,7 @@ export default function LeadsScreen() {
                   onPress={handleClearCity}
                   hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                 >
-                  <Text style={styles.clearButtonText}>✕</Text>
+                  <Text style={[styles.clearButtonText, { color: theme.colors.textSecondary }]}>✕</Text>
                 </TouchableOpacity>
               )}
             </TouchableOpacity>
@@ -891,13 +906,15 @@ export default function LeadsScreen() {
           <TouchableOpacity
             style={[
               styles.filterButton,
-              hotLeadsFilter === 'all' && styles.filterButtonActive
+              { backgroundColor: theme.colors.card, borderColor: theme.colors.border },
+              hotLeadsFilter === 'all' && { backgroundColor: theme.colors.secondary, borderColor: theme.colors.secondary }
             ]}
             onPress={() => setHotLeadsFilter('all')}
           >
             <Text style={[
               styles.filterButtonText,
-              hotLeadsFilter === 'all' && styles.filterButtonTextActive
+              { color: theme.colors.textSecondary },
+              hotLeadsFilter === 'all' && { color: 'white' }
             ]}>
               {t('leads.filter_all')}
             </Text>
@@ -905,14 +922,16 @@ export default function LeadsScreen() {
           <TouchableOpacity
             style={[
               styles.filterButton,
-              hotLeadsFilter === 'drivers' && styles.filterButtonActive
+              { backgroundColor: theme.colors.card, borderColor: theme.colors.border },
+              hotLeadsFilter === 'drivers' && { backgroundColor: theme.colors.secondary, borderColor: theme.colors.secondary }
             ]}
             onPress={() => setHotLeadsFilter('drivers')}
           >
-            <Users size={16} color={hotLeadsFilter === 'drivers' ? 'white' : '#64748B'} />
+            <Users size={16} color={hotLeadsFilter === 'drivers' ? 'white' : theme.colors.textSecondary} />
             <Text style={[
               styles.filterButtonText,
-              hotLeadsFilter === 'drivers' && styles.filterButtonTextActive
+              { color: theme.colors.textSecondary },
+              hotLeadsFilter === 'drivers' && { color: 'white' }
             ]}>
               {t('leads.filter_drivers')}
             </Text>
@@ -920,14 +939,16 @@ export default function LeadsScreen() {
           <TouchableOpacity
             style={[
               styles.filterButton,
-              hotLeadsFilter === 'forwarding' && styles.filterButtonActive
+              { backgroundColor: theme.colors.card, borderColor: theme.colors.border },
+              hotLeadsFilter === 'forwarding' && { backgroundColor: theme.colors.secondary, borderColor: theme.colors.secondary }
             ]}
             onPress={() => setHotLeadsFilter('forwarding')}
           >
-            <Truck size={16} color={hotLeadsFilter === 'forwarding' ? 'white' : '#64748B'} />
+            <Truck size={16} color={hotLeadsFilter === 'forwarding' ? 'white' : theme.colors.textSecondary} />
             <Text style={[
               styles.filterButtonText,
-              hotLeadsFilter === 'forwarding' && styles.filterButtonTextActive
+              { color: theme.colors.textSecondary },
+              hotLeadsFilter === 'forwarding' && { color: 'white' }
             ]}>
               {t('leads.filter_forwarding')}
             </Text>
@@ -953,12 +974,12 @@ export default function LeadsScreen() {
           keyExtractor={(item) => item.id}
           contentContainerStyle={styles.listContent}
           refreshControl={
-            <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
+            <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} tintColor={theme.colors.secondary} />
           }
           ListEmptyComponent={
             <View style={styles.emptyContainer}>
-              <SearchIcon size={48} color="#CBD5E1" />
-              <Text style={styles.emptyText}>{t('leads.no_search_results')}</Text>
+              <SearchIcon size={48} color={theme.colors.disabled} />
+              <Text style={[styles.emptyText, { color: theme.colors.textSecondary }]}>{t('leads.no_search_results')}</Text>
             </View>
           }
         />
@@ -971,13 +992,13 @@ export default function LeadsScreen() {
           keyExtractor={(item) => item.id}
           contentContainerStyle={styles.listContent}
           refreshControl={
-            <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
+            <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} tintColor={theme.colors.secondary} />
           }
           ListEmptyComponent={
             <View style={styles.emptyContainer}>
-              <Zap size={48} color="#CBD5E1" />
-              <Text style={styles.emptyText}>{t('leads.no_hot_leads')}</Text>
-              <Text style={styles.emptyHint}>{t('leads.save_posts_hint')}</Text>
+              <Zap size={48} color={theme.colors.disabled} />
+              <Text style={[styles.emptyText, { color: theme.colors.textSecondary }]}>{t('leads.no_hot_leads')}</Text>
+              <Text style={[styles.emptyHint, { color: theme.colors.disabled }]}>{t('leads.save_posts_hint')}</Text>
             </View>
           }
         />
@@ -990,13 +1011,13 @@ export default function LeadsScreen() {
           keyExtractor={(item) => item.id}
           contentContainerStyle={styles.listContent}
           refreshControl={
-            <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
+            <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} tintColor={theme.colors.secondary} />
           }
           ListEmptyComponent={
             <View style={styles.emptyContainer}>
-              <BookMarked size={48} color="#CBD5E1" />
-              <Text style={styles.emptyText}>{t('leads.no_mybook_leads')}</Text>
-              <Text style={styles.emptyHint}>{t('leads.convert_hint')}</Text>
+              <BookMarked size={48} color={theme.colors.disabled} />
+              <Text style={[styles.emptyText, { color: theme.colors.textSecondary }]}>{t('leads.no_mybook_leads')}</Text>
+              <Text style={[styles.emptyHint, { color: theme.colors.disabled }]}>{t('leads.convert_hint')}</Text>
             </View>
           }
         />
@@ -1093,17 +1114,17 @@ export default function LeadsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8FAFC',
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 16,
-    paddingVertical: 12,
+    paddingVertical: 24,
+    marginBottom: 8,
   },
   title: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: '700',
     color: '#1E293B',
   },
@@ -1111,13 +1132,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   searchInput: {
-    marginBottom: 8,
+    marginBottom: 16,
   },
   listContent: {
     padding: 16,
   },
   leadCard: {
     marginBottom: 12,
+    borderRadius: 16,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   leadHeader: {
     flexDirection: 'row',
@@ -1138,8 +1164,8 @@ const styles = StyleSheet.create({
     padding: 4,
   },
   leadName: {
-    fontSize: 16,
-    fontWeight: '600',
+    fontSize: 17,
+    fontWeight: '700',
     color: '#1E293B',
     marginBottom: 4,
   },
@@ -1208,9 +1234,14 @@ const styles = StyleSheet.create({
   },
   // Tab styles
   tabsContainer: {
-    paddingHorizontal: 16,
-    paddingTop: 12,
-    paddingBottom: 8,
+    marginHorizontal: 16,
+    borderRadius: 16,
+    padding: 6,
+    marginBottom: 16,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   tabsRow: {
     flexDirection: 'row',
@@ -1222,8 +1253,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 16,
+    paddingVertical: 14,
     borderRadius: 12,
     gap: 8,
   },
@@ -1231,8 +1261,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 16,
+    paddingVertical: 14,
     borderRadius: 12,
     gap: 8,
   },
@@ -1255,9 +1284,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: 'white',
     paddingHorizontal: 16,
-    paddingVertical: 10,
-    marginBottom: 12,
-    gap: 8,
+    paddingVertical: 12,
+    marginBottom: 16,
+    gap: 12,
     borderTopWidth: 1,
     borderBottomWidth: 1,
     borderColor: '#E5E7EB',
@@ -1267,8 +1296,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#F9FAFB',
-    borderRadius: 8,
-    padding: 8,
+    borderRadius: 12,
+    padding: 10,
     gap: 8,
     borderWidth: 1,
     borderColor: '#E5E7EB',
@@ -1281,21 +1310,21 @@ const styles = StyleSheet.create({
     minWidth: 0,
   },
   filterLabel: {
-    fontSize: 10,
+    fontSize: 11,
     color: '#6B7280',
-    fontWeight: '500',
+    fontWeight: '600',
     marginBottom: 2,
   },
   filterLabelDisabled: {
     color: '#D1D5DB',
   },
   filterValueSelected: {
-    fontSize: 12,
+    fontSize: 13,
     color: '#111827',
     fontWeight: '600',
   },
   filterValuePlaceholder: {
-    fontSize: 12,
+    fontSize: 13,
     color: '#9CA3AF',
   },
   clearButton: {
@@ -1357,7 +1386,7 @@ const styles = StyleSheet.create({
   leadImage: {
     width: 60,
     height: 60,
-    borderRadius: 8,
+    borderRadius: 30, // Circular like Home
     backgroundColor: '#F1F5F9',
   },
   leadInfo: {
@@ -1365,7 +1394,7 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   leadIndustry: {
-    fontSize: 12,
+    fontSize: 13,
     color: '#94A3B8',
   },
   lastContactedBadge: {
@@ -1400,7 +1429,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 8,
     paddingHorizontal: 12,
-    borderRadius: 8,
+    borderRadius: 16,
     backgroundColor: '#F8FAFC',
     borderWidth: 1,
     borderColor: '#E2E8F0',

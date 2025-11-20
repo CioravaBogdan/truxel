@@ -23,9 +23,11 @@ import {
 import TemplateSelector from './TemplateSelector';
 import CitySearchModal from './CitySearchModal';
 import Toast from 'react-native-toast-message';
+import { useTheme } from '../../lib/theme';
 
 function QuickPostBar() {
   const { t } = useTranslation();
+  const { theme } = useTheme();
   const { user, profile } = useAuthStore();
   const { 
     createPost, 
@@ -462,10 +464,10 @@ function QuickPostBar() {
 
   if (isCreatingPost || isGettingLocation) {
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, { backgroundColor: theme.colors.card }]}>
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#007AFF" />
-          <Text style={styles.loadingText}>
+          <ActivityIndicator size="large" color={theme.colors.primary} />
+          <Text style={[styles.loadingText, { color: theme.colors.textSecondary }]}>
             {isGettingLocation ? t('community.getting_location') : t('community.posting')}
           </Text>
         </View>
@@ -482,38 +484,38 @@ function QuickPostBar() {
   // });
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>{t('community.quick_post')}</Text>
+    <View style={[styles.container, { backgroundColor: theme.colors.card, shadowColor: theme.shadows.small.shadowColor }]}>
+      <Text style={[styles.title, { color: theme.colors.textSecondary }]}>{t('community.quick_post')}</Text>
 
       <View style={styles.buttonRow}>
         <TouchableOpacity
-          style={[styles.postButton, styles.availabilityButton]}
+          style={[styles.postButton, { backgroundColor: theme.colors.secondary }]}
           onPress={() => handlePostTypeSelect('availability')}
         >
-          <Briefcase color="white" size={32} />
-          <Text style={styles.buttonTitle}>{t('community.i_am').toUpperCase()}</Text>
-          <Text style={styles.buttonTitle}>{t('community.available').toUpperCase()}</Text>
+          <Briefcase color={theme.colors.card} size={32} />
+          <Text style={[styles.buttonTitle, { color: theme.colors.card }]}>{t('community.i_am').toUpperCase()}</Text>
+          <Text style={[styles.buttonTitle, { color: theme.colors.card }]}>{t('community.available').toUpperCase()}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[styles.postButton, styles.routeButton]}
+          style={[styles.postButton, { backgroundColor: theme.colors.info }]}
           onPress={() => handlePostTypeSelect('route')}
         >
-          <Truck color="white" size={32} />
-          <Text style={styles.buttonTitle}>{t('community.i_have').toUpperCase()}</Text>
-          <Text style={styles.buttonTitle}>{t('community.load').toUpperCase()}</Text>
+          <Truck color={theme.colors.card} size={32} />
+          <Text style={[styles.buttonTitle, { color: theme.colors.card }]}>{t('community.i_have').toUpperCase()}</Text>
+          <Text style={[styles.buttonTitle, { color: theme.colors.card }]}>{t('community.load').toUpperCase()}</Text>
         </TouchableOpacity>
       </View>
 
       {postLimits && (
-        <View style={styles.limitsContainer}>
-          <Text style={styles.limitsText}>
+        <View style={[styles.limitsContainer, { borderTopColor: theme.colors.border }]}>
+          <Text style={[styles.limitsText, { color: theme.colors.textSecondary }]}>
             {postLimits.posts_remaining_today} {t('community.posts_remaining_today')} •
             {postLimits.posts_remaining_month} {t('community.posts_remaining_month')}
           </Text>
           {postLimits.tier === 'trial' && (
             <TouchableOpacity>
-              <Text style={styles.upgradeText}>{t('community.upgrade_for_more')} →</Text>
+              <Text style={[styles.upgradeText, { color: theme.colors.primary }]}>{t('community.upgrade_for_more')} →</Text>
             </TouchableOpacity>
           )}
         </View>
@@ -552,11 +554,9 @@ function QuickPostBar() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
     padding: 16,
     borderRadius: 12,
     marginBottom: 16,
-    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -565,7 +565,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#666',
     textAlign: 'center',
     marginBottom: 12,
   },
@@ -583,13 +582,12 @@ const styles = StyleSheet.create({
     minHeight: 120,
   },
   availabilityButton: {
-    backgroundColor: '#10B981',
+    // Removed hardcoded color
   },
   routeButton: {
-    backgroundColor: '#3B82F6',
+    // Removed hardcoded color
   },
   buttonTitle: {
-    color: 'white',
     fontSize: 16,
     fontWeight: 'bold',
     marginTop: 4,
@@ -598,18 +596,15 @@ const styles = StyleSheet.create({
     marginTop: 12,
     paddingTop: 12,
     borderTopWidth: 1,
-    borderTopColor: '#E5E7EB',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
   limitsText: {
     fontSize: 12,
-    color: '#6B7280',
   },
   upgradeText: {
     fontSize: 12,
-    color: '#3B82F6',
     fontWeight: '600',
   },
   loadingContainer: {
@@ -619,7 +614,6 @@ const styles = StyleSheet.create({
   loadingText: {
     marginTop: 8,
     fontSize: 14,
-    color: '#6B7280',
   },
 });
 

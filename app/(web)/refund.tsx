@@ -2,42 +2,44 @@ import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { WebFooter } from '@/components/web/WebFooter';
+import { useTheme } from '@/lib/theme';
 
 export default function RefundPolicy() {
+  const { theme } = useTheme();
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <View style={styles.content}>
-        <Text style={styles.title}>Refund Policy</Text>
-        <Text style={styles.updated}>Last Updated: November 12, 2025</Text>
+        <Text style={[styles.title, { color: theme.colors.text }]}>Refund Policy</Text>
+        <Text style={[styles.updated, { color: theme.colors.textSecondary }]}>Last Updated: November 12, 2025</Text>
 
         <View style={styles.section}>
-          <Text style={styles.heading}>1. Overview</Text>
-          <Text style={styles.text}>
+          <Text style={[styles.heading, { color: theme.colors.text }]}>1. Overview</Text>
+          <Text style={[styles.text, { color: theme.colors.textSecondary }]}>
             At Truxel, we want you to be completely satisfied with our Service. This Refund Policy explains our refund and cancellation procedures for subscriptions and search pack purchases.
           </Text>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.heading}>2. Monthly Subscriptions</Text>
+          <Text style={[styles.heading, { color: theme.colors.text }]}>2. Monthly Subscriptions</Text>
 
-          <Text style={styles.subheading}>2.1 Cancellation Anytime</Text>
-          <Text style={styles.text}>
+          <Text style={[styles.subheading, { color: theme.colors.text }]}>2.1 Cancellation Anytime</Text>
+          <Text style={[styles.text, { color: theme.colors.textSecondary }]}>
             You can cancel your monthly subscription at any time from your profile settings. There are no cancellation fees or penalties.
           </Text>
 
-          <Text style={styles.subheading}>2.2 Access Until End of Billing Period</Text>
-          <Text style={styles.text}>
+          <Text style={[styles.subheading, { color: theme.colors.text }]}>2.2 Access Until End of Billing Period</Text>
+          <Text style={[styles.text, { color: theme.colors.textSecondary }]}>
             When you cancel, you retain full access to your subscription features until the end of your current billing period. You will not be charged for subsequent months.
           </Text>
 
-          <Text style={styles.subheading}>2.3 No Partial Month Refunds</Text>
-          <Text style={styles.text}>
+          <Text style={[styles.subheading, { color: theme.colors.text }]}>2.3 No Partial Month Refunds</Text>
+          <Text style={[styles.text, { color: theme.colors.textSecondary }]}>
             We do not provide refunds for partial months. If you cancel mid-month, you can continue using the Service until your paid period ends, but you will not receive a refund for unused days.
           </Text>
 
-          <Text style={styles.subheading}>2.4 First Payment Refund (7-Day Window)</Text>
-          <Text style={styles.text}>
+          <Text style={[styles.subheading, { color: theme.colors.text }]}>2.4 First Payment Refund (7-Day Window)</Text>
+          <Text style={[styles.text, { color: theme.colors.textSecondary }]}>
             If you are unsatisfied with your first subscription payment, you may request a full refund within 7 days of the initial charge. After 7 days, standard refund rules apply.{'\n\n'}
             To request a first-payment refund:{'\n'}
             • Email office@truxel.io with your account email{'\n'}
@@ -47,18 +49,18 @@ export default function RefundPolicy() {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.heading}>3. Plan Changes</Text>
+          <Text style={[styles.heading, { color: theme.colors.text }]}>3. Plan Changes</Text>
 
-          <Text style={styles.subheading}>3.1 Upgrades</Text>
-          <Text style={styles.text}>
+          <Text style={[styles.subheading, { color: theme.colors.text }]}>3.1 Upgrades</Text>
+          <Text style={[styles.text, { color: theme.colors.textSecondary }]}>
             When you upgrade to a higher-tier plan:{'\n'}
             • You are charged the pro-rated difference immediately{'\n'}
             • New features activate instantly{'\n'}
             • Your billing date remains the same
           </Text>
 
-          <Text style={styles.subheading}>3.2 Downgrades</Text>
-          <Text style={styles.text}>
+          <Text style={[styles.subheading, { color: theme.colors.text }]}>3.2 Downgrades</Text>
+          <Text style={[styles.text, { color: theme.colors.textSecondary }]}>
             When you downgrade to a lower-tier plan:{'\n'}
             • Change takes effect at your next billing cycle{'\n'}
             • You receive pro-rated credit for the difference{'\n'}
@@ -68,52 +70,52 @@ export default function RefundPolicy() {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.heading}>4. Search Packs (One-Time Purchases)</Text>
+          <Text style={[styles.heading, { color: theme.colors.text }]}>4. Search Packs (One-Time Purchases)</Text>
 
-          <Text style={styles.subheading}>4.1 Refund Eligibility</Text>
-          <Text style={styles.text}>
+          <Text style={[styles.subheading, { color: theme.colors.text }]}>4.1 Refund Eligibility</Text>
+          <Text style={[styles.text, { color: theme.colors.textSecondary }]}>
             Search packs are eligible for refund ONLY if:{'\n'}
             • No searches have been used (0 credits consumed){'\n'}
             • Request is made within 14 days of purchase{'\n'}
             • You provide a valid reason for the refund request
           </Text>
 
-          <Text style={styles.subheading}>4.2 Non-Refundable After Use</Text>
-          <Text style={styles.text}>
+          <Text style={[styles.subheading, { color: theme.colors.text }]}>4.2 Non-Refundable After Use</Text>
+          <Text style={[styles.text, { color: theme.colors.textSecondary }]}>
             Once you use even one search credit from a purchased pack, the entire pack becomes non-refundable. This is because search data has been provided to you.
           </Text>
 
-          <Text style={styles.subheading}>4.3 Expired Credits</Text>
-          <Text style={styles.text}>
+          <Text style={[styles.subheading, { color: theme.colors.text }]}>4.3 Expired Credits</Text>
+          <Text style={[styles.text, { color: theme.colors.textSecondary }]}>
             Search pack credits expire 12 months from purchase date. We do not provide refunds for expired, unused credits. Please use your credits within the validity period.
           </Text>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.heading}>5. Exceptional Refund Circumstances</Text>
-          <Text style={styles.text}>
+          <Text style={[styles.heading, { color: theme.colors.text }]}>5. Exceptional Refund Circumstances</Text>
+          <Text style={[styles.text, { color: theme.colors.textSecondary }]}>
             We may provide refunds outside of our standard policy in the following circumstances:
           </Text>
 
-          <Text style={styles.subheading}>5.1 Technical Issues</Text>
-          <Text style={styles.text}>
+          <Text style={[styles.subheading, { color: theme.colors.text }]}>5.1 Technical Issues</Text>
+          <Text style={[styles.text, { color: theme.colors.textSecondary }]}>
             If you experience significant technical problems that prevent you from using the Service for an extended period (3+ days), we may issue a pro-rated refund for the downtime period.
           </Text>
 
-          <Text style={styles.subheading}>5.2 Billing Errors</Text>
-          <Text style={styles.text}>
+          <Text style={[styles.subheading, { color: theme.colors.text }]}>5.2 Billing Errors</Text>
+          <Text style={[styles.text, { color: theme.colors.textSecondary }]}>
             If you are charged incorrectly due to a system error (double charge, wrong amount, unauthorized charge), we will issue a full refund immediately upon verification.
           </Text>
 
-          <Text style={styles.subheading}>5.3 Service Not as Described</Text>
-          <Text style={styles.text}>
+          <Text style={[styles.subheading, { color: theme.colors.text }]}>5.3 Service Not as Described</Text>
+          <Text style={[styles.text, { color: theme.colors.textSecondary }]}>
             If we make material changes to our Service that significantly reduce functionality without notice, you may request a pro-rated refund within 30 days of the change.
           </Text>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.heading}>6. Refund Request Process</Text>
-          <Text style={styles.text}>
+          <Text style={[styles.heading, { color: theme.colors.text }]}>6. Refund Request Process</Text>
+          <Text style={[styles.text, { color: theme.colors.textSecondary }]}>
             To request a refund:{'\n\n'}
             Step 1: Email us at office@truxel.io{'\n'}
             Step 2: Include:{'\n'}
@@ -128,8 +130,8 @@ export default function RefundPolicy() {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.heading}>7. Refund Method</Text>
-          <Text style={styles.text}>
+          <Text style={[styles.heading, { color: theme.colors.text }]}>7. Refund Method</Text>
+          <Text style={[styles.text, { color: theme.colors.textSecondary }]}>
             All refunds are issued to the original payment method used for the purchase. We process refunds through Stripe, our payment processor.{'\n\n'}
             • Credit/Debit Card: 5-10 business days{'\n'}
             • Bank Transfer: 5-10 business days{'\n'}
@@ -139,8 +141,8 @@ export default function RefundPolicy() {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.heading}>8. Non-Refundable Items</Text>
-          <Text style={styles.text}>
+          <Text style={[styles.heading, { color: theme.colors.text }]}>8. Non-Refundable Items</Text>
+          <Text style={[styles.text, { color: theme.colors.textSecondary }]}>
             The following are NOT eligible for refunds:{'\n'}
             • Used search credits (searches already performed){'\n'}
             • Subscription months after the first 7 days{'\n'}
@@ -153,8 +155,8 @@ export default function RefundPolicy() {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.heading}>9. Chargeback Policy</Text>
-          <Text style={styles.text}>
+          <Text style={[styles.heading, { color: theme.colors.text }]}>9. Chargeback Policy</Text>
+          <Text style={[styles.text, { color: theme.colors.textSecondary }]}>
             If you initiate a chargeback through your bank or credit card company without first contacting us:{'\n'}
             • Your account will be immediately suspended{'\n'}
             • We will provide documentation to your bank showing the charge was legitimate{'\n'}
@@ -164,8 +166,8 @@ export default function RefundPolicy() {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.heading}>10. Failed Payment Recovery</Text>
-          <Text style={styles.text}>
+          <Text style={[styles.heading, { color: theme.colors.text }]}>10. Failed Payment Recovery</Text>
+          <Text style={[styles.text, { color: theme.colors.textSecondary }]}>
             If a subscription payment fails:{'\n'}
             • We will retry the charge 2 additional times over 7 days{'\n'}
             • You will receive email notifications about the failed payment{'\n'}
@@ -175,8 +177,8 @@ export default function RefundPolicy() {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.heading}>11. Refund Abuse Policy</Text>
-          <Text style={styles.text}>
+          <Text style={[styles.heading, { color: theme.colors.text }]}>11. Refund Abuse Policy</Text>
+          <Text style={[styles.text, { color: theme.colors.textSecondary }]}>
             We reserve the right to refuse refund requests that appear fraudulent or abusive, including:{'\n'}
             • Repeated refund requests across multiple accounts{'\n'}
             • Requesting refunds after extensive Service use{'\n'}
@@ -187,8 +189,8 @@ export default function RefundPolicy() {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.heading}>12. Currency and Exchange Rates</Text>
-          <Text style={styles.text}>
+          <Text style={[styles.heading, { color: theme.colors.text }]}>12. Currency and Exchange Rates</Text>
+          <Text style={[styles.text, { color: theme.colors.textSecondary }]}>
             All prices are displayed in EUR. If your bank converts charges to a different currency:{'\n'}
             • Exchange rate fluctuations are not grounds for refund{'\n'}
             • Refunds are issued in EUR; your bank handles conversion{'\n'}
@@ -197,15 +199,15 @@ export default function RefundPolicy() {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.heading}>13. Changes to This Policy</Text>
-          <Text style={styles.text}>
+          <Text style={[styles.heading, { color: theme.colors.text }]}>13. Changes to This Policy</Text>
+          <Text style={[styles.text, { color: theme.colors.textSecondary }]}>
             We may update this Refund Policy from time to time. Material changes will be communicated via email at least 30 days in advance. Continued use after changes constitutes acceptance.
           </Text>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.heading}>14. Contact Us</Text>
-          <Text style={styles.text}>
+          <Text style={[styles.heading, { color: theme.colors.text }]}>14. Contact Us</Text>
+          <Text style={[styles.text, { color: theme.colors.textSecondary }]}>
             For refund requests or questions about this policy:{'\n\n'}
             Email: office@truxel.io{'\n'}
             Phone: +40 750 492 985{'\n'}
@@ -224,7 +226,6 @@ export default function RefundPolicy() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
   },
   content: {
     maxWidth: 800,
@@ -236,12 +237,10 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 40,
     fontWeight: '700',
-    color: '#1E293B',
     marginBottom: 8,
   },
   updated: {
     fontSize: 16,
-    color: '#64748B',
     marginBottom: 48,
   },
   section: {
@@ -250,19 +249,16 @@ const styles = StyleSheet.create({
   heading: {
     fontSize: 24,
     fontWeight: '700',
-    color: '#1E293B',
     marginBottom: 16,
   },
   subheading: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#1E293B',
     marginBottom: 12,
     marginTop: 16,
   },
   text: {
     fontSize: 16,
-    color: '#64748B',
     lineHeight: 24,
   },
 });

@@ -13,6 +13,7 @@ import Constants from 'expo-constants';
 import i18n from '@/lib/i18n';
 import Toast from 'react-native-toast-message';
 import { initRevenueCat, logoutRevenueCat } from '@/lib/revenueCat';
+import { ThemeProvider } from '@/lib/theme';
 
 export default function RootLayout() {
   useFrameworkReady();
@@ -255,7 +256,7 @@ export default function RootLayout() {
   }, [isAuthenticated, segments, isNavigationReady, router]);
 
   return (
-    <>
+    <ThemeProvider>
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
@@ -263,6 +264,6 @@ export default function RootLayout() {
       </Stack>
       <StatusBar style="auto" />
       <Toast />
-    </>
+    </ThemeProvider>
   );
 }

@@ -36,11 +36,11 @@ import { enUS, ro, pl, tr, lt, es } from 'date-fns/locale';
 import { UpgradePromptModal } from './UpgradePromptModal';
 import { stripeService } from '../../services/stripeService';
 import {
-  safeOpenWhatsApp,
   safeOpenEmail,
   safeOpenPhone,
   showNativeModuleError
 } from '@/utils/safeNativeModules';
+import { useTheme } from '@/lib/theme';
 
 const WHATSAPP_PREF_KEY = 'community_whatsapp_preferred_scheme_v2';
 
@@ -98,6 +98,7 @@ interface PostCardProps {
 
 export default function PostCard({ post, onPress, onUnsave, onAddToMyBook }: PostCardProps) {
   const { t, i18n } = useTranslation();
+  const { theme } = useTheme();
   const router = useRouter();
   const { user, profile, session, refreshProfile } = useAuthStore();
   
@@ -557,7 +558,7 @@ export default function PostCard({ post, onPress, onUnsave, onAddToMyBook }: Pos
   };
 
   return (
-    <TouchableOpacity style={styles.container} onPress={onPress} activeOpacity={0.7}>
+    <TouchableOpacity style={[styles.container, { backgroundColor: theme.colors.card, borderColor: isDriverAvailable ? theme.colors.secondary : theme.colors.info }]} onPress={onPress} activeOpacity={0.7}>
       {/* Header */}
       <View style={styles.header}>
         <View style={styles.userInfo}>
@@ -568,8 +569,8 @@ export default function PostCard({ post, onPress, onUnsave, onAddToMyBook }: Pos
               style={styles.avatar}
             />
           ) : (
-            <View style={styles.avatar}>
-              <Text style={styles.avatarText}>
+            <View style={[styles.avatar, { backgroundColor: theme.colors.border }]}>
+              <Text style={[styles.avatarText, { color: theme.colors.textSecondary }]}>
                 {post.profile?.company_name?.charAt(0).toUpperCase() || 
                  post.profile?.full_name?.charAt(0).toUpperCase() || 'U'}
               </Text>
@@ -579,32 +580,32 @@ export default function PostCard({ post, onPress, onUnsave, onAddToMyBook }: Pos
             {/* Company name with icon */}
             {post.profile?.company_name && (
               <View style={styles.companyRow}>
-                <Building2 size={14} color="#111827" />
-                <Text style={styles.companyName}>{post.profile.company_name}</Text>
+                <Building2 size={14} color={theme.colors.text} />
+                <Text style={[styles.companyName, { color: theme.colors.text }]}>{post.profile.company_name}</Text>
               </View>
             )}
             
             {/* Driver name (smaller if company exists) */}
-            <Text style={post.profile?.company_name ? styles.driverName : styles.userName}>
+            <Text style={post.profile?.company_name ? [styles.driverName, { color: theme.colors.textSecondary }] : [styles.userName, { color: theme.colors.text }]}>
               {post.profile?.full_name || t('community.user')}
             </Text>
             
             {/* Truck type only (location moved to content section) */}
             {post.profile?.truck_type && (
               <View style={styles.truckRow}>
-                <Truck size={14} color="#6B7280" />
-                <Text style={styles.truckType}>{post.profile.truck_type}</Text>
+                <Truck size={14} color={theme.colors.textSecondary} />
+                <Text style={[styles.truckType, { color: theme.colors.textSecondary }]}>{post.profile.truck_type}</Text>
               </View>
             )}
           </View>
         </View>
         {isOwnPost ? (
           <View style={styles.ownPostActions}>
-            <View style={styles.ownBadge}>
-              <Text style={styles.ownBadgeText}>{t('community.your_post')}</Text>
+            <View style={[styles.ownBadge, { backgroundColor: theme.colors.background }]}>
+              <Text style={[styles.ownBadgeText, { color: theme.colors.textSecondary }]}>{t('community.your_post')}</Text>
             </View>
             <TouchableOpacity 
-              style={styles.deleteButton} 
+              style={[styles.deleteButton, { backgroundColor: theme.colors.error + '20', borderColor: theme.colors.error + '40' }]} 
               onPress={handleDelete}
               accessibilityLabel={t('common.delete')}
             >
@@ -616,7 +617,7 @@ export default function PostCard({ post, onPress, onUnsave, onAddToMyBook }: Pos
             {/* Add to My Book Button */}
             {onAddToMyBook && (
               <TouchableOpacity 
-                style={styles.addToMyBookButton} 
+                style={[styles.addToMyBookButton, { backgroundColor: theme.colors.warning, shadowColor: theme.colors.warning }]} 
                 onPress={onAddToMyBook}
                 accessibilityLabel={t('leads.add_to_mybook')}
               >
@@ -627,14 +628,14 @@ export default function PostCard({ post, onPress, onUnsave, onAddToMyBook }: Pos
             
             {/* Bookmark Icon */}
             <TouchableOpacity 
-              style={styles.saveIconButton} 
+              style={[styles.saveIconButton, { backgroundColor: theme.colors.background }]} 
               onPress={handleSave} 
               accessibilityLabel={isSaved ? t('community.unsave') : t('common.save')}
             >
               <Bookmark 
                 size={18} 
-                color={isSaved ? '#F59E0B' : '#6B7280'} 
-                fill={isSaved ? '#F59E0B' : 'none'} 
+                color={isSaved ? theme.colors.warning : theme.colors.textSecondary} 
+                fill={isSaved ? theme.colors.warning : 'none'} 
               />
             </TouchableOpacity>
           </View>
@@ -646,32 +647,32 @@ export default function PostCard({ post, onPress, onUnsave, onAddToMyBook }: Pos
         <View style={styles.typeIndicator}>
           {isDriverAvailable ? (
             <>
-              <Navigation size={16} color="#10B981" />
-              <Text style={[styles.typeText, styles.availableText]}>{t('community.driver_available')}</Text>
+              <Navigation size={16} color={theme.colors.secondary} />
+              <Text style={[styles.typeText, { color: theme.colors.secondary }]}>{t('community.driver_available')}</Text>
             </>
           ) : (
             <>
-              <Package size={16} color="#3B82F6" />
-              <Text style={[styles.typeText, styles.routeText]}>{t('community.route_available')}</Text>
+              <Package size={16} color={theme.colors.info} />
+              <Text style={[styles.typeText, { color: theme.colors.info }]}>{t('community.route_available')}</Text>
             </>
           )}
         </View>
 
         {/* LARGE Route Display - Origin → Destination OR Origin + Direction */}
-        <View style={styles.routeDisplay}>
+        <View style={[styles.routeDisplay, { backgroundColor: theme.colors.background, borderColor: theme.colors.border }]}>
           {/* Origin city - always visible */}
-          <View style={styles.originBadge}>
-            <MapPin size={16} color="#10B981" fill="#10B981" />
-            <Text style={styles.cityText}>{post.origin_city}</Text>
+          <View style={[styles.originBadge, { backgroundColor: theme.colors.secondary + '20', borderColor: theme.colors.secondary + '40' }]}>
+            <MapPin size={16} color={theme.colors.secondary} fill={theme.colors.secondary} />
+            <Text style={[styles.cityText, { color: theme.colors.text }]}>{post.origin_city}</Text>
           </View>
           
           {/* Two-city route: Origin → Destination (horizontal) */}
           {post.dest_city && (
             <>
-              <Text style={styles.routeArrow}>→</Text>
-              <View style={styles.destBadge}>
-                <MapPin size={16} color="#EF4444" fill="#EF4444" />
-                <Text style={styles.cityText}>{post.dest_city}</Text>
+              <Text style={[styles.routeArrow, { color: theme.colors.textSecondary }]}>→</Text>
+              <View style={[styles.destBadge, { backgroundColor: theme.colors.error + '20', borderColor: theme.colors.error + '40' }]}>
+                <MapPin size={16} color={theme.colors.error} fill={theme.colors.error} />
+                <Text style={[styles.cityText, { color: theme.colors.text }]}>{post.dest_city}</Text>
               </View>
             </>
           )}
@@ -679,10 +680,10 @@ export default function PostCard({ post, onPress, onUnsave, onAddToMyBook }: Pos
           {/* Directional route: Show direction badge BELOW origin (vertical) */}
           {!post.dest_city && post.template_key && ['north', 'south', 'east', 'west'].includes(post.template_key) && (
             <View style={styles.directionContainer}>
-              <Text style={styles.directionLabel}>{t('community.desired_direction')}</Text>
-              <View style={styles.directionBadge}>
-                <Navigation size={14} color="#3B82F6" />
-                <Text style={styles.directionText}>
+              <Text style={[styles.directionLabel, { color: theme.colors.textSecondary }]}>{t('community.desired_direction')}</Text>
+              <View style={[styles.directionBadge, { backgroundColor: theme.colors.secondary + '20', borderColor: theme.colors.secondary + '40' }]}>
+                <Navigation size={14} color={theme.colors.secondary} />
+                <Text style={[styles.directionText, { color: theme.colors.secondary }]}>
                   {post.template_key === 'north' ? '⬆️ ' + t('directions.north') :
                    post.template_key === 'south' ? '⬇️ ' + t('directions.south') :
                    post.template_key === 'east' ? '➡️ ' + t('directions.east') :
@@ -693,14 +694,14 @@ export default function PostCard({ post, onPress, onUnsave, onAddToMyBook }: Pos
           )}
         </View>
 
-        <Text style={styles.description}>{getPostDescription(post)}</Text>
+        <Text style={[styles.description, { color: theme.colors.text }]}>{getPostDescription(post)}</Text>
 
         {/* Metadata tags */}
         <View style={styles.tags}>
           {post.post_type === 'LOAD_AVAILABLE' && 'departure' in post.metadata && post.metadata.departure && (
-            <View style={styles.tag}>
-              <Clock size={12} color="#6B7280" />
-              <Text style={styles.tagText}>
+            <View style={[styles.tag, { backgroundColor: theme.colors.background }]}>
+              <Clock size={12} color={theme.colors.textSecondary} />
+              <Text style={[styles.tagText, { color: theme.colors.textSecondary }]}>
                 {post.metadata.departure === 'now' ? t('community.now') :
                  post.metadata.departure === 'today' ? t('community.today') : 
                  t('community.tomorrow')}
@@ -708,32 +709,32 @@ export default function PostCard({ post, onPress, onUnsave, onAddToMyBook }: Pos
             </View>
           )}
           {post.post_type === 'LOAD_AVAILABLE' && 'cargo_tons' in post.metadata && post.metadata.cargo_tons && (
-            <View style={styles.tag}>
-              <Package size={12} color="#6B7280" />
-              <Text style={styles.tagText}>{post.metadata.cargo_tons}T</Text>
+            <View style={[styles.tag, { backgroundColor: theme.colors.background }]}>
+              <Package size={12} color={theme.colors.textSecondary} />
+              <Text style={[styles.tagText, { color: theme.colors.textSecondary }]}>{post.metadata.cargo_tons}T</Text>
             </View>
           )}
           {post.post_type === 'LOAD_AVAILABLE' && 'price_per_km' in post.metadata && post.metadata.price_per_km && (
-            <View style={styles.tag}>
-              <Text style={styles.tagText}>{post.metadata.price_per_km} €/km</Text>
+            <View style={[styles.tag, { backgroundColor: theme.colors.background }]}>
+              <Text style={[styles.tagText, { color: theme.colors.textSecondary }]}>{post.metadata.price_per_km} €/km</Text>
             </View>
           )}
         </View>
       </View>
 
       {/* Footer */}
-      <View style={styles.footer}>
+      <View style={[styles.footer, { borderTopColor: theme.colors.border }]}>
         <View style={styles.stats}>
-          <Clock size={14} color="#9CA3AF" />
-          <Text style={styles.statsText}>{timeAgo}</Text>
-          <Text style={styles.separator}>•</Text>
-          <Eye size={14} color="#9CA3AF" />
-          <Text style={styles.statsText}>{post.view_count || 0}</Text>
+          <Clock size={14} color={theme.colors.textSecondary} />
+          <Text style={[styles.statsText, { color: theme.colors.textSecondary }]}>{timeAgo}</Text>
+          <Text style={[styles.separator, { color: theme.colors.border }]}>•</Text>
+          <Eye size={14} color={theme.colors.textSecondary} />
+          <Text style={[styles.statsText, { color: theme.colors.textSecondary }]}>{post.view_count || 0}</Text>
           {post.contact_count > 0 && (
             <>
-              <Text style={styles.separator}>•</Text>
-              <MessageCircle size={14} color="#9CA3AF" />
-              <Text style={styles.statsText}>{post.contact_count}</Text>
+              <Text style={[styles.separator, { color: theme.colors.border }]}>•</Text>
+              <MessageCircle size={14} color={theme.colors.textSecondary} />
+              <Text style={[styles.statsText, { color: theme.colors.textSecondary }]}>{post.contact_count}</Text>
             </>
           )}
         </View>
@@ -741,7 +742,7 @@ export default function PostCard({ post, onPress, onUnsave, onAddToMyBook }: Pos
 
       <View style={styles.contactRow}>
         <TouchableOpacity
-          style={[styles.contactButton, styles.whatsappButton, whatsappDisabled && styles.contactButtonDisabled]}
+          style={[styles.contactButton, { backgroundColor: theme.colors.secondary }, whatsappDisabled && styles.contactButtonDisabled]}
           onPress={handleWhatsApp}
           disabled={whatsappDisabled}
         >
@@ -749,7 +750,7 @@ export default function PostCard({ post, onPress, onUnsave, onAddToMyBook }: Pos
           <Text style={styles.contactButtonText}>{t('community.contact_whatsapp')}</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.contactButton, styles.callButton, callDisabled && styles.contactButtonDisabled]}
+          style={[styles.contactButton, { backgroundColor: theme.colors.primary }, callDisabled && styles.contactButtonDisabled]}
           onPress={handlePhone}
           disabled={callDisabled}
         >
@@ -757,7 +758,7 @@ export default function PostCard({ post, onPress, onUnsave, onAddToMyBook }: Pos
           <Text style={styles.contactButtonText}>{t('community.contact_call')}</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.contactButton, styles.emailButton, emailDisabled && styles.contactButtonDisabled]}
+          style={[styles.contactButton, { backgroundColor: '#6366F1' }, emailDisabled && styles.contactButtonDisabled]}
           onPress={handleEmail}
           disabled={emailDisabled}
         >
@@ -825,25 +826,25 @@ export default function PostCard({ post, onPress, onUnsave, onAddToMyBook }: Pos
         <TouchableWithoutFeedback onPress={handleWhatsAppModalClose}>
           <View style={styles.whatsAppModalOverlay}>
             <TouchableWithoutFeedback onPress={() => {}}>
-              <View style={styles.whatsAppModalContent}>
-                <Text style={styles.whatsAppModalTitle}>{t('community.whatsapp_choose_title')}</Text>
-                <Text style={styles.whatsAppModalDescription}>
+              <View style={[styles.whatsAppModalContent, { backgroundColor: theme.colors.card }]}>
+                <Text style={[styles.whatsAppModalTitle, { color: theme.colors.text }]}>{t('community.whatsapp_choose_title')}</Text>
+                <Text style={[styles.whatsAppModalDescription, { color: theme.colors.textSecondary }]}>
                   {t('community.whatsapp_choose_message')}
                 </Text>
                 {availableWhatsAppOptions.map((option) => (
                   <TouchableOpacity
                     key={option.id}
-                    style={styles.whatsAppModalOption}
+                    style={[styles.whatsAppModalOption, { backgroundColor: theme.colors.background }]}
                     onPress={() => handleWhatsAppOptionSelect(option.id)}
                   >
-                    <Text style={styles.whatsAppModalOptionText}>{option.label}</Text>
+                    <Text style={[styles.whatsAppModalOptionText, { color: theme.colors.text }]}>{option.label}</Text>
                   </TouchableOpacity>
                 ))}
                 <TouchableOpacity
                   style={styles.whatsAppModalCancel}
                   onPress={handleWhatsAppModalClose}
                 >
-                  <Text style={styles.whatsAppModalCancelText}>{t('common.cancel')}</Text>
+                  <Text style={[styles.whatsAppModalCancelText, { color: theme.colors.primary }]}>{t('common.cancel')}</Text>
                 </TouchableOpacity>
               </View>
             </TouchableWithoutFeedback>
@@ -856,7 +857,6 @@ export default function PostCard({ post, onPress, onUnsave, onAddToMyBook }: Pos
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
     borderRadius: 20,
     padding: 16,
     marginBottom: 16,
@@ -866,7 +866,6 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 3,
     borderWidth: 1,
-    borderColor: '#10B981',
   },
   header: {
     flexDirection: 'row',
@@ -882,7 +881,6 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 24,
-    backgroundColor: '#E5E7EB',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,
@@ -890,7 +888,6 @@ const styles = StyleSheet.create({
   avatarText: {
     fontSize: 20,
     fontWeight: '700',
-    color: '#6B7280',
   },
   userDetails: {
     flex: 1,
@@ -904,18 +901,15 @@ const styles = StyleSheet.create({
   companyName: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#111827',
   },
   userName: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#111827',
     marginBottom: 4,
   },
   driverName: {
     fontSize: 14,
     fontWeight: '500',
-    color: '#4B5563',
     marginBottom: 4,
   },
   locationRow: {
@@ -925,12 +919,10 @@ const styles = StyleSheet.create({
   },
   location: {
     fontSize: 13,
-    color: '#6B7280',
     marginLeft: 4,
   },
   separator: {
     marginHorizontal: 6,
-    color: '#D1D5DB',
   },
   truckRow: {
     flexDirection: 'row',
@@ -940,7 +932,6 @@ const styles = StyleSheet.create({
   },
   truckType: {
     fontSize: 13,
-    color: '#6B7280',
     marginLeft: 4,
   },
   ownPostActions: {
@@ -949,22 +940,18 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   ownBadge: {
-    backgroundColor: '#F3F4F6',
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 6,
   },
   ownBadgeText: {
     fontSize: 12,
-    color: '#6B7280',
   },
   deleteButton: {
-    backgroundColor: '#FEE2E2',
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 6,
     borderWidth: 1,
-    borderColor: '#FECACA',
   },
   deleteButtonText: {
     fontSize: 16,
@@ -983,10 +970,10 @@ const styles = StyleSheet.create({
     marginLeft: 4,
   },
   availableText: {
-    color: '#10B981',
+    // color: '#10B981', // Handled inline
   },
   routeText: {
-    color: '#3B82F6',
+    // color: '#3B82F6', // Handled inline
   },
   routeDisplay: {
     flexDirection: 'row',
@@ -997,10 +984,8 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     paddingVertical: 10,
     paddingHorizontal: 12,
-    backgroundColor: '#F9FAFB',
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#E5E7EB',
   },
   originBadge: {
     flexDirection: 'row',
@@ -1008,10 +993,8 @@ const styles = StyleSheet.create({
     gap: 6,
     paddingVertical: 6,
     paddingHorizontal: 10,
-    backgroundColor: '#ECFDF5',
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#A7F3D0',
   },
   destBadge: {
     flexDirection: 'row',
@@ -1019,10 +1002,8 @@ const styles = StyleSheet.create({
     gap: 6,
     paddingVertical: 6,
     paddingHorizontal: 10,
-    backgroundColor: '#FEE2E2',
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#FECACA',
   },
   directionBadge: {
     flexDirection: 'row',
@@ -1031,10 +1012,8 @@ const styles = StyleSheet.create({
     gap: 6,
     paddingVertical: 8,
     paddingHorizontal: 12,
-    backgroundColor: '#DBEAFE',
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#BFDBFE',
     marginTop: 4,
     alignSelf: 'stretch',
   },
@@ -1045,27 +1024,22 @@ const styles = StyleSheet.create({
   directionLabel: {
     fontSize: 12,
     fontWeight: '600',
-    color: '#6B7280',
     marginBottom: 6,
   },
   directionText: {
     fontSize: 15,
     fontWeight: '700',
-    color: '#1E40AF',
   },
   cityText: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#111827',
   },
   routeArrow: {
     fontSize: 20,
     fontWeight: '700',
-    color: '#9CA3AF',
   },
   description: {
     fontSize: 15,
-    color: '#374151',
     lineHeight: 22,
     marginBottom: 8,
   },
@@ -1077,7 +1051,6 @@ const styles = StyleSheet.create({
   tag: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#F9FAFB',
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 6,
@@ -1085,14 +1058,12 @@ const styles = StyleSheet.create({
   },
   tagText: {
     fontSize: 12,
-    color: '#6B7280',
   },
   footer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     borderTopWidth: 1,
-    borderTopColor: '#F3F4F6',
     paddingTop: 12,
     gap: 12,
   },
@@ -1104,10 +1075,8 @@ const styles = StyleSheet.create({
   },
   statsText: {
     fontSize: 12,
-    color: '#9CA3AF',
   },
   saveIconButton: {
-    backgroundColor: '#F3F4F6',
     padding: 8,
     borderRadius: 8,
   },
@@ -1120,11 +1089,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
-    backgroundColor: '#F59E0B', // Orange background
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 8,
-    shadowColor: '#F59E0B',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 4,
@@ -1163,10 +1130,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#25D366',
   },
   callButton: {
-    backgroundColor: '#3B82F6',
+    // backgroundColor: '#3B82F6', // Handled inline
   },
   emailButton: {
-    backgroundColor: '#6366F1',
+    // backgroundColor: '#6366F1', // Handled inline
   },
   whatsAppModalOverlay: {
     flex: 1,
@@ -1174,7 +1141,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(17, 24, 39, 0.5)',
   },
   whatsAppModalContent: {
-    backgroundColor: '#FFFFFF',
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
     paddingVertical: 20,
@@ -1184,14 +1150,11 @@ const styles = StyleSheet.create({
   whatsAppModalTitle: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#111827',
   },
   whatsAppModalDescription: {
     fontSize: 14,
-    color: '#4B5563',
   },
   whatsAppModalOption: {
-    backgroundColor: '#F3F4F6',
     borderRadius: 12,
     paddingVertical: 14,
     paddingHorizontal: 16,
@@ -1199,7 +1162,6 @@ const styles = StyleSheet.create({
   whatsAppModalOptionText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#111827',
     textAlign: 'center',
   },
   whatsAppModalCancel: {
@@ -1208,7 +1170,6 @@ const styles = StyleSheet.create({
   whatsAppModalCancelText: {
     fontSize: 15,
     fontWeight: '600',
-    color: '#2563EB',
     textAlign: 'center',
   },
 });

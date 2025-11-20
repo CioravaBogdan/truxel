@@ -1,10 +1,13 @@
 import { Stack } from 'expo-router';
 import { View, StyleSheet } from 'react-native';
 import { WebHeader } from '@/components/web/WebHeader';
+import { useTheme } from '@/lib/theme';
 
 export default function WebLayout() {
+  const { theme } = useTheme();
+
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <WebHeader />
       <View style={styles.content}>
         <Stack screenOptions={{ headerShown: false }}>
@@ -26,7 +29,6 @@ export default function WebLayout() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
   },
   content: {
     flex: 1,

@@ -15,6 +15,7 @@ import { Input } from '@/components/Input';
 import { authService } from '@/services/authService';
 import Toast from 'react-native-toast-message';
 import { Truck } from 'lucide-react-native';
+import { useTheme } from '@/lib/theme';
 
 interface RegisterForm {
   email: string;
@@ -27,6 +28,7 @@ interface RegisterForm {
 
 export default function RegisterScreen() {
   const { t } = useTranslation();
+  const { theme } = useTheme();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -89,13 +91,13 @@ export default function RegisterScreen() {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.container}
+      style={[styles.container, { backgroundColor: theme.colors.background }]}
     >
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.header}>
-          <Truck size={48} color="#2563EB" />
-          <Text style={styles.title}>{t('auth.sign_up')}</Text>
-          <Text style={styles.subtitle}>Truxel</Text>
+          <Truck size={48} color={theme.colors.secondary} />
+          <Text style={[styles.title, { color: theme.colors.text }]}>{t('auth.sign_up')}</Text>
+          <Text style={[styles.subtitle, { color: theme.colors.textSecondary }]}>Truxel</Text>
         </View>
 
         <View style={styles.form}>
@@ -232,7 +234,6 @@ export default function RegisterScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8FAFC',
   },
   scrollContent: {
     flexGrow: 1,
@@ -246,12 +247,10 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: '700',
-    color: '#1E293B',
     marginTop: 16,
   },
   subtitle: {
     fontSize: 18,
-    color: '#64748B',
     marginTop: 8,
   },
   form: {

@@ -3,6 +3,7 @@ import { View, Text, Image, TouchableOpacity, StyleSheet, Platform } from 'react
 import { Link, useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { Menu, X, Globe } from 'lucide-react-native';
+import { useTheme } from '@/lib/theme';
 
 const LANGUAGES = [
   { code: 'en', label: 'EN' },
@@ -20,13 +21,14 @@ const LANGUAGES = [
 export function WebHeader() {
   const router = useRouter();
   const { t, i18n } = useTranslation();
+  const { theme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [langMenuOpen, setLangMenuOpen] = useState(false);
 
   if (Platform.OS !== 'web') return null;
 
   return (
-    <View style={styles.header}>
+    <View style={[styles.header, { backgroundColor: theme.colors.background, borderBottomColor: theme.colors.border }]}>
       <View style={styles.container}>
         {/* Logo - Left */}
         <Link href="/" style={styles.logoContainer}>
@@ -40,16 +42,16 @@ export function WebHeader() {
         {/* Navigation Links - Center */}
         <View style={styles.desktopNav}>
           <TouchableOpacity onPress={() => router.push('/(web)/features')}>
-            <Text style={styles.navLink}>{t('web.nav.features')}</Text>
+            <Text style={[styles.navLink, { color: theme.colors.text }]}>{t('web.nav.features')}</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => router.push('/(web)/pricing_web')}>
-            <Text style={styles.navLink}>{t('web.nav.pricing')}</Text>
+            <Text style={[styles.navLink, { color: theme.colors.text }]}>{t('web.nav.pricing')}</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => router.push('/(web)/about')}>
-            <Text style={styles.navLink}>{t('web.nav.about')}</Text>
+            <Text style={[styles.navLink, { color: theme.colors.text }]}>{t('web.nav.about')}</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => router.push('/(web)/contact')}>
-            <Text style={styles.navLink}>{t('web.nav.contact')}</Text>
+            <Text style={[styles.navLink, { color: theme.colors.text }]}>{t('web.nav.contact')}</Text>
           </TouchableOpacity>
         </View>
 
@@ -58,21 +60,21 @@ export function WebHeader() {
           {/* Language Selector */}
           <View style={styles.langSelector}>
             <TouchableOpacity
-              style={styles.langButton}
+              style={[styles.langButton, { backgroundColor: theme.colors.card }]}
               onPress={() => setLangMenuOpen(!langMenuOpen)}
             >
-              <Globe size={20} color="#64748B" />
-              <Text style={styles.langButtonText}>{i18n.language.toUpperCase()}</Text>
+              <Globe size={20} color={theme.colors.textSecondary} />
+              <Text style={[styles.langButtonText, { color: theme.colors.textSecondary }]}>{i18n.language.toUpperCase()}</Text>
             </TouchableOpacity>
             
             {langMenuOpen && (
-              <View style={styles.langDropdown}>
+              <View style={[styles.langDropdown, { backgroundColor: theme.colors.card }]}>
                 {LANGUAGES.map((lang) => (
                   <TouchableOpacity
                     key={lang.code}
                     style={[
                       styles.langOption,
-                      i18n.language === lang.code && styles.langOptionActive,
+                      i18n.language === lang.code && { backgroundColor: theme.colors.primary + '1A' },
                     ]}
                     onPress={() => {
                       i18n.changeLanguage(lang.code);
@@ -82,7 +84,8 @@ export function WebHeader() {
                     <Text
                       style={[
                         styles.langOptionText,
-                        i18n.language === lang.code && styles.langOptionTextActive,
+                        { color: theme.colors.textSecondary },
+                        i18n.language === lang.code && { color: theme.colors.primary, fontWeight: '600' },
                       ]}
                     >
                       {lang.label}
@@ -97,11 +100,11 @@ export function WebHeader() {
             style={styles.loginButton}
             onPress={() => router.push('/(auth)/login')}
           >
-            <Text style={styles.loginButtonText}>{t('web.nav.login')}</Text>
+            <Text style={[styles.loginButtonText, { color: theme.colors.primary }]}>{t('web.nav.login')}</Text>
           </TouchableOpacity>
           
           <TouchableOpacity 
-            style={styles.signupButton}
+            style={[styles.signupButton, { backgroundColor: theme.colors.primary }]}
             onPress={() => router.push('/(auth)/register')}
           >
             <Text style={styles.signupButtonText}>{t('web.nav.signup')}</Text>
@@ -114,16 +117,16 @@ export function WebHeader() {
           onPress={() => setMobileMenuOpen(!mobileMenuOpen)}
         >
           {mobileMenuOpen ? (
-            <X size={28} color="#1F2937" />
+            <X size={28} color={theme.colors.text} />
           ) : (
-            <Menu size={28} color="#1F2937" />
+            <Menu size={28} color={theme.colors.text} />
           )}
         </TouchableOpacity>
       </View>
 
       {/* Mobile Menu Dropdown */}
       {mobileMenuOpen && (
-        <View style={styles.mobileMenu}>
+        <View style={[styles.mobileMenu, { backgroundColor: theme.colors.background, borderTopColor: theme.colors.border }]}>
           <TouchableOpacity 
             style={styles.mobileMenuItem}
             onPress={() => {
@@ -131,7 +134,7 @@ export function WebHeader() {
               setMobileMenuOpen(false);
             }}
           >
-            <Text style={styles.mobileMenuText}>{t('web.nav.features')}</Text>
+            <Text style={[styles.mobileMenuText, { color: theme.colors.text }]}>{t('web.nav.features')}</Text>
           </TouchableOpacity>
           <TouchableOpacity 
             style={styles.mobileMenuItem}
@@ -140,7 +143,7 @@ export function WebHeader() {
               setMobileMenuOpen(false);
             }}
           >
-            <Text style={styles.mobileMenuText}>{t('web.nav.pricing')}</Text>
+            <Text style={[styles.mobileMenuText, { color: theme.colors.text }]}>{t('web.nav.pricing')}</Text>
           </TouchableOpacity>
           <TouchableOpacity 
             style={styles.mobileMenuItem}
@@ -149,7 +152,7 @@ export function WebHeader() {
               setMobileMenuOpen(false);
             }}
           >
-            <Text style={styles.mobileMenuText}>{t('web.nav.about')}</Text>
+            <Text style={[styles.mobileMenuText, { color: theme.colors.text }]}>{t('web.nav.about')}</Text>
           </TouchableOpacity>
           <TouchableOpacity 
             style={styles.mobileMenuItem}
@@ -158,23 +161,23 @@ export function WebHeader() {
               setMobileMenuOpen(false);
             }}
           >
-            <Text style={styles.mobileMenuText}>{t('web.nav.contact')}</Text>
+            <Text style={[styles.mobileMenuText, { color: theme.colors.text }]}>{t('web.nav.contact')}</Text>
           </TouchableOpacity>
           
-          <View style={styles.mobileMenuDivider} />
+          <View style={[styles.mobileMenuDivider, { backgroundColor: theme.colors.border }]} />
           
           <TouchableOpacity 
-            style={[styles.mobileMenuItem, styles.mobileLoginButton]}
+            style={[styles.mobileMenuItem, styles.mobileLoginButton, { backgroundColor: theme.colors.card }]}
             onPress={() => {
               router.push('/(auth)/login');
               setMobileMenuOpen(false);
             }}
           >
-            <Text style={styles.mobileLoginText}>{t('web.nav.login')}</Text>
+            <Text style={[styles.mobileLoginText, { color: theme.colors.primary }]}>{t('web.nav.login')}</Text>
           </TouchableOpacity>
           
           <TouchableOpacity 
-            style={[styles.mobileMenuItem, styles.mobileSignupButton]}
+            style={[styles.mobileMenuItem, styles.mobileSignupButton, { backgroundColor: theme.colors.primary }]}
             onPress={() => {
               router.push('/(auth)/register');
               setMobileMenuOpen(false);
@@ -190,9 +193,7 @@ export function WebHeader() {
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: '#FFFFFF',
     borderBottomWidth: 1,
-    borderBottomColor: '#E5E7EB',
     paddingVertical: 16,
     ...(Platform.OS === 'web' && {
       position: 'sticky' as any,
@@ -244,7 +245,6 @@ const styles = StyleSheet.create({
   logoText: {
     fontSize: 24,
     fontWeight: '800',
-    color: '#2563EB',
     letterSpacing: 0.5,
   },
   desktopNav: {
@@ -280,25 +280,22 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 12,
     borderRadius: 8,
-    backgroundColor: '#F8FAFC',
     ...(Platform.OS === 'web' && {
       cursor: 'pointer',
       transition: 'all 0.2s ease',
       ':hover': {
-        backgroundColor: '#E2E8F0',
+        opacity: 0.8,
       },
     }),
   },
   langButtonText: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#475569',
   },
   langDropdown: {
     position: 'absolute',
     top: 48,
     right: 0,
-    backgroundColor: '#FFFFFF',
     borderRadius: 8,
     paddingVertical: 8,
     minWidth: 120,
@@ -314,20 +311,17 @@ const styles = StyleSheet.create({
       cursor: 'pointer',
       transition: 'background-color 0.2s ease',
       ':hover': {
-        backgroundColor: '#F8FAFC',
+        opacity: 0.8,
       },
     }),
   },
   langOptionActive: {
-    backgroundColor: '#EFF6FF',
   },
   langOptionText: {
     fontSize: 14,
     fontWeight: '500',
-    color: '#475569',
   },
   langOptionTextActive: {
-    color: '#2563EB',
     fontWeight: '600',
   },
   hamburger: {
@@ -342,13 +336,12 @@ const styles = StyleSheet.create({
   },
   navLink: {
     fontSize: 16,
-    color: '#374151',
     fontWeight: '500',
     ...(Platform.OS === 'web' && {
       cursor: 'pointer' as any,
       transition: 'color 0.2s ease',
       ':hover': {
-        color: '#2563EB',
+        opacity: 0.8,
       },
     }),
   },
@@ -358,18 +351,16 @@ const styles = StyleSheet.create({
   },
   loginButtonText: {
     fontSize: 16,
-    color: '#2563EB',
     fontWeight: '600',
   },
   signupButton: {
     paddingVertical: 10,
     paddingHorizontal: 20,
-    backgroundColor: '#2563EB',
     borderRadius: 8,
     ...(Platform.OS === 'web' && {
       transition: 'all 0.2s ease',
       ':hover': {
-        backgroundColor: '#1d4ed8',
+        opacity: 0.9,
         transform: 'translateY(-1px)',
       },
     }),
@@ -380,9 +371,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   mobileMenu: {
-    backgroundColor: '#FFFFFF',
     borderTopWidth: 1,
-    borderTopColor: '#E5E7EB',
     paddingVertical: 16,
     paddingHorizontal: 24,
     ...(Platform.OS === 'web' && {
@@ -396,16 +385,13 @@ const styles = StyleSheet.create({
   },
   mobileMenuText: {
     fontSize: 18,
-    color: '#374151',
     fontWeight: '500',
   },
   mobileMenuDivider: {
     height: 1,
-    backgroundColor: '#E5E7EB',
     marginVertical: 16,
   },
   mobileLoginButton: {
-    backgroundColor: '#F3F4F6',
     borderRadius: 8,
     paddingVertical: 14,
     paddingHorizontal: 16,
@@ -413,12 +399,10 @@ const styles = StyleSheet.create({
   },
   mobileLoginText: {
     fontSize: 18,
-    color: '#2563EB',
     fontWeight: '600',
     textAlign: 'center',
   },
   mobileSignupButton: {
-    backgroundColor: '#2563EB',
     borderRadius: 8,
     paddingVertical: 14,
     paddingHorizontal: 16,

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   View,
   Text,
@@ -16,6 +16,7 @@ import { Search, X, MapPin, Clock } from 'lucide-react-native';
 import { City } from '../../types/community.types';
 import { cityService } from '../../services/cityService';
 import { debounce } from 'lodash';
+import { useTheme } from '../../lib/theme';
 
 // Type for list items (headers + cities)
 type HeaderItem = { type: 'header'; title: string; id: string };
@@ -41,6 +42,7 @@ export default function CitySearchModal({
   selectionContext = 'destination' // Default to destination for backward compatibility
 }: CitySearchModalProps) {
   const { t } = useTranslation();
+  const { theme } = useTheme();
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<City[]>([]);
   const [recentCities, setRecentCities] = useState<City[]>([]);
@@ -63,8 +65,8 @@ export default function CitySearchModal({
   };
 
   // Debounced search function
-  const debouncedSearch = useCallback(
-    debounce(async (query: string) => {
+  const debouncedSearch = useMemo(
+    () => debounce(async (query: string) => {
       if (query.length < 2) {
         setSearchResults([]);
         setIsSearching(false);
@@ -98,19 +100,19 @@ export default function CitySearchModal({
 
     return (
       <TouchableOpacity
-        style={styles.cityItem}
+        style={[styles.cityItem, { borderBottomColor: theme.colors.border }]}
         onPress={() => handleCitySelect(item)}
       >
-        <MapPin size={20} color="#6B7280" />
+        <MapPin size={20} color={theme.colors.textSecondary} />
         <View style={styles.cityInfo}>
-          <Text style={styles.cityName}>{item.name}</Text>
+          <Text style={[styles.cityName, { color: theme.colors.text }]}>{item.name}</Text>
           {item.country_name && (
-            <Text style={styles.cityCountry}>{item.country_name}</Text>
+            <Text style={[styles.cityCountry, { color: theme.colors.textSecondary }]}>{item.country_name}</Text>
           )}
         </View>
         {item.population && item.population > 100000 && (
-          <View style={styles.badge}>
-            <Text style={styles.badgeText}>{t('community.popular')}</Text>
+          <View style={[styles.badge, { backgroundColor: theme.colors.primary + '20' }]}>
+            <Text style={[styles.badgeText, { color: theme.colors.primary }]}>{t('community.popular')}</Text>
           </View>
         )}
       </TouchableOpacity>
@@ -122,8 +124,8 @@ export default function CitySearchModal({
       if (isSearching) {
         return (
           <View style={styles.centerContainer}>
-            <ActivityIndicator size="large" color="#3B82F6" />
-            <Text style={styles.searchingText}>{t('community.searching')}</Text>
+            <ActivityIndicator size="large" color={theme.colors.primary} />
+            <Text style={[styles.searchingText, { color: theme.colors.textSecondary }]}>{t('community.searching')}</Text>
           </View>
         );
       }
@@ -131,9 +133,9 @@ export default function CitySearchModal({
       if (searchResults.length === 0) {
         return (
           <View style={styles.centerContainer}>
-            <MapPin size={48} color="#D1D5DB" />
-            <Text style={styles.noResultsText}>{t('community.no_results')}</Text>
-            <Text style={styles.noResultsHint}>{t('community.try_different_name')}</Text>
+            <MapPin size={48} color={theme.colors.disabled} />
+            <Text style={[styles.noResultsText, { color: theme.colors.textSecondary }]}>{t('community.no_results')}</Text>
+            <Text style={[styles.noResultsHint, { color: theme.colors.disabled }]}>{t('community.try_different_name')}</Text>
           </View>
         );
       }
@@ -171,9 +173,9 @@ export default function CitySearchModal({
         renderItem={({ item }) => {
           if (isHeaderItem(item)) {
             return (
-              <View style={styles.sectionHeader}>
-                {item.title === t('community.recent_cities') && <Clock size={16} color="#6B7280" />}
-                <Text style={styles.sectionTitle}>{item.title}</Text>
+              <View style={[styles.sectionHeader, { backgroundColor: theme.colors.background }]}>
+                {item.title === t('community.recent_cities') && <Clock size={16} color={theme.colors.textSecondary} />}
+                <Text style={[styles.sectionTitle, { color: theme.colors.textSecondary }]}>{item.title}</Text>
               </View>
             );
           }
@@ -186,34 +188,35 @@ export default function CitySearchModal({
   };
 
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
+    <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]} edges={['top']}>
       <KeyboardAvoidingView
-        style={styles.container}
+        style={[styles.container, { backgroundColor: theme.colors.background }]}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
-        <View style={styles.header}>
+        <View style={[styles.header, { borderBottomColor: theme.colors.border }]}>
           <View style={styles.headerContent}>
-            <Text style={styles.title}>
+            <Text style={[styles.title, { color: theme.colors.text }]}>
               {selectionContext === 'origin' 
                 ? t('community.select_origin_city') 
                 : t('community.select_city')}
             </Text>
-            <Text style={styles.subtitle}>
+            <Text style={[styles.subtitle, { color: theme.colors.textSecondary }]}>
               {selectionContext === 'origin'
                 ? t('community.select_origin_hint')
                 : t('community.select_destination_hint')}
             </Text>
           </View>
           <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-            <X size={24} color="#6B7280" />
+            <X size={24} color={theme.colors.textSecondary} />
           </TouchableOpacity>
         </View>
 
-        <View style={styles.searchContainer}>
-          <Search size={20} color="#6B7280" style={styles.searchIcon} />
+        <View style={[styles.searchContainer, { backgroundColor: theme.colors.surface }]}>
+          <Search size={20} color={theme.colors.textSecondary} style={styles.searchIcon} />
           <TextInput
-            style={styles.searchInput}
+            style={[styles.searchInput, { color: theme.colors.text }]}
             placeholder={t('community.search_city')}
+            placeholderTextColor={theme.colors.placeholder}
             value={searchQuery}
             onChangeText={handleSearchChange}
             autoFocus
@@ -227,7 +230,7 @@ export default function CitySearchModal({
               }}
               style={styles.clearButton}
             >
-              <X size={18} color="#6B7280" />
+              <X size={18} color={theme.colors.textSecondary} />
             </TouchableOpacity>
           )}
         </View>
@@ -241,7 +244,6 @@ export default function CitySearchModal({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
   },
   header: {
     flexDirection: 'row',
@@ -249,7 +251,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#E5E7EB',
   },
   headerContent: {
     flex: 1,
@@ -257,12 +258,10 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#111827',
     marginBottom: 4,
   },
   subtitle: {
     fontSize: 14,
-    color: '#6B7280',
     fontStyle: 'italic',
   },
   closeButton: {
@@ -271,7 +270,6 @@ const styles = StyleSheet.create({
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#F3F4F6',
     borderRadius: 12,
     margin: 16,
     paddingHorizontal: 16,
@@ -283,7 +281,6 @@ const styles = StyleSheet.create({
   searchInput: {
     flex: 1,
     fontSize: 16,
-    color: '#111827',
   },
   clearButton: {
     padding: 4,
@@ -296,13 +293,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     paddingVertical: 12,
-    backgroundColor: '#F9FAFB',
     gap: 8,
   },
   sectionTitle: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#6B7280',
     textTransform: 'uppercase',
   },
   cityItem: {
@@ -311,7 +306,6 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     paddingHorizontal: 20,
     borderBottomWidth: 1,
-    borderBottomColor: '#F3F4F6',
   },
   cityInfo: {
     flex: 1,
@@ -320,22 +314,18 @@ const styles = StyleSheet.create({
   cityName: {
     fontSize: 16,
     fontWeight: '500',
-    color: '#111827',
     marginBottom: 2,
   },
   cityCountry: {
     fontSize: 14,
-    color: '#6B7280',
   },
   badge: {
-    backgroundColor: '#EBF5FF',
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 6,
   },
   badgeText: {
     fontSize: 12,
-    color: '#3B82F6',
     fontWeight: '500',
   },
   centerContainer: {
@@ -347,18 +337,15 @@ const styles = StyleSheet.create({
   searchingText: {
     marginTop: 12,
     fontSize: 16,
-    color: '#6B7280',
   },
   noResultsText: {
     marginTop: 16,
     fontSize: 16,
     fontWeight: '500',
-    color: '#6B7280',
   },
   noResultsHint: {
     marginTop: 8,
     fontSize: 14,
-    color: '#9CA3AF',
     textAlign: 'center',
   },
 });

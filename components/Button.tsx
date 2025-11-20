@@ -7,6 +7,7 @@ import {
   ViewStyle,
   TextStyle,
 } from 'react-native';
+import { useTheme } from '@/lib/theme';
 
 interface ButtonProps {
   title: string;
@@ -29,19 +30,61 @@ export function Button({
   style,
   textStyle,
 }: ButtonProps) {
+  const { theme } = useTheme();
+
+  const getVariantStyle = () => {
+    switch (variant) {
+      case 'primary':
+        return { 
+          backgroundColor: theme.colors.primary,
+          ...theme.shadows.small, // Add subtle shadow for depth
+        };
+      case 'secondary':
+        return { 
+          backgroundColor: theme.colors.secondary,
+          ...theme.shadows.small,
+        };
+      case 'outline':
+        return { 
+          backgroundColor: 'transparent', 
+          borderWidth: 1.5, 
+          borderColor: theme.colors.primary 
+        };
+      case 'ghost':
+        return { backgroundColor: 'transparent' };
+      default:
+        return {};
+    }
+  };
+
+  const getTextStyle = () => {
+    if (disabled) return { color: theme.colors.disabled };
+    switch (variant) {
+      case 'primary':
+      case 'secondary':
+        return { color: theme.colors.white }; // Always white on solid buttons
+      case 'outline':
+        return { color: theme.colors.primary };
+      case 'ghost':
+        return { color: theme.colors.textSecondary }; // Ghost buttons usually subtle
+      default:
+        return {};
+    }
+  };
+
   const buttonStyle = [
     styles.button,
-    styles[`button_${variant}`],
+    { borderRadius: theme.borderRadius.md }, // Use theme radius
+    getVariantStyle(),
     styles[`button_${size}`],
-    disabled && styles.button_disabled,
+    disabled && { opacity: 0.5, elevation: 0, shadowOpacity: 0 }, // Remove shadow when disabled
     style,
   ];
 
   const textStyles = [
     styles.text,
-    styles[`text_${variant}`],
+    getTextStyle(),
     styles[`text_${size}`],
-    disabled && styles.text_disabled,
     textStyle,
   ];
 
@@ -53,7 +96,7 @@ export function Button({
       activeOpacity={0.7}
     >
       {loading ? (
-        <ActivityIndicator color={variant === 'primary' ? '#FFFFFF' : '#2563EB'} />
+        <ActivityIndicator color={variant === 'primary' ? theme.colors.white : theme.colors.primary} />
       ) : (
         <Text style={textStyles}>{title}</Text>
       )}
@@ -68,20 +111,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flexDirection: 'row',
   },
-  button_primary: {
-    backgroundColor: '#2563EB',
-  },
-  button_secondary: {
-    backgroundColor: '#64748B',
-  },
-  button_outline: {
-    backgroundColor: 'transparent',
-    borderWidth: 1.5,
-    borderColor: '#2563EB',
-  },
-  button_ghost: {
-    backgroundColor: 'transparent',
-  },
   button_small: {
     paddingVertical: 8,
     paddingHorizontal: 16,
@@ -94,23 +123,8 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     paddingHorizontal: 32,
   },
-  button_disabled: {
-    opacity: 0.5,
-  },
   text: {
     fontWeight: '600',
-  },
-  text_primary: {
-    color: '#FFFFFF',
-  },
-  text_secondary: {
-    color: '#FFFFFF',
-  },
-  text_outline: {
-    color: '#2563EB',
-  },
-  text_ghost: {
-    color: '#2563EB',
   },
   text_small: {
     fontSize: 14,
@@ -120,8 +134,5 @@ const styles = StyleSheet.create({
   },
   text_large: {
     fontSize: 18,
-  },
-  text_disabled: {
-    color: '#94A3B8',
   },
 });

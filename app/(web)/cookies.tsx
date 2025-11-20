@@ -1,35 +1,37 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Platform } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { WebFooter } from '@/components/web/WebFooter';
+import { useTheme } from '@/lib/theme';
 
 export default function CookiePolicy() {
+  const { theme } = useTheme();
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <View style={styles.content}>
-        <Text style={styles.title}>Cookie Policy</Text>
-        <Text style={styles.updated}>Last Updated: November 12, 2025</Text>
+        <Text style={[styles.title, { color: theme.colors.text }]}>Cookie Policy</Text>
+        <Text style={[styles.updated, { color: theme.colors.textSecondary }]}>Last Updated: November 12, 2025</Text>
 
         <View style={styles.section}>
-          <Text style={styles.heading}>1. What Are Cookies?</Text>
-          <Text style={styles.text}>
+          <Text style={[styles.heading, { color: theme.colors.text }]}>1. What Are Cookies?</Text>
+          <Text style={[styles.text, { color: theme.colors.textSecondary }]}>
             Cookies are small text files stored on your device (computer, smartphone, tablet) when you visit websites. They help websites remember your actions and preferences over time, improving your browsing experience.
           </Text>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.heading}>2. How Truxel Uses Cookies</Text>
-          <Text style={styles.text}>
+          <Text style={[styles.heading, { color: theme.colors.text }]}>2. How Truxel Uses Cookies</Text>
+          <Text style={[styles.text, { color: theme.colors.textSecondary }]}>
             We use cookies to provide a better user experience, maintain your session, remember your preferences, and analyze how our Service is used. We respect your privacy and comply with GDPR cookie consent requirements.
           </Text>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.heading}>3. Types of Cookies We Use</Text>
+          <Text style={[styles.heading, { color: theme.colors.text }]}>3. Types of Cookies We Use</Text>
 
-          <Text style={styles.subheading}>3.1 Essential Cookies (Always Active)</Text>
-          <Text style={styles.text}>
+          <Text style={[styles.subheading, { color: theme.colors.text }]}>3.1 Essential Cookies (Always Active)</Text>
+          <Text style={[styles.text, { color: theme.colors.textSecondary }]}>
             These cookies are necessary for the Service to function and cannot be disabled:{'\n\n'}
             • Authentication Cookies: Keep you logged in securely{'\n'}
             • Session Management: Maintain your session across pages{'\n'}
@@ -38,8 +40,8 @@ export default function CookiePolicy() {
             Duration: Session cookies (deleted when you close browser) and persistent cookies (up to 30 days)
           </Text>
 
-          <Text style={styles.subheading}>3.2 Functional Cookies (Optional)</Text>
-          <Text style={styles.text}>
+          <Text style={[styles.subheading, { color: theme.colors.text }]}>3.2 Functional Cookies (Optional)</Text>
+          <Text style={[styles.text, { color: theme.colors.textSecondary }]}>
             These cookies enhance functionality and personalization (require consent):{'\n\n'}
             • Language Preference: Remember your selected language{'\n'}
             • Remember Me: Keep you logged in across sessions{'\n'}
@@ -48,8 +50,8 @@ export default function CookiePolicy() {
             Duration: Up to 1 year
           </Text>
 
-          <Text style={styles.subheading}>3.3 Analytics Cookies (Optional)</Text>
-          <Text style={styles.text}>
+          <Text style={[styles.subheading, { color: theme.colors.text }]}>3.3 Analytics Cookies (Optional)</Text>
+          <Text style={[styles.text, { color: theme.colors.textSecondary }]}>
             These cookies help us understand how users interact with our Service (require consent):{'\n\n'}
             • Google Analytics: Page views, user behavior, demographics{'\n'}
             • Performance Monitoring: Load times, errors, app performance{'\n'}
@@ -58,8 +60,8 @@ export default function CookiePolicy() {
             Duration: Up to 2 years
           </Text>
 
-          <Text style={styles.subheading}>3.4 Marketing Cookies (Optional)</Text>
-          <Text style={styles.text}>
+          <Text style={[styles.subheading, { color: theme.colors.text }]}>3.4 Marketing Cookies (Optional)</Text>
+          <Text style={[styles.text, { color: theme.colors.textSecondary }]}>
             These cookies track your browsing for advertising purposes (require consent):{'\n\n'}
             • Conversion Tracking: Track sign-ups from ads{'\n'}
             • Retargeting: Show relevant ads on other websites{'\n'}
@@ -72,8 +74,8 @@ export default function CookiePolicy() {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.heading}>4. Third-Party Cookies</Text>
-          <Text style={styles.text}>
+          <Text style={[styles.heading, { color: theme.colors.text }]}>4. Third-Party Cookies</Text>
+          <Text style={[styles.text, { color: theme.colors.textSecondary }]}>
             Some cookies are set by third-party services we use:{'\n\n'}
             • Supabase: Authentication and session management{'\n'}
             • Stripe: Payment processing and fraud prevention{'\n'}
@@ -87,8 +89,8 @@ export default function CookiePolicy() {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.heading}>5. Cookie Consent</Text>
-          <Text style={styles.text}>
+          <Text style={[styles.heading, { color: theme.colors.text }]}>5. Cookie Consent</Text>
+          <Text style={[styles.text, { color: theme.colors.textSecondary }]}>
             When you first visit Truxel, you will see a cookie consent banner. You can:{'\n\n'}
             • Accept All: Allow all cookies including optional ones{'\n'}
             • Reject Non-Essential: Accept only essential cookies{'\n'}
@@ -98,10 +100,10 @@ export default function CookiePolicy() {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.heading}>6. Managing Your Cookie Preferences</Text>
+          <Text style={[styles.heading, { color: theme.colors.text }]}>6. Managing Your Cookie Preferences</Text>
 
-          <Text style={styles.subheading}>6.1 Change Settings in Truxel</Text>
-          <Text style={styles.text}>
+          <Text style={[styles.subheading, { color: theme.colors.text }]}>6.1 Change Settings in Truxel</Text>
+          <Text style={[styles.text, { color: theme.colors.textSecondary }]}>
             You can change your cookie preferences at any time:{'\n'}
             1. Go to Profile → Settings{'\n'}
             2. Click &quot;Cookie Preferences&quot;{'\n'}
@@ -109,8 +111,8 @@ export default function CookiePolicy() {
             4. Save changes
           </Text>
 
-          <Text style={styles.subheading}>6.2 Browser Settings</Text>
-          <Text style={styles.text}>
+          <Text style={[styles.subheading, { color: theme.colors.text }]}>6.2 Browser Settings</Text>
+          <Text style={[styles.text, { color: theme.colors.textSecondary }]}>
             You can also manage cookies through your browser settings:{'\n\n'}
             Chrome: Settings → Privacy and Security → Cookies{'\n'}
             Firefox: Options → Privacy & Security → Cookies{'\n'}
@@ -119,8 +121,8 @@ export default function CookiePolicy() {
             Note: Blocking essential cookies will prevent you from using some features of the Service.
           </Text>
 
-          <Text style={styles.subheading}>6.3 Opt-Out Links</Text>
-          <Text style={styles.text}>
+          <Text style={[styles.subheading, { color: theme.colors.text }]}>6.3 Opt-Out Links</Text>
+          <Text style={[styles.text, { color: theme.colors.textSecondary }]}>
             • Google Analytics Opt-out: https://tools.google.com/dlpage/gaoptout{'\n'}
             • Network Advertising Initiative: https://optout.networkadvertising.org{'\n'}
             • Digital Advertising Alliance: https://youradchoices.com
@@ -128,8 +130,8 @@ export default function CookiePolicy() {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.heading}>7. Mobile App Tracking</Text>
-          <Text style={styles.text}>
+          <Text style={[styles.heading, { color: theme.colors.text }]}>7. Mobile App Tracking</Text>
+          <Text style={[styles.text, { color: theme.colors.textSecondary }]}>
             Our mobile apps use similar tracking technologies (local storage, device identifiers) instead of traditional cookies:{'\n\n'}
             • Secure Storage: For authentication tokens{'\n'}
             • AsyncStorage: For app preferences{'\n'}
@@ -142,15 +144,15 @@ export default function CookiePolicy() {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.heading}>8. Do Not Track (DNT)</Text>
-          <Text style={styles.text}>
+          <Text style={[styles.heading, { color: theme.colors.text }]}>8. Do Not Track (DNT)</Text>
+          <Text style={[styles.text, { color: theme.colors.textSecondary }]}>
             Some browsers offer a &quot;Do Not Track&quot; (DNT) signal. Currently, there is no industry standard for responding to DNT signals. However, we respect your privacy choices made through our consent banner and settings.
           </Text>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.heading}>9. Cookie Lifespan</Text>
-          <Text style={styles.text}>
+          <Text style={[styles.heading, { color: theme.colors.text }]}>9. Cookie Lifespan</Text>
+          <Text style={[styles.text, { color: theme.colors.textSecondary }]}>
             • Session Cookies: Deleted when you close your browser{'\n'}
             • Persistent Cookies: Remain on your device for a specified period:{'\n'}
               - Authentication: 30 days{'\n'}
@@ -162,8 +164,8 @@ export default function CookiePolicy() {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.heading}>10. Impact of Disabling Cookies</Text>
-          <Text style={styles.text}>
+          <Text style={[styles.heading, { color: theme.colors.text }]}>10. Impact of Disabling Cookies</Text>
+          <Text style={[styles.text, { color: theme.colors.textSecondary }]}>
             If you disable cookies, you may experience:{'\n\n'}
             • Need to log in on every visit{'\n'}
             • Loss of personalized settings{'\n'}
@@ -175,15 +177,15 @@ export default function CookiePolicy() {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.heading}>11. Children's Privacy</Text>
-          <Text style={styles.text}>
+          <Text style={[styles.heading, { color: theme.colors.text }]}>11. Children's Privacy</Text>
+          <Text style={[styles.text, { color: theme.colors.textSecondary }]}>
             Our Service is not intended for users under 18. We do not knowingly collect cookies from children. If we discover that we have inadvertently collected information from a child under 16, we will delete it immediately.
           </Text>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.heading}>12. Updates to This Policy</Text>
-          <Text style={styles.text}>
+          <Text style={[styles.heading, { color: theme.colors.text }]}>12. Updates to This Policy</Text>
+          <Text style={[styles.text, { color: theme.colors.textSecondary }]}>
             We may update this Cookie Policy to reflect changes in technology, regulations, or our practices. We will notify you of material changes via:{'\n'}
             • Email notification{'\n'}
             • In-app notification{'\n'}
@@ -193,8 +195,8 @@ export default function CookiePolicy() {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.heading}>13. Your Rights (GDPR)</Text>
-          <Text style={styles.text}>
+          <Text style={[styles.heading, { color: theme.colors.text }]}>13. Your Rights (GDPR)</Text>
+          <Text style={[styles.text, { color: theme.colors.textSecondary }]}>
             Under GDPR, you have the right to:{'\n'}
             • Know what cookies we use and why{'\n'}
             • Withdraw cookie consent at any time{'\n'}
@@ -205,8 +207,8 @@ export default function CookiePolicy() {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.heading}>14. Contact Us</Text>
-          <Text style={styles.text}>
+          <Text style={[styles.heading, { color: theme.colors.text }]}>14. Contact Us</Text>
+          <Text style={[styles.text, { color: theme.colors.textSecondary }]}>
             For questions about cookies or this policy:{'\n\n'}
             Email: office@truxel.io{'\n'}
             Phone: +40 750 492 985{'\n\n'}
@@ -215,8 +217,8 @@ export default function CookiePolicy() {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.heading}>15. Useful Resources</Text>
-          <Text style={styles.text}>
+          <Text style={[styles.heading, { color: theme.colors.text }]}>15. Useful Resources</Text>
+          <Text style={[styles.text, { color: theme.colors.textSecondary }]}>
             To learn more about cookies:{'\n'}
             • AboutCookies.org: https://www.aboutcookies.org{'\n'}
             • AllAboutCookies: https://www.allaboutcookies.org{'\n'}
@@ -234,7 +236,6 @@ export default function CookiePolicy() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
   },
   content: {
     maxWidth: 800,
@@ -246,12 +247,10 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 40,
     fontWeight: '700',
-    color: '#1E293B',
     marginBottom: 8,
   },
   updated: {
     fontSize: 16,
-    color: '#64748B',
     marginBottom: 48,
   },
   section: {
@@ -260,19 +259,16 @@ const styles = StyleSheet.create({
   heading: {
     fontSize: 24,
     fontWeight: '700',
-    color: '#1E293B',
     marginBottom: 16,
   },
   subheading: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#1E293B',
     marginBottom: 12,
     marginTop: 16,
   },
   text: {
     fontSize: 16,
-    color: '#64748B',
     lineHeight: 24,
   },
 });

@@ -22,6 +22,7 @@ import { signInWithApple, isAppleAuthAvailable, isGoogleAuthAvailable } from '@/
 import { supabase } from '@/lib/supabase';
 import Toast from 'react-native-toast-message';
 import { Truck } from 'lucide-react-native';
+import { useTheme } from '@/lib/theme';
 
 // Required for web OAuth completion
 WebBrowser.maybeCompleteAuthSession();
@@ -33,6 +34,7 @@ interface LoginForm {
 
 export default function LoginScreen() {
   const { t } = useTranslation();
+  const { theme } = useTheme();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [isAppleAvailable, setIsAppleAvailable] = useState(false);
@@ -243,13 +245,13 @@ export default function LoginScreen() {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.container}
+      style={[styles.container, { backgroundColor: theme.colors.background }]}
     >
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.header}>
-          <Truck size={48} color="#2563EB" />
-          <Text style={styles.title}>{t('auth.welcome')}</Text>
-          <Text style={styles.subtitle}>Truxel</Text>
+          <Truck size={48} color={theme.colors.secondary} />
+          <Text style={[styles.title, { color: theme.colors.text }]}>{t('auth.welcome')}</Text>
+          <Text style={[styles.subtitle, { color: theme.colors.textSecondary }]}>Truxel</Text>
         </View>
 
         <View style={styles.form}>
@@ -312,9 +314,9 @@ export default function LoginScreen() {
 
           {/* Social Sign In Divider */}
           <View style={styles.divider}>
-            <View style={styles.dividerLine} />
-            <Text style={styles.dividerText}>{t('auth.or_continue_with')}</Text>
-            <View style={styles.dividerLine} />
+            <View style={[styles.dividerLine, { backgroundColor: theme.colors.border }]} />
+            <Text style={[styles.dividerText, { color: theme.colors.textSecondary }]}>{t('auth.or_continue_with')}</Text>
+            <View style={[styles.dividerLine, { backgroundColor: theme.colors.border }]} />
           </View>
 
           {/* Apple Sign In Button */}
@@ -331,13 +333,13 @@ export default function LoginScreen() {
           {/* Google Sign In Button */}
           {isGoogleAvailable && (
             <TouchableOpacity
-              style={styles.googleButton}
+              style={[styles.googleButton, { backgroundColor: theme.colors.surface, borderColor: theme.colors.border }]}
               onPress={handleGoogleSignIn}
               disabled={isLoading}
             >
               <View style={styles.googleButtonContent}>
                 <Text style={styles.googleIcon}>G</Text>
-                <Text style={styles.googleButtonText}>
+                <Text style={[styles.googleButtonText, { color: theme.colors.text }]}>
                   {t('auth.sign_in_with_google')}
                 </Text>
               </View>
@@ -375,7 +377,6 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8FAFC',
   },
   scrollContent: {
     flexGrow: 1,
@@ -389,12 +390,10 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: '700',
-    color: '#1E293B',
     marginTop: 16,
   },
   subtitle: {
     fontSize: 18,
-    color: '#64748B',
     marginTop: 8,
   },
   form: {
@@ -412,12 +411,10 @@ const styles = StyleSheet.create({
   dividerLine: {
     flex: 1,
     height: 1,
-    backgroundColor: '#E2E8F0',
   },
   dividerText: {
     marginHorizontal: 16,
     fontSize: 14,
-    color: '#64748B',
   },
   appleButton: {
     width: '100%',
@@ -427,10 +424,8 @@ const styles = StyleSheet.create({
   googleButton: {
     width: '100%',
     height: 50,
-    backgroundColor: '#FFFFFF',
     borderRadius: 8,
     borderWidth: 1.5,
-    borderColor: '#E2E8F0',
     marginBottom: 16,
     justifyContent: 'center',
     alignItems: 'center',
@@ -448,7 +443,6 @@ const styles = StyleSheet.create({
   googleButtonText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#1E293B',
   },
   facebookButton: {
     width: '100%',
