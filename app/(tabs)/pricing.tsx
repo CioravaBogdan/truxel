@@ -106,6 +106,7 @@ export default function PricingScreen() {
   const [rcCustomerInfo, setRcCustomerInfo] = useState<CustomerInfo | null>(null);
   const [userCurrency, setUserCurrency] = useState<'EUR' | 'USD'>('EUR');
   const [purchasingPackage, setPurchasingPackage] = useState<string | null>(null);
+  const [debugError, setDebugError] = useState<string | null>(null); // Add debug error state
   
   // Coupon state (Stripe only - not used in RevenueCat native IAP)
   const [couponCode, setCouponCode] = useState('');
@@ -202,7 +203,9 @@ export default function PricingScreen() {
       'truxel_4999_1month': 'pro',
       'truxel_2999_fleet_1month': 'fleet_manager',
       'truxel_4999_profreighter_1month': 'pro_freighter',
+      'truxel_4999_frighter_1month': 'pro_freighter', // Handle typo in App Store Connect
       'truxel_2499_onetime': 'search_pack', // Search Pack addon (one-time purchase)
+      'one_time_25_searches': 'search_pack', // New ID format
 
       // Android package identifiers (when ready)
       'truxel_standard_monthly': 'standard',
@@ -318,12 +321,15 @@ export default function PricingScreen() {
         price: p.product.priceString
       })));
       
-      const userSubscriptions = offerings.subscriptions.filter(
-        (pkg) => pkg.product.currencyCode === offerings.userCurrency
-      );
-      const userSearchPacks = offerings.searchPacks.filter(
-        (pkg) => pkg.product.currencyCode === offerings.userCurrency
-      );
+      // ON MOBILE: Trust getOfferings() which returns all available store packages
+      // ON WEB: Filter by currency to avoid showing mixed currencies
+      const userSubscriptions = Platform.OS === 'web' 
+        ? offerings.subscriptions.filter((pkg) => pkg.product.currencyCode === offerings.userCurrency)
+        : offerings.subscriptions;
+
+      const userSearchPacks = Platform.OS === 'web'
+        ? offerings.searchPacks.filter((pkg) => pkg.product.currencyCode === offerings.userCurrency)
+        : offerings.searchPacks;
       
       // 🔍 DEBUG: Log AFTER currency filter (before tier dedup)
       console.log('🔍 AFTER currency filter (BEFORE tier dedup):', userSubscriptions.map(p => ({
@@ -349,9 +355,21 @@ export default function PricingScreen() {
         tierName: getTierName(p.identifier)
       })));
       
-      // ✅ DEDUPLICATE search packs by identifier
+      // ✅ DEDUPLICATE search packs by identifier AND tier name
       const seenSearchPacks = new Set<string>();
       const dedupedSearchPacks = userSearchPacks.filter((pkg) => {
+        const tierName = getTierName(pkg.identifier);
+        // If it's a known search pack type, deduplicate by type
+        if (tierName === 'search_pack') {
+          if (seenSearchPacks.has('search_pack')) {
+            console.log(`🗑️ Removing duplicate search pack type: ${tierName} (package: ${pkg.identifier})`);
+            return false;
+          }
+          seenSearchPacks.add('search_pack');
+          return true;
+        }
+        
+        // Fallback: deduplicate by identifier
         const packName = pkg.identifier;
         if (seenSearchPacks.has(packName)) {
           console.log(`🗑️ Removing duplicate search pack: ${packName}`);
@@ -379,6 +397,7 @@ export default function PricingScreen() {
       });
     } catch (error: any) {
       console.error('❌ RevenueCat error:', error);
+      setDebugError(error.message); // Capture error for debug UI
       Toast.show({
         type: 'error',
         text1: t('common.error'),
@@ -397,7 +416,6 @@ export default function PricingScreen() {
     
     
     checkSubscriptionStatus();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadRevenueCatOfferings, loadPricingData, checkSubscriptionStatus]);
 
   useEffect(() => {
@@ -1102,10 +1120,6 @@ export default function PricingScreen() {
                     <Text style={styles.tierName}>
                       {t(`pricing.tier_${tierName}`)}
                     </Text>
-                    {/* 🔍 DEBUG: Show package identifier */}
-                    <Text style={{ fontSize: 10, color: '#999', marginTop: 4 }}>
-                      ID: {pkg.identifier}
-                    </Text>
                     <Text style={styles.tierPrice}>
                       {pkg.product.priceString}
                       <Text style={styles.tierPriceUnit}>
@@ -1288,7 +1302,11 @@ export default function PricingScreen() {
               {rcSearchPacks.map((pkg) => (
                 <Card key={pkg.identifier} style={styles.packCard}>
                   <View style={styles.packHeader}>
-                    <Text style={styles.packName}>{pkg.product.title}</Text>
+                    <Text style={styles.packName}>
+                      {getTierName(pkg.identifier) === 'search_pack' 
+                        ? `25 ${t('pricing.searches')}` 
+                        : pkg.product.title}
+                    </Text>
                     <Text style={styles.packPrice}>{pkg.product.priceString}</Text>
                   </View>
 
@@ -1374,6 +1392,29 @@ export default function PricingScreen() {
           <Text style={styles.supportButtonText}>💬 {t('support.title')}</Text>
           <Text style={styles.supportButtonSubtext}>{t('support.need_help_choosing')}</Text>
         </TouchableOpacity>
+
+        {/* DEBUG INFO - Visible only when no subscriptions found */}
+        {rcSubscriptions.length === 0 && !isLoading && (
+          <View style={styles.debugContainer}>
+            <Text style={styles.debugTitle}>⚠️ Debug Info (No Packages Found)</Text>
+            <Text style={styles.debugText}>User ID: {profile?.user_id || 'Not logged in'}</Text>
+            <Text style={styles.debugText}>Currency: {userCurrency}</Text>
+            <Text style={styles.debugText}>Platform: {Platform.OS}</Text>
+            <Text style={styles.debugText}>Error: {debugError || 'None'}</Text>
+            <Text style={styles.debugText}>
+              Check:
+              1. App Store Connect &quot;Paid Apps Agreement&quot;
+              2. RevenueCat &quot;Offering&quot; is Current
+              3. Product IDs match exactly
+            </Text>
+            <Button 
+              title="Retry Loading" 
+              onPress={loadRevenueCatOfferings} 
+              variant="outline"
+              style={{ marginTop: 10 }}
+            />
+          </View>
+        )}
       </ScrollView>
 
       {/* Chat Support Modal */}
@@ -1714,5 +1755,25 @@ const styles = StyleSheet.create({
   supportButtonSubtext: {
     fontSize: 13,
     color: '#60A5FA',
+  },
+  debugContainer: {
+    padding: 16,
+    margin: 16,
+    backgroundColor: '#FEF2F2',
+    borderWidth: 1,
+    borderColor: '#FCA5A5',
+    borderRadius: 8,
+  },
+  debugTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#DC2626',
+    marginBottom: 8,
+  },
+  debugText: {
+    fontSize: 12,
+    color: '#7F1D1D',
+    marginBottom: 4,
+    fontFamily: Platform.OS === 'ios' ? 'Courier' : 'monospace',
   },
 });

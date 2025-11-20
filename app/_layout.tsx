@@ -12,6 +12,7 @@ import Purchases, { LOG_LEVEL } from 'react-native-purchases';
 import Constants from 'expo-constants';
 import i18n from '@/lib/i18n';
 import Toast from 'react-native-toast-message';
+import { initRevenueCat, logoutRevenueCat } from '@/lib/revenueCat';
 
 export default function RootLayout() {
   useFrameworkReady();
@@ -124,6 +125,15 @@ export default function RootLayout() {
 
         if (session?.user) {
           console.log('RootLayout: Auth changed - fetching profile for user:', session.user.id);
+          
+          // Initialize RevenueCat with user ID
+          if (Platform.OS !== 'web') {
+             console.log('RootLayout: Identifying user in RevenueCat:', session.user.id);
+             initRevenueCat(session.user.id).catch(err => 
+               console.error('RootLayout: Failed to identify user in RevenueCat:', err)
+             );
+          }
+
           try {
             const profile = await authService.getProfile(
               session.user.id,
@@ -178,6 +188,13 @@ export default function RootLayout() {
           sessionService.stop();
           notificationService.stopLocationPolling();
           
+          // Logout from RevenueCat
+          if (Platform.OS !== 'web') {
+             logoutRevenueCat().catch(err => 
+               console.error('RootLayout: Failed to logout from RevenueCat:', err)
+             );
+          }
+
           // Reset to English when logged out
           if (i18n.language !== 'en') {
             i18n.changeLanguage('en');

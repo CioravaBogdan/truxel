@@ -111,7 +111,6 @@ export async function getOfferings(userId?: string): Promise<TruxelOfferings> {
     } else {
       // Mobile: Use react-native-purchases (native IAP)
       // Check if SDK is configured (not Expo Go)
-      const Constants = require('expo-constants').default;
       const isExpoGo = Constants.appOwnership === 'expo' ||
                        Constants.executionEnvironment === 'storeClient';
 
@@ -207,7 +206,12 @@ export async function getOfferings(userId?: string): Promise<TruxelOfferings> {
     };
 
     // Filter packages by currency
+    // ON WEB: Strict filtering (Stripe has specific prices for EUR/USD)
+    // ON MOBILE: Relaxed filtering (StoreKit handles currency conversion)
+    // If mobile store returns a currency we don't expect (e.g. RON), we should still show it!
     let subscriptions = defaultOffering.availablePackages.filter((pkg: any) => {
+      if (!isWeb) return true; // ✅ Mobile: Show all packages from the store (StoreKit handles currency)
+
       const pkgCurrency = getCurrency(pkg);
       const matches = pkgCurrency === userCurrency;
       if (!matches) {
@@ -217,6 +221,8 @@ export async function getOfferings(userId?: string): Promise<TruxelOfferings> {
     }) || [];
 
     let searchPacks = searchPacksOffering?.availablePackages.filter((pkg: any) => {
+      if (!isWeb) return true; // ✅ Mobile: Show all packages
+
       const pkgCurrency = getCurrency(pkg);
       const matches = pkgCurrency === userCurrency;
       if (!matches) {
@@ -297,7 +303,6 @@ export async function purchasePackage(pkg: OfferingPackage, userId?: string): Pr
     } else {
       // Mobile: Use react-native-purchases
       // Check if SDK is configured (not Expo Go)
-      const Constants = require('expo-constants').default;
       const isExpoGo = Constants.appOwnership === 'expo' ||
                        Constants.executionEnvironment === 'storeClient';
 
@@ -347,7 +352,6 @@ export async function restorePurchases(userId?: string): Promise<CustomerInfo> {
     } else {
       // Mobile: Use react-native-purchases
       // Check if SDK is configured (not Expo Go)
-      const Constants = require('expo-constants').default;
       const isExpoGo = Constants.appOwnership === 'expo' ||
                        Constants.executionEnvironment === 'storeClient';
 
@@ -386,7 +390,6 @@ export async function getCustomerInfo(userId?: string): Promise<CustomerInfo> {
     } else {
       // Mobile: Use react-native-purchases
       // Check if SDK is configured (not Expo Go)
-      const Constants = require('expo-constants').default;
       const isExpoGo = Constants.appOwnership === 'expo' ||
                        Constants.executionEnvironment === 'storeClient';
 

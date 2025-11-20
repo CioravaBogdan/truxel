@@ -1,5 +1,5 @@
 import { supabase } from '@/lib/supabase';
-import { Language, Profile } from '@/types/database.types';
+import { Profile } from '@/types/database.types';
 import { User } from '@supabase/supabase-js';
 import { autoDetectDistanceUnit } from '@/utils/distance';
 import { autoDetectCurrency } from '@/utils/currency';
@@ -20,33 +20,24 @@ export const authService = {
     const { data: authData, error: authError } = await supabase.auth.signUp({
       email: data.email,
       password: data.password,
+      options: {
+        data: {
+          full_name: data.full_name,
+          phone_number: data.phone_number,
+          company_name: data.company_name,
+          preferred_distance_unit: autoDetectDistanceUnit(Localization.getLocales()[0]?.languageTag || 'en'),
+          preferred_currency: autoDetectCurrency(Localization.getLocales()[0]?.languageTag || 'en'),
+          preferred_language: Localization.getLocales()[0]?.languageCode || 'en',
+        },
+      },
     });
 
     if (authError) throw authError;
     if (!authData.user) throw new Error('User creation failed');
 
-    // Auto-detect distance unit and currency based on device locale
-    const deviceLocale = Localization.getLocales()[0]?.languageTag || 'en';
-    const distanceUnit = autoDetectDistanceUnit(deviceLocale);
-    const currency = autoDetectCurrency(deviceLocale);
-
-    const { error: profileError } = await supabase
-      .from('profiles')
-      .insert({
-        user_id: authData.user.id,
-        email: data.email,
-        full_name: data.full_name,
-        phone_number: data.phone_number,
-        company_name: data.company_name,
-        subscription_tier: 'trial',
-        subscription_status: 'active',
-        trial_searches_used: 0,
-        monthly_searches_used: 0,
-        preferred_distance_unit: distanceUnit, // Auto-detect km or mi (US/CA/UK = mi)
-        preferred_currency: currency, // Auto-detect EUR or USD (US/CA/MX = USD)
-      });
-
-    if (profileError) throw profileError;
+    // Profile is auto-created by Supabase Trigger (handle_new_user)
+    // We pass all necessary data in options.data above.
+    // No manual insert needed here to avoid RLS issues.
 
     return authData;
   },
@@ -134,68 +125,20 @@ export const authService = {
       if (Array.isArray(data) && data.length > 0) {
         profileRecord = data[0];
       } else {
-        console.log('authService.getProfile: No profile found, attempting to create default profile');
-
-        const fallbackEmail = sessionUser?.email || sessionUser?.user_metadata?.email || '';
-        const fallbackFullName =
-          sessionUser?.user_metadata?.full_name ||
-          (fallbackEmail ? fallbackEmail.split('@')[0] : '') ||
-          'Truxel Logistics Partner';
-        const fallbackLanguage =
-          (sessionUser?.user_metadata?.preferred_language as Language | undefined) || 'en';
-
-        const defaultProfilePayload = {
-          user_id: userId,
-          email: fallbackEmail || `${userId}@placeholder.truxel`,
-          full_name: fallbackFullName,
-          subscription_tier: 'trial',
-          subscription_status: 'active',
-          trial_searches_used: 0,
-          monthly_searches_used: 0,
-          available_search_credits: 0,
-          preferred_language: fallbackLanguage,
-        } satisfies Partial<Profile> & {
-          user_id: string;
-          email: string;
-          full_name: string;
-          preferred_language: Language;
-        };
-
-        try {
-          const createResponse = await fetch(`${SUPABASE_URL}/rest/v1/profiles`, {
-            method: 'POST',
-            headers: {
-              apikey: SUPABASE_KEY!,
-              Authorization: `Bearer ${token}`,
-              'Content-Type': 'application/json',
-              Prefer: 'return=representation',
-            },
-            body: JSON.stringify(defaultProfilePayload),
-          });
-
-          console.log('authService.getProfile: Create profile status:', createResponse.status);
-
-          if (!createResponse.ok) {
-            const createError = await createResponse.text();
-            console.error('authService.getProfile: Failed to auto-create profile:', createResponse.status, createError);
-          } else {
-            const created = await createResponse.json();
-            console.log('authService.getProfile: Default profile created:', created);
-
-            if (Array.isArray(created) && created.length > 0) {
-              profileRecord = created[0];
-            }
-          }
-        } catch (creationError) {
-          console.error('authService.getProfile: Error creating default profile:', creationError);
-        }
+        console.log('authService.getProfile: No profile found immediately. Waiting for trigger...');
+        
+        // Profile creation is handled by the database trigger (handle_new_user).
+        // We wait a bit and retry fetching, but we DO NOT insert manually to avoid RLS/Duplicate errors.
+        
+        // Wait 1 second for trigger to complete
+        await new Promise(resolve => setTimeout(resolve, 1000));
       }
 
       if (profileRecord) {
         return profileRecord;
       }
 
-      // Final fallback: re-fetch profile in case creation succeeded but returned empty body or conflict occurred
+      // Final fallback: re-fetch profile
       const refetchResponse = await fetch(url, {
         headers: {
           apikey: SUPABASE_KEY!,
@@ -206,12 +149,12 @@ export const authService = {
 
       if (!refetchResponse.ok) {
         const refetchError = await refetchResponse.text();
-        console.error('authService.getProfile: Refetch after auto-create failed:', refetchResponse.status, refetchError);
+        console.error('authService.getProfile: Refetch failed:', refetchResponse.status, refetchError);
         return null;
       }
 
       const refetched = await refetchResponse.json();
-      console.log('authService.getProfile: Refetched profile after creation attempt:', refetched);
+      console.log('authService.getProfile: Refetched profile:', refetched);
       return Array.isArray(refetched) && refetched.length > 0 ? refetched[0] : null;
     } catch (error) {
       console.error('authService.getProfile error:', error);

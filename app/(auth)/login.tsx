@@ -14,9 +14,7 @@ import { useTranslation } from 'react-i18next';
 import { useForm, Controller } from 'react-hook-form';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import * as WebBrowser from 'expo-web-browser';
-import { makeRedirectUri } from 'expo-auth-session';
 import * as QueryParams from 'expo-auth-session/build/QueryParams';
-import Constants from 'expo-constants';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
 import { authService } from '@/services/authService';
@@ -76,26 +74,13 @@ export default function LoginScreen() {
     // Supabase will handle the OAuth callback automatically
   };
 
-  const buildMobileRedirectUri = () => {
-    // IMPORTANT: For Facebook OAuth in Expo Go, we MUST use custom scheme
-    // Facebook does NOT allow localhost URLs (exp://localhost:8081)
-    // So we force 'truxel://auth/callback' even in development
-    const redirect = makeRedirectUri({
-      native: 'truxel://auth/callback',
-      preferLocalhost: false, // CRITICAL: Facebook rejects localhost URLs
-      scheme: 'truxel',
-    });
-
-    console.log('=== OAuth Redirect Debug ===');
-    console.log('Platform:', Platform.OS);
-    console.log('Ownership:', Constants.appOwnership);
-    console.log('Execution env:', Constants.executionEnvironment);
-    console.log('Expo scheme:', Constants.expoConfig?.scheme);
-    console.log('Expo hostUri:', Constants.expoConfig?.hostUri);
-    console.log('Computed redirectTo:', redirect);
-    console.log('============================');
-
-    return redirect;
+  const buildMobileRedirectUri = (provider: 'google' | 'facebook') => {
+    // Production & Development Build (EAS/Android Studio)
+    // This uses the custom scheme 'truxel://' which is whitelisted in Supabase.
+    // This will work perfectly in Production builds and Development builds.
+    // Note: It may fail in Expo Go on Android (stuck on loading), but that is expected
+    // as Expo Go does not support custom schemes reliably on Android.
+    return 'truxel://auth/callback';
   };
 
   const onSubmit = async (data: LoginForm) => {
@@ -158,11 +143,13 @@ export default function LoginScreen() {
         }
       } else {
         // Mobile: Use recommended Expo auth flow with makeRedirectUri
-        const redirectTo = buildMobileRedirectUri();
+        const redirectTo = buildMobileRedirectUri(provider);
 
         if (!redirectTo) {
           throw new Error('Unable to compute redirect URI');
         }
+
+        console.log('🚀 Sending redirectTo to Supabase:', redirectTo);
 
         const { data, error } = await supabase.auth.signInWithOAuth({
           provider,

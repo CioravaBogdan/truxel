@@ -51,17 +51,30 @@ export default function RegisterScreen() {
   const onSubmit = async (data: RegisterForm) => {
     setIsLoading(true);
     try {
-      await authService.signUp({
+      const authData = await authService.signUp({
         email: data.email,
         password: data.password,
         full_name: data.fullName,
         phone_number: data.phoneNumber,
         company_name: data.companyName,
       });
-      Toast.show({
-        type: 'success',
-        text1: t('auth.register_success'),
-      });
+
+      if (authData.session) {
+        Toast.show({
+          type: 'success',
+          text1: t('auth.register_success'),
+        });
+      } else {
+        Toast.show({
+          type: 'info',
+          text1: 'Check your email',
+          text2: 'Please verify your email to complete registration.',
+          visibilityTime: 6000,
+        });
+        setTimeout(() => {
+          router.replace('/(auth)/login');
+        }, 2500);
+      }
     } catch (error: any) {
       Toast.show({
         type: 'error',

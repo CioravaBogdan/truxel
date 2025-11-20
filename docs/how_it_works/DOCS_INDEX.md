@@ -47,6 +47,14 @@
 - [N8N_WEBHOOK_GUIDE.md](./how_it_works/N8N_WEBHOOK_GUIDE.md) - N8N automations
 - [OAUTH_IMPLEMENTATION.md](./how_it_works/OAUTH_IMPLEMENTATION.md) - Google OAuth
 
+**System Blueprints & Playbooks:**
+- [BACKEND_ARCHITECTURE.md](./BACKEND_ARCHITECTURE.md) - End-to-end API, Supabase, and automation layout
+- [APP_LOGIC_FLOWS.md](./APP_LOGIC_FLOWS.md) - Screen → store → service flows for core features
+- [MONETIZATION_GUIDE.md](./MONETIZATION_GUIDE.md) - RevenueCat + Stripe pairing and fallback logic
+- [PLATFORM_SETUP_AUTH.md](./PLATFORM_SETUP_AUTH.md) - Auth stack setup (Supabase, deep links, OAuth)
+- [NOTIFICATIONS_PLAN.md](./NOTIFICATIONS_PLAN.md) - Push/email notification plan plus infra dependencies
+- [LESSONS_LEARNED.md](./LESSONS_LEARNED.md) - Postmortems & gotchas to avoid repeating mistakes
+
 **Infrastructure:**
 - [DEPLOY_EDGE_FUNCTIONS.md](./how_it_works/DEPLOY_EDGE_FUNCTIONS.md) - Supabase functions
 - [GOOGLE_OAUTH_SETUP.md](./how_it_works/GOOGLE_OAUTH_SETUP.md) - OAuth console setup
@@ -84,6 +92,12 @@ Completed plans, old checklists, implemented features (historical reference only
 | ☁️ **Deploy functions** | [how_it_works/DEPLOY_EDGE_FUNCTIONS.md](./how_it_works/DEPLOY_EDGE_FUNCTIONS.md) |
 | 📊 **Project status** | [PROJECT_SUMMARY.md](./PROJECT_SUMMARY.md) |
 | 📝 **Version history** | [CHANGELOG.md](./CHANGELOG.md) |
+| 🧠 **Architecture big picture** | [BACKEND_ARCHITECTURE.md](./BACKEND_ARCHITECTURE.md) |
+| 🔐 **Auth platform setup** | [PLATFORM_SETUP_AUTH.md](./PLATFORM_SETUP_AUTH.md) |
+| 🔔 **Notifications plan** | [NOTIFICATIONS_PLAN.md](./NOTIFICATIONS_PLAN.md) |
+| 💰 **Monetization strategy** | [MONETIZATION_GUIDE.md](./MONETIZATION_GUIDE.md) |
+| 🧩 **App logic flows** | [APP_LOGIC_FLOWS.md](./APP_LOGIC_FLOWS.md) |
+| 📓 **Lessons learned** | [LESSONS_LEARNED.md](./LESSONS_LEARNED.md) |
 
 ---
 
