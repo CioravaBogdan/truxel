@@ -486,7 +486,10 @@ export default function SearchScreen() {
             value={keywords}
             onChangeText={setKeywords}
             multiline
-            style={keywordsList.length > 5 ? { borderColor: theme.colors.error, borderWidth: 2 } : undefined}
+            style={[
+              { borderWidth: 1, borderColor: theme.colors.border },
+              keywordsList.length > 5 && { borderColor: theme.colors.error, borderWidth: 2 }
+            ]}
           />
           
           {/* Visual Keywords Display */}

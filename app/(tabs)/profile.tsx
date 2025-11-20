@@ -87,6 +87,10 @@ const TRUCK_TYPES = [
   { value: 'Frigo', label: 'Refrigerated' },
   { value: 'Tanker', label: 'Tanker' },
   { value: 'Flatbed', label: 'Flatbed' },
+  { value: 'StepDeck', label: 'Step Deck' },
+  { value: 'PowerOnly', label: 'Power Only' },
+  { value: 'BoxTruck', label: 'Box Truck' },
+  { value: 'DryVan', label: 'Dry Van' },
   { value: 'Other', label: 'Other' },
 ];
 

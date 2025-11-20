@@ -86,7 +86,7 @@
   "search": {
     "title": "Găsește Companii",
     "location_method": "Alege Metoda de Localizare",
-    "use_current_location": "Caută în Jurul Meu",
+    "use_current_location": "Obține locația mea",
     "enter_address": "Introdu Adresa",
     "select_on_map": "Selectează pe Hartă",
     "keywords": "Cuvinte Cheie / Industrii",

@@ -4,6 +4,7 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
+  Image,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
@@ -134,7 +135,14 @@ export default function HomeScreen() {
                 <Card style={styles.leadCard}>
                   <View style={styles.leadContent}>
                     <View style={[styles.leadIconContainer, { backgroundColor: theme.colors.secondary + '15' }]}>
-                      <Building2 size={20} color={theme.colors.secondary} />
+                      {(lead as any).google_url_photo ? (
+                        <Image 
+                          source={{ uri: (lead as any).google_url_photo }} 
+                          style={{ width: 40, height: 40, borderRadius: 20 }}
+                        />
+                      ) : (
+                        <Building2 size={20} color={theme.colors.secondary} />
+                      )}
                     </View>
                     <View style={styles.leadInfo}>
                       <Text style={[styles.leadName, { color: theme.colors.text }]}>{lead.company_name}</Text>

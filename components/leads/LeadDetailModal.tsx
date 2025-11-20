@@ -9,6 +9,7 @@ import {
   Linking,
   TextInput,
   ActivityIndicator,
+  Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
@@ -245,7 +246,14 @@ export default function LeadDetailModal({ lead, visible, onClose, onAddToMyBook,
           {/* Company Info Card */}
           <View style={[styles.companyCard, { backgroundColor: theme.colors.surface }]}>
             <View style={[styles.avatarContainer, { backgroundColor: theme.colors.primary + '15' }]}>
-              <Building2 size={48} color={theme.colors.primary} />
+              {(lead as any).google_url_photo ? (
+                <Image 
+                  source={{ uri: (lead as any).google_url_photo }} 
+                  style={{ width: 80, height: 80, borderRadius: 40 }}
+                />
+              ) : (
+                <Building2 size={48} color={theme.colors.primary} />
+              )}
             </View>
             
             <Text style={[styles.companyName, { color: theme.colors.text }]}>{lead.company_name}</Text>

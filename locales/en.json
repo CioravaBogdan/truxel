@@ -86,7 +86,7 @@
   "search": {
     "title": "Find Companies",
     "location_method": "Choose Location Method",
-    "use_current_location": "Search Around Me",
+    "use_current_location": "Get my location",
     "enter_address": "Enter Address",
     "select_on_map": "Select on Map",
     "keywords": "Keywords / Industries",
