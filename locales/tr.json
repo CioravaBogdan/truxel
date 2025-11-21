@@ -269,7 +269,9 @@
     "permission_required": "İzin Gerekli",
     "photo_permission_message": "Profil fotoğrafınızı yüklemek için fotoğraf galerisine erişime ihtiyacımız var",
     "avatar_updated": "Profil fotoğrafı başarıyla güncellendi",
-    "avatar_upload_failed": "Profil fotoğrafı yüklenemedi"
+    "avatar_upload_failed": "Profil fotoğrafı yüklenemedi",
+    "phone_number": "Telefon Numarasi",
+    "search_radius_warning": "?? Daha genis yari�ap Google API limitleri nedeniyle bazi sirketleri ka�irabilir. En iyi sonu�lar i�in 5 km �nerilir."
   },
   "templates": {
     "email_subject": "Lojistik Ortaklık Fırsatı - {{company}}",
@@ -944,8 +946,13 @@
           "tagline": "Bağımsız sürücüler için tasarlandı",
           "feature_searches": "Her ay {{count}} şirket araması yapılıyor",
           "feature_posts": "Günde {{daily}} gönderi (her ay {{monthly}})",
-          "feature_filters": "Doğru nakliyecileri bulmak için gelişmiş filtreler",
-          "feature_saves": "Sınırsız kayıtlı potansiyel müşteri ve takip"
+          "description": "Ayda 30 sirket aramasiyla dogrudan m�steriler bul, ayrica d�n�s y�k� yakalamak i�in 30 topluluk g�nderisi al. Kendi m�steri veritabanini olustur ve bos d�nme.",
+          "feature_results": "Anahtar kelime basina en fazla 20 potansiyel m�steri",
+          "feature_concurrent": "Ayni anda {{count}} aktif ilan",
+          "feature_community": "Topluluk Erisimi ve Y�k Paylasimi",
+          "feature_crm": "Entegre CRM ve CSV disa aktarimi",
+          "feature_contact": "Dogrudan aramalar ve WhatsApp sablonlari",
+          "feature_sharing": "Iletisim kartlarini her yerde paylas"
         },
         "pro": {
           "title": "Profesyonel",
@@ -953,10 +960,13 @@
           "feature_searches": "Genişletilmiş sonuçlar içeren {{count}} aramalar",
           "feature_posts": "Günde {{daily}} gönderi (her ay {{monthly}})",
           "feature_linkedin": "Karar vericiler için LinkedIn iletişim profilleri",
-          "feature_ai": "Yapay zeka destekli rota eşleştirme ve şirket puanlama",
-          "feature_research": "Sektöre ve kulvara göre derin şirket araştırması",
-          "feature_priority": "Topluluk akışında öncelikli yerleştirme",
-          "feature_export": "Potansiyel müşterileri ve notları tek dokunuşla CSV'ye aktarın"
+          "description": "Ayda 50 arama, 100 topluluk g�nderisi ve karar vericileri bulmak i�in �zel LinkedIn entegrasyonu. Verilere sahip olman i�in \"Leadleri Disa Aktar\" �zelligini i�erir.",
+          "feature_results": "Anahtar kelime basina en fazla 50 potansiyel m�steri",
+          "feature_concurrent": "Ayni anda {{count}} aktif ilan",
+          "feature_community": "Topluluk Erisimi ve Y�k Paylasimi",
+          "feature_crm": "Entegre CRM ve CSV disa aktarimi",
+          "feature_contact": "Dogrudan aramalar ve WhatsApp sablonlari",
+          "feature_sharing": "Iletisim kartlarini her yerde paylas"
         },
         "fleet": {
           "title": "Filo Müdürü",
@@ -964,9 +974,12 @@
           "feature_searches": "Her ay {{count}} hedefli arama",
           "feature_posts": "Günde {{daily}} gönderi (her ay {{monthly}})",
           "feature_concurrent": "{{count}} aktif yayın aynı anda yayınlanıyor",
-          "feature_duration": "Erişimi en üst düzeye çıkarmak için yayınlar {{hours}} saat görünür kalır",
-          "feature_tools": "Ekip işbirliği için nakliye komisyoncusu iş akışları",
-          "feature_saved": "{{count_saved}} adede kadar rota ve şablon kaydedin"
+          "description": "Filonu hareket halinde tutmak i�in g�nde 30 g�nderi (ayda 900) ile birden �ok kamyonu y�net. Hedefli m�steri kazanimi i�in ayda 30 arama i�erir.",
+          "feature_results": "Anahtar kelime basina en fazla 20 potansiyel m�steri",
+          "feature_community": "Topluluk Erisimi ve Y�k Paylasimi",
+          "feature_crm": "Entegre CRM ve CSV disa aktarimi",
+          "feature_contact": "Dogrudan aramalar ve WhatsApp sablonlari",
+          "feature_sharing": "Iletisim kartlarini her yerde paylas"
         },
         "freighter": {
           "title": "Profesyonel Yük Gemisi",
@@ -974,13 +987,13 @@
           "feature_searches": "Her ay {{count}} premium araması",
           "feature_posts": "Günde {{daily}} gönderi (her ay {{monthly}})",
           "feature_linkedin": "Tam karar verici iletişim verileri",
-          "feature_ai": "Yapay zeka, akıllı hatırlatıcılarla istihbarat gönderiyor",
-          "feature_research": "Çok ülkeli operasyonlar için ileri araştırma",
           "feature_concurrent": "Ekipler arasında {{count}} eşzamanlı gönderiler",
-          "feature_duration": "Otomatik yenilemeyle {{hours}} saatlik görünürlük",
-          "feature_analytics": "Performans analizleri ve haftalık öngörüler",
-          "feature_support": "Özel konsiyerj hizmetiyle öncelikli destek",
-          "feature_saved": "{{count_saved}} şablonu ve kayıtlı rotayı depolayın"
+          "description": "Ayda 1500 g�nderi ve 50 eszamanli ilan ile pazara hakim ol. Y�ksek hacimli operasyonlar i�in 50 arama ve LinkedIn ara�larini i�erir.",
+          "feature_results": "Anahtar kelime basina en fazla 50 potansiyel m�steri",
+          "feature_community": "Topluluk Erisimi ve Y�k Paylasimi",
+          "feature_crm": "Entegre CRM ve CSV disa aktarimi",
+          "feature_contact": "Dogrudan aramalar ve WhatsApp sablonlari",
+          "feature_sharing": "Iletisim kartlarini her yerde paylas"
         }
       }
     }

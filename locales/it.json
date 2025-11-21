@@ -269,7 +269,9 @@
     "permission_required": "Autorizzazione richiesta",
     "photo_permission_message": "Abbiamo bisogno dell'accesso alla libreria di foto per caricare la tua immagine del profilo",
     "avatar_updated": "Immagine del profilo aggiornata correttamente",
-    "avatar_upload_failed": "Impossibile caricare l'immagine del profilo"
+    "avatar_upload_failed": "Impossibile caricare l'immagine del profilo",
+    "phone_number": "Numero di telefono",
+    "search_radius_warning": "?? Un raggio pi� ampio potrebbe saltare alcune aziende a causa dei limiti delle API di Google. 5 km consigliati per i risultati migliori."
   },
   "templates": {
     "email_subject": "Opportunità di partnership logistica - {{company}}",
@@ -944,8 +946,13 @@
           "tagline": "Costruito per guidatori indipendenti",
           "feature_searches": "{{count}} ricerche aziendali ogni mese",
           "feature_posts": "{{daily}} post al giorno ({{monthly}} ogni mese)",
-          "feature_filters": "Filtri avanzati per trovare gli spedizionieri giusti",
-          "feature_saves": "Lead e follow-up salvati illimitati"
+          "description": "Ottieni 30 ricerche aziendali al mese per trovare clienti diretti e 30 post nella community per assicurarti i carichi di ritorno. Crea il tuo database clienti e smetti di viaggiare a vuoto.",
+          "feature_results": "Max 20 lead per parola chiave",
+          "feature_concurrent": "{{count}} annunci attivi contemporaneamente",
+          "feature_community": "Accesso alla community e pubblicazione carichi",
+          "feature_crm": "CRM integrato ed esportazione CSV",
+          "feature_contact": "Chiamate dirette e template WhatsApp",
+          "feature_sharing": "Condividi le schede contatto ovunque"
         },
         "pro": {
           "title": "Pro",
@@ -953,10 +960,13 @@
           "feature_searches": "{{count}} ricerche con risultati estesi",
           "feature_posts": "{{daily}} post al giorno ({{monthly}} ogni mese)",
           "feature_linkedin": "Profili di contatto LinkedIn per i decisori",
-          "feature_ai": "Abbinamento dei percorsi e punteggio aziendale basati sull'intelligenza artificiale",
-          "feature_research": "Ricerca approfondita sulle aziende per settore e per corsia",
-          "feature_priority": "Posizionamento prioritario all'interno del feed della community",
-          "feature_export": "Esporta lead e note in CSV con un solo tocco"
+          "description": "50 ricerche/mese, 100 post nella community e integrazione esclusiva con LinkedIn per raggiungere i decisori. Include �Esporta lead� per custodire i tuoi dati.",
+          "feature_results": "Max 50 lead per parola chiave",
+          "feature_concurrent": "{{count}} annunci attivi contemporaneamente",
+          "feature_community": "Accesso alla community e pubblicazione carichi",
+          "feature_crm": "CRM integrato ed esportazione CSV",
+          "feature_contact": "Chiamate dirette e template WhatsApp",
+          "feature_sharing": "Condividi le schede contatto ovunque"
         },
         "fleet": {
           "title": "Direttore della flotta",
@@ -964,9 +974,12 @@
           "feature_searches": "{{count}} ricerche mirate ogni mese",
           "feature_posts": "{{daily}} post al giorno ({{monthly}} ogni mese)",
           "feature_concurrent": "{{count}} post attivi pubblicati contemporaneamente",
-          "feature_duration": "I post rimangono visibili {{hours}} ore per massimizzare la copertura",
-          "feature_tools": "Flussi di lavoro degli spedizionieri per la collaborazione del team",
-          "feature_saved": "Salva fino a {{count_saved}} percorsi e modelli"
+          "description": "Gestisci pi� camion con 30 post al giorno (900/mese) per tenere la flotta in movimento. Include 30 ricerche/mese per acquisire clienti mirati.",
+          "feature_results": "Max 20 lead per parola chiave",
+          "feature_community": "Accesso alla community e pubblicazione carichi",
+          "feature_crm": "CRM integrato ed esportazione CSV",
+          "feature_contact": "Chiamate dirette e template WhatsApp",
+          "feature_sharing": "Condividi le schede contatto ovunque"
         },
         "freighter": {
           "title": "Mercantile professionista",
@@ -974,13 +987,13 @@
           "feature_searches": "{{count}} ricerche premium ogni mese",
           "feature_posts": "{{daily}} post al giorno ({{monthly}} ogni mese)",
           "feature_linkedin": "Dati completi di contatto del decisore",
-          "feature_ai": "Intelligenza artificiale basata sull'intelligenza artificiale con promemoria intelligenti",
-          "feature_research": "Ricerca avanzata per operazioni multi-paese",
           "feature_concurrent": "{{count}} post simultanei tra i team",
-          "feature_duration": "Visibilità di {{hours}} ore con aggiornamento automatico",
-          "feature_analytics": "Analisi delle prestazioni e approfondimenti settimanali",
-          "feature_support": "Supporto prioritario con concierge dedicato",
-          "feature_saved": "Memorizza {{count_saved}} modelli e percorsi salvati"
+          "description": "Dona il mercato con 1500 post/mese e 50 annunci simultanei. Include 50 ricerche e strumenti LinkedIn per operazioni ad alto volume.",
+          "feature_results": "Max 50 lead per parola chiave",
+          "feature_community": "Accesso alla community e pubblicazione carichi",
+          "feature_crm": "CRM integrato ed esportazione CSV",
+          "feature_contact": "Chiamate dirette e template WhatsApp",
+          "feature_sharing": "Condividi le schede contatto ovunque"
         }
       }
     }

@@ -269,7 +269,9 @@
     "permission_required": "Reikalingas leidimas",
     "photo_permission_message": "Mums reikia prieigos prie nuotraukų galerijos, kad įkeltume jūsų profilio nuotrauką",
     "avatar_updated": "Profilio nuotrauka sėkmingai atnaujinta",
-    "avatar_upload_failed": "Nepavyko įkelti profilio nuotraukos"
+    "avatar_upload_failed": "Nepavyko įkelti profilio nuotraukos",
+    "phone_number": "Telefono numeris",
+    "search_radius_warning": "?? Didesnis spindulys gali praleisti imones del \"Google\" API apribojimu. Rekomenduojama 5 km, kad gautum geriausius rezultatus."
   },
   "templates": {
     "email_subject": "Logistikos partnerystės galimybė - {{company}}",
@@ -944,8 +946,13 @@
           "tagline": "Sukurta nepriklausomiems vairuotojams",
           "feature_searches": "{{count}} įmonės ieško kiekvieną mėnesį",
           "feature_posts": "{{daily}} įrašų per dieną ({{monthly}} kiekvieną mėnesį)",
-          "feature_filters": "Išplėstiniai filtrai, skirti rasti tinkamus siuntėjus",
-          "feature_saves": "Neribotas išsaugotų potencialių klientų ir tolesnių veiksmų skaičius"
+          "description": "Gauk 30 imoniu paie�ku per menesi, kad rastum tiesioginiu klientu, ir 30 bendruomenes ira�u gri�tamoms kroviniams. Susikurk savo klientu baze ir daugiau neva�iuok tu�cias.",
+          "feature_results": "Daugiausia 20 potencialiu klientu kiekvienam rakta�od�iui",
+          "feature_concurrent": "{{count}} aktyviu ira�u vienu metu",
+          "feature_community": "Bendruomenes prieiga ir kroviniu skelbimas",
+          "feature_crm": "Integruotas CRM ir CSV eksportas",
+          "feature_contact": "Tiesioginiai skambuciai ir WhatsApp �ablonai",
+          "feature_sharing": "Dalinkis kontaktu kortelemis bet kur"
         },
         "pro": {
           "title": "Pro",
@@ -953,10 +960,13 @@
           "feature_searches": "{{count}} paieškos su išplėstiniais rezultatais",
           "feature_posts": "{{daily}} įrašų per dieną ({{monthly}} kiekvieną mėnesį)",
           "feature_linkedin": "LinkedIn kontaktiniai profiliai sprendimus priimantiems asmenims",
-          "feature_ai": "Dirbtinio intelekto sukurtas maršruto suderinimas ir įmonės balų nustatymas",
-          "feature_research": "Išsamus įmonės tyrimas pagal pramonės šaką ir sritis",
-          "feature_priority": "Pirmenybė teikiama bendruomenės sklaidos kanale",
-          "feature_export": "Eksportuokite potencialius klientus ir pastabas į CSV vienu bakstelėjimu"
+          "description": "50 paie�ku per menesi, 100 bendruomenes ira�u ir i�skirtine LinkedIn integracija sprendimu priemejams rasti. Ieina funkcija �Eksportuoti lead'us�, kad valdytum savo duomenis.",
+          "feature_results": "Daugiausia 50 potencialiu klientu kiekvienam rakta�od�iui",
+          "feature_concurrent": "{{count}} aktyviu ira�u vienu metu",
+          "feature_community": "Bendruomenes prieiga ir kroviniu skelbimas",
+          "feature_crm": "Integruotas CRM ir CSV eksportas",
+          "feature_contact": "Tiesioginiai skambuciai ir WhatsApp �ablonai",
+          "feature_sharing": "Dalinkis kontaktu kortelemis bet kur"
         },
         "fleet": {
           "title": "Flotilės vadovas",
@@ -964,9 +974,12 @@
           "feature_searches": "{{count}} tikslinės paieškos kiekvieną mėnesį",
           "feature_posts": "{{daily}} įrašų per dieną ({{monthly}} kiekvieną mėnesį)",
           "feature_concurrent": "{{count}} aktyvūs įrašai rodomi tuo pačiu metu",
-          "feature_duration": "Įrašai lieka matomi {{hours}} valandas, kad padidintumėte pasiekiamumą",
-          "feature_tools": "Ekspeditorių darbo eigos komandiniam bendradarbiavimui",
-          "feature_saved": "Išsaugokite iki {{count_saved}} maršrutų ir šablonų"
+          "description": "Valdyk kelis sunkve�imius su 30 ira�u per diena (900 per menesi), kad visa flotile judetu. Ieina 30 paie�ku/men. tikslinei klientu paie�kai.",
+          "feature_results": "Daugiausia 20 potencialiu klientu kiekvienam rakta�od�iui",
+          "feature_community": "Bendruomenes prieiga ir kroviniu skelbimas",
+          "feature_crm": "Integruotas CRM ir CSV eksportas",
+          "feature_contact": "Tiesioginiai skambuciai ir WhatsApp �ablonai",
+          "feature_sharing": "Dalinkis kontaktu kortelemis bet kur"
         },
         "freighter": {
           "title": "Pro Freighter",
@@ -974,13 +987,13 @@
           "feature_searches": "{{count}} aukščiausios kokybės paieškų kiekvieną mėnesį",
           "feature_posts": "{{daily}} įrašų per dieną ({{monthly}} kiekvieną mėnesį)",
           "feature_linkedin": "Visi sprendimų priėmėjo kontaktiniai duomenys",
-          "feature_ai": "AI siuntimo žvalgyba su išmaniaisiais priminimais",
-          "feature_research": "Išplėstiniai kelių šalių operacijų tyrimai",
           "feature_concurrent": "{{count}} vienu metu skelbiami komandose",
-          "feature_duration": "{{hours}} valandos matomumas su automatiniu atnaujinimu",
-          "feature_analytics": "Našumo analizė ir savaitės įžvalgos",
-          "feature_support": "Prioritetinė pagalba su specialiu konsjeržu",
-          "feature_saved": "Išsaugokite {{count_saved}} šablonus ir išsaugotus maršrutus"
+          "description": "Dominuok rinkoje su 1500 ira�u per menesi ir 50 vienu metu skelbiamu pasiulymu. Ieina 50 paie�ku ir LinkedIn irankiai didelio masto operacijoms.",
+          "feature_results": "Daugiausia 50 potencialiu klientu kiekvienam rakta�od�iui",
+          "feature_community": "Bendruomenes prieiga ir kroviniu skelbimas",
+          "feature_crm": "Integruotas CRM ir CSV eksportas",
+          "feature_contact": "Tiesioginiai skambuciai ir WhatsApp �ablonai",
+          "feature_sharing": "Dalinkis kontaktu kortelemis bet kur"
         }
       }
     }

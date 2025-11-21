@@ -130,9 +130,9 @@ export default function ContactPage() {
       <View style={[styles.hero, { backgroundColor: theme.colors.background }]}>
         <View style={styles.section}>
           <View style={styles.heroContent}>
-            <View style={[styles.heroBadge, { backgroundColor: theme.colors.primary + '1F' }]}>
-              <Sparkles size={18} color={theme.colors.primary} />
-              <Text style={[styles.heroBadgeText, { color: theme.colors.primary }]}>{t('web.contact.hero_badge')}</Text>
+            <View style={[styles.heroBadge, { backgroundColor: theme.colors.secondary + '1F' }]}>
+              <Sparkles size={18} color={theme.colors.secondary} />
+              <Text style={[styles.heroBadgeText, { color: theme.colors.secondary }]}>{t('web.contact.hero_badge')}</Text>
             </View>
             <Text style={[styles.heroTitle, { color: theme.colors.text }]}>{t('web.contact.hero_title')}</Text>
             <Text style={[styles.heroSubtitle, { color: theme.colors.textSecondary }]}>{t('web.contact.hero_subtitle')}</Text>
@@ -262,9 +262,9 @@ export default function ContactPage() {
       </View>
 
       <View style={[styles.section, styles.bottomCtaSection, { backgroundColor: theme.colors.background }]}>
-        <View style={[styles.bottomCtaCard, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}>
-          <Text style={[styles.bottomCtaTitle, { color: theme.colors.text }]}>{t('web.contact.bottom_cta_title')}</Text>
-          <Text style={[styles.bottomCtaSubtitle, { color: theme.colors.textSecondary }]}>{t('web.contact.bottom_cta_subtitle')}</Text>
+        <View style={[styles.bottomCtaCard, { backgroundColor: '#0F172A', borderColor: '#1E293B' }]}>
+          <Text style={[styles.bottomCtaTitle, { color: '#FFFFFF' }]}>{t('web.contact.bottom_cta_title')}</Text>
+          <Text style={[styles.bottomCtaSubtitle, { color: '#94A3B8' }]}>{t('web.contact.bottom_cta_subtitle')}</Text>
           <View style={styles.bottomActions}>
             <TouchableOpacity
               style={[styles.bottomPrimary, { backgroundColor: theme.colors.secondary }]}
@@ -273,10 +273,10 @@ export default function ContactPage() {
               <Text style={styles.bottomPrimaryText}>{t('web.contact.bottom_cta_primary')}</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={[styles.bottomSecondary, { borderColor: theme.colors.border }]}
+              style={[styles.bottomSecondary, { borderColor: 'rgba(255,255,255,0.2)' }]}
               onPress={() => Linking.openURL('mailto:office@truxel.io?subject=Partnership%20Inquiry')}
             >
-              <Text style={[styles.bottomSecondaryText, { color: theme.colors.text }]}>{t('web.contact.bottom_cta_secondary')}</Text>
+              <Text style={[styles.bottomSecondaryText, { color: '#FFFFFF' }]}>{t('web.contact.bottom_cta_secondary')}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -381,10 +381,15 @@ const styles = StyleSheet.create({
   contactCard: {
     flex: 1,
     minWidth: 240,
-    borderRadius: 20,
+    borderRadius: 24,
     padding: 28,
     borderWidth: 1,
     gap: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.05,
+    shadowRadius: 12,
+    elevation: 2,
   },
   contactCardInteractive: {
     ...(Platform.OS === 'web' && {
@@ -424,6 +429,11 @@ const styles = StyleSheet.create({
     padding: 36,
     borderWidth: 1,
     gap: 24,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.05,
+    shadowRadius: 12,
+    elevation: 2,
   },
   inputRow: {
     flexDirection: 'row',
@@ -463,6 +473,11 @@ const styles = StyleSheet.create({
     padding: 28,
     borderWidth: 1,
     gap: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.05,
+    shadowRadius: 12,
+    elevation: 2,
   },
   audienceBadge: {
     alignSelf: 'flex-start',
@@ -494,6 +509,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 18,
     borderWidth: 1,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.05,
+    shadowRadius: 12,
+    elevation: 2,
   },
   bottomCtaTitle: {
     fontSize: 32,

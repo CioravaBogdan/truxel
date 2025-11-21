@@ -270,7 +270,8 @@
     "permission_required": "Permisiune Necesară",
     "photo_permission_message": "Avem nevoie de acces la galeria foto pentru a încărca poza de profil",
     "avatar_updated": "Poza de profil a fost actualizată cu succes",
-    "avatar_upload_failed": "Încărcarea pozei de profil a eșuat"
+    "avatar_upload_failed": "Încărcarea pozei de profil a eșuat",
+    "phone_number": "Numar de telefon"
   },
   "templates": {
     "email_subject": "Oportunitate Parteneriat Logistic - {{company}}",
@@ -945,8 +946,13 @@
           "tagline": "Construit pentru șoferi independenți",
           "feature_searches": "{{count}} de căutări de companii în fiecare lună",
           "feature_posts": "{{daily}} postări pe zi ({{monthly}} în fiecare lună)",
-          "feature_filters": "Filtre avansate pentru a găsi expeditorii potriviți",
-          "feature_saves": "Clienți potențiali și urmăriri salvate nelimitate"
+          "description": "Prime?ti 30 de cautari de companii pe luna pentru a gasi clien?i direc?i, plus 30 de postari �n comunitate ca sa gase?ti curse la �ntoarcere. Construie?te-?i propria baza de clien?i ?i nu mai merge niciodata gol.",
+          "feature_results": "Maximum 20 de leaduri per cuv�nt cheie",
+          "feature_concurrent": "{{count}} postari active simultan",
+          "feature_community": "Acces la Comunitate & postare de �ncarcaturi",
+          "feature_crm": "CRM integrat & export CSV",
+          "feature_contact": "Apeluri directe & ?abloane WhatsApp",
+          "feature_sharing": "Distribuie fi?ele de contact oriunde"
         },
         "pro": {
           "title": "Pro",
@@ -954,10 +960,13 @@
           "feature_searches": "{{count}} de căutări cu rezultate extinse",
           "feature_posts": "{{daily}} postări pe zi ({{monthly}} în fiecare lună)",
           "feature_linkedin": "Profiluri de contact LinkedIn pentru factorii de decizie",
-          "feature_ai": "Potrivire de trasee și scoring companii bazat pe AI",
-          "feature_research": "Cercetare aprofundată a companiilor pe industrie și rută",
-          "feature_priority": "Plasare prioritară în feed-ul comunității",
-          "feature_export": "Exportă clienți potențiali și notițe în CSV cu o atingere"
+          "description": "50 de cautari/luna, 100 de postari �n comunitate ?i integrare exclusiva LinkedIn pentru a gasi deciden?ii. Include func?ia �Exporta leaduri� ca sa de?ii datele.",
+          "feature_results": "Maximum 50 de leaduri per cuv�nt cheie",
+          "feature_concurrent": "{{count}} postari active simultan",
+          "feature_community": "Acces la Comunitate & postare de �ncarcaturi",
+          "feature_crm": "CRM integrat & export CSV",
+          "feature_contact": "Apeluri directe & ?abloane WhatsApp",
+          "feature_sharing": "Distribuie fi?ele de contact oriunde"
         },
         "fleet": {
           "title": "Fleet Manager",
@@ -965,9 +974,12 @@
           "feature_searches": "{{count}} de căutări țintite în fiecare lună",
           "feature_posts": "{{daily}} postări pe zi ({{monthly}} în fiecare lună)",
           "feature_concurrent": "{{count}} de postări active simultan",
-          "feature_duration": "Postările rămân vizibile {{hours}} de ore pentru maximizarea acoperirii",
-          "feature_tools": "Fluxuri de lucru pentru transportatori pentru colaborarea în echipă",
-          "feature_saved": "Salvează până la {{count_saved}} rute și șabloane"
+          "description": "Gestioneaza mai multe camioane cu 30 de postari/zi (900/luna) pentru a-?i ?ine flota �n mi?care. Include 30 de cautari/luna pentru achizi?ia ?intita de clien?i.",
+          "feature_results": "Maximum 20 de leaduri per cuv�nt cheie",
+          "feature_community": "Acces la Comunitate & postare de �ncarcaturi",
+          "feature_crm": "CRM integrat & export CSV",
+          "feature_contact": "Apeluri directe & ?abloane WhatsApp",
+          "feature_sharing": "Distribuie fi?ele de contact oriunde"
         },
         "freighter": {
           "title": "Pro Freighter",
@@ -975,13 +987,13 @@
           "feature_searches": "{{count}} de căutări premium în fiecare lună",
           "feature_posts": "{{daily}} postări pe zi ({{monthly}} în fiecare lună)",
           "feature_linkedin": "Date complete de contact pentru factorii de decizie",
-          "feature_ai": "Inteligență de dispecerat AI cu memento-uri inteligente",
-          "feature_research": "Cercetare avansată pentru operațiuni multi-țară",
           "feature_concurrent": "{{count}} de postări simultane în echipe",
-          "feature_duration": "Vizibilitate de {{hours}} de ore cu reîmprospătare automată",
-          "feature_analytics": "Analize de performanță și perspective săptămânale",
-          "feature_support": "Suport prioritar cu concierge dedicat",
-          "feature_saved": "Stochează {{count_saved}} de șabloane și rute salvate"
+          "description": "Domina pia?a cu 1500 de postari/luna ?i 50 de listari simultane. Include 50 de cautari ?i instrumente LinkedIn pentru opera?iuni cu volum mare.",
+          "feature_results": "Maximum 50 de leaduri per cuv�nt cheie",
+          "feature_community": "Acces la Comunitate & postare de �ncarcaturi",
+          "feature_crm": "CRM integrat & export CSV",
+          "feature_contact": "Apeluri directe & ?abloane WhatsApp",
+          "feature_sharing": "Distribuie fi?ele de contact oriunde"
         }
       }
     }

@@ -270,7 +270,8 @@
     "permission_required": "Wymagane uprawnienie",
     "photo_permission_message": "Potrzebujemy dostępu do galerii zdjęć, aby przesłać zdjęcie profilowe",
     "avatar_updated": "Zdjęcie profilowe zaktualizowane pomyślnie",
-    "avatar_upload_failed": "Nie udało się przesłać zdjęcia profilowego"
+    "avatar_upload_failed": "Nie udało się przesłać zdjęcia profilowego",
+    "phone_number": "Numer telefonu"
   },
   "templates": {
     "email_subject": "Możliwość partnerstwa logistycznego - {{company}}",
@@ -945,8 +946,13 @@
           "tagline": "Zbudowany dla niezależnych kierowców",
           "feature_searches": "{{count}} wyszukiwań firm co miesiąc",
           "feature_posts": "{{daily}} postów dziennie ({{monthly}} co miesiąc)",
-          "feature_filters": "Zaawansowane filtry umożliwiające znalezienie odpowiednich nadawców",
-          "feature_saves": "Nieograniczona liczba zapisanych potencjalnych klientów i obserwacji"
+          "description": "Otrzymujesz 30 wyszukiwan firm miesiecznie, aby znalezc bezposrednich klient�w, oraz 30 post�w spolecznosci, by zdobywac kursy powrotne. Zbuduj wlasna baze klient�w i przestan jezdzic na pusto.",
+          "feature_results": "Maks. 20 lead�w na slowo kluczowe",
+          "feature_concurrent": "{{count}} aktywnych ogloszen jednoczesnie",
+          "feature_community": "Dostep do spolecznosci i publikowanie ladunk�w",
+          "feature_crm": "Zintegrowany CRM i eksport CSV",
+          "feature_contact": "Polaczenia bezposrednie i szablony WhatsApp",
+          "feature_sharing": "Udostepniaj wizyt�wki kontaktowe wszedzie"
         },
         "pro": {
           "title": "Zawodowiec",
@@ -954,10 +960,13 @@
           "feature_searches": "{{count}} wyszukiwania z rozszerzonymi wynikami",
           "feature_posts": "{{daily}} postów dziennie ({{monthly}} co miesiąc)",
           "feature_linkedin": "Profile kontaktowe LinkedIn dla decydentów",
-          "feature_ai": "Dopasowywanie tras oparte na sztucznej inteligencji i punktacja firmy",
-          "feature_research": "Głębokie badanie firm według branży i ścieżki",
-          "feature_priority": "Umieszczenie priorytetowe w kanale społeczności",
-          "feature_export": "Eksportuj potencjalnych klientów i notatki do pliku CSV jednym dotknięciem"
+          "description": "50 wyszukiwan/miesiac, 100 post�w spolecznosci i ekskluzywna integracja z LinkedIn, aby docierac do decydent�w. Zawiera funkcje �Eksportuj leady�, zebys posiadal swoje dane.",
+          "feature_results": "Maks. 50 lead�w na slowo kluczowe",
+          "feature_concurrent": "{{count}} aktywnych ogloszen jednoczesnie",
+          "feature_community": "Dostep do spolecznosci i publikowanie ladunk�w",
+          "feature_crm": "Zintegrowany CRM i eksport CSV",
+          "feature_contact": "Polaczenia bezposrednie i szablony WhatsApp",
+          "feature_sharing": "Udostepniaj wizyt�wki kontaktowe wszedzie"
         },
         "fleet": {
           "title": "Menedżer floty",
@@ -965,9 +974,12 @@
           "feature_searches": "{{count}} ukierunkowane wyszukiwania co miesiąc",
           "feature_posts": "{{daily}} postów dziennie ({{monthly}} co miesiąc)",
           "feature_concurrent": "{{count}} aktywne posty są publikowane w tym samym czasie",
-          "feature_duration": "Posty pozostają widoczne {{hours}} godzin, aby zmaksymalizować zasięg",
-          "feature_tools": "Przepływ pracy spedytora umożliwiający współpracę zespołową",
-          "feature_saved": "Zaoszczędź do {{count_saved}} tras i szablonów"
+          "description": "Zarzadzaj wieloma ciezar�wkami dzieki 30 postom dziennie (900/miesiac), aby utrzymac flote w ruchu. Zawiera 30 wyszukiwan/miesiac do celowanego pozyskiwania klient�w.",
+          "feature_results": "Maks. 20 lead�w na slowo kluczowe",
+          "feature_community": "Dostep do spolecznosci i publikowanie ladunk�w",
+          "feature_crm": "Zintegrowany CRM i eksport CSV",
+          "feature_contact": "Polaczenia bezposrednie i szablony WhatsApp",
+          "feature_sharing": "Udostepniaj wizyt�wki kontaktowe wszedzie"
         },
         "freighter": {
           "title": "Profesjonalny frachtowiec",
@@ -975,13 +987,13 @@
           "feature_searches": "{{count}} wyszukiwań premium co miesiąc",
           "feature_posts": "{{daily}} postów dziennie ({{monthly}} co miesiąc)",
           "feature_linkedin": "Pełne dane kontaktowe decydenta",
-          "feature_ai": "Inteligentne przypomnienia wysyłają informacje AI",
-          "feature_research": "Zaawansowane badania dla operacji w wielu krajach",
           "feature_concurrent": "{{count}} jednoczesne posty w różnych zespołach",
-          "feature_duration": "{{hours}}-godzinna widoczność z automatycznym odświeżaniem",
-          "feature_analytics": "Analityka wydajności i cotygodniowe spostrzeżenia",
-          "feature_support": "Priorytetowe wsparcie z dedykowanym concierge",
-          "feature_saved": "Przechowuj {{count_saved}} szablony i zapisane trasy"
+          "description": "Zdominuj rynek dzieki 1500 postom/miesiac i 50 r�wnoczesnym ogloszeniom. Zawiera 50 wyszukiwan i narzedzia LinkedIn dla operacji o duzej skali.",
+          "feature_results": "Maks. 50 lead�w na slowo kluczowe",
+          "feature_community": "Dostep do spolecznosci i publikowanie ladunk�w",
+          "feature_crm": "Zintegrowany CRM i eksport CSV",
+          "feature_contact": "Polaczenia bezposrednie i szablony WhatsApp",
+          "feature_sharing": "Udostepniaj wizyt�wki kontaktowe wszedzie"
         }
       }
     }

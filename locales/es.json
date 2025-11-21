@@ -269,7 +269,9 @@
     "permission_required": "Permiso requerido",
     "photo_permission_message": "Necesitamos acceso a la galería de fotos para subir tu foto de perfil",
     "avatar_updated": "Foto de perfil actualizada exitosamente",
-    "avatar_upload_failed": "Error al subir la foto de perfil"
+    "avatar_upload_failed": "Error al subir la foto de perfil",
+    "phone_number": "N�mero de tel�fono",
+    "search_radius_warning": "?? Un radio mayor puede omitir empresas debido a los l�mites de la API de Google. Se recomiendan 5 km para obtener los mejores resultados."
   },
   "templates": {
     "email_subject": "Oportunidad de asociación logística - {{company}}",
@@ -944,8 +946,13 @@
           "tagline": "Diseñado para conductores independientes",
           "feature_searches": "{{count}} búsquedas de empresas cada mes",
           "feature_posts": "{{daily}} publicaciones por día ({{monthly}} cada mes)",
-          "feature_filters": "Filtros avanzados para encontrar los transportistas adecuados",
-          "feature_saves": "Clientes potenciales y seguimientos guardados ilimitados"
+          "description": "Obt�n 30 b�squedas de empresas al mes para encontrar clientes directos y 30 publicaciones en la comunidad para asegurar retornos cargados. Construye tu propia base de clientes y deja de conducir vac�o.",
+          "feature_results": "M�x. 20 leads por palabra clave",
+          "feature_concurrent": "{{count}} publicaciones activas a la vez",
+          "feature_community": "Acceso a la comunidad y publicaci�n de cargas",
+          "feature_crm": "CRM integrado y exportaci�n CSV",
+          "feature_contact": "Llamadas directas y plantillas de WhatsApp",
+          "feature_sharing": "Comparte las fichas de contacto en cualquier lugar"
         },
         "pro": {
           "title": "Pro",
@@ -953,10 +960,13 @@
           "feature_searches": "{{count}} búsquedas con resultados extendidos",
           "feature_posts": "{{daily}} publicaciones por día ({{monthly}} cada mes)",
           "feature_linkedin": "Perfiles de contacto de LinkedIn para tomadores de decisiones",
-          "feature_ai": "Coincidencia de rutas y puntuación de empresas impulsadas por IA",
-          "feature_research": "Investigación profunda de empresas por industria y carril.",
-          "feature_priority": "Ubicación prioritaria dentro del feed de la comunidad",
-          "feature_export": "Exporte clientes potenciales y notas a CSV con un solo toque"
+          "description": "50 b�squedas/mes, 100 publicaciones en la comunidad e integraci�n exclusiva con LinkedIn para encontrar a los decisores. Incluye �Exportar leads� para que tus datos sean tuyos.",
+          "feature_results": "M�x. 50 leads por palabra clave",
+          "feature_concurrent": "{{count}} publicaciones activas a la vez",
+          "feature_community": "Acceso a la comunidad y publicaci�n de cargas",
+          "feature_crm": "CRM integrado y exportaci�n CSV",
+          "feature_contact": "Llamadas directas y plantillas de WhatsApp",
+          "feature_sharing": "Comparte las fichas de contacto en cualquier lugar"
         },
         "fleet": {
           "title": "Gerente de flota",
@@ -964,9 +974,12 @@
           "feature_searches": "{{count}} búsquedas dirigidas cada mes",
           "feature_posts": "{{daily}} publicaciones por día ({{monthly}} cada mes)",
           "feature_concurrent": "{{count}} publicaciones activas publicadas al mismo tiempo",
-          "feature_duration": "Las publicaciones permanecen visibles {{hours}} horas para maximizar el alcance",
-          "feature_tools": "Flujos de trabajo de transportistas para la colaboración en equipo",
-          "feature_saved": "Guarde hasta {{count_saved}} rutas y plantillas"
+          "description": "Gestiona varios camiones con 30 publicaciones al d�a (900/mes) para mantener la flota en movimiento. Incluye 30 b�squedas al mes para captar clientes espec�ficos.",
+          "feature_results": "M�x. 20 leads por palabra clave",
+          "feature_community": "Acceso a la comunidad y publicaci�n de cargas",
+          "feature_crm": "CRM integrado y exportaci�n CSV",
+          "feature_contact": "Llamadas directas y plantillas de WhatsApp",
+          "feature_sharing": "Comparte las fichas de contacto en cualquier lugar"
         },
         "freighter": {
           "title": "Carguero profesional",
@@ -974,13 +987,13 @@
           "feature_searches": "{{count}} búsquedas premium cada mes",
           "feature_posts": "{{daily}} publicaciones por día ({{monthly}} cada mes)",
           "feature_linkedin": "Datos completos de contacto de la persona que toma las decisiones",
-          "feature_ai": "Inteligencia de despacho de IA con recordatorios inteligentes",
-          "feature_research": "Investigación avanzada para operaciones en varios países",
           "feature_concurrent": "{{count}} publicaciones simultáneas en todos los equipos",
-          "feature_duration": "Visibilidad de {{hours}} horas con actualización automática",
-          "feature_analytics": "Análisis de rendimiento e información semanal",
-          "feature_support": "Soporte prioritario con conserjería dedicada",
-          "feature_saved": "Almacenar {{count_saved}} plantillas y rutas guardadas"
+          "description": "Domina el mercado con 1500 publicaciones/mes y 50 anuncios simult�neos. Incluye 50 b�squedas y herramientas de LinkedIn para operaciones de gran volumen.",
+          "feature_results": "M�x. 50 leads por palabra clave",
+          "feature_community": "Acceso a la comunidad y publicaci�n de cargas",
+          "feature_crm": "CRM integrado y exportaci�n CSV",
+          "feature_contact": "Llamadas directas y plantillas de WhatsApp",
+          "feature_sharing": "Comparte las fichas de contacto en cualquier lugar"
         }
       }
     }

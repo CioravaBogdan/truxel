@@ -269,7 +269,9 @@
     "permission_required": "Erlaubnis erforderlich",
     "photo_permission_message": "Um Ihr Profilbild hochzuladen, benötigen wir Zugriff auf die Fotobibliothek",
     "avatar_updated": "Profilbild erfolgreich aktualisiert",
-    "avatar_upload_failed": "Profilbild konnte nicht hochgeladen werden"
+    "avatar_upload_failed": "Profilbild konnte nicht hochgeladen werden",
+    "phone_number": "Telefonnummer",
+    "search_radius_warning": "?? Ein gr��erer Radius kann wegen Google-API-Limits Firmen �bersehen. 5 km werden f�r beste Ergebnisse empfohlen."
   },
   "templates": {
     "email_subject": "Möglichkeit einer Logistikpartnerschaft – {{company}}",
@@ -944,8 +946,13 @@
           "tagline": "Gebaut für unabhängige Fahrer",
           "feature_searches": "{{count}} Unternehmenssuchen jeden Monat",
           "feature_posts": "{{daily}} Beiträge pro Tag ({{monthly}} jeden Monat)",
-          "feature_filters": "Erweiterte Filter, um die richtigen Versender zu finden",
-          "feature_saves": "Unbegrenzt gespeicherte Leads und Follow-ups"
+          "description": "Du erh�ltst 30 Firmensuchen pro Monat, um Direktkunden zu finden, plus 30 Community-Posts f�r R�ckladungen. Baue deine eigene Kunden-Datenbank auf und fahre nicht mehr leer.",
+          "feature_results": "Max. 20 Leads pro Keyword",
+          "feature_concurrent": "{{count}} aktive Inserate gleichzeitig",
+          "feature_community": "Community-Zugang & Ladeb�rsen",
+          "feature_crm": "Integriertes CRM & CSV-Export",
+          "feature_contact": "Direkte Anrufe & WhatsApp-Vorlagen",
+          "feature_sharing": "Kontaktdaten �berall teilen"
         },
         "pro": {
           "title": "Profi",
@@ -953,10 +960,13 @@
           "feature_searches": "{{count}} sucht mit erweiterten Ergebnissen",
           "feature_posts": "{{daily}} Beiträge pro Tag ({{monthly}} jeden Monat)",
           "feature_linkedin": "LinkedIn-Kontaktprofile für Entscheidungsträger",
-          "feature_ai": "KI-gestützter Routenabgleich und Unternehmensbewertung",
-          "feature_research": "Umfassende Unternehmensrecherche nach Branche und Branche",
-          "feature_priority": "Vorrangige Platzierung im Community-Feed",
-          "feature_export": "Exportieren Sie Leads und Notizen mit einem Fingertipp in CSV"
+          "description": "50 Suchen/Monat, 100 Community-Posts und exklusive LinkedIn-Integration, um Entscheider zu erreichen. Enth�lt �Leads exportieren�, damit du deine Daten besitzt.",
+          "feature_results": "Max. 50 Leads pro Keyword",
+          "feature_concurrent": "{{count}} aktive Inserate gleichzeitig",
+          "feature_community": "Community-Zugang & Ladeb�rsen",
+          "feature_crm": "Integriertes CRM & CSV-Export",
+          "feature_contact": "Direkte Anrufe & WhatsApp-Vorlagen",
+          "feature_sharing": "Kontaktdaten �berall teilen"
         },
         "fleet": {
           "title": "Flottenmanager",
@@ -964,9 +974,12 @@
           "feature_searches": "{{count}} gezielte Suchanfragen pro Monat",
           "feature_posts": "{{daily}} Beiträge pro Tag ({{monthly}} jeden Monat)",
           "feature_concurrent": "{{count}} aktive Beiträge gleichzeitig live",
-          "feature_duration": "Beiträge bleiben {{hours}} Stunden sichtbar, um die Reichweite zu maximieren",
-          "feature_tools": "Spediteur-Workflows für die Zusammenarbeit im Team",
-          "feature_saved": "Speichern Sie bis zu {{count_saved}} Routen und Vorlagen"
+          "description": "Verwalte mehrere Lkw mit 30 Posts pro Tag (900/Monat), damit dein Fuhrpark in Bewegung bleibt. Enth�lt 30 Suchen/Monat f�r gezielte Kundengewinnung.",
+          "feature_results": "Max. 20 Leads pro Keyword",
+          "feature_community": "Community-Zugang & Ladeb�rsen",
+          "feature_crm": "Integriertes CRM & CSV-Export",
+          "feature_contact": "Direkte Anrufe & WhatsApp-Vorlagen",
+          "feature_sharing": "Kontaktdaten �berall teilen"
         },
         "freighter": {
           "title": "Profi-Frachter",
@@ -974,13 +987,13 @@
           "feature_searches": "{{count}} Premium-Suchanfragen jeden Monat",
           "feature_posts": "{{daily}} Beiträge pro Tag ({{monthly}} jeden Monat)",
           "feature_linkedin": "Vollständige Kontaktdaten des Entscheidungsträgers",
-          "feature_ai": "KI-Versandinformationen mit intelligenten Erinnerungen",
-          "feature_research": "Fortgeschrittene Forschung für länderübergreifende Operationen",
           "feature_concurrent": "{{count}} gleichzeitige Beiträge aller Teams",
-          "feature_duration": "{{hours}}-Stunden-Sichtbarkeit mit automatischer Aktualisierung",
-          "feature_analytics": "Leistungsanalysen und wöchentliche Einblicke",
-          "feature_support": "Vorrangiger Support durch einen engagierten Concierge",
-          "feature_saved": "Speichern Sie {{count_saved}}-Vorlagen und gespeicherte Routen"
+          "description": "Dominiere den Markt mit 1.500 Posts pro Monat und 50 parallelen Anzeigen. Enth�lt 50 Suchen und LinkedIn-Tools f�r gro�e Operationen.",
+          "feature_results": "Max. 50 Leads pro Keyword",
+          "feature_community": "Community-Zugang & Ladeb�rsen",
+          "feature_crm": "Integriertes CRM & CSV-Export",
+          "feature_contact": "Direkte Anrufe & WhatsApp-Vorlagen",
+          "feature_sharing": "Kontaktdaten �berall teilen"
         }
       }
     }
