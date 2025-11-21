@@ -112,27 +112,28 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   button_small: {
-    paddingVertical: 8,
+    paddingVertical: 10,
     paddingHorizontal: 16,
   },
   button_medium: {
-    paddingVertical: 12,
+    paddingVertical: 16,
     paddingHorizontal: 24,
   },
   button_large: {
-    paddingVertical: 16,
+    paddingVertical: 20,
     paddingHorizontal: 32,
   },
   text: {
-    fontWeight: '600',
+    fontWeight: '700',
+    letterSpacing: 0.5,
   },
   text_small: {
     fontSize: 14,
   },
   text_medium: {
-    fontSize: 16,
+    fontSize: 18,
   },
   text_large: {
-    fontSize: 18,
+    fontSize: 20,
   },
 });

@@ -1,55 +1,121 @@
-﻿# Truxel – Copilot Working Agreement
+﻿# Truxel - GitHub Copilot Instructions
 
-> Read every attachment/screenshot first, then plan your move. Keep answers short and point to the docs instead of rewriting them.
+## 🚨 CRITICAL RULE #1 - NEVER DELETE WORKING CODE 🚨
+**⚠️ MANDATORY FOR ALL AI ASSISTANTS (Sonnet 4.5, GPT-4, Claude, etc.):**
 
-## Core Rules
-- **Ask before touching Supabase schema, migrations, or edge functions.** No DB/infra edits without explicit approval.
-- Keep working logic unless the user asks for a rewrite; prefer additive fixes guarded behind helpers/flags.
-- Reference the exact file + reason for every change; respect scope hints (e.g., “search credits” means stay in that area).
-- Read all screenshots/notes the user provides before coding.
-- Follow **Plan → Execute → Verify**. Use the planning/todo tools when the task is more than trivial.
-- Run tests/linters relevant to your edits or state why you skipped them. Quote the command you ran.
-- Never push to GitHub unless the user literally says “github push” / “push la git”.
+**ABSOLUTE PROHIBITION:**
+NEVER, UNDER ANY CIRCUMSTANCES, DELETE OR MODIFY EXISTING WORKING LOGIC WITHOUT EXPLICIT USER CONFIRMATION.
 
-## Stack + Required Reading
-- Expo Router + React Native (SDK 54), TypeScript, Zustand, i18next.
-- Supabase (auth, RPCs, storage, edge functions) + n8n automations, RevenueCat + Stripe fallback.
-- Safe native access must go through `utils/safeNativeModules.ts` and related services.
-- Start with `docs/how_it_works/PROJECT_SUMMARY.md`, `DOCS_INDEX.md`, and `DOCUMENTATION_PACKAGE.md` for architecture, state charts, and ownership.
+### What This Means:
+❌ DO NOT assume code is "unused" or "obsolete" without asking
+❌ DO NOT "clean up" or "refactor" existing functionality without permission
+❌ DO NOT remove formatters, display logic, or data transformations just because they "seem redundant"
+❌ DO NOT presume you know better than the developer who wrote the original code
 
-## Quick Doc Map
-| Area | Start | Deep Dive |
-| --- | --- | --- |
-| Community feed | `how_it_works/TRUXEL_COMMUNITY_MASTER_PLAN.md` | `COMMUNITY_FEED_TECHNICAL_GUIDE.md`, `COMMUNITY_FEATURE_*` set |
-| Leads & saved posts | `how_it_works/START_HERE.md` | `docs/archive/*LEADS*` |
-| Monetization | `how_it_works/PRODUCTION_FEATURES_IMPLEMENTATION.md` | `MONETIZATION_GUIDE.md`, `STRIPE_IMPLEMENTATION_GUIDE.md`, `STRIPE_README.md`, `IMPLEMENTARE_REVENUECAT.md`, `STRIPE_PRICE_IDS_MAPPING.md`, `APP_STORE_CONNECT_SETUP.md`, `APPLE_IAP_COMPLETE_STATUS.md` |
-| Automation & edge functions | `how_it_works/N8N_WEBHOOK_GUIDE.md` | `N8N_REALTIME_CHAT_GUIDE.md`, `N8N_WEBHOOKS_EAS_SETUP.md`, `N8N_WORKFLOW_COMPLETE_GUIDE.md`, `DEPLOY_EDGE_FUNCTIONS.md`, `FIRE_AND_FORGET_PATTERN.md` |
-| Auth & OAuth | `OAUTH_IMPLEMENTATION.md` | `PLATFORM_SETUP_AUTH.md`, `GOOGLE_OAUTH_SETUP.md`, `OAUTH_AUDIT_COMPLETE.md` |
-| Notifications | `NOTIFICATIONS_PLAN.md` | `CHAT_SUPPORT_*`, `REALTIME_CHAT_IMPLEMENTATION_COMPLETE.md` |
-| Internationalization | `I18N_IMPLEMENTATION.md` | `DISTANCE_UNIT_IMPLEMENTATION.md` |
-| Health checks | `IMPLEMENTATION_SUMMARY_2025_11_09.md` | `PROJECT_SUMMARY.md`, `SUMMARY.md`, `QUICK_TEST_GUIDE.md` |
+### What You MUST Do Instead:
+✅ ASK FIRST: "I see this code doing X. Should I remove it or keep it?"
+✅ PRESERVE EVERYTHING: When fixing bugs, ADD new code, don't REPLACE old code
+✅ DOCUMENT CHANGES: Clearly explain what you're changing and WHY
+✅ VERIFY SCOPE: If user says "fix database saves", ONLY touch database code, NOT display logic
 
-## Workflow Expectations
-1. Check TODOs/roadmaps before estimating work (`PROJECT_SUMMARY.md`, `TRUXEL_COMMUNITY_MASTER_PLAN.md`).
-2. Confirm plan with the user when scope is ambiguous; do not sprint ahead without alignment.
-3. Cite the doc that supports your decisions in every reply.
-4. Respect file ownership—if someone just edited a file, avoid large refactors.
-5. Surface risks/tech debt with pointers to follow-up docs.
+### Summary:
+**IF IN DOUBT, ASK. NEVER ASSUME. PRESERVE WORKING CODE.**
 
-## Safe Dev Practices
-- All native modules must be wrapped via `utils/safeNativeModules.ts`; follow `services/nativeModulesService.ts` / `sessionService.ts` patterns for background work.
-- Real-time stores must emit fresh array references (see `KNOWLEDGE_BASE.md` for the bookmark bug recap).
-- Never bypass Supabase RLS; review `COMPLETE_PLATFORM_AUDIT.md` if you touch data access.
-- Keep secrets in `.env` + `app.config.js`. Use `MISSING_EAS_VARIABLES.md` and `START_HERE.md` for env order; Stripe/RevenueCat IDs live in `STRIPE_PRICE_IDS_MAPPING.md` + `APPLE_IAP_COMPLETE_STATUS.md`.
+---
 
-## Communication & Summaries
-- Mention what you tested (or why you couldn’t) and paste the command.
-- Summaries stay under ~5 bullets, leading with outcomes, then risks/tests.
-- When blocked, state the question, what you tried, and which doc you checked.
+## 🎨 UI/UX & Branding (NEW)
+**Strictly follow `branding.md` for all design decisions.**
+- **Source of Truth:** `branding.md` defines all Colors, Typography, Spacing, and Component styles.
+- **Theme:** Use `lib/theme.tsx` variables.
+- **Components:** Re-use `Button.tsx`, `Card.tsx`, `WebFooter.tsx`.
+- **Marketing:** See `TRUXEL_MARKETING.md` for copy/positioning.
 
-## Need Help?
-- Marketing copy / positioning → `TRUXEL_MARKETING.md`
-- Platform overviews / navigation → `DOCS_INDEX.md`
-- History / context → `docs/archive/`
+---
 
-Stay focused, cite docs, and always ask before touching Supabase.
+## Project Overview
+Truxel is a React Native mobile application for logistics lead management, built with Expo, Supabase, and Stripe.
+
+## Technology Stack
+- **Framework:** Expo SDK ~54.0.10 with expo-router ~6.0.13
+- **Language:** TypeScript
+- **Backend:** Supabase (PostgreSQL + Auth + Storage + Edge Functions)
+- **Payments:** Stripe (Subscriptions + One-time payments)
+- **State Management:** Zustand ^5.0.2
+- **Maps:** react-native-maps ^1.18.3
+- **Internationalization:** i18next ^23.4.0 (en, ro, pl, tr, lt, es, uk, fr, de, it)
+
+## Critical Configuration
+**IMPORTANT: MCP Tools Authentication**
+When using global MCP tools (Stripe/Supabase), ALWAYS use these Truxel-specific credentials:
+
+### For Stripe MCP tools:
+- **STRIPE_SECRET_KEY:** `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`
+- **STRIPE_PUBLISHABLE_KEY:** `pk_live_51SIVE9Pd7H7rZiTmyJq94pcMvi44xfBBUD2uvYodYDvBtolNaxGeRS8CwbLLMXClgUwHBz8tdPNMpGQGDXRQ40oU00johXo4OU`
+- **⚠️ CRITICAL:** Stripe has multiple projects. ALWAYS filter by product when using Stripe MCP tools. Product IDs start with `prod_`.
+
+### For Supabase MCP tools:
+- **SUPABASE_PROJECT_REF:** `upxocyomsfhqoflwibwn`
+- **SUPABASE_URL:** `https://upxocyomsfhqoflwibwn.supabase.co`
+- **SUPABASE_ANON_KEY:** `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVweG9jeW9tc2ZocW9mbHdpYnduIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEwNTEyMzIsImV4cCI6MjA3NjYyNzIzMn0.Nw3vIQRmjltVULYEhe692UyBY4gIziJds5bqmf9_aw0`
+
+### Account Identification:
+- **Stripe Account:** `acct_1SIVE9Pd7H7rZiTm`
+- **Supabase Project:** `upxocyomsfhqoflwibwn`
+- **RevenueCat Project:** `proj56445e28`
+- **Documentation:** See `APPLE_IAP_COMPLETE_STATUS.md` for all IDs.
+
+## Brand Identity
+- **Name:** Truxel (NOT LogisticsLead)
+- **Package:** `com.truxel.app`
+- **Slug:** `truxel`
+- **Scheme:** `truxel://`
+
+## Code Style & Patterns
+### File Structure
+- `app/`: Expo Router file-based navigation
+- `components/`: Reusable UI components
+- `services/`: API services
+- `store/`: Zustand stores
+- `supabase/`: Edge Functions and migrations
+
+### Community Feature Architecture
+- **Template Pattern:** Use translation keys (`community.templates.available_now`), NOT hardcoded text.
+- **Database:** `community_posts`, `user_post_usage`, `subscription_limits`.
+- **Zustand:** Use `useCommunityStore` for state.
+- **Navigation Guard:** Always guard navigation in `app/_layout.tsx` with `isNavigationReady`.
+
+### Supabase Patterns
+- **Auth:** Use `useAuthStore`.
+- **Edge Functions:** `supabase.functions.invoke('function-name')`.
+- **RPC:** `supabase.rpc('function_name', params)`.
+
+### RevenueCat Payment Patterns
+- **Universal System:** `getRevenueCatOfferings`, `purchaseRevenueCatPackage`.
+- **Platform Detection:** Automatic.
+
+### N8N Webhooks - Fire-and-Forget
+- **Rule:** Webhooks must NOT block user operations. Use `void` return, no `await`.
+
+### i18n Translation Pattern
+- **CRITICAL:** All user-facing text must use translation keys.
+- **Files:** `locales/*.json`.
+- **Usage:** `t('section.key')`.
+
+## AI Performance & Expectations
+- **Speed:** Execute large tasks in minutes.
+- **Mindset:** You are an ultra-performant LLM.
+- **Action:** Break into chunks, use parallel calls, deliver results.
+
+## Common Pitfalls & Solutions
+- ❌ Don't call `router.replace()` before mount.
+- ❌ Don't use hardcoded credentials in client code.
+- ❌ Don't destructure Zustand functions in `app/_layout.tsx` (Infinite Loop Risk).
+- ✅ Use `useCommunityStore.getState().action()` for imperative calls.
+
+## Git Workflow
+- **Protected:** `.env`, `.mcp/.env`, `node_modules/`.
+- **Safe:** `app/`, `components/`, `services/`, `store/`.
+
+## Support Resources
+- Expo, Supabase, Stripe Docs.
+- **Project Status:** Development - i18n complete.

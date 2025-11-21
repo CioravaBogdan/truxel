@@ -23,7 +23,7 @@ export default function RootLayout() {
 
   const router = useRouter();
   const segments = useSegments();
-  const { setSession, setUser, setProfile, setIsLoading, isAuthenticated } = useAuthStore();
+  const { setSession, setUser, setProfile, setIsLoading, isAuthenticated, isLoading, profile } = useAuthStore();
 
   // Initialize native modules first (prevents iOS crashes)
   useEffect(() => {
@@ -220,19 +220,26 @@ export default function RootLayout() {
   }, []);
 
   useEffect(() => {
-    if (!isNavigationReady) {
-      console.log('RootLayout: Navigation not ready yet, skipping...');
+    if (!isNavigationReady || isLoading) {
+      console.log('RootLayout: Navigation not ready or loading...');
       return;
     }
 
-  const inAuthGroup = segments[0] === '(auth)';
-  const inWebGroup = segments[0] === '(web)';
-  const isRootScreen = !segments[0];
+    const inAuthGroup = segments[0] === '(auth)';
+    const inWebGroup = segments[0] === '(web)';
+    const isRootScreen = !segments[0];
+    const inCompleteProfile = segments[1] === 'complete-profile';
+    
+    // Check profile completeness
+    const isProfileComplete = !!(profile?.phone_number && profile?.company_name);
+
     console.log('RootLayout: Navigation check:', {
       isAuthenticated,
       inAuthGroup,
       inWebGroup,
       isRootScreen,
+      isProfileComplete,
+      inCompleteProfile,
       segments,
       currentPath: segments.join('/'),
     });
@@ -246,14 +253,21 @@ export default function RootLayout() {
     else if (Platform.OS !== 'web' && !isAuthenticated && !inAuthGroup) {
       console.log('RootLayout: Not authenticated, redirecting to login');
       router.replace('/(auth)/login');
-    } else if (isAuthenticated && (inAuthGroup || (isRootScreen && Platform.OS !== 'web'))) {
-      // Navigate to tabs if authenticated and either in auth group OR on root screen (mobile only)
-      console.log('RootLayout: Authenticated, redirecting to tabs');
-      router.replace('/(tabs)');
+    } 
+    // Authenticated logic
+    else if (isAuthenticated) {
+      if (!isProfileComplete && !inCompleteProfile) {
+        console.log('RootLayout: Profile incomplete, redirecting to complete-profile');
+        router.replace('/(auth)/complete-profile');
+      } else if (isProfileComplete && (inAuthGroup || (isRootScreen && Platform.OS !== 'web'))) {
+        // If profile is complete, and we are in auth pages (login/register/complete-profile), go to tabs
+        console.log('RootLayout: Authenticated and complete, redirecting to tabs');
+        router.replace('/(tabs)');
+      }
     } else {
       console.log('RootLayout: No navigation needed, staying on current screen');
     }
-  }, [isAuthenticated, segments, isNavigationReady, router]);
+  }, [isAuthenticated, segments, isNavigationReady, router, isLoading, profile]);
 
   return (
     <ThemeProvider>

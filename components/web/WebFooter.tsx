@@ -23,7 +23,11 @@ export function WebFooter() {
       <View style={styles.container}>
         {/* Brand Column */}
         <View style={styles.brandSection}>
-          <Text style={[styles.logoText, { color: '#FFFFFF' }]}>Truxel</Text>
+          <Image 
+            source={require('@/assets/images/Untitled design (5).svg')} 
+            style={styles.footerLogo}
+            resizeMode="contain"
+          />
           <Text style={[styles.tagline, { color: '#E2E8F0' }]}>
             {t('web.footer.tagline')}
           </Text>
@@ -144,6 +148,11 @@ const styles = StyleSheet.create({
   brandSection: {
     maxWidth: 300,
     minWidth: 250,
+  },
+  footerLogo: {
+    width: 180,
+    height: 60,
+    marginBottom: 16,
   },
   logoText: {
     fontSize: 32,
