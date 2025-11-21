@@ -1,10 +1,14 @@
 import React, { useMemo, useState } from 'react';
-import { Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View, Dimensions } from 'react-native';
 import { useRouter } from 'expo-router';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useTranslation } from 'react-i18next';
 import { WebFooter } from '@/components/web/WebFooter';
-import { Check, Compass, Shield, Truck, Zap } from 'lucide-react-native';
+import { Check, Compass, Shield, Truck, Zap, Star } from 'lucide-react-native';
 import { useTheme } from '@/lib/theme';
+
+const { width } = Dimensions.get('window');
+const isMobile = width < 768;
 
 type Currency = 'EUR' | 'USD';
 
@@ -30,6 +34,8 @@ const ICONS = {
   pro_freighter: Compass,
 };
 
+const COMMON_FEATURES = ['feature_community', 'feature_crm', 'feature_contact', 'feature_sharing'];
+
 const FAQ_ITEMS = [
   {
     questionKey: 'q1',
@@ -54,12 +60,15 @@ export default function WebPricingPage() {
       translationKey: 'standard',
       priceEUR: '29.99',
       priceUSD: '29.99',
-      accentColor: theme.colors.secondary,
+      accentColor: '#3B82F6', // Blue (Matches GPS feature)
       featureKeys: [
         { id: 'feature_searches', params: { count: 30 } },
+        { id: 'feature_results' },
         { id: 'feature_posts', params: { daily: 5, monthly: 30 } },
-        { id: 'feature_filters' },
-        { id: 'feature_saves' },
+        { id: 'feature_community' },
+        { id: 'feature_crm' },
+        { id: 'feature_contact' },
+        { id: 'feature_sharing' },
       ],
     },
     {
@@ -67,16 +76,17 @@ export default function WebPricingPage() {
       translationKey: 'pro',
       priceEUR: '49.99',
       priceUSD: '49.99',
-      accentColor: '#2563EB',
+      accentColor: theme.colors.secondary, // Orange (Matches Leads feature)
       popular: true,
       featureKeys: [
         { id: 'feature_searches', params: { count: 50 } },
+        { id: 'feature_results' },
         { id: 'feature_posts', params: { daily: 10, monthly: 100 } },
         { id: 'feature_linkedin' },
-        { id: 'feature_ai' },
-        { id: 'feature_research' },
-        { id: 'feature_priority' },
-        { id: 'feature_export' },
+        { id: 'feature_community' },
+        { id: 'feature_crm' },
+        { id: 'feature_contact' },
+        { id: 'feature_sharing' },
       ],
     },
     {
@@ -84,14 +94,16 @@ export default function WebPricingPage() {
       translationKey: 'fleet',
       priceEUR: '29.99',
       priceUSD: '29.99',
-      accentColor: '#0EA5E9',
+      accentColor: '#10B981', // Emerald (Matches Community feature)
       featureKeys: [
         { id: 'feature_searches', params: { count: 30 } },
+        { id: 'feature_results' },
         { id: 'feature_posts', params: { daily: 30, monthly: 900 } },
         { id: 'feature_concurrent', params: { count: 30 } },
-        { id: 'feature_duration', params: { hours: 72 } },
-        { id: 'feature_tools' },
-        { id: 'feature_saved', params: { count_saved: 100 } },
+        { id: 'feature_community' },
+        { id: 'feature_crm' },
+        { id: 'feature_contact' },
+        { id: 'feature_sharing' },
       ],
     },
     {
@@ -99,25 +111,20 @@ export default function WebPricingPage() {
       translationKey: 'freighter',
       priceEUR: '49.99',
       priceUSD: '49.99',
-      accentColor: '#0EA765',
+      accentColor: '#8B5CF6', // Violet (Matches Templates feature)
       featureKeys: [
         { id: 'feature_searches', params: { count: 50 } },
+        { id: 'feature_results' },
         { id: 'feature_posts', params: { daily: 50, monthly: 1500 } },
         { id: 'feature_linkedin' },
-        { id: 'feature_ai' },
-        { id: 'feature_research' },
         { id: 'feature_concurrent', params: { count: 50 } },
-        { id: 'feature_duration', params: { hours: 72 } },
-        { id: 'feature_analytics' },
-        { id: 'feature_support' },
-        { id: 'feature_saved', params: { count_saved: 200 } },
+        { id: 'feature_community' },
+        { id: 'feature_crm' },
+        { id: 'feature_contact' },
+        { id: 'feature_sharing' },
       ],
     },
   ], [theme.colors.secondary]);
-
-  if (Platform.OS !== 'web') {
-    return null;
-  }
 
   const heroHighlights = useMemo(
     () => [
@@ -128,89 +135,69 @@ export default function WebPricingPage() {
     [t],
   );
 
+  if (Platform.OS !== 'web') {
+    return null;
+  }
+
   return (
     <ScrollView style={[styles.container, { backgroundColor: theme.colors.background }]}>
+      
+      {/* Hero Section with Gradient */}
+      <LinearGradient
+        colors={[theme.colors.primary, theme.colors.primaryDark]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={styles.heroGradient}
+      >
+        <View style={styles.heroContent}>
+          <View style={styles.heroBadge}>
+            <Star size={16} color="#FFC107" fill="#FFC107" />
+            <Text style={styles.heroBadgeText}>{t('web.pricing.hero_badge')}</Text>
+          </View>
+          
+          <Text style={styles.heroTitle}>
+            {t('web.pricing.hero_title')}
+          </Text>
+          
+          <Text style={styles.heroSubtitle}>
+            {t('web.pricing.hero_subtitle')}
+          </Text>
+
+          <View style={styles.heroHighlights}>
+            {heroHighlights.map((item, index) => {
+              const Icon = item.icon;
+              return (
+                <View key={index} style={styles.highlightItem}>
+                  <Icon size={20} color={theme.colors.secondary} />
+                  <Text style={styles.highlightText}>{item.text}</Text>
+                </View>
+              );
+            })}
+          </View>
+
+          {/* Currency Toggle */}
+          <View style={styles.currencyToggle}>
+            <Text style={[styles.currencyLabel, { color: '#94A3B8' }]}>{t('web.pricing.currency_label')}</Text>
+            <View style={styles.toggleContainer}>
+              <TouchableOpacity
+                style={[styles.toggleOption, currency === 'EUR' && styles.toggleActive]}
+                onPress={() => setCurrency('EUR')}
+              >
+                <Text style={[styles.toggleText, currency === 'EUR' && styles.toggleTextActive]}>EUR (€)</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.toggleOption, currency === 'USD' && styles.toggleActive]}
+                onPress={() => setCurrency('USD')}
+              >
+                <Text style={[styles.toggleText, currency === 'USD' && styles.toggleTextActive]}>USD ($)</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </LinearGradient>
+
       <View style={styles.webContainer}>
-        <View style={[
-          styles.hero, 
-          { 
-            backgroundColor: theme.mode === 'dark' ? theme.colors.surface : '#FFF7F2',
-            ...(Platform.OS === 'web' ? {
-              backgroundImage: `linear-gradient(135deg, ${theme.colors.secondary} 0%, ${theme.colors.secondary}DD 100%)`,
-              boxShadow: `0 25px 50px -12px ${theme.colors.secondary}59`,
-            } : {})
-          }
-        ]}>
-          <View style={styles.heroContent}>
-            <View style={styles.heroBadge}>
-              <Truck size={16} color={theme.colors.white} />
-              <Text style={[styles.heroBadgeText, { color: theme.colors.white }]}>{t('web.pricing.hero_badge')}</Text>
-            </View>
-
-            <Text style={[styles.heroTitle, { color: theme.colors.white }]}>{t('web.pricing.hero_title')}</Text>
-            <Text style={[styles.heroSubtitle, { color: 'rgba(255,255,255,0.85)' }]}>{t('web.pricing.hero_subtitle')}</Text>
-
-            <View style={styles.heroHighlights}>
-              {heroHighlights.map((item, index) => {
-                const Icon = item.icon;
-                return (
-                  <View key={index} style={styles.heroHighlight}>
-                    <Icon size={18} color={theme.colors.white} />
-                    <Text style={[styles.heroHighlightText, { color: theme.colors.white }]}>{item.text}</Text>
-                  </View>
-                );
-              })}
-            </View>
-
-            <TouchableOpacity
-              style={[styles.heroCta, { backgroundColor: theme.colors.white }]}
-              onPress={() => router.push('/(auth)/register')}
-            >
-              <Text style={[styles.heroCtaText, { color: theme.colors.secondary }]}>{t('web.pricing.hero_cta')}</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-
-        <View style={styles.currencySection}>
-          <Text style={[styles.currencyLabel, { color: theme.colors.text }]}>{t('web.pricing.currency_label')}</Text>
-          <View style={[styles.currencyToggle, { backgroundColor: theme.colors.card }]}>
-            <TouchableOpacity
-              style={[
-                styles.currencyButton, 
-                currency === 'EUR' && { backgroundColor: theme.colors.secondary }
-              ]}
-              onPress={() => setCurrency('EUR')}
-            >
-              <Text
-                style={[
-                  styles.currencyText, 
-                  { color: theme.colors.textSecondary },
-                  currency === 'EUR' && { color: theme.colors.white }
-                ]}
-              >
-                {t('web.pricing.currency_eur')}
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[
-                styles.currencyButton, 
-                currency === 'USD' && { backgroundColor: theme.colors.secondary }
-              ]}
-              onPress={() => setCurrency('USD')}
-            >
-              <Text
-                style={[
-                  styles.currencyText, 
-                  { color: theme.colors.textSecondary },
-                  currency === 'USD' && { color: theme.colors.white }
-                ]}
-              >
-                {t('web.pricing.currency_usd')}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-
+        {/* Pricing Cards */}
         <View style={styles.pricingGrid}>
           {PRICING_TIERS.map((tier) => {
             const price = currency === 'EUR' ? tier.priceEUR : tier.priceUSD;
@@ -225,11 +212,19 @@ export default function WebPricingPage() {
                   styles.pricingCard,
                   { 
                     backgroundColor: theme.colors.card,
-                    borderColor: theme.colors.border,
-                  },
-                  tier.popular && { borderColor: tier.accentColor, borderWidth: 2 },
+                    borderColor: tier.popular ? tier.accentColor : theme.colors.border,
+                    borderWidth: tier.popular ? 2 : 1,
+                    transform: tier.popular && !isMobile ? [{ scale: 1.05 }] : [],
+                    zIndex: tier.popular ? 10 : 1,
+                  }
                 ]}
               >
+                {tier.popular && (
+                  <View style={[styles.popularBadge, { backgroundColor: tier.accentColor }]}>
+                    <Text style={styles.popularText}>{t('web.pricing.cta_popular')}</Text>
+                  </View>
+                )}
+
                 <View style={styles.cardHeader}>
                   <View style={[styles.iconWrapper, { backgroundColor: `${tier.accentColor}1A` }]}> 
                     <IconComponent size={24} color={tier.accentColor} />
@@ -238,35 +233,57 @@ export default function WebPricingPage() {
                     <Text style={[styles.tierName, { color: theme.colors.text }]}>{t(`${cardKey}.title`)}</Text>
                     <Text style={[styles.tierTagline, { color: theme.colors.textSecondary }]}>{t(`${cardKey}.tagline`)}</Text>
                   </View>
-                  {tier.popular && (
-                    <View style={[styles.popularChip, { backgroundColor: `${tier.accentColor}1A` }]}>
-                      <Text style={[styles.popularChipText, { color: tier.accentColor }]}>{t('web.pricing.cta_popular')}</Text>
-                    </View>
-                  )}
                 </View>
 
                 <View style={styles.priceRow}>
-                  <Text style={[styles.priceSymbol, { color: tier.accentColor }]}>{priceSymbol}</Text>
+                  <Text style={[styles.priceSymbol, { color: theme.colors.text }]}>{priceSymbol}</Text>
                   <Text style={[styles.priceValue, { color: theme.colors.text }]}>{price}</Text>
                   <Text style={[styles.pricePeriod, { color: theme.colors.textSecondary }]}>{t('web.pricing.per_month')}</Text>
                 </View>
 
+                <Text style={[styles.tierDescription, { color: theme.colors.textSecondary }]}>
+                  {t(`${cardKey}.description`)}
+                </Text>
+
+                <View style={[styles.divider, { backgroundColor: theme.colors.border }]} />
+
                 <View style={styles.featuresContainer}>
-                  {tier.featureKeys.map((feature) => (
-                    <View key={feature.id} style={styles.featureRow}>
-                      <Check size={18} color={tier.accentColor} style={styles.featureIcon} />
-                      <Text style={[styles.featureText, { color: theme.colors.textSecondary }]}>
-                        {t(`${cardKey}.${feature.id}`, feature.params)}
-                      </Text>
-                    </View>
-                  ))}
+                  {tier.featureKeys.map((feature) => {
+                    const isCommon = COMMON_FEATURES.includes(feature.id);
+                    return (
+                      <View key={feature.id} style={styles.featureRow}>
+                        <Check 
+                          size={18} 
+                          color={isCommon ? theme.colors.text : tier.accentColor} 
+                          style={styles.featureIcon} 
+                        />
+                        <Text style={[
+                          styles.featureText, 
+                          { 
+                            color: theme.colors.text,
+                            fontWeight: isCommon ? '400' : '700',
+                          }
+                        ]}>
+                          {t(`${cardKey}.${feature.id}`, feature.params)}
+                        </Text>
+                      </View>
+                    );
+                  })}
                 </View>
 
                 <TouchableOpacity
-                  style={[styles.ctaButton, { backgroundColor: tier.accentColor }]}
+                  style={[
+                    styles.ctaButton,
+                    { backgroundColor: tier.popular ? tier.accentColor : 'transparent', borderColor: tier.accentColor, borderWidth: 2 }
+                  ]}
                   onPress={() => router.push('/(auth)/register')}
                 >
-                  <Text style={[styles.ctaButtonText, { color: '#FFFFFF' }]}>{t('web.pricing.cta')}</Text>
+                  <Text style={[
+                    styles.ctaButtonText,
+                    { color: tier.popular ? '#FFFFFF' : tier.accentColor }
+                  ]}>
+                    {t('web.pricing.cta')}
+                  </Text>
                 </TouchableOpacity>
               </View>
             );
@@ -279,7 +296,7 @@ export default function WebPricingPage() {
           {FAQ_ITEMS.map((item, index) => (
             <TouchableOpacity
               key={item.questionKey}
-              style={[styles.faqItem, { backgroundColor: theme.colors.card }]}
+              style={[styles.faqItem, { backgroundColor: theme.colors.card, borderColor: theme.colors.border, borderWidth: 1 }]}
               onPress={() => setExpandedFaq(expandedFaq === index ? null : index)}
             >
               <View style={styles.faqHeader}>
@@ -310,159 +327,161 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  heroGradient: {
+    paddingTop: 120,
+    paddingBottom: 100,
+    paddingHorizontal: 24,
+    alignItems: 'center',
+  },
+  heroContent: {
+    maxWidth: 1200,
+    width: '100%',
+    alignItems: 'center',
+  },
+  heroBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 100,
+    marginBottom: 24,
+    gap: 8,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.2)',
+  },
+  heroBadgeText: {
+    color: '#FFC107',
+    fontWeight: '600',
+    fontSize: 14,
+    letterSpacing: 0.5,
+  },
+  heroTitle: {
+    fontSize: isMobile ? 42 : 64,
+    fontWeight: '800',
+    color: '#FFFFFF',
+    textAlign: 'center',
+    lineHeight: isMobile ? 48 : 72,
+    marginBottom: 24,
+    maxWidth: 900,
+  },
+  heroSubtitle: {
+    fontSize: isMobile ? 18 : 24,
+    color: '#94A3B8',
+    textAlign: 'center',
+    maxWidth: 700,
+    marginBottom: 48,
+    lineHeight: 32,
+  },
+  heroHighlights: {
+    flexDirection: isMobile ? 'column' : 'row',
+    gap: 24,
+    marginBottom: 48,
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+  },
+  highlightItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 100,
+  },
+  highlightText: {
+    color: '#E2E8F0',
+    fontSize: 14,
+    fontWeight: '500',
+  },
+  currencyToggle: {
+    alignItems: 'center',
+    gap: 12,
+  },
+  currencyLabel: {
+    fontSize: 14,
+    fontWeight: '500',
+  },
+  toggleContainer: {
+    flexDirection: 'row',
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    padding: 4,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.1)',
+  },
+  toggleOption: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 8,
+  },
+  toggleActive: {
+    backgroundColor: '#FFFFFF',
+  },
+  toggleText: {
+    color: '#94A3B8',
+    fontWeight: '600',
+    fontSize: 14,
+  },
+  toggleTextActive: {
+    color: '#0F172A',
+  },
   webContainer: {
     maxWidth: 1200,
     marginHorizontal: 'auto',
     width: '100%',
     paddingHorizontal: 24,
     paddingVertical: 80,
-  },
-  hero: {
-    marginBottom: 56,
-    borderRadius: 24,
-    padding: 40,
-  },
-  heroContent: {
-    gap: 24,
-  },
-  heroBadge: {
-    alignSelf: 'flex-start',
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    paddingVertical: 6,
-    paddingHorizontal: 14,
-    borderRadius: 999,
-    backgroundColor: 'rgba(255, 255, 255, 0.15)',
-  },
-  heroBadgeText: {
-    fontSize: 14,
-    fontWeight: '600',
-    letterSpacing: 0.4,
-  },
-  heroTitle: {
-    fontSize: 44,
-    fontWeight: '800',
-    lineHeight: 52,
-    ...(Platform.OS === 'web' && {
-      '@media (max-width: 768px)': {
-        fontSize: 32,
-        lineHeight: 40,
-      },
-    }),
-  },
-  heroSubtitle: {
-    fontSize: 18,
-    lineHeight: 28,
-    maxWidth: 640,
-  },
-  heroHighlights: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 16,
-  },
-  heroHighlight: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-    paddingVertical: 10,
-    paddingHorizontal: 16,
-    borderRadius: 14,
-    backgroundColor: 'rgba(255,255,255,0.12)',
-  },
-  heroHighlightText: {
-    fontSize: 15,
-    maxWidth: 240,
-  },
-  heroCta: {
-    alignSelf: 'flex-start',
-    paddingVertical: 14,
-    paddingHorizontal: 32,
-    borderRadius: 999,
-    ...(Platform.OS === 'web' && {
-      cursor: 'pointer',
-      transition: 'all 0.2s ease',
-      ':hover': {
-        transform: 'translateY(-2px)',
-        boxShadow: '0 20px 25px -15px rgba(0,0,0,0.35)',
-      },
-    }),
-  },
-  heroCtaText: {
-    fontSize: 16,
-    fontWeight: '700',
-    letterSpacing: 0.4,
-  },
-  currencySection: {
-    marginBottom: 40,
-    gap: 12,
-    alignItems: 'center',
-  },
-  currencyLabel: {
-    fontSize: 18,
-    fontWeight: '600',
-  },
-  currencyToggle: {
-    flexDirection: 'row',
-    borderRadius: 12,
-    padding: 4,
-    gap: 4,
-    ...(Platform.OS === 'web' && {
-      boxShadow: '0 10px 25px -15px rgba(15, 23, 42, 0.25)',
-    }),
-  },
-  currencyButton: {
-    paddingVertical: 8,
-    paddingHorizontal: 24,
-    borderRadius: 8,
-    ...(Platform.OS === 'web' && {
-      cursor: 'pointer',
-      transition: 'all 0.2s ease',
-    }),
-  },
-  currencyText: {
-    fontSize: 16,
-    fontWeight: '600',
+    marginTop: -60, // Overlap hero
   },
   pricingGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 24,
-    justifyContent: 'space-between',
+    justifyContent: 'center',
+    alignItems: 'stretch',
     marginBottom: 80,
-    ...(Platform.OS === 'web' && {
-      '@media (max-width: 1024px)': {
-        gap: 20,
-      },
-    }),
   },
   pricingCard: {
+    width: isMobile ? '100%' : '48%', // 2 columns
+    minWidth: 280,
     borderRadius: 24,
-    padding: 32,
-    width: '48%',
-    borderWidth: 1,
-    gap: 24,
-    ...(Platform.OS === 'web' && {
-      transition: 'all 0.3s ease',
-      boxShadow: '0 25px 50px -20px rgba(15, 23, 42, 0.2)',
-      ':hover': {
-        transform: 'translateY(-10px)',
-        boxShadow: '0 35px 60px -30px rgba(15, 23, 42, 0.4)',
-      },
-      '@media (max-width: 1024px)': {
-        width: '100%',
-      },
-    }),
+    padding: 24,
+    position: 'relative',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.05,
+    shadowRadius: 12,
+    elevation: 2,
+  },
+  popularBadge: {
+    position: 'absolute',
+    top: -12,
+    left: 0,
+    right: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 40,
+    paddingVertical: 4,
+    borderRadius: 100,
+  },
+  popularText: {
+    color: '#FFFFFF',
+    fontSize: 12,
+    fontWeight: '700',
+    textTransform: 'uppercase',
+    letterSpacing: 1,
   },
   cardHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 16,
+    marginBottom: 24,
   },
   iconWrapper: {
     width: 48,
     height: 48,
-    borderRadius: 16,
+    borderRadius: 12,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -470,97 +489,85 @@ const styles = StyleSheet.create({
     flex: 1,
     gap: 4,
   },
-  popularChip: {
-    paddingVertical: 6,
-    paddingHorizontal: 14,
-    borderRadius: 999,
-  },
-  popularChipText: {
-    fontSize: 12,
-    fontWeight: '700',
-    letterSpacing: 0.6,
-  },
   tierName: {
-    fontSize: 22,
+    fontSize: 18,
     fontWeight: '700',
   },
   tierTagline: {
-    fontSize: 15,
+    fontSize: 12,
+    maxWidth: 150,
+  },
+  tierDescription: {
+    fontSize: 14,
+    lineHeight: 20,
+    marginBottom: 24,
+    minHeight: 60, // Ensure alignment
   },
   priceRow: {
     flexDirection: 'row',
-    alignItems: 'flex-end',
-    gap: 6,
+    alignItems: 'baseline',
+    marginBottom: 24,
   },
   priceSymbol: {
     fontSize: 24,
-    fontWeight: '700',
+    fontWeight: '600',
+    marginRight: 4,
   },
   priceValue: {
-    fontSize: 44,
+    fontSize: 48,
     fontWeight: '800',
+    letterSpacing: -1,
   },
   pricePeriod: {
-    fontSize: 16,
-    marginBottom: 6,
+    fontSize: 14,
+    marginLeft: 4,
+  },
+  divider: {
+    height: 1,
+    marginBottom: 24,
   },
   featuresContainer: {
-    gap: 12,
-    flexGrow: 1,
+    gap: 16,
+    marginBottom: 32,
+    flex: 1,
   },
   featureRow: {
     flexDirection: 'row',
-    gap: 10,
-    alignItems: 'flex-start',
+    gap: 12,
   },
   featureIcon: {
     marginTop: 2,
   },
   featureText: {
-    fontSize: 15,
+    fontSize: 14,
+    lineHeight: 20,
     flex: 1,
-    lineHeight: 22,
   },
   ctaButton: {
-    marginTop: 24,
     paddingVertical: 14,
     borderRadius: 12,
     alignItems: 'center',
-    ...(Platform.OS === 'web' && {
-      cursor: 'pointer',
-      transition: 'transform 0.2s ease',
-      ':hover': {
-        transform: 'translateY(-2px)',
-      },
-    }),
+    justifyContent: 'center',
   },
   ctaButtonText: {
     fontSize: 16,
     fontWeight: '700',
-    letterSpacing: 0.5,
   },
   faqSection: {
     maxWidth: 800,
     marginHorizontal: 'auto',
+    width: '100%',
   },
   faqTitle: {
-    fontSize: 32,
+    fontSize: 36,
     fontWeight: '800',
+    marginBottom: 48,
     textAlign: 'center',
-    marginBottom: 32,
   },
   faqItem: {
-    borderRadius: 12,
+    borderRadius: 16,
     padding: 24,
     marginBottom: 16,
-    ...(Platform.OS === 'web' && {
-      boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)',
-      cursor: 'pointer',
-      transition: 'all 0.2s ease',
-      ':hover': {
-        boxShadow: '0 4px 10px -2px rgba(15, 23, 42, 0.2)',
-      },
-    }),
   },
   faqHeader: {
     flexDirection: 'row',
@@ -569,13 +576,13 @@ const styles = StyleSheet.create({
   },
   faqQuestion: {
     fontSize: 18,
-    fontWeight: '700',
+    fontWeight: '600',
     flex: 1,
+    marginRight: 16,
   },
   faqIcon: {
-    fontSize: 26,
+    fontSize: 20,
     fontWeight: '600',
-    marginLeft: 16,
   },
   faqAnswerBlock: {
     marginTop: 16,
@@ -584,7 +591,7 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   faqAnswerText: {
-    fontSize: 15,
+    fontSize: 16,
     lineHeight: 24,
   },
 });

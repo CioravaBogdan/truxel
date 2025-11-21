@@ -911,8 +911,8 @@
     },
     "pricing": {
       "hero_badge": "Free trial included",
-      "hero_title": "Find loads. Secure contracts. Grow your logistics business.",
-      "hero_subtitle": "Built for owner-operators, fleet managers, and freight forwarders who want to connect directly with shippers without paying broker fees.",
+      "hero_title": "Simple, Transparent Pricing",
+      "hero_subtitle": "Choose the plan that fits your business needs. No hidden fees, cancel anytime.",
       "hero_feature1": "Instant onboarding. No credit card required.",
       "hero_feature2": "Cancel anytime. Keep your data forever.",
       "hero_feature3": "5 free searches to test the platform.",
@@ -938,51 +938,62 @@
         "a4_part_search": "Searches help you find potential customers (shippers and freight forwarders) in specific locations with full contact details.",
         "a4_part_post": "Posts let you advertise your availability or loads to the community so others can find you. Both work together to grow your network.",
         "q5": "Do I keep access if I cancel?",
-        "a5": "Yes, you'll retain full access to your subscription until the end of your current billing period. All your saved contacts, notes, and search history remain accessible even after cancellation."
+        "a5": "Yes, but you must export your data to Excel before your subscription ends. After that, access is lost."
       },
       "cards": {
         "standard": {
           "title": "Standard",
-          "tagline": "Built for independent drivers",
-          "feature_searches": "{{count}} company searches every month",
-          "feature_posts": "{{daily}} posts per day ({{monthly}} each month)",
-          "feature_filters": "Advanced filters to find the right shippers",
-          "feature_saves": "Unlimited saved leads and follow-ups"
+          "tagline": "Perfect for solo drivers",
+          "description": "Get 30 company searches monthly to find direct clients, plus 30 community posts to find return loads. Build your own client database and stop driving empty.",
+          "feature_searches": "{{count}} Company Searches / month",
+          "feature_results": "Max 20 leads per keyword",
+          "feature_posts": "{{daily}} posts/day ({{monthly}}/mo)",
+          "feature_concurrent": "{{count}} active posts at once",
+          "feature_community": "Community Access & Load Posting",
+          "feature_crm": "Integrated CRM & CSV Export",
+          "feature_contact": "Direct Calls & WhatsApp Templates",
+          "feature_sharing": "Share Contact Cards anywhere"
         },
         "pro": {
-          "title": "Pro",
-          "tagline": "Scale your sales outreach",
-          "feature_searches": "{{count}} searches with extended results",
-          "feature_posts": "{{daily}} posts per day ({{monthly}} each month)",
-          "feature_linkedin": "LinkedIn contact profiles for decision-makers",
-          "feature_ai": "AI-powered route matching and company scoring",
-          "feature_research": "Deep company research by industry and lane",
-          "feature_priority": "Priority placement inside the community feed",
-          "feature_export": "Export leads and notes to CSV in one tap"
+          "title": "Pro Driver",
+          "tagline": "For serious professionals",
+          "description": "50 searches/month, 100 community posts, and exclusive LinkedIn integration to find decision makers. Includes 'Export Leads' to own your data.",
+          "feature_searches": "{{count}} Company Searches / month",
+          "feature_results": "Max 50 leads per keyword",
+          "feature_posts": "{{daily}} posts/day ({{monthly}}/mo)",
+          "feature_linkedin": "LinkedIn Decision Maker Search",
+          "feature_concurrent": "{{count}} active posts at once",
+          "feature_community": "Community Access & Load Posting",
+          "feature_crm": "Integrated CRM & CSV Export",
+          "feature_contact": "Direct Calls & WhatsApp Templates",
+          "feature_sharing": "Share Contact Cards anywhere"
         },
         "fleet": {
           "title": "Fleet Manager",
-          "tagline": "Dispatch at scale",
-          "feature_searches": "{{count}} targeted searches every month",
-          "feature_posts": "{{daily}} posts per day ({{monthly}} each month)",
-          "feature_concurrent": "{{count}} active posts live at the same time",
-          "feature_duration": "Posts stay visible {{hours}} hours to maximize reach",
-          "feature_tools": "Freight-forwarder workflows for team collaboration",
-          "feature_saved": "Save up to {{count_saved}} routes and templates"
+          "tagline": "For small fleets & forwarders",
+          "description": "Manage multiple trucks with 30 posts/day (900/month) to keep your fleet moving. Includes 30 searches/month for targeted client acquisition.",
+          "feature_searches": "{{count}} Company Searches / month",
+          "feature_results": "Max 20 leads per keyword",
+          "feature_posts": "{{daily}} posts/day ({{monthly}}/mo)",
+          "feature_concurrent": "{{count}} active posts at once",
+          "feature_community": "Community Access & Load Posting",
+          "feature_crm": "Integrated CRM & CSV Export",
+          "feature_contact": "Direct Calls & WhatsApp Templates",
+          "feature_sharing": "Share Contact Cards anywhere"
         },
         "freighter": {
           "title": "Pro Freighter",
-          "tagline": "Enterprise freight operations",
-          "feature_searches": "{{count}} premium searches every month",
-          "feature_posts": "{{daily}} posts per day ({{monthly}} each month)",
-          "feature_linkedin": "Full decision-maker contact data",
-          "feature_ai": "AI dispatch intelligence with smart reminders",
-          "feature_research": "Advanced research for multi-country operations",
-          "feature_concurrent": "{{count}} simultaneous posts across teams",
-          "feature_duration": "{{hours}}-hour visibility with auto-refresh",
-          "feature_analytics": "Performance analytics and weekly insights",
-          "feature_support": "Priority support with dedicated concierge",
-          "feature_saved": "Store {{count_saved}} templates and saved routes"
+          "tagline": "Maximum power for logistics",
+          "description": "Dominate the market with 1500 posts/month and 50 concurrent listings. Includes 50 searches and LinkedIn tools for high-volume operations.",
+          "feature_searches": "{{count}} Company Searches / month",
+          "feature_results": "Max 50 leads per keyword",
+          "feature_posts": "{{daily}} posts/day ({{monthly}}/mo)",
+          "feature_linkedin": "LinkedIn Decision Maker Search",
+          "feature_concurrent": "{{count}} active posts at once",
+          "feature_community": "Community Access & Load Posting",
+          "feature_crm": "Integrated CRM & CSV Export",
+          "feature_contact": "Direct Calls & WhatsApp Templates",
+          "feature_sharing": "Share Contact Cards anywhere"
         }
       }
     }
