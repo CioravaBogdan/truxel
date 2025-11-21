@@ -763,7 +763,8 @@ export default function LeadsScreen() {
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]} edges={['top']}>
-      <View style={styles.header}>
+      <View style={styles.webContainer}>
+        <View style={styles.header}>
         <Text style={[styles.title, { color: theme.colors.text }]}>{t('leads.title')}</Text>
         <TouchableOpacity onPress={handleExportCSV} disabled={leads.length === 0}>
           <Download size={24} color={leads.length > 0 ? theme.colors.secondary : theme.colors.disabled} />
@@ -965,6 +966,7 @@ export default function LeadsScreen() {
           containerStyle={styles.searchInput}
         />
       </View>
+      </View>
 
       {/* Conditional FlatList based on selectedTab */}
       {selectedTab === 'search' && (
@@ -1115,6 +1117,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  webContainer: {
+    width: '100%',
+    maxWidth: 1200,
+    alignSelf: 'center',
+  },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -1136,6 +1143,9 @@ const styles = StyleSheet.create({
   },
   listContent: {
     padding: 16,
+    width: '100%',
+    maxWidth: 1200,
+    alignSelf: 'center',
   },
   leadCard: {
     marginBottom: 12,

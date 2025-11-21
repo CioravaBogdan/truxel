@@ -1,4 +1,4 @@
--- LogisticsLead Database Schema Migration
+-- Truxel Database Schema Migration
 -- Run this in your Supabase SQL Editor
 
 -- Enable UUID extension

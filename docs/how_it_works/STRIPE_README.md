@@ -1,4 +1,4 @@
-# Stripe Integration for LogisticsLead Mobile App
+# Stripe Integration for Truxel Mobile App
 
 Complete Stripe payment integration for subscription management and one-time search pack purchases.
 
@@ -394,6 +394,6 @@ When contributing to Stripe integration:
 
 **Current Status**: ✅ Ready for implementation
 
-**Project**: LogisticsLead Mobile App
+**Project**: Truxel Mobile App
 **Supabase Project**: upxocyomsfhqoflwibwn
 **Version**: 1.0.0

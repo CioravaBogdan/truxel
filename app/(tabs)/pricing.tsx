@@ -8,8 +8,6 @@ import {
   ActivityIndicator,
   Alert,
   Platform,
-  Linking,
-  Dimensions,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -19,12 +17,10 @@ import { ChatSupportModal } from '@/components/ChatSupportModal';
 import { useAuthStore } from '@/store/authStore';
 import Toast from 'react-native-toast-message';
 import {
-  CreditCard,
   Check,
   Zap,
   Shield,
   Users,
-  Sparkles,
   TrendingUp,
   TrendingDown,
   Truck,
@@ -493,6 +489,7 @@ export default function PricingScreen() {
         
         {/* Hero Section */}
         <View style={[styles.hero, { backgroundColor: theme.colors.secondary }]}>
+          <View style={styles.webContainer}>
           <View style={styles.badge}>
             <Text style={styles.badgeText}>{t('web.pricing.hero_badge')}</Text>
           </View>
@@ -514,8 +511,10 @@ export default function PricingScreen() {
               <Text style={styles.highlightText}>{t('web.pricing.hero_feature3')}</Text>
             </View>
           </View>
+          </View>
         </View>
 
+        <View style={styles.webContainer}>
         {/* Current Subscription Card */}
         {profile?.subscription_tier !== 'trial' && profile?.subscription_status && (
           <Card style={[styles.currentSubscriptionCard, { backgroundColor: theme.colors.primary + '10', borderColor: theme.colors.primary + '40' }]}>
@@ -754,8 +753,12 @@ export default function PricingScreen() {
           </TouchableOpacity>
         </View>
 
+        </View>
+
         <View style={[styles.footer, { backgroundColor: theme.colors.surface }]}>
-          <Text style={[styles.footerText, { color: theme.colors.textSecondary }]}>{t('pricing.footer_note')}</Text>
+          <View style={styles.webContainer}>
+            <Text style={[styles.footerText, { color: theme.colors.textSecondary }]}>{t('pricing.footer_note')}</Text>
+          </View>
         </View>
 
       </ScrollView>
@@ -772,6 +775,11 @@ export default function PricingScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  webContainer: {
+    width: '100%',
+    maxWidth: 1200,
+    alignSelf: 'center',
   },
   loadingContainer: {
     flex: 1,

@@ -38,6 +38,7 @@ import {
 } from 'lucide-react-native';
 import i18n, { supportedLanguages } from '@/lib/i18n';
 import { useTheme, Theme } from '@/lib/theme';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const LANGUAGE_DETAILS: Record<
   string,
@@ -477,7 +478,7 @@ export default function ProfileScreen() {
       <SafeAreaView style={styles.container} edges={['top']}>
         <View style={[styles.scrollContent, { justifyContent: 'center', alignItems: 'center', flex: 1 }]}>
           <ActivityIndicator size="large" color={theme.colors.primary} />
-          <Text style={{ marginTop: 16, fontSize: 16, color: '#64748B' }}>
+          <Text style={{ marginTop: 16, fontSize: 16, color: theme.colors.textSecondary }}>
             {t('common.loading')}
           </Text>
         </View>
@@ -496,455 +497,468 @@ export default function ProfileScreen() {
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]} edges={['top']}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        <View style={styles.header}>
-          <Text style={[styles.title, { color: theme.colors.text }]}>{t('profile.title')}</Text>
-        </View>
+        <LinearGradient
+          colors={['#0F172A', '#020617']}
+          style={styles.heroHeader}
+        >
+          <View style={styles.webContainer}>
+            <Text style={styles.heroTitle}>{t('profile.title')}</Text>
+          </View>
+        </LinearGradient>
 
-        {/* Avatar Section */}
-        <Card style={styles.avatarSection}>
-          <View style={styles.avatarContainer}>
-            {profile.avatar_url ? (
-              <Image source={{ uri: profile.avatar_url }} style={styles.avatarImage} />
-            ) : (
-              <View style={styles.avatarPlaceholder}>
-                <Text style={styles.avatarPlaceholderText}>
-                  {profile.company_name?.charAt(0).toUpperCase() || 
-                   profile.full_name?.charAt(0).toUpperCase() || 'U'}
-                </Text>
-              </View>
-            )}
-            <TouchableOpacity 
-              style={styles.cameraButton} 
-              onPress={handleUploadAvatar}
-              disabled={isUploadingAvatar}
-            >
-              {isUploadingAvatar ? (
-                <ActivityIndicator size="small" color="#FFFFFF" />
+        <View style={styles.webContainer}>
+          <View style={styles.mainContent}>
+            {/* Avatar Section */}
+            <Card style={styles.avatarSection}>
+            <View style={styles.avatarContainer}>
+              {profile.avatar_url ? (
+                <Image source={{ uri: profile.avatar_url }} style={styles.avatarImage} />
               ) : (
-                <Camera size={20} color="#FFFFFF" />
+                <View style={styles.avatarPlaceholder}>
+                  <Text style={styles.avatarPlaceholderText}>
+                    {profile.company_name?.charAt(0).toUpperCase() || 
+                     profile.full_name?.charAt(0).toUpperCase() || 'U'}
+                  </Text>
+                </View>
               )}
-            </TouchableOpacity>
-          </View>
-          <View style={styles.avatarInfo}>
-            <Text style={styles.avatarName}>
-              {profile.company_name || profile.full_name}
-            </Text>
-            <Text style={styles.avatarEmail}>{profile.email}</Text>
-          </View>
-        </Card>
-
-        {/* Profile Form */}
-        <Card style={styles.section}>
-          <Text style={styles.sectionTitle}>{t('profile.personal_info')}</Text>
-
-          <View style={styles.formGroup}>
-            <Text style={styles.label}>{t('profile.full_name')} *</Text>
-            <Input
-              placeholder={t('profile.enter_name')}
-              value={fullName}
-              onChangeText={setFullName}
-              autoCapitalize="words"
-            />
-          </View>
-
-          <View style={styles.formGroup}>
-            <Text style={styles.label}>{t('profile.company_name')}</Text>
-            <Input
-              placeholder={t('profile.enter_company')}
-              value={companyName}
-              onChangeText={setCompanyName}
-              autoCapitalize="words"
-            />
-          </View>
-
-          <View style={styles.formGroup}>
-            <Text style={styles.label}>{t('profile.email')}</Text>
-            <View style={styles.infoRow}>
-              <Mail size={20} color="#64748B" />
-              <Text style={styles.infoText}>{profile.email}</Text>
+              <TouchableOpacity 
+                style={styles.cameraButton} 
+                onPress={handleUploadAvatar}
+                disabled={isUploadingAvatar}
+              >
+                {isUploadingAvatar ? (
+                  <ActivityIndicator size="small" color={theme.colors.white} />
+                ) : (
+                  <Camera size={20} color={theme.colors.white} />
+                )}
+              </TouchableOpacity>
             </View>
-          </View>
+            <View style={styles.avatarInfo}>
+              <Text style={styles.avatarName}>
+                {profile.company_name || profile.full_name}
+              </Text>
+              <Text style={styles.avatarEmail}>{profile.email}</Text>
+            </View>
+          </Card>
 
-          <View style={styles.formGroup}>
-            <Text style={styles.label}>{t('profile.phone_number')}</Text>
-            <Text style={styles.helperText}>{t('profile.phone_number_helper')}</Text>
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.phoneCountryList}
-            >
-              {PHONE_COUNTRIES.map((country) => {
-                const isActive = selectedPhoneCountry === country.iso;
-                return (
-                  <TouchableOpacity
-                    key={country.iso}
-                    style={[
-                      styles.phoneCountryChip,
-                      isActive && styles.phoneCountryChipActive,
-                    ]}
-                    onPress={() => {
-                      setHasUnsavedChanges(true);
-                      setSelectedPhoneCountry(country.iso);
-                    }}
-                  >
-                    <Text style={[styles.phoneCountryText, isActive && styles.phoneCountryTextActive]}>
-                      {country.flag} +{country.dialCode}
-                    </Text>
-                  </TouchableOpacity>
-                );
-              })}
-            </ScrollView>
-            <View style={styles.phoneInputRow}>
-              <View style={styles.phoneDialCode}>
-                <Text style={styles.phoneDialCodeText}>+{selectedCountry.dialCode}</Text>
-              </View>
-              <TextInput
-                style={styles.phoneNumberInput}
-                keyboardType="phone-pad"
-                value={phoneNumberLocal}
-                onChangeText={(value) => {
-                  setHasUnsavedChanges(true);
-                  setPhoneError(null);
-                  setPhoneNumberLocal(value.replace(/[^0-9]/g, ''));
-                }}
-                placeholder={t('profile.phone_number_placeholder')}
-                maxLength={15}
+          {/* Profile Form */}
+          <Card style={styles.section}>
+            <Text style={styles.sectionTitle}>{t('profile.personal_info')}</Text>
+
+            <View style={styles.formGroup}>
+              <Text style={styles.label}>{t('profile.full_name')} *</Text>
+              <Input
+                placeholder={t('profile.enter_name')}
+                value={fullName}
+                onChangeText={setFullName}
+                autoCapitalize="words"
               />
             </View>
-            {phoneError && <Text style={styles.errorText}>{phoneError}</Text>}
-          </View>
-        </Card>
 
-        {/* Truck Type Selection */}
-        <Card style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Truck size={24} color={theme.colors.primary} />
-            <Text style={styles.sectionTitle}>{t('profile.truck_type')}</Text>
-          </View>
-          <Text style={styles.sectionDescription}>
-            {t('profile.truck_type_desc')}
-          </Text>
+            <View style={styles.formGroup}>
+              <Text style={styles.label}>{t('profile.company_name')}</Text>
+              <Input
+                placeholder={t('profile.enter_company')}
+                value={companyName}
+                onChangeText={setCompanyName}
+                autoCapitalize="words"
+              />
+            </View>
 
-          <View style={styles.chipContainer}>
-            {TRUCK_TYPES.map((truck) => (
-              <TouchableOpacity
-                key={truck.value}
-                style={[
-                  styles.chip,
-                  truckType === truck.value && styles.chipSelected,
-                ]}
-                onPress={() => {
-                  setHasUnsavedChanges(true);
-                  setTruckType(truck.value);
-                }}
+            <View style={styles.formGroup}>
+              <Text style={styles.label}>{t('profile.email')}</Text>
+              <View style={styles.infoRow}>
+                <Mail size={20} color={theme.colors.textSecondary} />
+                <Text style={styles.infoText}>{profile.email}</Text>
+              </View>
+            </View>
+
+            <View style={styles.formGroup}>
+              <Text style={styles.label}>{t('profile.phone_number')}</Text>
+              <Text style={styles.helperText}>{t('profile.phone_number_helper')}</Text>
+              <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={styles.phoneCountryList}
               >
-                <Text
-                  style={[
-                    styles.chipText,
-                    truckType === truck.value && styles.chipTextSelected,
-                  ]}
-                >
-                  {truck.label}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        </Card>
+                {PHONE_COUNTRIES.map((country) => {
+                  const isActive = selectedPhoneCountry === country.iso;
+                  return (
+                    <TouchableOpacity
+                      key={country.iso}
+                      style={[
+                        styles.phoneCountryChip,
+                        isActive && styles.phoneCountryChipActive,
+                      ]}
+                      onPress={() => {
+                        setHasUnsavedChanges(true);
+                        setSelectedPhoneCountry(country.iso);
+                      }}
+                    >
+                      <Text style={[styles.phoneCountryText, isActive && styles.phoneCountryTextActive]}>
+                        {country.flag} +{country.dialCode}
+                      </Text>
+                    </TouchableOpacity>
+                  );
+                })}
+              </ScrollView>
+              <View style={styles.phoneInputRow}>
+                <View style={styles.phoneDialCode}>
+                  <Text style={styles.phoneDialCodeText}>+{selectedCountry.dialCode}</Text>
+                </View>
+                <TextInput
+                  style={styles.phoneNumberInput}
+                  keyboardType="phone-pad"
+                  value={phoneNumberLocal}
+                  onChangeText={(value) => {
+                    setHasUnsavedChanges(true);
+                    setPhoneError(null);
+                    setPhoneNumberLocal(value.replace(/[^0-9]/g, ''));
+                  }}
+                  placeholder={t('profile.phone_number_placeholder')}
+                  placeholderTextColor={theme.colors.placeholder}
+                  maxLength={15}
+                />
+              </View>
+              {phoneError && <Text style={styles.errorText}>{phoneError}</Text>}
+            </View>
+          </Card>
 
-        {/* Search Radius Selection */}
-        <Card style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <MapPin size={24} color={theme.colors.primary} />
-            <Text style={styles.sectionTitle}>{t('profile.search_radius')}</Text>
-          </View>
-          <Text style={styles.sectionDescription}>
-            {t('profile.search_radius_desc')}
-          </Text>
-
-          {/* Warning about larger radius */}
-          <View style={styles.radiusWarning}>
-            <Text style={styles.radiusWarningText}>
-              {t('profile.search_radius_warning')}
+          {/* Truck Type Selection */}
+          <Card style={styles.section}>
+            <View style={styles.sectionHeader}>
+              <Truck size={24} color={theme.colors.primary} />
+              <Text style={styles.sectionTitle}>{t('profile.truck_type')}</Text>
+            </View>
+            <Text style={styles.sectionDescription}>
+              {t('profile.truck_type_desc')}
             </Text>
-          </View>
 
-          <View style={styles.radiusContainer}>
-            {SEARCH_RADIUS_OPTIONS.map((option) => (
+            <View style={styles.chipContainer}>
+              {TRUCK_TYPES.map((truck) => (
+                <TouchableOpacity
+                  key={truck.value}
+                  style={[
+                    styles.chip,
+                    truckType === truck.value && styles.chipSelected,
+                  ]}
+                  onPress={() => {
+                    setHasUnsavedChanges(true);
+                    setTruckType(truck.value);
+                  }}
+                >
+                  <Text
+                    style={[
+                      styles.chipText,
+                      truckType === truck.value && styles.chipTextSelected,
+                    ]}
+                  >
+                    {truck.label}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </Card>
+
+          {/* Search Radius Selection */}
+          <Card style={styles.section}>
+            <View style={styles.sectionHeader}>
+              <MapPin size={24} color={theme.colors.primary} />
+              <Text style={styles.sectionTitle}>{t('profile.search_radius')}</Text>
+            </View>
+            <Text style={styles.sectionDescription}>
+              {t('profile.search_radius_desc')}
+            </Text>
+
+            {/* Warning about larger radius */}
+            <View style={styles.radiusWarning}>
+              <Text style={styles.radiusWarningText}>
+                {t('profile.search_radius_warning')}
+              </Text>
+            </View>
+
+            <View style={styles.radiusContainer}>
+              {SEARCH_RADIUS_OPTIONS.map((option) => (
+                <TouchableOpacity
+                  key={option.value}
+                  style={[
+                    styles.radiusButton,
+                    searchRadius === option.value && styles.radiusButtonSelected,
+                  ]}
+                  onPress={() => {
+                    setHasUnsavedChanges(true);
+                    setSearchRadius(option.value);
+                  }}
+                >
+                  <Text
+                    style={[
+                      styles.radiusText,
+                      searchRadius === option.value && styles.radiusTextSelected,
+                    ]}
+                  >
+                    {option.label}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </Card>
+
+          {/* Distance Unit Selection */}
+          <Card style={styles.section}>
+            <View style={styles.sectionHeader}>
+              <MapPin size={24} color={theme.colors.primary} />
+              <Text style={styles.sectionTitle}>{t('profile.distance_unit')}</Text>
+            </View>
+            <Text style={styles.sectionDescription}>
+              {t('profile.distance_unit_desc')}
+            </Text>
+
+            <View style={styles.radiusContainer}>
               <TouchableOpacity
-                key={option.value}
                 style={[
                   styles.radiusButton,
-                  searchRadius === option.value && styles.radiusButtonSelected,
+                  distanceUnit === 'km' && styles.radiusButtonSelected,
                 ]}
                 onPress={() => {
                   setHasUnsavedChanges(true);
-                  setSearchRadius(option.value);
+                  setDistanceUnit('km');
                 }}
               >
                 <Text
                   style={[
                     styles.radiusText,
-                    searchRadius === option.value && styles.radiusTextSelected,
+                    distanceUnit === 'km' && styles.radiusTextSelected,
                   ]}
                 >
-                  {option.label}
+                  {t('profile.unit_km')}
                 </Text>
               </TouchableOpacity>
-            ))}
-          </View>
-        </Card>
 
-        {/* Distance Unit Selection */}
-        <Card style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <MapPin size={24} color={theme.colors.primary} />
-            <Text style={styles.sectionTitle}>{t('profile.distance_unit')}</Text>
-          </View>
-          <Text style={styles.sectionDescription}>
-            {t('profile.distance_unit_desc')}
-          </Text>
-
-          <View style={styles.radiusContainer}>
-            <TouchableOpacity
-              style={[
-                styles.radiusButton,
-                distanceUnit === 'km' && styles.radiusButtonSelected,
-              ]}
-              onPress={() => {
-                setHasUnsavedChanges(true);
-                setDistanceUnit('km');
-              }}
-            >
-              <Text
-                style={[
-                  styles.radiusText,
-                  distanceUnit === 'km' && styles.radiusTextSelected,
-                ]}
-              >
-                {t('profile.unit_km')}
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={[
-                styles.radiusButton,
-                distanceUnit === 'mi' && styles.radiusButtonSelected,
-              ]}
-              onPress={() => {
-                setHasUnsavedChanges(true);
-                setDistanceUnit('mi');
-              }}
-            >
-              <Text
-                style={[
-                  styles.radiusText,
-                  distanceUnit === 'mi' && styles.radiusTextSelected,
-                ]}
-              >
-                {t('profile.unit_mi')}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </Card>
-
-        {/* Industry Preferences */}
-        <Card style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Factory size={24} color={theme.colors.primary} />
-            <Text style={styles.sectionTitle}>
-              {t('profile.preferred_industries')}
-            </Text>
-          </View>
-          <Text style={styles.sectionDescription}>
-            {t('profile.industries_desc', { count: selectedIndustries.length })}
-          </Text>
-
-          <View style={styles.chipContainer}>
-            {INDUSTRIES.map((industry) => {
-              const isSelected = selectedIndustries.includes(industry);
-              return (
-                <TouchableOpacity
-                  key={industry}
-                  style={[
-                    styles.chip,
-                    isSelected && styles.chipSelected,
-                  ]}
-                  onPress={() => toggleIndustry(industry)}
-                >
-                  <Text
-                    style={[
-                      styles.chipText,
-                      isSelected && styles.chipTextSelected,
-                    ]}
-                  >
-                    {industry}
-                  </Text>
-                </TouchableOpacity>
-              );
-            })}
-          </View>
-        </Card>
-
-        {/* Save Button */}
-        <Button
-          title={t('common.save')}
-          onPress={handleSaveProfile}
-          loading={isSaving}
-          style={styles.saveButton}
-          variant="secondary"
-        />
-
-        <Card style={styles.section}>
-          <Text style={styles.sectionTitle}>{t('subscription.title')}</Text>
-
-          <View style={styles.subscriptionHeader}>
-            <View>
-              <Text style={styles.subscriptionTier}>
-                {tierInfo.name} {t('subscription.title')}
-              </Text>
-              {'price' in tierInfo && tierInfo.price && (
-                <Text style={styles.subscriptionPrice}>
-                  {t('subscription.price_month', { price: tierInfo.price })}
-                </Text>
-              )}
-            </View>
-            <CreditCard size={32} color={theme.colors.primary} />
-          </View>
-
-          <View style={styles.searchesProgress}>
-            <Text style={styles.searchesText}>
-              {t('subscription.searches_used', {
-                used: searchesUsed,
-                total: searchesTotal,
-              })}
-            </Text>
-            <View style={styles.progressBar}>
-              <View
-                style={[
-                  styles.progressFill,
-                  { width: `${(searchesUsed / searchesTotal) * 100}%`, backgroundColor: theme.colors.secondary },
-                ]}
-              />
-            </View>
-          </View>
-
-          {profile.subscription_tier === 'trial' && (
-            <Button
-              title={t('home.upgrade')}
-              onPress={() => {
-                console.log('Navigating to pricing screen');
-                router.push('/(tabs)/pricing');
-              }}
-              variant="outline"
-            />
-          )}
-        </Card>
-
-        <Card style={styles.section}>
-          <Text style={styles.sectionTitle}>Appearance</Text>
-          <View style={styles.radiusContainer}>
-            <TouchableOpacity
-              style={[
-                styles.radiusButton,
-                themeMode === 'light' && styles.radiusButtonSelected,
-                { borderColor: themeMode === 'light' ? theme.colors.primary : theme.colors.border, backgroundColor: theme.colors.card }
-              ]}
-              onPress={() => setThemeMode('light')}
-            >
-              <Sun size={20} color={themeMode === 'light' ? theme.colors.primary : theme.colors.textSecondary} />
-              <Text style={[styles.radiusText, themeMode === 'light' && { color: theme.colors.primary }]}>Light</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[
-                styles.radiusButton,
-                themeMode === 'dark' && styles.radiusButtonSelected,
-                { borderColor: themeMode === 'dark' ? theme.colors.primary : theme.colors.border, backgroundColor: theme.colors.card }
-              ]}
-              onPress={() => setThemeMode('dark')}
-            >
-              <Moon size={20} color={themeMode === 'dark' ? theme.colors.primary : theme.colors.textSecondary} />
-              <Text style={[styles.radiusText, themeMode === 'dark' && { color: theme.colors.primary }]}>Dark</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[
-                styles.radiusButton,
-                themeMode === 'auto' && styles.radiusButtonSelected,
-                { borderColor: themeMode === 'auto' ? theme.colors.primary : theme.colors.border, backgroundColor: theme.colors.card }
-              ]}
-              onPress={() => setThemeMode('auto')}
-            >
-              <Monitor size={20} color={themeMode === 'auto' ? theme.colors.primary : theme.colors.textSecondary} />
-              <Text style={[styles.radiusText, themeMode === 'auto' && { color: theme.colors.primary }]}>Auto</Text>
-            </TouchableOpacity>
-          </View>
-        </Card>
-
-        <Card style={styles.section}>
-          <Text style={styles.sectionTitle}>{t('profile.language')}</Text>
-
-          <View style={styles.languageGrid}>
-            {LANGUAGES.map((lang) => (
               <TouchableOpacity
-                key={lang.code}
                 style={[
-                  styles.languageButton,
-                  i18n.language === lang.code && styles.languageButtonActive,
+                  styles.radiusButton,
+                  distanceUnit === 'mi' && styles.radiusButtonSelected,
                 ]}
-                onPress={() => handleChangeLanguage(lang.code)}
+                onPress={() => {
+                  setHasUnsavedChanges(true);
+                  setDistanceUnit('mi');
+                }}
               >
-                <Text style={styles.languageFlag}>{lang.flag}</Text>
                 <Text
                   style={[
-                    styles.languageName,
-                    i18n.language === lang.code && styles.languageNameActive,
+                    styles.radiusText,
+                    distanceUnit === 'mi' && styles.radiusTextSelected,
                   ]}
                 >
-                  {lang.name}
+                  {t('profile.unit_mi')}
                 </Text>
               </TouchableOpacity>
-            ))}
-          </View>
-        </Card>
+            </View>
+          </Card>
 
-        {/* Support Button */}
-        <TouchableOpacity
-          style={[styles.supportButtonStyle, { shadowColor: theme.colors.info, backgroundColor: theme.colors.card }]}
-          onPress={() => setShowSupportModal(true)}
-          activeOpacity={0.7}
-        >
-          <View style={[styles.supportButtonContent, { borderColor: theme.colors.info }]}>
-            <Text style={[styles.supportButtonText, { color: theme.colors.info }]}>💬 {t('support.title')}</Text>
-          </View>
-        </TouchableOpacity>
-
-        <Button
-          title={t('common.logout')}
-          onPress={handleLogout}
-          variant="outline"
-          loading={isLoading}
-          style={styles.logoutButton}
-        />
-
-        {/* Danger Zone - Account Deletion */}
-        <Card style={styles.dangerZone}>
-          <View style={styles.dangerHeader}>
-            <Text style={styles.dangerTitle}>⚠️ Danger Zone</Text>
-            <Text style={styles.dangerDescription}>
-              Permanently delete your account and all associated data. This action cannot be undone.
+          {/* Industry Preferences */}
+          <Card style={styles.section}>
+            <View style={styles.sectionHeader}>
+              <Factory size={24} color={theme.colors.primary} />
+              <Text style={styles.sectionTitle}>
+                {t('profile.preferred_industries')}
+              </Text>
+            </View>
+            <Text style={styles.sectionDescription}>
+              {t('profile.industries_desc', { count: selectedIndustries.length })}
             </Text>
-          </View>
-          <TouchableOpacity
-            style={styles.deleteAccountButton}
-            onPress={() => setShowDeleteModal(true)}
-            disabled={isLoading}
-          >
-            <Text style={styles.deleteAccountButtonText}>Delete My Account</Text>
-          </TouchableOpacity>
-        </Card>
 
-        <Text style={styles.version}>
-          {t('profile.version')} 1.0.0
-        </Text>
+            <View style={styles.chipContainer}>
+              {INDUSTRIES.map((industry) => {
+                const isSelected = selectedIndustries.includes(industry);
+                return (
+                  <TouchableOpacity
+                    key={industry}
+                    style={[
+                      styles.chip,
+                      isSelected && styles.chipSelected,
+                    ]}
+                    onPress={() => toggleIndustry(industry)}
+                  >
+                    <Text
+                      style={[
+                        styles.chipText,
+                        isSelected && styles.chipTextSelected,
+                      ]}
+                    >
+                      {industry}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+          </Card>
+
+          {/* Save Button */}
+          <Button
+            title={t('common.save')}
+            onPress={handleSaveProfile}
+            loading={isSaving}
+            style={styles.saveButton}
+            variant="secondary"
+          />
+
+          <Card style={[
+            styles.section,
+            profile.subscription_tier !== 'trial' && styles.activeSubscriptionCard
+          ]}>
+            <Text style={styles.sectionTitle}>{t('subscription.title')}</Text>
+
+            <View style={styles.subscriptionHeader}>
+              <View>
+                <Text style={styles.subscriptionTier}>
+                  {tierInfo.name} {t('subscription.title')}
+                </Text>
+                {'price' in tierInfo && tierInfo.price && (
+                  <Text style={styles.subscriptionPrice}>
+                    {t('subscription.price_month', { price: tierInfo.price })}
+                  </Text>
+                )}
+              </View>
+              <CreditCard size={32} color={theme.colors.primary} />
+            </View>
+
+            <View style={styles.searchesProgress}>
+              <Text style={styles.searchesText}>
+                {t('subscription.searches_used', {
+                  used: searchesUsed,
+                  total: searchesTotal,
+                })}
+              </Text>
+              <View style={styles.progressBar}>
+                <View
+                  style={[
+                    styles.progressFill,
+                    { width: `${(searchesUsed / searchesTotal) * 100}%`, backgroundColor: theme.colors.secondary },
+                  ]}
+                />
+              </View>
+            </View>
+
+            {profile.subscription_tier === 'trial' && (
+              <Button
+                title={t('home.upgrade')}
+                onPress={() => {
+                  console.log('Navigating to pricing screen');
+                  router.push('/(tabs)/pricing');
+                }}
+                variant="outline"
+              />
+            )}
+          </Card>
+
+          <Card style={styles.section}>
+            <Text style={styles.sectionTitle}>Appearance</Text>
+            <View style={styles.radiusContainer}>
+              <TouchableOpacity
+                style={[
+                  styles.radiusButton,
+                  themeMode === 'light' && styles.radiusButtonSelected,
+                  { borderColor: themeMode === 'light' ? theme.colors.primary : theme.colors.border, backgroundColor: theme.colors.card }
+                ]}
+                onPress={() => setThemeMode('light')}
+              >
+                <Sun size={20} color={themeMode === 'light' ? theme.colors.primary : theme.colors.textSecondary} />
+                <Text style={[styles.radiusText, themeMode === 'light' && { color: theme.colors.primary }]}>Light</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  styles.radiusButton,
+                  themeMode === 'dark' && styles.radiusButtonSelected,
+                  { borderColor: themeMode === 'dark' ? theme.colors.primary : theme.colors.border, backgroundColor: theme.colors.card }
+                ]}
+                onPress={() => setThemeMode('dark')}
+              >
+                <Moon size={20} color={themeMode === 'dark' ? theme.colors.primary : theme.colors.textSecondary} />
+                <Text style={[styles.radiusText, themeMode === 'dark' && { color: theme.colors.primary }]}>Dark</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  styles.radiusButton,
+                  themeMode === 'auto' && styles.radiusButtonSelected,
+                  { borderColor: themeMode === 'auto' ? theme.colors.primary : theme.colors.border, backgroundColor: theme.colors.card }
+                ]}
+                onPress={() => setThemeMode('auto')}
+              >
+                <Monitor size={20} color={themeMode === 'auto' ? theme.colors.primary : theme.colors.textSecondary} />
+                <Text style={[styles.radiusText, themeMode === 'auto' && { color: theme.colors.primary }]}>Auto</Text>
+              </TouchableOpacity>
+            </View>
+          </Card>
+
+          <Card style={styles.section}>
+            <Text style={styles.sectionTitle}>{t('profile.language')}</Text>
+
+            <View style={styles.languageGrid}>
+              {LANGUAGES.map((lang) => (
+                <TouchableOpacity
+                  key={lang.code}
+                  style={[
+                    styles.languageButton,
+                    i18n.language === lang.code && styles.languageButtonActive,
+                  ]}
+                  onPress={() => handleChangeLanguage(lang.code)}
+                >
+                  <Text style={styles.languageFlag}>{lang.flag}</Text>
+                  <Text
+                    style={[
+                      styles.languageName,
+                      i18n.language === lang.code && styles.languageNameActive,
+                    ]}
+                  >
+                    {lang.name}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </Card>
+
+          {/* Support Button */}
+          <TouchableOpacity
+            style={[styles.supportButtonStyle, { shadowColor: theme.colors.info, backgroundColor: theme.colors.card }]}
+            onPress={() => setShowSupportModal(true)}
+            activeOpacity={0.7}
+          >
+            <View style={[styles.supportButtonContent, { borderColor: theme.colors.info }]}>
+              <Text style={[styles.supportButtonText, { color: theme.colors.info }]}>💬 {t('support.title')}</Text>
+            </View>
+          </TouchableOpacity>
+
+          <Button
+            title={t('common.logout')}
+            onPress={handleLogout}
+            variant="outline"
+            loading={isLoading}
+            style={styles.logoutButton}
+          />
+
+          {/* Danger Zone - Account Deletion */}
+          <Card style={styles.dangerZone}>
+            <View style={styles.dangerHeader}>
+              <Text style={styles.dangerTitle}>⚠️ Danger Zone</Text>
+              <Text style={styles.dangerDescription}>
+                Permanently delete your account and all associated data. This action cannot be undone.
+              </Text>
+            </View>
+            <TouchableOpacity
+              style={styles.deleteAccountButton}
+              onPress={() => setShowDeleteModal(true)}
+              disabled={isLoading}
+            >
+              <Text style={styles.deleteAccountButtonText}>Delete My Account</Text>
+            </TouchableOpacity>
+          </Card>
+
+          <Text style={styles.version}>
+            {t('profile.version')} 1.0.0
+          </Text>
+          </View>
+        </View>
       </ScrollView>
 
       {/* Chat Support Modal */}
@@ -969,24 +983,59 @@ const createStyles = (theme: Theme) => StyleSheet.create({
     backgroundColor: theme.colors.background,
   },
   scrollContent: {
-    padding: 16,
+    paddingBottom: 40,
+  },
+  webContainer: {
+    width: '100%',
+    maxWidth: 1200,
+    alignSelf: 'center',
+  },
+  heroHeader: {
+    width: '100%',
+    backgroundColor: theme.colors.primary,
+    paddingTop: Platform.OS === 'web' ? 64 : 40,
+    paddingBottom: 80,
+    alignItems: 'center',
+    borderBottomLeftRadius: 32,
+    borderBottomRightRadius: 32,
+    marginBottom: -50,
+    zIndex: 0,
+    ...theme.shadows.medium,
+  },
+  heroTitle: {
+    fontSize: 32,
+    fontWeight: '900',
+    color: theme.colors.white,
+    letterSpacing: -0.5,
+    textAlign: 'center',
+  },
+  mainContent: {
+    paddingHorizontal: theme.spacing.md,
+    zIndex: 1,
   },
   header: {
-    marginBottom: 24,
+    marginBottom: theme.spacing.xl,
+    alignItems: 'center',
   },
   title: {
-    fontSize: 28,
-    fontWeight: '700',
+    fontSize: 32,
+    fontWeight: '900',
     color: theme.colors.text,
+    letterSpacing: -0.5,
   },
   section: {
-    marginBottom: 16,
+    marginBottom: theme.spacing.lg,
+  },
+  activeSubscriptionCard: {
+    borderColor: theme.colors.secondary,
+    borderWidth: 1,
+    backgroundColor: theme.mode === 'dark' ? theme.colors.secondary + '10' : theme.colors.card,
   },
   sectionTitle: {
-    fontSize: 18,
-    fontWeight: '600',
+    fontSize: 20,
+    fontWeight: '700',
     color: theme.colors.text,
-    marginBottom: 16,
+    marginBottom: theme.spacing.md,
   },
   infoRow: {
     flexDirection: 'row',
@@ -1037,7 +1086,7 @@ const createStyles = (theme: Theme) => StyleSheet.create({
   },
   progressFill: {
     height: '100%',
-    backgroundColor: theme.colors.primary,
+    backgroundColor: theme.colors.secondary,
   },
   languageGrid: {
     flexDirection: 'row',
@@ -1053,11 +1102,7 @@ const createStyles = (theme: Theme) => StyleSheet.create({
     borderWidth: 1,
     borderColor: theme.colors.border,
     backgroundColor: theme.colors.card,
-    shadowColor: theme.shadows.small.shadowColor,
-    shadowOffset: theme.shadows.small.shadowOffset,
-    shadowOpacity: theme.shadows.small.shadowOpacity,
-    shadowRadius: theme.shadows.small.shadowRadius,
-    elevation: 2,
+    ...theme.shadows.small,
     flexGrow: 1,
     justifyContent: 'center',
   },
@@ -1083,10 +1128,7 @@ const createStyles = (theme: Theme) => StyleSheet.create({
     marginTop: 24,
     marginBottom: 16,
     borderRadius: 16,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    ...theme.shadows.small,
   },
   supportButtonContent: {
     flexDirection: 'row',
@@ -1111,7 +1153,6 @@ const createStyles = (theme: Theme) => StyleSheet.create({
     marginTop: 32,
     marginBottom: 16,
   },
-  // New form styles
   formGroup: {
     marginBottom: 20,
   },
@@ -1187,11 +1228,7 @@ const createStyles = (theme: Theme) => StyleSheet.create({
     borderColor: theme.colors.border,
     backgroundColor: theme.colors.card,
     alignItems: 'center',
-    shadowColor: theme.shadows.small.shadowColor,
-    shadowOffset: theme.shadows.small.shadowOffset,
-    shadowOpacity: theme.shadows.small.shadowOpacity,
-    shadowRadius: theme.shadows.small.shadowRadius,
-    elevation: 2,
+    ...theme.shadows.small,
   },
   radiusButtonSelected: {
     borderColor: theme.colors.secondary,
@@ -1212,11 +1249,7 @@ const createStyles = (theme: Theme) => StyleSheet.create({
     marginBottom: 32,
     height: 56,
     borderRadius: 16,
-    shadowColor: theme.colors.secondary,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 3,
+    ...theme.shadows.medium,
   },
   phoneCountryList: {
     paddingVertical: 8,
@@ -1284,14 +1317,14 @@ const createStyles = (theme: Theme) => StyleSheet.create({
     marginTop: 8,
     fontWeight: '500',
   },
-  // Danger Zone styles
   dangerZone: {
     marginTop: 40,
     marginBottom: 24,
     borderWidth: 1,
     borderColor: theme.colors.error,
-    backgroundColor: theme.mode === 'dark' ? 'rgba(239, 68, 68, 0.1)' : '#FEF2F2',
+    backgroundColor: theme.colors.error + '15',
     borderRadius: 16,
+    padding: 16,
   },
   dangerHeader: {
     marginBottom: 20,
@@ -1314,39 +1347,27 @@ const createStyles = (theme: Theme) => StyleSheet.create({
     paddingHorizontal: 24,
     borderRadius: 12,
     alignItems: 'center',
-    shadowColor: theme.colors.error,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 4,
+    ...theme.shadows.medium,
   },
   deleteAccountButtonText: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#FFFFFF',
+    color: theme.colors.white,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
   },
-  // Avatar styles
   avatarSection: {
     marginBottom: 32,
     alignItems: 'center',
     paddingVertical: 32,
     borderRadius: 24,
-    shadowColor: theme.shadows.medium.shadowColor,
-    shadowOffset: theme.shadows.medium.shadowOffset,
-    shadowOpacity: theme.shadows.medium.shadowOpacity,
-    shadowRadius: theme.shadows.medium.shadowRadius,
-    elevation: 4,
+    backgroundColor: theme.colors.card,
+    ...theme.shadows.medium,
   },
   avatarContainer: {
     position: 'relative',
     marginBottom: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.2,
-    shadowRadius: 16,
-    elevation: 8,
+    ...theme.shadows.large,
   },
   avatarImage: {
     width: 128,
@@ -1369,7 +1390,7 @@ const createStyles = (theme: Theme) => StyleSheet.create({
   avatarPlaceholderText: {
     fontSize: 48,
     fontWeight: '700',
-    color: '#fff',
+    color: theme.colors.white,
   },
   cameraButton: {
     position: 'absolute',
@@ -1383,11 +1404,7 @@ const createStyles = (theme: Theme) => StyleSheet.create({
     alignItems: 'center',
     borderWidth: 4,
     borderColor: theme.colors.card,
-    shadowColor: theme.colors.secondary,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 4,
+    ...theme.shadows.small,
   },
   avatarInfo: {
     alignItems: 'center',

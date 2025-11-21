@@ -1,6 +1,6 @@
 # Stripe Integration Setup Guide
 
-This guide explains how to set up and configure the complete Stripe integration for subscription management and payment processing in the LogisticsLead application.
+This guide explains how to set up and configure the complete Stripe integration for subscription management and payment processing in the Truxel application.
 
 ## Table of Contents
 

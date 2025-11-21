@@ -495,6 +495,9 @@ export default function CommunityFeed({ customHeader }: CommunityFeedProps = {})
 const styles = StyleSheet.create({
   listContent: {
     paddingBottom: 20,
+    width: '100%',
+    maxWidth: 1200,
+    alignSelf: 'center',
   },
   statsBar: {
     padding: 16,

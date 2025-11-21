@@ -2,7 +2,7 @@
 
 ## Overview
 
-Am implementat un sistem complet de subscripții multi-tier cu integrare Stripe nativă și automatizare totală prin Supabase Edge Functions pentru aplicația LogisticsLead.
+Am implementat un sistem complet de subscripții multi-tier cu integrare Stripe nativă și automatizare totală prin Supabase Edge Functions pentru aplicația Truxel.
 
 ## ✅ Ce a fost implementat
 

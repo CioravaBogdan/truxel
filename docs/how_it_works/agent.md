@@ -1,6 +1,6 @@
 # Truxel Agent Notes
 
-> Treat the product as **Truxel** everywhere. `README.md` still says "LogisticsLead", so plan a cleanup, but keep these notes aligned with the Truxel naming used across the rest of the docs.
+> Treat the product as **Truxel** everywhere. Keep these notes aligned with the Truxel naming used across the rest of the docs.
 
 ---
 
@@ -73,7 +73,7 @@
 ---
 
 ## Doc Library Cheat Sheet
-- `README.md` -- Base overview (rename LogisticsLead -> Truxel soon).
+- `README.md` -- Base overview.
 - `TRUXEL_MARKETING.md` -- Messaging bible, ROI calculator, testimonials, onboarding checklist, support contacts, launch promo code.
 - `COMMUNITY_FEATURE_FINAL_PLAN.md` / `COMMUNITY_FEATURE_IMPLEMENTATION_PLAN.md` -- Detailed architecture, UX, limits, and rollout for the realtime community feature.
 - `COMMUNITY_FEATURE_SETUP.md`, `COMMUNITY_FILTER_IMPLEMENTATION_STATUS.md` -- Step-by-step setup and progress trackers for community workstreams.
@@ -99,4 +99,4 @@
 - Search credits are consumed before the webhook runs. On webhook failure, update the `searches` row to `failed` and follow up so credits can be restored.
 - `notificationService` requires `profiles.last_known_city`; make sure profile updates record location once search/location flows succeed.
 - Community and leads share location filters. Keep `cityService` caches accurate and avoid destructuring Zustand actions that you later call outside of render (prevents stale closures).
-- README, marketing, and code should all say "Truxel". Flag any new LogisticsLead references for cleanup.
+- README, marketing, and code should all say "Truxel". Flag any new stray references for cleanup.
