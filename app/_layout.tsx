@@ -14,6 +14,7 @@ import i18n from '@/lib/i18n';
 import Toast from 'react-native-toast-message';
 import { initRevenueCat, logoutRevenueCat } from '@/lib/revenueCat';
 import { ThemeProvider } from '@/lib/theme';
+import { useNotificationStore } from '@/store/notificationStore';
 
 export default function RootLayout() {
   useFrameworkReady();
@@ -24,6 +25,7 @@ export default function RootLayout() {
   const router = useRouter();
   const segments = useSegments();
   const { setSession, setUser, setProfile, setIsLoading, isAuthenticated, isLoading, profile } = useAuthStore();
+  const { subscribeToNotifications, fetchNotifications } = useNotificationStore();
 
   // Initialize native modules first (prevents iOS crashes)
   useEffect(() => {
@@ -170,6 +172,15 @@ export default function RootLayout() {
               }).catch(notifError => {
                 console.error('RootLayout: Notification service error (non-critical):', notifError);
               });
+
+              // Initialize persistent notifications store
+              console.log('RootLayout: Initializing persistent notifications');
+              fetchNotifications(session.user.id);
+              const unsubscribe = subscribeToNotifications(session.user.id);
+              
+              // Store unsubscribe function in a ref or effect cleanup if possible, 
+              // but here we are inside a callback. 
+              // Ideally this should be in a separate useEffect dependent on user.id
             } catch (notifError) {
               console.error('RootLayout: Notification initialization error (non-critical):', notifError);
             }

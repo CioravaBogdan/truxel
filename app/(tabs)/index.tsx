@@ -17,6 +17,8 @@ import { searchesService } from '@/services/searchesService';
 import { Briefcase, Clock, CreditCard, MapPin, Building2, Users } from 'lucide-react-native';
 import CommunityFeed from '@/components/community/CommunityFeed';
 import { useTheme } from '@/lib/theme';
+import { NotificationBadge } from '@/components/NotificationBadge';
+import { useNotificationStore } from '@/store/notificationStore';
 
 export default function HomeScreen() {
   const { t } = useTranslation();
@@ -24,6 +26,7 @@ export default function HomeScreen() {
   const { theme } = useTheme();
   const { profile, user } = useAuthStore();
   const { leads, setLeads, setSelectedLeadId, setSelectedTab } = useLeadsStore();
+  const { fetchNotifications } = useNotificationStore();
   const [searchesRemaining, setSearchesRemaining] = useState(0);
 
   const loadData = useCallback(async () => {
@@ -33,6 +36,7 @@ export default function HomeScreen() {
       const [leadsData, remaining] = await Promise.all([
         leadsService.getLeads(user.id),
         searchesService.getSearchesRemaining(user.id),
+        fetchNotifications(user.id),
       ]);
 
       setLeads(leadsData);
@@ -40,7 +44,7 @@ export default function HomeScreen() {
     } catch (error) {
       console.error('Error loading home data:', error);
     }
-  }, [profile, setLeads, user]);
+  }, [profile, setLeads, user, fetchNotifications]);
 
   useEffect(() => {
     loadData();
@@ -53,12 +57,21 @@ export default function HomeScreen() {
   const renderStatsHeader = () => (
     <View style={styles.headerContent}>
       <View style={styles.header}>
-        <Text style={[styles.greeting, { color: theme.colors.text }]}>
-          {t('home.welcome', { name: profile?.full_name?.split(' ')[0] || '' })}
-        </Text>
-        <Text style={[styles.subtitle, { color: theme.colors.textSecondary }]}>
-          {t('home.searches_remaining', { count: searchesRemaining })}
-        </Text>
+        <View style={styles.headerTopRow}>
+          <View>
+            <Text style={[styles.greeting, { color: theme.colors.text }]}>
+              {t('home.welcome', { name: profile?.full_name?.split(' ')[0] || '' })}
+            </Text>
+            <Text style={[styles.subtitle, { color: theme.colors.textSecondary }]}>
+              {t('home.searches_remaining', { count: searchesRemaining })}
+            </Text>
+          </View>
+          <NotificationBadge 
+            onPress={() => router.push('/notifications')}
+            color={theme.colors.text}
+            size={28}
+          />
+        </View>
       </View>
 
       <Card style={styles.statsCard}>
@@ -180,6 +193,7 @@ export default function HomeScreen() {
     <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]} edges={['top']}>
       <CommunityFeed 
         customHeader={renderStatsHeader()}
+        onRefresh={loadData}
       />
     </SafeAreaView>
   );
@@ -194,6 +208,11 @@ const styles = StyleSheet.create({
   },
   header: {
     marginBottom: 24,
+  },
+  headerTopRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
   },
   greeting: {
     fontSize: 28,

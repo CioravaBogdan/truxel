@@ -1,7 +1,11 @@
 import * as Notifications from 'expo-notifications';
+import { Audio } from 'expo-av';
 import { supabase } from '@/lib/supabase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Platform } from 'react-native';
+// @ts-ignore
+import notificationSound from '@/assets/sounds/notification.mp3';
+
 import {
   safeRequestNotificationPermissions,
   safeGetExpoPushToken,
@@ -178,6 +182,9 @@ class NotificationService {
       if (matchingPosts.length > 0) {
         console.log(`[NotificationService] Found ${matchingPosts.length} new posts in user's city`);
         
+        // Play sound
+        await this.playNotificationSound();
+
         // Send notification for the most recent post
         const latestPost = matchingPosts[0];
         await this.sendLocalNotification(latestPost);
@@ -190,6 +197,34 @@ class NotificationService {
 
     } catch (error) {
       console.error('[NotificationService] Error checking posts:', error);
+    }
+  }
+
+  /**
+   * Play custom notification sound
+   */
+  private async playNotificationSound(): Promise<void> {
+    try {
+      // Configure audio session
+      await Audio.setAudioModeAsync({
+        playsInSilentModeIOS: true,
+        staysActiveInBackground: true,
+        shouldDuckAndroid: true,
+      });
+
+      // Play sound - using local file from assets
+      const { sound } = await Audio.Sound.createAsync(notificationSound);
+      
+      await sound.playAsync();
+      
+      // Cleanup
+      sound.setOnPlaybackStatusUpdate(async (status) => {
+        if (status.isLoaded && status.didJustFinish) {
+          await sound.unloadAsync();
+        }
+      });
+    } catch (error) {
+      console.log('[NotificationService] Error playing sound:', error);
     }
   }
 

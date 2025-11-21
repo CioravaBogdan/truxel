@@ -2,6 +2,7 @@ export type SubscriptionTier = 'trial' | 'standard' | 'pro' | 'premium';
 export type SubscriptionStatus = 'active' | 'cancelled' | 'expired' | 'past_due';
 export type LeadStatus = 'new' | 'contacted' | 'in_progress' | 'won' | 'lost';
 export type SearchStatus = 'pending' | 'completed' | 'failed';
+export type NotificationType = 'search_completed' | 'community_alert' | 'system' | 'promotion';
 export type TransactionType = 'subscription' | 'search_pack' | 'renewal';
 export type TransactionStatus = 'pending' | 'completed' | 'failed' | 'refunded';
 export type Language = 'en' | 'ro' | 'pl' | 'tr' | 'lt' | 'es';
@@ -92,6 +93,17 @@ export interface Search {
   completed_at?: string;
   results_count: number;
   error_message?: string;
+  created_at: string;
+}
+
+export interface Notification {
+  id: string;
+  user_id: string;
+  title: string;
+  message: string;
+  type: NotificationType;
+  data?: Record<string, any>;
+  is_read: boolean;
   created_at: string;
 }
 

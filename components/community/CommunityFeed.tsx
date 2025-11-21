@@ -27,9 +27,10 @@ import { useTheme } from '@/lib/theme';
 
 interface CommunityFeedProps {
   customHeader?: React.ReactNode;
+  onRefresh?: () => Promise<void>;
 }
 
-export default function CommunityFeed({ customHeader }: CommunityFeedProps = {}) {
+export default function CommunityFeed({ customHeader, onRefresh }: CommunityFeedProps = {}) {
   const { t } = useTranslation();
   const { theme } = useTheme();
   const { user } = useAuthStore();
@@ -446,7 +447,11 @@ export default function CommunityFeed({ customHeader }: CommunityFeedProps = {})
         refreshControl={
           <RefreshControl
             refreshing={isRefreshing}
-            onRefresh={() => {
+            onRefresh={async () => {
+              if (onRefresh) {
+                await onRefresh();
+              }
+              
               if (selectedTab === 'saved' && user?.id) {
                 // For Saved tab, reload from DB
                 void useCommunityStore.getState().loadSavedPosts(user.id);
