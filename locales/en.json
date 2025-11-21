@@ -738,20 +738,20 @@
     "about": {
       "hero_badge": "Built by drivers, for drivers",
       "hero_title": "Logistics without middlemen starts with Truxel",
-      "hero_subtitle": "Our founder spent years on European roads, knocking on warehouse doors and waiting for brokers to pick up. Truxel is the platform he wished he had: direct connection to shippers, instant outreach, and real community support.",
+      "hero_subtitle": "Our founder started as a driver in the UK, waking up at 1 AM for milk deliveries and navigating a market full of intermediaries. Truxel is the platform he built to solve his own problem: finding direct clients without knocking on doors.",
       "hero_cta": "Create your free account",
       "hero_secondary_cta": "Talk to the team",
-      "founder_quote": "I wanted a way to find shippers while I was still parked at the loading dock. Truxel lets every driver control their pipeline without paying broker fees.",
+      "founder_quote": "I realized that no matter how professional you are, intermediaries only care about the lowest price. I built Truxel to give drivers the power to negotiate directly and build their own client list.",
       "journey_badge": "Our story",
-      "journey_title": "Born in the cab of a MAN TGX",
-      "journey_subtitle": "From one driver searching for reliable clients to a platform serving thousands across Europe.",
+      "journey_title": "From a UK Driver to Fleet Owner",
+      "journey_subtitle": "A journey fueled by the desire to be independent and help other owner-operators succeed.",
       "mission_badge": "Mission",
       "mission_title": "Every kilometer should pay",
       "mission_subtitle": "We believe drivers should never sit idle when cargo needs moving.",
       "mission": {
-        "point1": "Direct connection to shippers without brokers or hidden fees.",
-        "point2": "Tools designed for life on the road: fast, mobile, multilingual.",
-        "point3": "A community where drivers help drivers with real opportunities."
+        "point1": "Empower owner-operators to take their business into their own hands.",
+        "point2": "Eliminate the need for multiple intermediaries and broker fees.",
+        "point3": "Build a clean, supportive community where drivers help drivers."
       },
       "coverage_title": "Where Truxel operates today",
       "coverage_subtitle": "10 languages and thousands of verified companies across Europe.",
@@ -814,20 +814,20 @@
       "cta_secondary": "See pricing"
     },
     "founder": {
-      "name": "Bogdan Ciorava",
+      "name": "George Bogdan",
       "role": "Founder & former owner-operator",
       "timeline": {
         "step1": {
-          "title": "2019 • Chasing direct shippers",
-          "desc": "Bogdan spent nights with spreadsheets of companies, calling warehouses between deliveries to avoid deadhead miles."
+          "title": "2019 • The Driver's Struggle",
+          "desc": "George Bogdan started as a driver in the UK, then bought his first truck. He quickly learned that relying on expedition houses meant low rates and high pressure."
         },
         "step2": {
-          "title": "2022 • First Truxel prototype",
-          "desc": "After building a manual database of 6,000 companies, he created a GPS search tool to surface nearby shippers instantly."
+          "title": "2022 • The Realization",
+          "desc": "Tired of 'fake' loads and 6 layers of brokers, he realized he needed a way to find local shippers in industrial zones without knocking on doors."
         },
         "step3": {
-          "title": "2024 • Community goes live",
-          "desc": "We launched a European-wide driver network so loads and availability could be shared in seconds, not days."
+          "title": "2024 • Truxel is Born",
+          "desc": "He built the tool he needed: GPS search for nearby companies, direct contact info, and a community for drivers to help each other."
         }
       }
     },
