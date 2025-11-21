@@ -84,17 +84,17 @@ export default function AboutUs() {
 
   return (
     <ScrollView style={[styles.container, { backgroundColor: theme.colors.background }]}>
-      <View style={[styles.hero, { backgroundColor: theme.colors.background }]}>
+      <View style={[styles.hero, { backgroundColor: '#0F172A' }]}>
         <View style={styles.section}>
           <View style={styles.heroContent}>
-            <View style={[styles.heroBadge, { backgroundColor: theme.colors.primary + '1F' }]}>
-              <Truck size={18} color={theme.colors.primary} />
-              <Text style={[styles.heroBadgeText, { color: theme.colors.primary }]}>{t('web.about.hero_badge')}</Text>
+            <View style={[styles.heroBadge, { backgroundColor: 'rgba(255, 87, 34, 0.15)' }]}>
+              <Truck size={18} color="#FF5722" />
+              <Text style={[styles.heroBadgeText, { color: '#FF5722' }]}>{t('web.about.hero_badge')}</Text>
             </View>
-            <Text style={[styles.heroTitle, { color: theme.colors.text }]}>{t('web.about.hero_title')}</Text>
-            <Text style={[styles.heroSubtitle, { color: theme.colors.textSecondary }]}>{t('web.about.hero_subtitle')}</Text>
+            <Text style={[styles.heroTitle, { color: '#FFFFFF', textAlign: 'center' }]}>{t('web.about.hero_title')}</Text>
+            <Text style={[styles.heroSubtitle, { color: '#94A3B8', textAlign: 'center' }]}>{t('web.about.hero_subtitle')}</Text>
 
-            <View style={styles.heroButtons}>
+            <View style={[styles.heroButtons, { justifyContent: 'center' }]}>
               <TouchableOpacity
                 style={[styles.heroPrimary, { backgroundColor: theme.colors.secondary }]}
                 onPress={() => router.push('/(auth)/register')}
@@ -102,18 +102,18 @@ export default function AboutUs() {
                 <Text style={styles.heroPrimaryText}>{t('web.about.hero_cta')}</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={[styles.heroSecondary, { borderColor: theme.colors.border, backgroundColor: theme.colors.card }]}
+                style={[styles.heroSecondary, { borderColor: 'rgba(255,255,255,0.2)', backgroundColor: 'transparent' }]}
                 onPress={() => router.push('/(web)/contact')}
               >
-                <Text style={[styles.heroSecondaryText, { color: theme.colors.text }]}>{t('web.about.hero_secondary_cta')}</Text>
+                <Text style={[styles.heroSecondaryText, { color: '#FFFFFF' }]}>{t('web.about.hero_secondary_cta')}</Text>
               </TouchableOpacity>
             </View>
 
-            <View style={[styles.quoteCard, { backgroundColor: theme.colors.secondary + '15', borderColor: theme.colors.secondary }]}>
-              <Quote size={24} color={theme.colors.secondary} />
-              <Text style={[styles.quoteText, { color: theme.colors.text }]}>{t('web.about.founder_quote')}</Text>
-              <Text style={[styles.quoteAuthor, { color: theme.colors.text }]}>{t('web.founder.name')}</Text>
-              <Text style={[styles.quoteRole, { color: theme.colors.textSecondary }]}>{t('web.founder.role')}</Text>
+            <View style={[styles.quoteCard, { backgroundColor: 'rgba(255, 255, 255, 0.05)', borderColor: 'rgba(255, 255, 255, 0.1)' }]}>
+              <Quote size={24} color="#FF5722" />
+              <Text style={[styles.quoteText, { color: '#E2E8F0' }]}>{t('web.about.founder_quote')}</Text>
+              <Text style={[styles.quoteAuthor, { color: '#FFFFFF' }]}>{t('web.founder.name')}</Text>
+              <Text style={[styles.quoteRole, { color: '#94A3B8' }]}>{t('web.founder.role')}</Text>
             </View>
           </View>
         </View>
@@ -265,9 +265,10 @@ const styles = StyleSheet.create({
     position: 'relative',
     zIndex: 1,
     gap: 28,
+    alignItems: 'center',
   },
   heroBadge: {
-    alignSelf: 'flex-start',
+    alignSelf: 'center',
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
@@ -286,6 +287,7 @@ const styles = StyleSheet.create({
     fontWeight: '900',
     lineHeight: 56,
     maxWidth: 760,
+    textAlign: 'center',
     ...(Platform.OS === 'web' && {
       '@media (max-width: 768px)': {
         fontSize: 34,
@@ -297,11 +299,13 @@ const styles = StyleSheet.create({
     fontSize: 20,
     lineHeight: 32,
     maxWidth: 720,
+    textAlign: 'center',
   },
   heroButtons: {
     flexDirection: 'row',
     gap: 16,
     flexWrap: 'wrap',
+    justifyContent: 'center',
   },
   heroPrimary: {
     paddingVertical: 18,
@@ -352,6 +356,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.05,
     shadowRadius: 12,
     elevation: 2,
+    alignSelf: 'center',
   },
   quoteText: {
     fontSize: 18,

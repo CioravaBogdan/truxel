@@ -10,6 +10,7 @@ import {
   Platform,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { useRouter } from 'expo-router';
 import { Mail, Phone, MapPin, Clock, MessageCircle, Sparkles } from 'lucide-react-native';
 import { Button } from '@/components/Button';
 import Toast from 'react-native-toast-message';
@@ -18,6 +19,7 @@ import { useTheme } from '@/lib/theme';
 
 export default function ContactPage() {
   const { t } = useTranslation();
+  const router = useRouter();
   const { theme } = useTheme();
   const [formData, setFormData] = useState({
     name: '',
@@ -127,23 +129,25 @@ export default function ContactPage() {
 
   return (
     <ScrollView style={[styles.container, { backgroundColor: theme.colors.background }]}>
-      <View style={[styles.hero, { backgroundColor: theme.colors.background }]}>
+      <View style={[styles.hero, { backgroundColor: '#0F172A' }]}>
         <View style={styles.section}>
           <View style={styles.heroContent}>
-            <View style={[styles.heroBadge, { backgroundColor: theme.colors.secondary + '1F' }]}>
-              <Sparkles size={18} color={theme.colors.secondary} />
-              <Text style={[styles.heroBadgeText, { color: theme.colors.secondary }]}>{t('web.contact.hero_badge')}</Text>
+            <View style={[styles.heroBadge, { backgroundColor: 'rgba(255, 87, 34, 0.15)' }]}>
+              <Sparkles size={18} color="#FF5722" />
+              <Text style={[styles.heroBadgeText, { color: '#FF5722' }]}>{t('web.contact.hero_badge')}</Text>
             </View>
-            <Text style={[styles.heroTitle, { color: theme.colors.text }]}>{t('web.contact.hero_title')}</Text>
-            <Text style={[styles.heroSubtitle, { color: theme.colors.textSecondary }]}>{t('web.contact.hero_subtitle')}</Text>
+            <Text style={[styles.heroTitle, { color: '#FFFFFF', textAlign: 'center' }]}>{t('web.contact.hero_title')}</Text>
+            <Text style={[styles.heroSubtitle, { color: '#94A3B8', textAlign: 'center' }]}>{t('web.contact.hero_subtitle')}</Text>
           </View>
         </View>
       </View>
 
       <View style={[styles.section, styles.cardsSection, { backgroundColor: theme.colors.background }]}>
-        <Text style={[styles.sectionEyebrow, { color: theme.colors.secondary }]}>{t('web.contact.cards_badge')}</Text>
-        <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>{t('web.contact.cards_title')}</Text>
-        <Text style={[styles.sectionSubtitle, { color: theme.colors.textSecondary }]}>{t('web.contact.cards_subtitle')}</Text>
+        <View style={styles.centeredHeader}>
+          <Text style={[styles.sectionEyebrow, { color: theme.colors.secondary }]}>{t('web.contact.cards_badge')}</Text>
+          <Text style={[styles.sectionTitle, { color: theme.colors.text, textAlign: 'center' }]}>{t('web.contact.cards_title')}</Text>
+          <Text style={[styles.sectionSubtitle, { color: theme.colors.textSecondary, textAlign: 'center' }]}>{t('web.contact.cards_subtitle')}</Text>
+        </View>
 
         <View style={styles.contactGrid}>
           {contactCards.map((card) => {
@@ -174,10 +178,10 @@ export default function ContactPage() {
       </View>
 
       <View style={[styles.section, styles.formSection, { backgroundColor: theme.colors.surface }]}>
-        <View style={styles.formHeader}>
+        <View style={[styles.formHeader, { alignItems: 'center' }]}>
           <Text style={[styles.sectionEyebrow, { color: theme.colors.secondary }]}>{t('web.contact.form_badge')}</Text>
-          <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>{t('web.contact.form_title')}</Text>
-          <Text style={[styles.sectionSubtitle, { color: theme.colors.textSecondary }]}>{t('web.contact.form_subtitle')}</Text>
+          <Text style={[styles.sectionTitle, { color: theme.colors.text, textAlign: 'center' }]}>{t('web.contact.form_title')}</Text>
+          <Text style={[styles.sectionSubtitle, { color: theme.colors.textSecondary, textAlign: 'center' }]}>{t('web.contact.form_subtitle')}</Text>
         </View>
 
         <View style={[styles.form, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}> 
@@ -234,7 +238,7 @@ export default function ContactPage() {
           </View>
 
           <Button
-            title={isSubmitting ? t('web.contact.form_button_loading') : t('web.contact.form_button')}
+            title={isSubmitting ? t('web.contact.form.button_loading') : t('web.contact.form.button')}
             onPress={handleSubmit}
             loading={isSubmitting}
           />
@@ -242,9 +246,11 @@ export default function ContactPage() {
       </View>
 
       <View style={[styles.section, styles.audienceSection, { backgroundColor: theme.colors.background }]}>
-        <Text style={[styles.sectionEyebrow, { color: theme.colors.secondary }]}>{t('web.contact.audience_badge')}</Text>
-        <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>{t('web.contact.audience_title')}</Text>
-        <Text style={[styles.sectionSubtitle, { color: theme.colors.textSecondary }]}>{t('web.contact.audience_subtitle')}</Text>
+        <View style={styles.centeredHeader}>
+          <Text style={[styles.sectionEyebrow, { color: theme.colors.secondary }]}>{t('web.contact.audience_badge')}</Text>
+          <Text style={[styles.sectionTitle, { color: theme.colors.text, textAlign: 'center' }]}>{t('web.contact.audience_title')}</Text>
+          <Text style={[styles.sectionSubtitle, { color: theme.colors.textSecondary, textAlign: 'center' }]}>{t('web.contact.audience_subtitle')}</Text>
+        </View>
 
         <View style={styles.audienceGrid}>
           {audiences.map((audience) => (
@@ -268,9 +274,9 @@ export default function ContactPage() {
           <View style={styles.bottomActions}>
             <TouchableOpacity
               style={[styles.bottomPrimary, { backgroundColor: theme.colors.secondary }]}
-              onPress={() => Linking.openURL('https://cal.com/truxel/demo')}
+              onPress={() => router.push('/(auth)/register')}
             >
-              <Text style={styles.bottomPrimaryText}>{t('web.contact.bottom_cta_primary')}</Text>
+              <Text style={styles.bottomPrimaryText}>Sign up for Trial</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.bottomSecondary, { borderColor: 'rgba(255,255,255,0.2)' }]}
@@ -316,10 +322,12 @@ const styles = StyleSheet.create({
     position: 'relative',
     zIndex: 1,
     gap: 24,
-    maxWidth: 760,
+    maxWidth: 800,
+    alignItems: 'center',
+    alignSelf: 'center',
   },
   heroBadge: {
-    alignSelf: 'flex-start',
+    alignSelf: 'center',
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
@@ -371,12 +379,19 @@ const styles = StyleSheet.create({
     maxWidth: 720,
     marginBottom: 32,
   },
+  centeredHeader: {
+    alignItems: 'center',
+    marginBottom: 48,
+    maxWidth: 800,
+    alignSelf: 'center',
+  },
   cardsSection: {
   },
   contactGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 24,
+    justifyContent: 'center',
   },
   contactCard: {
     flex: 1,
@@ -465,6 +480,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 24,
+    justifyContent: 'center',
   },
   audienceCard: {
     flex: 1,

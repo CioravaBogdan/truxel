@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Platform, Linking } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Platform, Linking, Image } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '@/lib/theme';
@@ -53,12 +53,23 @@ export function WebFooter() {
             <TouchableOpacity onPress={() => router.push('/(web)/pricing_web')}>
               <Text style={[styles.link, { color: footerText }]}>{t('web.nav.pricing')}</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => Linking.openURL('https://apps.apple.com')}>
-              <Text style={[styles.link, { color: footerText }]}>Download for iOS</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => Linking.openURL('https://play.google.com')}>
-              <Text style={[styles.link, { color: footerText }]}>Download for Android</Text>
-            </TouchableOpacity>
+            
+            <View style={styles.storeButtons}>
+              <TouchableOpacity onPress={() => Linking.openURL('https://apps.apple.com')}>
+                <Image 
+                  source={require('@/assets/images/download_apple_store.svg')} 
+                  style={styles.storeBadge}
+                  resizeMode="contain"
+                />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => Linking.openURL('https://play.google.com')}>
+                <Image 
+                  source={require('@/assets/images/download_google_store_footer.png')} 
+                  style={styles.storeBadge}
+                  resizeMode="contain"
+                />
+              </TouchableOpacity>
+            </View>
           </View>
           
           <View style={styles.column}>
@@ -198,6 +209,14 @@ const styles = StyleSheet.create({
         transform: 'translateX(4px)',
       },
     }),
+  },
+  storeButtons: {
+    marginTop: 16,
+    gap: 12,
+  },
+  storeBadge: {
+    width: 140,
+    height: 42,
   },
   contactInfo: {
     marginTop: 8,

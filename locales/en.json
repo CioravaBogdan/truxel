@@ -837,7 +837,7 @@
       "hero_subtitle": "Whether you are a driver filling your schedule or a shipper looking for capacity, the Truxel team answers every message in under 24 hours.",
       "cards_badge": "Reach us fast",
       "cards_title": "Choose the channel that works for you",
-      "cards_subtitle": "We are based in Bucharest and support drivers across Europe and North America.",
+      "cards_subtitle": "We support drivers across North America and Europe.",
       "cards": {
         "email": {
           "title": "Email",
@@ -853,13 +853,13 @@
         },
         "hours": {
           "title": "Support hours",
-          "value": "Mon-Fri | 09:00-18:00 EET",
+          "value": "Mon-Fri | 09:00-18:00 EST",
           "subtitle": "Need weekend help? Leave a message and we will reply first thing Monday."
         },
         "location": {
           "title": "Location",
-          "value": "Bucharest, Romania",
-          "subtitle": "Serving drivers across the European Union"
+          "value": "Global Support",
+          "subtitle": "Serving drivers across North America & Europe"
         }
       },
       "form_badge": "Send a message",
