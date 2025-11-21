@@ -109,7 +109,7 @@ export default function AboutUs() {
               </TouchableOpacity>
             </View>
 
-            <View style={[styles.quoteCard, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}>
+            <View style={[styles.quoteCard, { backgroundColor: theme.colors.secondary + '15', borderColor: theme.colors.secondary }]}>
               <Quote size={24} color={theme.colors.secondary} />
               <Text style={[styles.quoteText, { color: theme.colors.text }]}>{t('web.about.founder_quote')}</Text>
               <Text style={[styles.quoteAuthor, { color: theme.colors.text }]}>{t('web.founder.name')}</Text>
@@ -194,16 +194,16 @@ export default function AboutUs() {
         </View>
       </View>
 
-      <View style={[styles.section, styles.impactSection, { backgroundColor: theme.colors.surface }]}>
+      <View style={[styles.section, styles.impactSection, { backgroundColor: '#0F172A' }]}>
         <Text style={[styles.sectionEyebrow, { color: theme.colors.secondary }]}>{t('web.about.impact_badge')}</Text>
-        <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>{t('web.about.impact_title')}</Text>
-        <Text style={[styles.sectionSubtitle, { color: theme.colors.textSecondary }]}>{t('web.about.impact_subtitle')}</Text>
+        <Text style={[styles.sectionTitle, { color: '#FFFFFF' }]}>{t('web.about.impact_title')}</Text>
+        <Text style={[styles.sectionSubtitle, { color: '#94A3B8' }]}>{t('web.about.impact_subtitle')}</Text>
 
         <View style={styles.statsGrid}>
           {impactStats.map((stat) => (
             <View key={stat.label} style={styles.statCard}>
-              <Text style={[styles.statNumber, { color: theme.colors.text }]}>{stat.value}</Text>
-              <Text style={[styles.statLabel, { color: theme.colors.textSecondary }]}>{stat.label}</Text>
+              <Text style={[styles.statNumber, { color: '#FFFFFF' }]}>{stat.value}</Text>
+              <Text style={[styles.statLabel, { color: '#94A3B8' }]}>{stat.label}</Text>
             </View>
           ))}
         </View>
