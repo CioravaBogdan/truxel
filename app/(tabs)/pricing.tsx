@@ -27,8 +27,11 @@ import {
   Compass,
   ChevronDown,
   ChevronUp,
+  Ticket,
 } from 'lucide-react-native';
 import { useTheme } from '@/lib/theme';
+import { Input } from '@/components/Input';
+import { supabase } from '@/lib/supabase';
 
 // Import RevenueCat for native builds
 import { 
@@ -156,6 +159,11 @@ export default function PricingScreen() {
   const [isLoading, setIsLoading] = useState(true);
   const [purchasingPackage, setPurchasingPackage] = useState<string | null>(null);
   
+  // Promo Code State
+  const [promoCode, setPromoCode] = useState('');
+  const [isRedeeming, setIsRedeeming] = useState(false);
+  const [activeOfferingId, setActiveOfferingId] = useState<string | null>(null);
+  
   // UI State
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
   const [showSupportModal, setShowSupportModal] = useState(false);
@@ -219,6 +227,10 @@ export default function PricingScreen() {
       'truxel_fleet_manager_monthly': 'fleet_manager',
       'truxel_pro_freighter_monthly': 'pro_freighter',
       'truxel_search_pack_25': 'search_pack',
+
+      // Influencer Special Packages
+      'standard_monthly': 'standard',
+      'pro_monthly': 'pro',
     };
 
     const cleanId = identifier.toLowerCase();
@@ -244,7 +256,7 @@ export default function PricingScreen() {
     return tierName;
   };
 
-  const loadRevenueCatOfferings = useCallback(async () => {
+  const loadRevenueCatOfferings = useCallback(async (overrideOfferingId?: string) => {
     if (!profile?.user_id) {
       console.error('❌ No user_id available for RevenueCat');
       return;
@@ -253,7 +265,13 @@ export default function PricingScreen() {
     try {
       setIsLoading(true);
       
-      const offerings = await getRevenueCatOfferings(profile.user_id);
+      // Determine which offering to use:
+      // 1. Override ID (from promo code)
+      // 2. Active state ID (if previously redeemed)
+      // 3. Default (undefined) -> Service uses 'current'
+      const targetOfferingId = overrideOfferingId || activeOfferingId || undefined;
+      
+      const offerings = await getRevenueCatOfferings(profile.user_id, targetOfferingId);
       
       // ON MOBILE: Trust getOfferings() which returns all available store packages
       // ON WEB: Filter by currency to avoid showing mixed currencies
@@ -313,20 +331,70 @@ export default function PricingScreen() {
     } finally {
       setIsLoading(false);
     }
-  }, [t, profile?.user_id]);
+  }, [t, profile?.user_id, activeOfferingId]);
 
   useEffect(() => {
     loadRevenueCatOfferings();
     checkSubscriptionStatus();
   }, [loadRevenueCatOfferings, checkSubscriptionStatus]);
 
-  useEffect(() => {
-    const checkInterval = setInterval(() => {
-      checkSubscriptionStatus();
-    }, 5000);
+  const handleRedeemCode = async () => {
+    if (!promoCode.trim()) return;
 
-    return () => clearInterval(checkInterval);
-  }, [checkSubscriptionStatus]);
+    try {
+      setIsRedeeming(true);
+      
+      // 1. Check code in Supabase
+      const { data, error } = await supabase
+        .from('promo_codes')
+        .select('code, offering_id, description')
+        .eq('code', promoCode.trim().toUpperCase())
+        .eq('active', true)
+        .single();
+
+      if (error || !data) {
+        Toast.show({
+          type: 'error',
+          text1: t('common.error'),
+          text2: t('pricing.invalid_code'),
+        });
+        return;
+      }
+
+      // 2. Track redemption (if user is logged in)
+      if (profile?.user_id) {
+        // Fire and forget - don't block UI
+        supabase.from('promo_code_redemptions').insert({
+          promo_code: data.code,
+          user_id: profile.user_id
+        }).then(({ error: logError }) => {
+          if (logError) console.error('Failed to log redemption:', logError);
+        });
+      }
+
+      // 3. Apply the offering
+      setActiveOfferingId(data.offering_id);
+      await loadRevenueCatOfferings(data.offering_id);
+      
+      Toast.show({
+        type: 'success',
+        text1: t('pricing.code_applied'),
+        text2: t('pricing.special_offer_unlocked', { description: data.description || 'Discount applied' }),
+      });
+      
+      setPromoCode(''); // Clear input
+      
+    } catch (err) {
+      console.error('Redemption error:', err);
+      Toast.show({
+        type: 'error',
+        text1: t('common.error'),
+        text2: t('pricing.failed_redeem'),
+      });
+    } finally {
+      setIsRedeeming(false);
+    }
+  };
 
   const handleRevenueCatPurchase = async (pkg: OfferingPackage) => {
     if (!profile?.user_id) {
@@ -608,10 +676,28 @@ export default function PricingScreen() {
                 <Text style={[styles.tierDescription, { color: theme.colors.textSecondary }]}>{t(uiTier.descriptionKey)}</Text>
 
                 <View style={styles.priceRow}>
-                  <Text style={[styles.price, { color: uiTier.accentColor }]}>
-                    {pkg.product.priceString}
-                  </Text>
-                  <Text style={[styles.perMonth, { color: theme.colors.textSecondary }]}>/{t('pricing.month')}</Text>
+                  <View>
+                    {pkg.product.introPrice ? (
+                      <>
+                        <Text style={[styles.price, { color: uiTier.accentColor, fontSize: 24 }]}>
+                          {pkg.product.introPrice.priceString}
+                        </Text>
+                        <Text style={[styles.perMonth, { color: theme.colors.textSecondary, fontSize: 11 }]}>
+                          {t('pricing.intro_offer', { cycles: pkg.product.introPrice.cycles, period: pkg.product.introPrice.periodUnit.toLowerCase() })}
+                        </Text>
+                        <Text style={[styles.perMonth, { color: theme.colors.textSecondary, textDecorationLine: 'line-through', marginTop: 2 }]}>
+                          {pkg.product.priceString}/{t('pricing.month')}
+                        </Text>
+                      </>
+                    ) : (
+                      <>
+                        <Text style={[styles.price, { color: uiTier.accentColor }]}>
+                          {pkg.product.priceString}
+                        </Text>
+                        <Text style={[styles.perMonth, { color: theme.colors.textSecondary }]}>/{t('pricing.month')}</Text>
+                      </>
+                    )}
+                  </View>
                 </View>
 
                 <View style={styles.features}>
@@ -637,6 +723,48 @@ export default function PricingScreen() {
               </Card>
             );
           })}
+        </View>
+
+        {/* Promo Code Section */}
+        <View style={{ paddingHorizontal: 16, marginTop: 24 }}>
+          <View style={[styles.promoSection, { 
+            backgroundColor: theme.colors.secondary + '08', 
+            borderColor: theme.colors.secondary,
+            borderStyle: 'dashed',
+            borderWidth: 1.5
+          }]}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 16 }}>
+              <Ticket size={20} color={theme.colors.secondary} />
+              <Text style={[styles.promoTitle, { color: theme.colors.text, marginBottom: 0 }]}>{t('pricing.promo_code_title')}</Text>
+            </View>
+
+            <View style={styles.promoRow}>
+              <Input
+                placeholder={t('pricing.promo_code_placeholder')}
+                value={promoCode}
+                onChangeText={setPromoCode}
+                autoCapitalize="characters"
+                containerStyle={{ flex: 1, marginBottom: 0 }}
+              />
+              <Button
+                title={t('pricing.apply')}
+                onPress={handleRedeemCode}
+                loading={isRedeeming}
+                disabled={!promoCode.trim()}
+                variant="primary"
+                style={{ minWidth: 90, paddingHorizontal: 20, paddingVertical: 12 }} 
+              />
+            </View>
+            {activeOfferingId && (
+              <TouchableOpacity onPress={() => {
+                setActiveOfferingId(null);
+                loadRevenueCatOfferings(undefined);
+                Toast.show({ type: 'info', text1: t('pricing.offer_removed'), text2: t('pricing.showing_standard') });
+              }}>
+                <Text style={[styles.removePromo, { color: theme.colors.error }]}>{t('pricing.remove_offer')}</Text>
+              </TouchableOpacity>
+            )}
+          </View>
         </View>
 
         {/* Search Packs - Addon Section */}
@@ -737,6 +865,9 @@ export default function PricingScreen() {
 
         {/* Restore Purchases & Support */}
         <View style={styles.footerActions}>
+          
+          {/* Promo Code Section moved up */}
+
           <Button
             title={t('subscription.restore_purchases')}
             onPress={handleRestorePurchases}
@@ -1093,5 +1224,27 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 14,
     fontWeight: '500',
+  },
+  promoSection: {
+    padding: 16,
+    borderRadius: 16,
+    borderWidth: 1,
+    marginBottom: 16,
+  },
+  promoTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    marginBottom: 12,
+  },
+  promoRow: {
+    flexDirection: 'row',
+    gap: 12,
+    alignItems: 'center', // Align center to handle input height
+  },
+  removePromo: {
+    marginTop: 12,
+    fontSize: 14,
+    fontWeight: '500',
+    textAlign: 'center',
   },
 });

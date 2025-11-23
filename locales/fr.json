@@ -331,7 +331,17 @@
     "purchase_failed_message": "L'achat a échoué. Veuillez réessayer.",
     "login_to_restore": "Veuillez vous connecter pour restaurer les achats",
     "restore_failed_message": "Échec de la restauration des achats. Veuillez réessayer.",
-    "footer_note": "Tous les forfaits incluent des informations de base sur l'entreprise, les coordonnées et l'emplacement. Annulez à tout moment."
+    "footer_note": "Tous les forfaits incluent des informations de base sur l'entreprise, les coordonnées et l'emplacement. Annulez à tout moment.",
+    "promo_code_title": "Avez-vous un code promo ?",
+    "promo_code_placeholder": "Entrez le code (ex. TRUXEL20)",
+    "apply": "Appliquer",
+    "code_applied": "Code appliqué ! 🎉",
+    "special_offer_unlocked": "Offre spéciale débloquée : {{description}}",
+    "invalid_code": "Code invalide ou expiré",
+    "failed_redeem": "Échec de l'application du code",
+    "remove_offer": "Supprimer l'offre",
+    "offer_removed": "Offre supprimée",
+    "showing_standard": "Affichage des prix standard"
   },
   "errors": {
     "network_error": "Erreur réseau. Veuillez vérifier votre connexion.",

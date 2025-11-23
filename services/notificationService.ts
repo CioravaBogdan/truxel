@@ -210,6 +210,7 @@ class NotificationService {
         playsInSilentModeIOS: true,
         staysActiveInBackground: true,
         shouldDuckAndroid: true,
+        allowsRecordingIOS: false,
       });
 
       // Play sound - using local file from assets

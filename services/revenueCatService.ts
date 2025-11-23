@@ -64,6 +64,12 @@ export interface OfferingPackage {
     priceString: string;
     price: number;
     currencyCode: string;
+    introPrice?: {
+      priceString: string;
+      period: string;
+      cycles: number;
+      periodUnit: string;
+    } | null;
   };
 }
 
@@ -79,9 +85,10 @@ export interface TruxelOfferings {
  * Automatically filters to show only EUR or USD packages based on user locale
  * 
  * @param userId - Required for web initialization
+ * @param offeringId - Optional: Fetch a specific offering by ID (e.g. for promo codes) instead of default
  * @returns Object containing subscriptions and search packs for user's currency
  */
-export async function getOfferings(userId?: string): Promise<TruxelOfferings> {
+export async function getOfferings(userId?: string, offeringId?: string): Promise<TruxelOfferings> {
   try {
     console.log(`🌍 Platform: ${Platform.OS} | isWeb: ${isWeb}`);
 
@@ -144,7 +151,13 @@ export async function getOfferings(userId?: string): Promise<TruxelOfferings> {
     }
 
     // Get main subscription offering
-    const defaultOffering = offerings.current;
+    // If offeringId is provided, try to find it in 'all'. Otherwise use 'current'.
+    let defaultOffering = offerings.current;
+    
+    if (offeringId && offerings.all[offeringId]) {
+      console.log(`🎟️ Using specific offering: ${offeringId}`);
+      defaultOffering = offerings.all[offeringId];
+    }
 
     // Get search packs offering
     const searchPacksOffering = offerings.all['search_packs'];
@@ -493,7 +506,13 @@ function formatPackage(pkg: PurchasesPackage | PackageWeb): OfferingPackage {
         description: mobileProduct.description,
         priceString: mobileProduct.priceString,
         price: mobileProduct.price,
-        currencyCode: mobileProduct.currencyCode
+        currencyCode: mobileProduct.currencyCode,
+        introPrice: mobileProduct.introPrice ? {
+          priceString: mobileProduct.introPrice.priceString,
+          period: mobileProduct.introPrice.period,
+          cycles: mobileProduct.introPrice.cycles,
+          periodUnit: mobileProduct.introPrice.periodUnit
+        } : null
       }
     };
   }

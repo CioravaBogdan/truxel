@@ -331,6 +331,16 @@
     "purchase_failed_message": "Achiziția nu a reușit. Vă rugăm să încercați din nou.",
     "login_to_restore": "Vă rugăm să vă autentificați pentru a restabili achizițiile",
     "restore_failed_message": "Nu s-au restabilit achizițiile. Vă rugăm să încercați din nou.",
+    "promo_code_title": "Ai un cod promoțional?",
+    "promo_code_placeholder": "Introdu codul (ex. TRUXEL20)",
+    "apply": "Aplică",
+    "code_applied": "Cod aplicat! 🎉",
+    "special_offer_unlocked": "Ofertă specială deblocată: {{description}}",
+    "invalid_code": "Cod invalid sau expirat",
+    "failed_redeem": "Nu s-a putut aplica codul",
+    "remove_offer": "Elimină oferta",
+    "offer_removed": "Ofertă eliminată",
+    "showing_standard": "Se afișează prețurile standard",
     "footer_note": "Toate planurile includ informații de bază despre companii, contacte și locații. Poți anula oricând."
   },
   "errors": {

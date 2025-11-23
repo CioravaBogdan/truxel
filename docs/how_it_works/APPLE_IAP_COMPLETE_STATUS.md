@@ -269,10 +269,10 @@ This dual-product pattern enables:
 - **Developer ID**: `3cd8f19f-e190-4e62-b5b8-e42cf36ad68e`
 
 #### API Key (EAS Builds)
-- **Key ID**: `06D09JJT6IMU`
-- **Issuer ID**: `69a6de97-4aa9-47e3-e053-5b8c7c11a4d1`
-- **Private Key**: `AuthKey_06D09JJT6IMU.p8` ✅ Stored in `.mcp/`
-- **Status**: ✅ Configured in `.mcp/.env`
+- **Key ID**: `QFS7FC247C`
+- **Issuer ID**: `3cd8f19f-e190-4e62-b5b8-e42cf36ad68e`
+- **Private Key**: `AuthKey_QFS7FC247C.p8` ✅ Stored in `.mcp/`
+- **Status**: ✅ Configured & Verified (Nov 23, 2025)
 
 #### Agreements Status
 - **Paid Apps Agreement**: ✅ **Active** (Nov 12, 2025 - Sep 29, 2026)

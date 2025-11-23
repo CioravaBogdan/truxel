@@ -331,6 +331,17 @@
     "purchase_failed_message": "Purchase failed. Please try again.",
     "login_to_restore": "Please login to restore purchases",
     "restore_failed_message": "Failed to restore purchases. Please try again.",
+    "promo_code_title": "Have a promo code?",
+    "promo_code_placeholder": "Enter code (e.g. TRUXEL20)",
+    "apply": "Apply",
+    "code_applied": "Code Applied! 🎉",
+    "special_offer_unlocked": "Special offer unlocked: {{description}}",
+    "invalid_code": "Invalid or expired promo code",
+    "failed_redeem": "Failed to redeem code",
+    "remove_offer": "Remove applied offer",
+    "offer_removed": "Offer removed",
+    "showing_standard": "Showing standard pricing",
+    "intro_offer": "for {{cycles}} {{period}}s",
     "footer_note": "All plans include basic company info, contact details, and location. Cancel anytime."
   },
   "errors": {

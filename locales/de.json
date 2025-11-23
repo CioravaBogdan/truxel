@@ -331,7 +331,17 @@
     "purchase_failed_message": "Der Kauf ist fehlgeschlagen. Bitte versuchen Sie es erneut.",
     "login_to_restore": "Bitte melden Sie sich an, um Einkäufe wiederherzustellen",
     "restore_failed_message": "Die Käufe konnten nicht wiederhergestellt werden. Bitte versuchen Sie es erneut.",
-    "footer_note": "Alle Pläne enthalten grundlegende Unternehmensinformationen, Kontaktdaten und den Standort. Jederzeit kündbar."
+    "footer_note": "Alle Pläne enthalten grundlegende Unternehmensinformationen, Kontaktdaten und den Standort. Jederzeit kündbar.",
+    "promo_code_title": "Haben Sie einen Promo-Code?",
+    "promo_code_placeholder": "Code eingeben (z. B. TRUXEL20)",
+    "apply": "Anwenden",
+    "code_applied": "Code angewendet! 🎉",
+    "special_offer_unlocked": "Sonderangebot freigeschaltet: {{description}}",
+    "invalid_code": "Ungültiger oder abgelaufener Code",
+    "failed_redeem": "Code konnte nicht eingelöst werden",
+    "remove_offer": "Angebot entfernen",
+    "offer_removed": "Angebot entfernt",
+    "showing_standard": "Standardpreise werden angezeigt"
   },
   "errors": {
     "network_error": "Netzwerkfehler. Bitte überprüfen Sie Ihre Verbindung.",

@@ -331,7 +331,17 @@
     "purchase_failed_message": "Acquisto fallito. Per favore riprova.",
     "login_to_restore": "Effettua il login per ripristinare gli acquisti",
     "restore_failed_message": "Impossibile ripristinare gli acquisti. Per favore riprova.",
-    "footer_note": "Tutti i piani includono informazioni di base sull'azienda, dettagli di contatto e posizione. Annulla in qualsiasi momento."
+    "footer_note": "Tutti i piani includono informazioni di base sull'azienda, dettagli di contatto e posizione. Annulla in qualsiasi momento.",
+    "promo_code_title": "Hai un codice promozionale?",
+    "promo_code_placeholder": "Inserisci il codice (es. TRUXEL20)",
+    "apply": "Applica",
+    "code_applied": "Codice applicato! 🎉",
+    "special_offer_unlocked": "Offerta speciale sbloccata: {{description}}",
+    "invalid_code": "Codice non valido o scaduto",
+    "failed_redeem": "Impossibile riscattare il codice",
+    "remove_offer": "Rimuovi offerta",
+    "offer_removed": "Offerta rimossa",
+    "showing_standard": "Visualizzazione prezzi standard"
   },
   "errors": {
     "network_error": "Errore di rete. Per favore controlla la tua connessione.",
