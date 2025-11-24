@@ -7,6 +7,7 @@ import {
   Brain, Bell, Zap, TrendingUp, Target, Star, CheckCircle
 } from 'lucide-react-native';
 import { WebFooter } from '@/components/web/WebFooter';
+import { SeoHead } from '@/components/web/SeoHead';
 import { useTheme } from '@/lib/theme';
 
 if (Platform.OS === 'web') {
@@ -105,8 +106,40 @@ export default function LandingPage() {
     ? 'linear-gradient(180deg, #0f172a 0%, #1e293b 100%)'
     : 'linear-gradient(180deg, #FFFFFF 0%, #e0f2fe 100%)'; // Light Blue
 
+  const seoDescription =
+    'Truxel conecteaza soferii de camion si companiile de transport cu harti live, lead-uri verificate si automatizari de comunicare, intr-o aplicatie web si mobila.';
+
+  const organizationSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'Truxel',
+    url: 'https://truxel.io',
+    description: seoDescription,
+  };
+
+  const websiteSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'Truxel',
+    url: 'https://truxel.io',
+    inLanguage: 'ro',
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: 'https://truxel.io/?q={search_term_string}',
+      'query-input': 'required name=search_term_string',
+    },
+  };
+
   return (
-    <ScrollView style={[styles.container, { backgroundColor: theme.colors.background }]}>
+    <>
+      <SeoHead
+        title="Truxel | Platforma completa pentru transportatori si logistica"
+        description={seoDescription}
+        path="/"
+        structuredData={[organizationSchema, websiteSchema]}
+      />
+
+      <ScrollView style={[styles.container, { backgroundColor: theme.colors.background }]}>
       {/* Hero Section */}
       <View style={[styles.hero, Platform.OS === 'web' && { background: heroGradient } as any]}>
         <View style={styles.heroBackground}>
@@ -308,7 +341,8 @@ export default function LandingPage() {
       </View>
 
       <WebFooter />
-    </ScrollView>
+      </ScrollView>
+    </>
   );
 }
 

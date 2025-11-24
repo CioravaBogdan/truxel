@@ -2,16 +2,27 @@ import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { WebFooter } from '@/components/web/WebFooter';
+import { SeoHead } from '@/components/web/SeoHead';
 import { useTheme } from '@/lib/theme';
 
 export default function PrivacyPolicy() {
   const { theme } = useTheme();
+  const seoDescription =
+    'Politica de confidentialitate Truxel explica modul in care colectam, folosim si protejam datele soferilor si companiilor de transport.';
 
   return (
-    <ScrollView style={[styles.container, { backgroundColor: theme.colors.background }]}>
-      <View style={styles.content}>
-        <Text style={[styles.title, { color: theme.colors.text }]}>Privacy Policy</Text>
-        <Text style={[styles.updated, { color: theme.colors.textSecondary }]}>Last Updated: November 12, 2025</Text>
+    <>
+      <SeoHead
+        title="Politica de confidentialitate Truxel"
+        description={seoDescription}
+        path="/privacy"
+        type="article"
+      />
+
+      <ScrollView style={[styles.container, { backgroundColor: theme.colors.background }]}>
+        <View style={styles.content}>
+          <Text style={[styles.title, { color: theme.colors.text }]}>Privacy Policy</Text>
+          <Text style={[styles.updated, { color: theme.colors.textSecondary }]}>Last Updated: November 12, 2025</Text>
 
         <View style={styles.section}>
           <Text style={[styles.heading, { color: theme.colors.text }]}>1. Introduction</Text>
@@ -193,10 +204,11 @@ export default function PrivacyPolicy() {
             Romania: ANSPDCP (www.dataprotection.ro)
           </Text>
         </View>
-      </View>
+        </View>
 
-      <WebFooter />
-    </ScrollView>
+        <WebFooter />
+      </ScrollView>
+    </>
   );
 }
 

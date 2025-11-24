@@ -9,6 +9,7 @@ import {
   ChevronRight, Star, Shield, Truck
 } from 'lucide-react-native';
 import { WebFooter } from '@/components/web/WebFooter';
+import { SeoHead } from '@/components/web/SeoHead';
 import { useTheme } from '@/lib/theme';
 
 const { width } = Dimensions.get('window');
@@ -103,8 +104,18 @@ export default function FeaturesPage() {
     },
   ];
 
+  const seoDescription =
+    'Descopera functionalitatile Truxel: harti live, comunitate, lead-uri verificate si automatizari AI care simplifica logistica si transportul.';
+
   return (
-    <ScrollView style={[styles.container, { backgroundColor: theme.colors.background }]}>
+    <>
+      <SeoHead
+        title="Functionalitati Truxel | Harti live, lead-uri si automatizari pentru transport"
+        description={seoDescription}
+        path="/features"
+      />
+
+      <ScrollView style={[styles.container, { backgroundColor: theme.colors.background }]}>
       
       {/* Hero Section with Gradient */}
       <LinearGradient
@@ -307,7 +318,8 @@ export default function FeaturesPage() {
       </LinearGradient>
 
       <WebFooter />
-    </ScrollView>
+      </ScrollView>
+    </>
   );
 }
 

@@ -326,6 +326,8 @@
     "searches": "Searches",
     "buy_now": "Buy Now",
     "one_time_purchase": "One-time purchase. Never expires.",
+    "no_plans_available": "No subscription plans available at the moment.",
+    "android_debug_hint": "(Android: Check Play Store connection or Tester account status)",
     "failed_load_options": "Failed to load pricing options",
     "login_to_continue": "Please login to continue",
     "purchase_failed_message": "Purchase failed. Please try again.",

@@ -2,16 +2,27 @@ import React from 'react';
 import { View, Text, StyleSheet, ScrollView, Platform } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { WebFooter } from '@/components/web/WebFooter';
+import { SeoHead } from '@/components/web/SeoHead';
 import { useTheme } from '@/lib/theme';
 
 export default function CookiePolicy() {
   const { theme } = useTheme();
+  const seoDescription =
+    'Politica de cookie-uri Truxel descrie cum folosim cookie-uri esentiale, analitice si de marketing pentru a oferi o experienta sigura si relevanta.';
 
   return (
-    <ScrollView style={[styles.container, { backgroundColor: theme.colors.background }]}>
-      <View style={styles.content}>
-        <Text style={[styles.title, { color: theme.colors.text }]}>Cookie Policy</Text>
-        <Text style={[styles.updated, { color: theme.colors.textSecondary }]}>Last Updated: November 12, 2025</Text>
+    <>
+      <SeoHead
+        title="Politica de cookie-uri Truxel"
+        description={seoDescription}
+        path="/cookies"
+        type="article"
+      />
+
+      <ScrollView style={[styles.container, { backgroundColor: theme.colors.background }]}>
+        <View style={styles.content}>
+          <Text style={[styles.title, { color: theme.colors.text }]}>Cookie Policy</Text>
+          <Text style={[styles.updated, { color: theme.colors.textSecondary }]}>Last Updated: November 12, 2025</Text>
 
         <View style={styles.section}>
           <Text style={[styles.heading, { color: theme.colors.text }]}>1. What Are Cookies?</Text>
@@ -226,10 +237,11 @@ export default function CookiePolicy() {
             • ICO Cookie Guidance: https://ico.org.uk/for-organisations/guide-to-pecr/cookies-and-similar-technologies
           </Text>
         </View>
-      </View>
+        </View>
 
-      <WebFooter />
-    </ScrollView>
+        <WebFooter />
+      </ScrollView>
+    </>
   );
 }
 

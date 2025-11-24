@@ -13,6 +13,7 @@ import {
   Quote,
 } from 'lucide-react-native';
 import { WebFooter } from '@/components/web/WebFooter';
+import { SeoHead } from '@/components/web/SeoHead';
 import { useTheme } from '@/lib/theme';
 
 export default function AboutUs() {
@@ -82,8 +83,18 @@ export default function AboutUs() {
     [t],
   );
 
+  const seoDescription =
+    'Afla povestea Truxel: platforma construita de oameni din transporturi pentru a conecta soferii, companiile si partenerii logistici prin tehnologie.';
+
   return (
-    <ScrollView style={[styles.container, { backgroundColor: theme.colors.background }]}>
+    <>
+      <SeoHead
+        title="Despre Truxel | Platforma creata pentru soferi si companii de transport"
+        description={seoDescription}
+        path="/about"
+      />
+
+      <ScrollView style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <View style={[styles.hero, { backgroundColor: '#0F172A' }]}>
         <View style={styles.section}>
           <View style={styles.heroContent}>
@@ -232,7 +243,8 @@ export default function AboutUs() {
       </View>
 
       <WebFooter />
-    </ScrollView>
+      </ScrollView>
+    </>
   );
 }
 

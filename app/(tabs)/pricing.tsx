@@ -280,15 +280,9 @@ export default function PricingScreen() {
       
       const offerings = await getRevenueCatOfferings(profile.user_id, targetOfferingId);
       
-      // ON MOBILE: Trust getOfferings() which returns all available store packages
-      // ON WEB: Filter by currency to avoid showing mixed currencies
-      const userSubscriptions = Platform.OS === 'web' 
-        ? offerings.subscriptions.filter((pkg) => pkg.product.currencyCode === offerings.userCurrency)
-        : offerings.subscriptions;
-
-      const userSearchPacks = Platform.OS === 'web'
-        ? offerings.searchPacks.filter((pkg) => pkg.product.currencyCode === offerings.userCurrency)
-        : offerings.searchPacks;
+      // Trust getOfferings() to handle filtering and fallbacks for both Web and Mobile
+      const userSubscriptions = offerings.subscriptions;
+      const userSearchPacks = offerings.searchPacks;
       
       // ✅ DEDUPLICATE: If multiple packages map to same tier, keep only first one
       const seenTiers = new Set<string>();
@@ -629,6 +623,18 @@ export default function PricingScreen() {
 
         {/* Subscription Tiers */}
         <View style={styles.tiersContainer}>
+          {rcSubscriptions.length === 0 && !isLoading && (
+             <View style={{ width: '100%', padding: 20, alignItems: 'center' }}>
+                <Text style={{ color: theme.colors.textSecondary, textAlign: 'center' }}>
+                   {t('pricing.no_plans_available')}
+                </Text>
+                {Platform.OS === 'android' && (
+                   <Text style={{ color: theme.colors.error, textAlign: 'center', marginTop: 8, fontSize: 12 }}>
+                      {t('pricing.android_debug_hint')}
+                   </Text>
+                )}
+             </View>
+          )}
           {UI_TIERS.map((uiTier) => {
             // Find matching RevenueCat package
             const pkg = rcSubscriptions.find(p => getTierName(p.identifier) === uiTier.mobileId);

@@ -20,6 +20,7 @@ export default function WebLayout() {
           <Stack.Screen name="terms" />
           <Stack.Screen name="refund" />
           <Stack.Screen name="cookies" />
+          <Stack.Screen name="data-deletion" />
         </Stack>
       </View>
     </View>

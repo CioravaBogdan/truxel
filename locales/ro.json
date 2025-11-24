@@ -326,6 +326,8 @@
     "searches": "Căutări",
     "buy_now": "Cumpără acum",
     "one_time_purchase": "Achiziție unică. Nu expiră niciodată.",
+    "no_plans_available": "Nu sunt planuri de abonament disponibile momentan.",
+    "android_debug_hint": "(Android: Verifică conexiunea la Play Store sau statusul contului de tester)",
     "failed_load_options": "Opțiunile de preț nu au putut fi încărcate",
     "login_to_continue": "Vă rugăm să vă autentificați pentru a continua",
     "purchase_failed_message": "Achiziția nu a reușit. Vă rugăm să încercați din nou.",

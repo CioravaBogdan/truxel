@@ -2,16 +2,27 @@ import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { WebFooter } from '@/components/web/WebFooter';
+import { SeoHead } from '@/components/web/SeoHead';
 import { useTheme } from '@/lib/theme';
 
 export default function RefundPolicy() {
   const { theme } = useTheme();
+  const seoDescription =
+    'Politica de rambursare Truxel explica optiunile de anulare si returnare pentru abonamente si pachete de cautari destinate soferilor si flotelor.';
 
   return (
-    <ScrollView style={[styles.container, { backgroundColor: theme.colors.background }]}>
-      <View style={styles.content}>
-        <Text style={[styles.title, { color: theme.colors.text }]}>Refund Policy</Text>
-        <Text style={[styles.updated, { color: theme.colors.textSecondary }]}>Last Updated: November 12, 2025</Text>
+    <>
+      <SeoHead
+        title="Politica de rambursare Truxel"
+        description={seoDescription}
+        path="/refund"
+        type="article"
+      />
+
+      <ScrollView style={[styles.container, { backgroundColor: theme.colors.background }]}>
+        <View style={styles.content}>
+          <Text style={[styles.title, { color: theme.colors.text }]}>Refund Policy</Text>
+          <Text style={[styles.updated, { color: theme.colors.textSecondary }]}>Last Updated: November 12, 2025</Text>
 
         <View style={styles.section}>
           <Text style={[styles.heading, { color: theme.colors.text }]}>1. Overview</Text>
@@ -216,10 +227,11 @@ export default function RefundPolicy() {
             When contacting us, please include your account email and as much detail as possible to help us process your request quickly.
           </Text>
         </View>
-      </View>
+        </View>
 
-      <WebFooter />
-    </ScrollView>
+        <WebFooter />
+      </ScrollView>
+    </>
   );
 }
 

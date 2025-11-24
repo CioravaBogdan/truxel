@@ -15,6 +15,7 @@ import { Mail, Phone, MapPin, Clock, MessageCircle, Sparkles } from 'lucide-reac
 import { Button } from '@/components/Button';
 import Toast from 'react-native-toast-message';
 import { WebFooter } from '@/components/web/WebFooter';
+import { SeoHead } from '@/components/web/SeoHead';
 import { useTheme } from '@/lib/theme';
 
 export default function ContactPage() {
@@ -127,8 +128,18 @@ export default function ContactPage() {
     }
   };
 
+  const seoDescription =
+    'Contacteaza echipa Truxel pentru suport, demo sau parteneriate. Raspundem rapid pe email, telefon sau WhatsApp pentru soferi si companii de transport.';
+
   return (
-    <ScrollView style={[styles.container, { backgroundColor: theme.colors.background }]}>
+    <>
+      <SeoHead
+        title="Contact Truxel | Suport rapid pentru soferi si companii de transport"
+        description={seoDescription}
+        path="/contact"
+      />
+
+      <ScrollView style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <View style={[styles.hero, { backgroundColor: '#0F172A' }]}>
         <View style={styles.section}>
           <View style={styles.heroContent}>
@@ -289,7 +300,8 @@ export default function ContactPage() {
       </View>
 
       <WebFooter />
-    </ScrollView>
+      </ScrollView>
+    </>
   );
 }
 

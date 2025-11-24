@@ -4,6 +4,7 @@ import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useTranslation } from 'react-i18next';
 import { WebFooter } from '@/components/web/WebFooter';
+import { SeoHead } from '@/components/web/SeoHead';
 import { Check, Compass, Shield, Truck, Zap, Star } from 'lucide-react-native';
 import { useTheme } from '@/lib/theme';
 
@@ -135,12 +136,22 @@ export default function WebPricingPage() {
     [t],
   );
 
+  const seoDescription =
+    'Planurile Truxel pentru soferi, dispeceri si manageri de flota includ lead-uri verificate, harta live, CRM si automatizari pentru transport.';
+
   if (Platform.OS !== 'web') {
     return null;
   }
 
   return (
-    <ScrollView style={[styles.container, { backgroundColor: theme.colors.background }]}>
+    <>
+      <SeoHead
+        title="Preturi Truxel | Planuri pentru soferi, flote si companii de transport"
+        description={seoDescription}
+        path="/pricing_web"
+      />
+
+      <ScrollView style={[styles.container, { backgroundColor: theme.colors.background }]}>
       
       {/* Hero Section with Gradient */}
       <LinearGradient
@@ -319,7 +330,8 @@ export default function WebPricingPage() {
       </View>
 
       <WebFooter />
-    </ScrollView>
+      </ScrollView>
+    </>
   );
 }
 

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://truxel.io/sitemap.xml

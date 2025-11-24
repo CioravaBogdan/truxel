@@ -2,16 +2,27 @@ import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { WebFooter } from '@/components/web/WebFooter';
+import { SeoHead } from '@/components/web/SeoHead';
 import { useTheme } from '@/lib/theme';
 
 export default function TermsOfService() {
   const { theme } = useTheme();
+  const seoDescription =
+    'Termenii si conditiile Truxel descriu regulile de utilizare a aplicatiei si a serviciilor pentru soferi si companii de transport.';
 
   return (
-    <ScrollView style={[styles.container, { backgroundColor: theme.colors.background }]}>
-      <View style={styles.content}>
-        <Text style={[styles.title, { color: theme.colors.text }]}>Terms of Service</Text>
-        <Text style={[styles.updated, { color: theme.colors.textSecondary }]}>Last Updated: November 12, 2025</Text>
+    <>
+      <SeoHead
+        title="Termeni si conditii Truxel"
+        description={seoDescription}
+        path="/terms"
+        type="article"
+      />
+
+      <ScrollView style={[styles.container, { backgroundColor: theme.colors.background }]}>
+        <View style={styles.content}>
+          <Text style={[styles.title, { color: theme.colors.text }]}>Terms of Service</Text>
+          <Text style={[styles.updated, { color: theme.colors.textSecondary }]}>Last Updated: November 12, 2025</Text>
 
         <View style={styles.section}>
           <Text style={[styles.heading, { color: theme.colors.text }]}>1. Acceptance of Terms</Text>
@@ -239,10 +250,11 @@ export default function TermsOfService() {
             Bucharest, Romania
           </Text>
         </View>
-      </View>
+        </View>
 
-      <WebFooter />
-    </ScrollView>
+        <WebFooter />
+      </ScrollView>
+    </>
   );
 }
 
