@@ -115,6 +115,7 @@ export default function CompleteProfileScreen() {
                 render={({ field: { onChange, onBlur, value } }) => (
                   <Input
                     label={t('common.full_name')}
+                    placeholder={t('profile.enter_name')}
                     value={value}
                     onChangeText={onChange}
                     onBlur={onBlur}
@@ -131,6 +132,7 @@ export default function CompleteProfileScreen() {
                 render={({ field: { onChange, onBlur, value } }) => (
                   <Input
                     label={t('common.phone_number')}
+                    placeholder={t('profile.phone_number_placeholder')}
                     value={value}
                     onChangeText={onChange}
                     onBlur={onBlur}
@@ -148,6 +150,7 @@ export default function CompleteProfileScreen() {
                 render={({ field: { onChange, onBlur, value } }) => (
                   <Input
                     label={t('common.company_name')}
+                    placeholder={t('profile.enter_company')}
                     value={value}
                     onChangeText={onChange}
                     onBlur={onBlur}

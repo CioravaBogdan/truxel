@@ -163,6 +163,7 @@ export default function PricingScreen() {
   const [promoCode, setPromoCode] = useState('');
   const [isRedeeming, setIsRedeeming] = useState(false);
   const [activeOfferingId, setActiveOfferingId] = useState<string | null>(null);
+  const [influencerName, setInfluencerName] = useState<string | null>(null);
   
   // UI State
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
@@ -231,6 +232,12 @@ export default function PricingScreen() {
       // Influencer Special Packages
       'standard_monthly': 'standard',
       'pro_monthly': 'pro',
+      'prod_tts9xfkrbvir4q': 'standard', // Standard Tier Influencer (Old)
+      'prod_tts7rn03e1porw': 'pro',      // Pro Tier Influencer (Old)
+      'pro_tier_influencer': 'pro',      // Pro Tier Influencer (New Web)
+      'standard_tier_influencer': 'standard', // Standard Tier Influencer (New Web)
+      'truxel_pro_influencer': 'pro',    // Pro Tier Influencer (New iOS)
+      'truxel_standard_influencer': 'standard', // Standard Tier Influencer (New iOS)
     };
 
     const cleanId = identifier.toLowerCase();
@@ -344,42 +351,42 @@ export default function PricingScreen() {
     try {
       setIsRedeeming(true);
       
-      // 1. Check code in Supabase
+      // 1. Use RPC to validate and redeem code
       const { data, error } = await supabase
-        .from('promo_codes')
-        .select('code, offering_id, description')
-        .eq('code', promoCode.trim().toUpperCase())
-        .eq('active', true)
-        .single();
+        .rpc('redeem_promo_code', { code_input: promoCode.trim().toUpperCase() });
 
-      if (error || !data) {
+      if (error || !data || !data.valid) {
         Toast.show({
           type: 'error',
           text1: t('common.error'),
-          text2: t('pricing.invalid_code'),
+          text2: data?.message || t('pricing.invalid_code'),
         });
         return;
       }
 
-      // 2. Track redemption (if user is logged in)
-      if (profile?.user_id) {
-        // Fire and forget - don't block UI
-        supabase.from('promo_code_redemptions').insert({
-          promo_code: data.code,
-          user_id: profile.user_id
-        }).then(({ error: logError }) => {
-          if (logError) console.error('Failed to log redemption:', logError);
-        });
-      }
-
-      // 3. Apply the offering
+      // 2. Apply the offering
       setActiveOfferingId(data.offering_id);
+      
+      // Fetch influencer name separately if needed, or just use generic
+      // For now, we can fetch it if we really want the name, but the RPC doesn't return it yet.
+      // Let's do a quick fetch for the name to keep the UI nice
+      const { data: promoData } = await supabase
+        .from('promo_codes')
+        .select('influencers (name)')
+        .eq('code', promoCode.trim().toUpperCase())
+        .single();
+        
+      // @ts-ignore
+      const influencerName = promoData?.influencers?.name || promoData?.influencers?.[0]?.name || 'Influencer';
+      setInfluencerName(influencerName);
+
       await loadRevenueCatOfferings(data.offering_id);
       
       Toast.show({
         type: 'success',
-        text1: t('pricing.code_applied'),
-        text2: t('pricing.special_offer_unlocked', { description: data.description || 'Discount applied' }),
+        text1: t('pricing.promo_success_title', { name: influencerName }),
+        text2: t('pricing.promo_success_message', { description: data.description || t('pricing.special_discount') }),
+        visibilityTime: 4000,
       });
       
       setPromoCode(''); // Clear input
@@ -632,6 +639,44 @@ export default function PricingScreen() {
             const isActive = profile?.subscription_tier === uiTier.mobileId;
             const Icon = uiTier.icon;
 
+            // --- PROMO LOGIC ---
+            let discountPercent = 0;
+            let originalPriceDisplay = null;
+            let finalDisplayPrice = pkg.product.priceString;
+            
+            // Calculate discount based on standard prices
+            // Standard: $29.99, Pro: $49.99
+            const standardPrices: Record<string, number> = {
+                'standard': 29.99,
+                'pro': 49.99,
+                'fleet_manager': 29.99,
+                'pro_freighter': 49.99
+            };
+
+            const standardPrice = standardPrices[uiTier.mobileId];
+            
+            // If we have a standard price and the current package price is lower, it's a deal!
+            if (standardPrice && pkg.product.price < standardPrice - 0.5) { // 0.5 tolerance
+                discountPercent = Math.round(((standardPrice - pkg.product.price) / standardPrice) * 100);
+                
+                // Format original price
+                const symbol = pkg.product.priceString.replace(/[0-9.,\s]/g, '') || '€';
+                originalPriceDisplay = `${symbol}${standardPrice.toFixed(2)}`;
+            }
+
+            // --- INFLUENCER OVERRIDE LOGIC ---
+            // Force display of intro price for Influencer offers (especially on Web where introPrice might be missing from SDK)
+            let effectiveIntroPriceString = pkg.product.introPrice?.priceString;
+            
+            if (activeOfferingId && influencerName && !effectiveIntroPriceString) {
+               const currencySymbol = pkg.product.priceString.replace(/[0-9.,\s]/g, '') || '€';
+               if (uiTier.mobileId === 'standard') {
+                  effectiveIntroPriceString = `${currencySymbol}19.99`;
+               } else if (uiTier.mobileId === 'pro') {
+                  effectiveIntroPriceString = `${currencySymbol}29.99`;
+               }
+            }
+
             // Dynamic values for translation
             const translationParams = {
               count: uiTier.mobileId === 'standard' || uiTier.mobileId === 'fleet_manager' ? 30 : 50,
@@ -652,10 +697,34 @@ export default function PricingScreen() {
                     shadowOpacity: 0.15,
                     shadowRadius: 12,
                   },
+                  // Promo Styling Override
+                  activeOfferingId && (discountPercent > 0 || effectiveIntroPriceString) && { 
+                    borderColor: '#EF4444', 
+                    borderWidth: 2, 
+                    backgroundColor: '#FEF2F2',
+                    transform: [{ scale: 1.02 }] 
+                  },
                   isActive && { backgroundColor: '#F8FAFC', borderColor: theme.colors.success }
                 ]}
               >
-                {uiTier.popular && !isActive && (
+                {/* Promo Badge */}
+                {activeOfferingId && discountPercent > 0 && (
+                   <View style={{ position: 'absolute', top: -12, right: -8, backgroundColor: '#EF4444', paddingHorizontal: 10, paddingVertical: 6, borderRadius: 8, transform: [{rotate: '5deg'}], zIndex: 20, shadowColor: '#000', shadowOpacity: 0.2, shadowRadius: 4 }}>
+                      <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 12 }}>{t('pricing.promo_save_badge', { percent: discountPercent })}</Text>
+                   </View>
+                )}
+
+                {/* Influencer Tag */}
+                {activeOfferingId && influencerName && (
+                   <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
+                      <Zap size={14} color="#EF4444" fill="#EF4444" />
+                      <Text style={{ color: '#EF4444', fontWeight: '800', fontSize: 11, marginLeft: 4, textTransform: 'uppercase', letterSpacing: 0.5 }}>
+                          {t('pricing.promo_influencer_deal', { name: influencerName })}
+                      </Text>
+                   </View>
+                )}
+
+                {uiTier.popular && !isActive && !activeOfferingId && (
                   <View style={[styles.popularBadge, { backgroundColor: uiTier.accentColor }]}>
                     <Text style={styles.popularBadgeText}>{t('web.pricing.cta_popular')}</Text>
                   </View>
@@ -677,22 +746,38 @@ export default function PricingScreen() {
 
                 <View style={styles.priceRow}>
                   <View>
-                    {pkg.product.introPrice ? (
+                    {/* Strikethrough Original Price */}
+                    {originalPriceDisplay && (
+                       <Text style={{ textDecorationLine: 'line-through', color: theme.colors.textSecondary, fontSize: 16, fontWeight: '600', marginBottom: -4, opacity: 0.6 }}>
+                          {originalPriceDisplay}
+                       </Text>
+                    )}
+
+                    {effectiveIntroPriceString ? (
                       <>
-                        <Text style={[styles.price, { color: uiTier.accentColor, fontSize: 24 }]}>
-                          {pkg.product.introPrice.priceString}
+                        <Text style={[styles.price, { color: activeOfferingId ? '#EF4444' : uiTier.accentColor, fontSize: 24 }]}>
+                          {effectiveIntroPriceString}
                         </Text>
-                        <Text style={[styles.perMonth, { color: theme.colors.textSecondary, fontSize: 11 }]}>
-                          {t('pricing.intro_offer', { cycles: pkg.product.introPrice.cycles, period: pkg.product.introPrice.periodUnit.toLowerCase() })}
-                        </Text>
+                        
+                        {/* Special Influencer Message */}
+                        {activeOfferingId && influencerName ? (
+                           <Text style={[styles.perMonth, { color: '#EF4444', fontSize: 11, fontWeight: '700', marginTop: 2 }]}>
+                              {t('pricing.first_month_discount_influencer', { name: influencerName })}
+                           </Text>
+                        ) : (
+                           <Text style={[styles.perMonth, { color: theme.colors.textSecondary, fontSize: 11 }]}>
+                             {t('pricing.intro_offer', { cycles: pkg.product.introPrice?.cycles || 1, period: pkg.product.introPrice?.periodUnit.toLowerCase() || 'month' })}
+                           </Text>
+                        )}
+
                         <Text style={[styles.perMonth, { color: theme.colors.textSecondary, textDecorationLine: 'line-through', marginTop: 2 }]}>
                           {pkg.product.priceString}/{t('pricing.month')}
                         </Text>
                       </>
                     ) : (
                       <>
-                        <Text style={[styles.price, { color: uiTier.accentColor }]}>
-                          {pkg.product.priceString}
+                        <Text style={[styles.price, { color: activeOfferingId ? '#EF4444' : uiTier.accentColor }]}>
+                          {finalDisplayPrice}
                         </Text>
                         <Text style={[styles.perMonth, { color: theme.colors.textSecondary }]}>/{t('pricing.month')}</Text>
                       </>

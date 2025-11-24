@@ -341,7 +341,22 @@
     "failed_redeem": "Échec de l'application du code",
     "remove_offer": "Supprimer l'offre",
     "offer_removed": "Offre supprimée",
-    "showing_standard": "Affichage des prix standard"
+    "showing_standard": "Affichage des prix standard",
+    "promo_code_title": "Vous avez un code promo ?",
+    "promo_code_placeholder": "Entrez le code (ex. TRUXEL20)",
+    "promo_save_badge": "ÉCONOMISEZ {{percent}}%",
+    "promo_influencer_deal": "Offre Influenceur",
+    "promo_success_title": "Code appliqué !",
+    "promo_success_message": "Vous avez débloqué {{percent}}% de réduction sur votre abonnement.",
+    "special_discount": "Remise spéciale",
+    "apply": "Appliquer",
+    "code_applied": "Code appliqué ! 🎉",
+    "special_offer_unlocked": "Offre spéciale débloquée : {{description}}",
+    "invalid_code": "Code invalide ou expiré",
+    "failed_redeem": "Échec de l'utilisation du code",
+    "remove_offer": "Supprimer l'offre",
+    "offer_removed": "Offre supprimée",
+    "intro_offer": "Offre de lancement"
   },
   "errors": {
     "network_error": "Erreur réseau. Veuillez vérifier votre connexion.",

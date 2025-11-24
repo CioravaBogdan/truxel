@@ -341,7 +341,13 @@
     "failed_redeem": "Code konnte nicht eingelöst werden",
     "remove_offer": "Angebot entfernen",
     "offer_removed": "Angebot entfernt",
-    "showing_standard": "Standardpreise werden angezeigt"
+    "showing_standard": "Standardpreise werden angezeigt",
+    "promo_save_badge": "SPAREN SIE {{percent}}%",
+    "promo_influencer_deal": "Influencer-Angebot",
+    "promo_success_title": "Code angewendet!",
+    "promo_success_message": "Sie haben {{percent}}% Rabatt auf Ihr Abonnement freigeschaltet.",
+    "special_discount": "Sonderrabatt",
+    "intro_offer": "Einführungsangebot"
   },
   "errors": {
     "network_error": "Netzwerkfehler. Bitte überprüfen Sie Ihre Verbindung.",

@@ -15,3 +15,6 @@ verify_jwt = false  # Browser redirect after Stripe payment - no JWT available
 
 [functions.validate-coupon]
 verify_jwt = true  # Requires user authentication
+
+[functions.apply-coupon]
+verify_jwt = true  # Requires user authentication

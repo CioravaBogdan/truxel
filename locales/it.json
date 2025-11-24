@@ -341,7 +341,13 @@
     "failed_redeem": "Impossibile riscattare il codice",
     "remove_offer": "Rimuovi offerta",
     "offer_removed": "Offerta rimossa",
-    "showing_standard": "Visualizzazione prezzi standard"
+    "showing_standard": "Visualizzazione prezzi standard",
+    "promo_save_badge": "RISPARMIA {{percent}}%",
+    "promo_influencer_deal": "Offerta Influencer",
+    "promo_success_title": "Codice applicato!",
+    "promo_success_message": "Hai sbloccato il {{percent}}% di sconto sul tuo abbonamento.",
+    "special_discount": "Sconto speciale",
+    "intro_offer": "Offerta introduttiva"
   },
   "errors": {
     "network_error": "Errore di rete. Per favore controlla la tua connessione.",

@@ -39,6 +39,7 @@ export function Input({
           style,
         ]}
         placeholderTextColor={theme.colors.placeholder}
+        accessibilityLabel={label}
         {...textInputProps}
       />
       {error && <Text style={[styles.errorText, { color: theme.colors.error }]}>{error}</Text>}

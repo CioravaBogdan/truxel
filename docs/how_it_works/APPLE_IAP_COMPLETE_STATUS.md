@@ -147,6 +147,18 @@ This is **NORMAL** and can take 2-24 hours after agreement activation.
 - **RevenueCat Product ID**: `prod03fd28063e`
 - **RevenueCat Offering**: `search_packs` (ofrngb8f954a02b)
 
+#### Influencer Special Plans (NEW - Nov 24, 2025)
+- **Standard Tier (Influencer)**:
+  - **iOS Product ID**: `truxel_standard_influencer`
+  - **Price**: $29.99/month (Base), $19.99 (Intro - 1 month)
+  - **Status**: Ready to Submit
+  - **RevenueCat Product ID**: `prod_tts9xfkrbvir4q` (Old) / `standard_tier_influencer` (Web)
+- **Pro Tier (Influencer)**:
+  - **iOS Product ID**: `truxel_pro_influencer`
+  - **Price**: $49.99/month (Base), $29.99 (Intro - 1 month)
+  - **Status**: Ready to Submit
+  - **RevenueCat Product ID**: `prod_tts7rn03e1porw` (Old) / `pro_tier_influencer` (Web)
+
 ---
 
 ### 3. REVENUECAT CONFIGURATION
@@ -242,6 +254,17 @@ This is **NORMAL** and can take 2-24 hours after agreement activation.
    - **Packages**: 2 packages total
      1. **25 Search Credits - USD** (`$rc_custom_search_pack_25_usd`)
      2. **25 Search Credits - EUR** (`$rc_custom_search_pack_25_eur`)
+
+3. **Influencer Special Offering** (`influencer_special`)
+   - **RevenueCat ID**: `ofrngb59ae7fe93`
+   - **Display Name**: "Influencer Special"
+   - **Packages**:
+     1. **Pro Monthly** (`pro_monthly`)
+        - iOS: `truxel_pro_influencer`
+        - Web: `pro_tier_influencer`
+     2. **Standard Monthly** (`standard_monthly`)
+        - iOS: `truxel_standard_influencer`
+        - Web: `standard_tier_influencer`
 
 #### Package Details
 Each package has **BOTH** iOS product AND Web Billing product attached:

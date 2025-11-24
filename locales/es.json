@@ -331,6 +331,14 @@
     "purchase_failed_message": "Compra fallida. Por favor inténtalo de nuevo.",
     "login_to_restore": "Por favor inicie sesión para restaurar compras",
     "restore_failed_message": "No se pudieron restaurar las compras. Por favor inténtalo de nuevo.",
+    "promo_code_title": "¿Tienes un código promocional?",
+    "promo_code_placeholder": "Introduce el código (ej. TRUXEL20)",
+    "promo_save_badge": "AHORRAS {{percent}}%",
+    "promo_influencer_deal": "OFERTA DE {{name}}",
+    "promo_success_title": "¡Boom! {{name}} te consiguió una oferta! 🚛💸",
+    "promo_success_message": "¡Disfruta de {{description}}! ¡A ganar dinero!",
+    "special_discount": "descuento especial",
+    "apply": "Aplicar",
     "footer_note": "Todos los planes incluyen información básica de la empresa, contactos y ubicación. Cancela en cualquier momento."
   },
   "errors": {
