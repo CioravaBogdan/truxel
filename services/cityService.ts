@@ -138,10 +138,17 @@ class CityService {
   }
 
   /**
-   * Save city to recent list
+   * Save city to recent list and increment usage in DB
    */
   async saveToRecent(city: City): Promise<void> {
     try {
+      // Fire and forget usage increment
+      if (city.id) {
+        supabase.rpc('increment_city_usage', { p_city_id: city.id }).then(({ error }) => {
+          if (error) console.warn('Failed to increment city usage:', error);
+        });
+      }
+
       let recent = await this.getRecentCities();
 
       // Remove if already exists
