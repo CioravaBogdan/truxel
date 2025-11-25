@@ -1198,6 +1198,49 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     textAlign: 'center',
   },
+  valuePropsBarText: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: 'rgba(255, 255, 255, 0.85)',
+    textAlign: 'center',
+    marginBottom: 16,
+    maxWidth: 600,
+    lineHeight: 24,
+  },
+  valuePropsBarItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  valuePropsBarItemText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#FFFFFF',
+  },
+  heroValueProps: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 16,
+    justifyContent: 'center',
+    marginBottom: 32,
+    ...(Platform.OS === 'web' && {
+      '@media (max-width: 768px)': {
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: 12,
+      },
+    }),
+  },
+  heroValueItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  heroValueText: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: 'rgba(255, 255, 255, 0.9)',
+  },
   // Hero Founder Quote (below buttons)
   heroFounderQuote: {
     alignItems: 'center',
