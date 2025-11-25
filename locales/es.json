@@ -337,7 +337,9 @@
     "promo_influencer_deal": "OFERTA DE {{name}}",
     "promo_success_title": "¡Boom! {{name}} te consiguió una oferta! 🚛💸",
     "promo_success_message": "¡Disfruta de {{description}}! ¡A ganar dinero!",
+    "first_month_discount_influencer": "Primer mes con descuento gracias a {{name}}",
     "special_discount": "descuento especial",
+    "intro_offer": "por {{cycles}} {{period}}s",
     "apply": "Aplicar",
     "footer_note": "Todos los planes incluyen información básica de la empresa, contactos y ubicación. Cancela en cualquier momento."
   },
@@ -603,72 +605,72 @@
       "multilang_desc": "Disponible en inglés, rumano, polaco, turco, español y más"
     },
     "features_page": {
-      "hero_title": "Powerful Features for Truck Drivers",
-      "hero_subtitle": "Everything you need to find clients, manage leads, and grow your logistics business",
+      "hero_title": "Creado por un Conductor, Para Conductores",
+      "hero_subtitle": "Deja de pagar comisiones a los intermediarios. Truxel te da el poder de encontrar clientes directamente a tu alrededor y negociar de igual a igual.",
       "core": {
-        "title": "Core Features",
-        "subtitle": "Available on all plans, including the free trial",
+        "title": "Herramientas para la Independencia",
+        "subtitle": "Todo lo que deseé tener cuando estaba en la comunidad.",
         "details": {
           "gps": [
-            "Automatic location detection",
-            "5km search radius",
-            "Real-time GPS tracking",
-            "Search anywhere you drive"
+            "Detección automática de ubicación",
+            "Busca zonas industriales al instante",
+            "Encuentra expedidores directos",
+            "Evita viajes vacíos"
           ],
           "community": [
-            "Post driver availability",
-            "Find available routes",
-            "Connect with fellow truckers",
-            "Real-time community feed"
+            "Publica la disponibilidad del camión",
+            "Encuentra cargas de colegas",
+            "Sin comisiones de intermediación",
+            "Red de conductores verificados"
           ],
           "leads": [
-            "Unlimited lead storage",
-            "Status tracking (New, Contacted, Won, Lost)",
-            "Add custom notes",
-            "CSV export functionality"
+            "Tu propia lista de contactos",
+            "Exporta a CSV cuando quieras",
+            "Rastrea el estado de negociación",
+            "Sin barreras ocultas"
           ],
           "templates": [
-            "Pre-filled email templates",
-            "WhatsApp message templates",
-            "Auto-populate your contact info",
-            "Professional messaging"
+            "Soporte multilingüe",
+            "Integración directa con WhatsApp",
+            "Formatos profesionales de email",
+            "Supera la barrera del idioma"
           ]
         }
       },
       "how": {
-        "title": "How It Works",
-        "subtitle": "Start finding clients in 4 simple steps",
+        "title": "Tu Camino, Tus Reglas",
+        "subtitle": "Empieza a encontrar tus propios clientes en minutos",
         "steps": {
           "step1": {
-            "title": "Download & Sign Up",
-            "desc": "Install Truxel from App Store or Google Play. Create your free account and get 5 trial searches."
+            "title": "Únete a la Hermandad",
+            "desc": "Crea tu cuenta gratis. No necesitas tarjeta para empezar."
           },
           "step2": {
-            "title": "Enable GPS & Search",
-            "desc": "Turn on your location and let Truxel find companies within 5km automatically."
+            "title": "Encuentra Expedidores Locales",
+            "desc": "Nuestro GPS te muestra cada fábrica y almacén cercano."
           },
           "step3": {
-            "title": "View Results",
-            "desc": "Browse company details, contact information, and exact locations on the map."
+            "title": "Obtén el Contacto Directo",
+            "desc": "Desbloquea teléfonos y emails de los que toman decisiones."
           },
           "step4": {
-            "title": "Make Contact",
-            "desc": "Reach out via email, WhatsApp, or phone using our pre-filled templates."
+            "title": "Cierra el Trato",
+            "desc": "Llama o escríbeles por WhatsApp directamente. Tú pones el precio."
           }
         }
       },
       "pro": {
-        "badge": "PRO PLAN",
-        "title": "Advanced Features",
-        "subtitle": "Unlock powerful tools with Pro tier subscription"
+        "badge": "PLAN PRO",
+        "title": "Características Avanzadas",
+        "subtitle": "Desbloquea herramientas potentes con la suscripción Pro"
       },
       "additional": {
-        "title": "Additional Features"
+        "title": "Características Adicionales"
       },
       "cta": {
-        "title": "Ready to Get Started?",
-        "subtitle": "Download Truxel today and start finding clients instantly with 5 free trial searches",
-        "secondary": "View Pricing"
+        "title": "Toma el Volante de Tu Negocio",
+        "subtitle": "Únete a miles de conductores que dejaron de esperar a los brokers. Empieza tu prueba ahora.",
+        "secondary": "Ver Precios"
       }
     },
     "footer": {

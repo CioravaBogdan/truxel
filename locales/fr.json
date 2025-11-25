@@ -334,21 +334,12 @@
     "footer_note": "Tous les forfaits incluent des informations de base sur l'entreprise, les coordonnées et l'emplacement. Annulez à tout moment.",
     "promo_code_title": "Avez-vous un code promo ?",
     "promo_code_placeholder": "Entrez le code (ex. TRUXEL20)",
-    "apply": "Appliquer",
-    "code_applied": "Code appliqué ! 🎉",
-    "special_offer_unlocked": "Offre spéciale débloquée : {{description}}",
-    "invalid_code": "Code invalide ou expiré",
-    "failed_redeem": "Échec de l'application du code",
-    "remove_offer": "Supprimer l'offre",
-    "offer_removed": "Offre supprimée",
-    "showing_standard": "Affichage des prix standard",
-    "promo_code_title": "Vous avez un code promo ?",
-    "promo_code_placeholder": "Entrez le code (ex. TRUXEL20)",
     "promo_save_badge": "ÉCONOMISEZ {{percent}}%",
-    "promo_influencer_deal": "Offre Influenceur",
-    "promo_success_title": "Code appliqué !",
-    "promo_success_message": "Vous avez débloqué {{percent}}% de réduction sur votre abonnement.",
-    "special_discount": "Remise spéciale",
+    "promo_influencer_deal": "Offre de {{name}}",
+    "promo_success_title": "Boom ! {{name}} vous a trouvé une offre ! 🚛💸",
+    "promo_success_message": "Profitez de votre {{description}} ! Gagnez de l'argent !",
+    "first_month_discount_influencer": "Premier mois réduit grâce à {{name}}",
+    "special_discount": "remise spéciale",
     "apply": "Appliquer",
     "code_applied": "Code appliqué ! 🎉",
     "special_offer_unlocked": "Offre spéciale débloquée : {{description}}",
@@ -356,7 +347,8 @@
     "failed_redeem": "Échec de l'utilisation du code",
     "remove_offer": "Supprimer l'offre",
     "offer_removed": "Offre supprimée",
-    "intro_offer": "Offre de lancement"
+    "showing_standard": "Affichage des prix standard",
+    "intro_offer": "pour {{cycles}} {{period}}s"
   },
   "errors": {
     "network_error": "Erreur réseau. Veuillez vérifier votre connexion.",
@@ -620,72 +612,72 @@
       "multilang_desc": "Disponible en anglais, roumain, polonais, turc, espagnol et plus"
     },
     "features_page": {
-      "hero_title": "Powerful Features for Truck Drivers",
-      "hero_subtitle": "Everything you need to find clients, manage leads, and grow your logistics business",
+      "hero_title": "Créé par un Chauffeur, Pour les Chauffeurs",
+      "hero_subtitle": "Arrêtez de payer des commissions aux transitaires. Truxel vous donne le pouvoir de trouver des clients directement autour de vous et de négocier d'égal à égal.",
       "core": {
-        "title": "Core Features",
-        "subtitle": "Available on all plans, including the free trial",
+        "title": "Outils pour l'Indépendance",
+        "subtitle": "Tout ce que j'aurais voulu avoir quand j'étais dans la communauté.",
         "details": {
           "gps": [
-            "Automatic location detection",
-            "5km search radius",
-            "Real-time GPS tracking",
-            "Search anywhere you drive"
+            "Détection automatique de position",
+            "Recherche instantanée de zones industrielles",
+            "Trouvez des expéditeurs directs",
+            "Évitez les trajets à vide"
           ],
           "community": [
-            "Post driver availability",
-            "Find available routes",
-            "Connect with fellow truckers",
-            "Real-time community feed"
+            "Publiez la disponibilité du camion",
+            "Trouvez des chargements de collègues",
+            "Sans commissions d'intermédiaires",
+            "Réseau de chauffeurs vérifiés"
           ],
           "leads": [
-            "Unlimited lead storage",
-            "Status tracking (New, Contacted, Won, Lost)",
-            "Add custom notes",
-            "CSV export functionality"
+            "Votre propre liste de contacts",
+            "Exportez en CSV à tout moment",
+            "Suivez le statut de négociation",
+            "Pas de barrières cachées"
           ],
           "templates": [
-            "Pre-filled email templates",
-            "WhatsApp message templates",
-            "Auto-populate your contact info",
-            "Professional messaging"
+            "Support multilingue",
+            "Intégration WhatsApp directe",
+            "Formats d'email professionnels",
+            "Surmontez la barrière linguistique"
           ]
         }
       },
       "how": {
-        "title": "How It Works",
-        "subtitle": "Start finding clients in 4 simple steps",
+        "title": "Votre Route, Vos Règles",
+        "subtitle": "Commencez à trouver vos propres clients en quelques minutes",
         "steps": {
           "step1": {
-            "title": "Download & Sign Up",
-            "desc": "Install Truxel from App Store or Google Play. Create your free account and get 5 trial searches."
+            "title": "Rejoignez la Confrérie",
+            "desc": "Créez un compte gratuit. Pas besoin de carte pour commencer."
           },
           "step2": {
-            "title": "Enable GPS & Search",
-            "desc": "Turn on your location and let Truxel find companies within 5km automatically."
+            "title": "Trouvez des Expéditeurs Locaux",
+            "desc": "Notre GPS vous montre chaque usine et entrepôt à proximité."
           },
           "step3": {
-            "title": "View Results",
-            "desc": "Browse company details, contact information, and exact locations on the map."
+            "title": "Obtenez le Contact Direct",
+            "desc": "Débloquez les numéros de téléphone et emails des décideurs."
           },
           "step4": {
-            "title": "Make Contact",
-            "desc": "Reach out via email, WhatsApp, or phone using our pre-filled templates."
+            "title": "Concluez l'Affaire",
+            "desc": "Appelez ou écrivez-leur directement sur WhatsApp. Vous fixez le prix."
           }
         }
       },
       "pro": {
-        "badge": "PRO PLAN",
-        "title": "Advanced Features",
-        "subtitle": "Unlock powerful tools with Pro tier subscription"
+        "badge": "PLAN PRO",
+        "title": "Fonctionnalités Avancées",
+        "subtitle": "Débloquez des outils puissants avec l'abonnement Pro"
       },
       "additional": {
-        "title": "Additional Features"
+        "title": "Fonctionnalités Supplémentaires"
       },
       "cta": {
-        "title": "Ready to Get Started?",
-        "subtitle": "Download Truxel today and start finding clients instantly with 5 free trial searches",
-        "secondary": "View Pricing"
+        "title": "Prenez le Volant de Votre Business",
+        "subtitle": "Rejoignez des milliers de chauffeurs qui ont arrêté d'attendre les courtiers. Commencez votre essai maintenant.",
+        "secondary": "Voir les Prix"
       }
     },
     "footer": {

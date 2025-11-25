@@ -258,7 +258,7 @@
     "truck_type_desc": "Wählen Sie den LKW-Typ aus, den Sie fahren",
     "search_radius": "Suchradius",
     "search_radius_desc": "Wie weit soll nach Unternehmen in der Nähe Ihres Standorts gesucht werden?",
-    "search_radius_warning": "?? Ein gr��erer Radius kann wegen Google-API-Limits Firmen �bersehen. 5 km werden f�r beste Ergebnisse empfohlen.",
+    "search_radius_warning": "⚠️ Ein größerer Radius kann wegen Google-API-Limits Firmen übersehen. 5 km werden für beste Ergebnisse empfohlen.",
     "distance_unit": "Entfernungseinheit",
     "distance_unit_desc": "Wählen Sie Ihre bevorzugte Einheit für Entfernungen",
     "unit_km": "Kilometer (km)",
@@ -326,6 +326,8 @@
     "searches": "Suchen",
     "buy_now": "Jetzt kaufen",
     "one_time_purchase": "Einmaliger Kauf. Läuft nie ab.",
+    "no_plans_available": "Derzeit sind keine Abonnementpläne verfügbar.",
+    "android_debug_hint": "(Android: Überprüfen Sie die Play Store-Verbindung oder den Testerkonto-Status)",
     "failed_load_options": "Preisoptionen konnten nicht geladen werden",
     "login_to_continue": "Bitte melden Sie sich an, um fortzufahren",
     "purchase_failed_message": "Der Kauf ist fehlgeschlagen. Bitte versuchen Sie es erneut.",
@@ -345,9 +347,11 @@
     "promo_save_badge": "SPAREN SIE {{percent}}%",
     "promo_influencer_deal": "Influencer-Angebot",
     "promo_success_title": "Code angewendet!",
-    "promo_success_message": "Sie haben {{percent}}% Rabatt auf Ihr Abonnement freigeschaltet.",
+    "promo_success_message": "Genieße dein {{description}}! Gutes Geld verdienen!",
+    "first_month_discount_influencer": "Erster Monat mit Rabatt dank {{name}}",
     "special_discount": "Sonderrabatt",
-    "intro_offer": "Einführungsangebot"
+    "intro_offer": "für {{cycles}} {{period}}e",
+    "footer_note": "Alle Pläne enthalten grundlegende Unternehmensinformationen, Kontaktdaten und den Standort. Jederzeit kündbar."
   },
   "errors": {
     "network_error": "Netzwerkfehler. Bitte überprüfen Sie Ihre Verbindung.",
@@ -611,72 +615,72 @@
       "multilang_desc": "Verfügbar in Englisch, Rumänisch, Polnisch, Türkisch, Spanisch und mehr"
     },
     "features_page": {
-      "hero_title": "Powerful Features for Truck Drivers",
-      "hero_subtitle": "Everything you need to find clients, manage leads, and grow your logistics business",
+      "hero_title": "Von einem Fahrer, für Fahrer",
+      "hero_subtitle": "Zahlen Sie keine Provisionen mehr an Spediteure. Truxel gibt Ihnen die Macht, Kunden direkt in Ihrer Nähe zu finden und auf Augenhöhe zu verhandeln.",
       "core": {
-        "title": "Core Features",
-        "subtitle": "Available on all plans, including the free trial",
+        "title": "Werkzeuge für Unabhängigkeit",
+        "subtitle": "Alles, was ich mir gewünscht habe, als ich noch fremd war.",
         "details": {
           "gps": [
-            "Automatic location detection",
-            "5km search radius",
-            "Real-time GPS tracking",
-            "Search anywhere you drive"
+            "Automatische Standorterkennung",
+            "Industriegebiete sofort finden",
+            "Direkte Versender finden",
+            "Leerfahrten vermeiden"
           ],
           "community": [
-            "Post driver availability",
-            "Find available routes",
-            "Connect with fellow truckers",
-            "Real-time community feed"
+            "LKW-Verfügbarkeit posten",
+            "Fracht von Kollegen finden",
+            "Keine Vermittlungsgebühren",
+            "Netzwerk verifizierter Fahrer"
           ],
           "leads": [
-            "Unlimited lead storage",
-            "Status tracking (New, Contacted, Won, Lost)",
-            "Add custom notes",
-            "CSV export functionality"
+            "Ihre eigene Kontaktliste",
+            "Jederzeit CSV exportieren",
+            "Verhandlungsstatus verfolgen",
+            "Keine versteckten Barrieren"
           ],
           "templates": [
-            "Pre-filled email templates",
-            "WhatsApp message templates",
-            "Auto-populate your contact info",
-            "Professional messaging"
+            "Mehrsprachige Unterstützung",
+            "Direkte WhatsApp-Integration",
+            "Professionelle E-Mail-Formate",
+            "Sprachbarrieren überwinden"
           ]
         }
       },
       "how": {
-        "title": "How It Works",
-        "subtitle": "Start finding clients in 4 simple steps",
+        "title": "Ihr Weg, Ihre Regeln",
+        "subtitle": "Beginnen Sie in wenigen Minuten, eigene Kunden zu finden",
         "steps": {
           "step1": {
-            "title": "Download & Sign Up",
-            "desc": "Install Truxel from App Store or Google Play. Create your free account and get 5 trial searches."
+            "title": "Der Bruderschaft beitreten",
+            "desc": "Erstellen Sie ein kostenloses Konto. Keine Kreditkarte zum Starten erforderlich."
           },
           "step2": {
-            "title": "Enable GPS & Search",
-            "desc": "Turn on your location and let Truxel find companies within 5km automatically."
+            "title": "Lokale Versender finden",
+            "desc": "Unser GPS zeigt Ihnen jede Fabrik und jedes Lager in der Nähe."
           },
           "step3": {
-            "title": "View Results",
-            "desc": "Browse company details, contact information, and exact locations on the map."
+            "title": "Direkten Kontakt erhalten",
+            "desc": "Schalten Sie Telefonnummern und E-Mails der Entscheider frei."
           },
           "step4": {
-            "title": "Make Contact",
-            "desc": "Reach out via email, WhatsApp, or phone using our pre-filled templates."
+            "title": "Deal abschließen",
+            "desc": "Rufen Sie an oder schreiben Sie direkt per WhatsApp. Sie machen den Preis."
           }
         }
       },
       "pro": {
         "badge": "PRO PLAN",
-        "title": "Advanced Features",
-        "subtitle": "Unlock powerful tools with Pro tier subscription"
+        "title": "Erweiterte Funktionen",
+        "subtitle": "Schalten Sie leistungsstarke Tools mit Pro-Abonnement frei"
       },
       "additional": {
-        "title": "Additional Features"
+        "title": "Zusätzliche Funktionen"
       },
       "cta": {
-        "title": "Ready to Get Started?",
-        "subtitle": "Download Truxel today and start finding clients instantly with 5 free trial searches",
-        "secondary": "View Pricing"
+        "title": "Übernehmen Sie das Steuer Ihres Geschäfts",
+        "subtitle": "Schließen Sie sich Tausenden von Fahrern an, die aufgehört haben, auf Makler zu warten. Starten Sie jetzt Ihre Testphase.",
+        "secondary": "Preise ansehen"
       }
     },
     "footer": {
@@ -980,40 +984,40 @@
         "standard": {
           "title": "Standard",
           "tagline": "Gebaut für unabhängige Fahrer",
-          "description": "Du erh�ltst 30 Firmensuchen pro Monat, um Direktkunden zu finden, plus 30 Community-Posts f�r R�ckladungen. Baue deine eigene Kunden-Datenbank auf und fahre nicht mehr leer.",
+          "description": "Du erhältst 30 Firmensuchen pro Monat, um Direktkunden zu finden, plus 30 Community-Posts für Rückladungen. Baue deine eigene Kunden-Datenbank auf und fahre nicht mehr leer.",
           "feature_searches": "{{count}} Unternehmenssuchen jeden Monat",
           "feature_results": "Max. 20 Leads pro Keyword",
           "feature_posts": "{{daily}} Beiträge pro Tag ({{monthly}} jeden Monat)",
-          "feature_community": "Community-Zugang & Ladeb�rsen",
+          "feature_community": "Community-Zugang & Ladebörsen",
           "feature_crm": "Integriertes CRM & CSV-Export",
           "feature_contact": "Direkte Anrufe & WhatsApp-Vorlagen",
-          "feature_sharing": "Kontaktdaten �berall teilen"
+          "feature_sharing": "Kontaktdaten überall teilen"
         },
         "pro": {
           "title": "Profi",
           "tagline": "Skalieren Sie Ihre Vertriebsreichweite",
-          "description": "50 Suchen/Monat, 100 Community-Posts und exklusive LinkedIn-Integration, um Entscheider zu erreichen. Enth�lt �Leads exportieren�, damit du deine Daten besitzt.",
+          "description": "50 Suchen/Monat, 100 Community-Posts und exklusive LinkedIn-Integration, um Entscheider zu erreichen. Enthält 'Leads exportieren', damit du deine Daten besitzt.",
           "feature_searches": "{{count}} sucht mit erweiterten Ergebnissen",
           "feature_results": "Max. 50 Leads pro Keyword",
           "feature_posts": "{{daily}} Beiträge pro Tag ({{monthly}} jeden Monat)",
           "feature_linkedin": "LinkedIn-Kontaktprofile für Entscheidungsträger",
-          "feature_community": "Community-Zugang & Ladeb�rsen",
+          "feature_community": "Community-Zugang & Ladebörsen",
           "feature_crm": "Integriertes CRM & CSV-Export",
           "feature_contact": "Direkte Anrufe & WhatsApp-Vorlagen",
-          "feature_sharing": "Kontaktdaten �berall teilen"
+          "feature_sharing": "Kontaktdaten überall teilen"
         },
         "fleet": {
           "title": "Flottenmanager",
           "tagline": "Versand im Maßstab",
-          "description": "Verwalte mehrere Lkw mit 30 Posts pro Tag (900/Monat), damit dein Fuhrpark in Bewegung bleibt. Enth�lt 30 Suchen/Monat f�r gezielte Kundengewinnung.",
+          "description": "Verwalte mehrere Lkw mit 30 Posts pro Tag (900/Monat), damit dein Fuhrpark in Bewegung bleibt. Enthält 30 Suchen/Monat für gezielte Kundengewinnung.",
           "feature_searches": "{{count}} gezielte Suchanfragen pro Monat",
           "feature_results": "Max. 20 Leads pro Keyword",
           "feature_posts": "{{daily}} Beiträge pro Tag ({{monthly}} jeden Monat)",
           "feature_concurrent": "{{count}} aktive Beiträge gleichzeitig live",
-          "feature_community": "Community-Zugang & Ladeb�rsen",
+          "feature_community": "Community-Zugang & Ladebörsen",
           "feature_crm": "Integriertes CRM & CSV-Export",
           "feature_contact": "Direkte Anrufe & WhatsApp-Vorlagen",
-          "feature_sharing": "Kontaktdaten �berall teilen"
+          "feature_sharing": "Kontaktdaten überall teilen"
         },
         "freighter": {
           "title": "Profi-Frachter",

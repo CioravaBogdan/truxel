@@ -346,8 +346,9 @@
     "promo_influencer_deal": "Offerta Influencer",
     "promo_success_title": "Codice applicato!",
     "promo_success_message": "Hai sbloccato il {{percent}}% di sconto sul tuo abbonamento.",
+    "first_month_discount_influencer": "Primo mese scontato grazie a {{name}}",
     "special_discount": "Sconto speciale",
-    "intro_offer": "Offerta introduttiva"
+    "intro_offer": "per {{cycles}} {{period}}"
   },
   "errors": {
     "network_error": "Errore di rete. Per favore controlla la tua connessione.",
