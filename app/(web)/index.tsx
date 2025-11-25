@@ -4,7 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { useRouter } from 'expo-router';
 import {
   MapPin, Users, FileText, Globe, MessageSquare, Linkedin,
-  Brain, Bell, Zap, TrendingUp, Target, Star, CheckCircle
+  Brain, Bell, Zap, TrendingUp, Target, Star, CheckCircle,
+  Truck, Heart, Shield, Quote, DollarSign, Phone, ArrowRight
 } from 'lucide-react-native';
 import { WebFooter } from '@/components/web/WebFooter';
 import { SeoHead } from '@/components/web/SeoHead';
@@ -94,9 +95,10 @@ export default function LandingPage() {
     },
   ];
 
+  // Passionate Navy to Warm Orange - represents the journey from the cold of the road to the warmth of success
   const heroGradient = theme.mode === 'dark'
-    ? 'linear-gradient(135deg, #020617 0%, #0F172A 50%, #331800 100%)' // Deep Navy fading into a passionate dark orange/brown
-    : 'linear-gradient(135deg, #1e3a5f 0%, #2563ea 50%, #0fb988 100%)'; // Radiant Blue/Teal
+    ? 'linear-gradient(135deg, #020617 0%, #0F172A 40%, #1a0f00 80%, #331800 100%)' // Deep Navy fading into warm amber
+    : 'linear-gradient(135deg, #0F172A 0%, #1e3a5f 30%, #2d1810 70%, #4a2c17 100%)'; // Navy to warm brown - feels like a sunset on the highway
 
   const howItWorksGradient = theme.mode === 'dark'
     ? 'linear-gradient(180deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)'
@@ -140,7 +142,7 @@ export default function LandingPage() {
       />
 
       <ScrollView style={[styles.container, { backgroundColor: theme.colors.background }]}>
-      {/* Hero Section */}
+      {/* Hero Section - Clean & Focused */}
       <View style={[styles.hero, Platform.OS === 'web' && { background: heroGradient } as any]}>
         <View style={styles.heroBackground}>
           <View style={styles.floatingShape1} />
@@ -148,14 +150,28 @@ export default function LandingPage() {
           <View style={styles.floatingShape3} />
         </View>
         <View style={styles.section}>
-          <Text style={[styles.heroTitle, { color: Platform.OS === 'web' ? '#FFFFFF' : theme.colors.text }]}>{t('web.hero.title')}</Text>
-          <Text style={[styles.heroSubtitle, { color: Platform.OS === 'web' ? 'rgba(255, 255, 255, 0.9)' : theme.colors.textSecondary }]}>{t('web.hero.subtitle')}</Text>
+          {/* Eyebrow Badge */}
+          <View style={styles.heroBadge}>
+            <Truck size={16} color="#FF5722" />
+            <Text style={styles.heroBadgeText}>{t('web.hero.trust_badge')}</Text>
+          </View>
+          
+          <Text style={[styles.heroTitle, { color: Platform.OS === 'web' ? '#FFFFFF' : theme.colors.text }]}>
+            {t('web.hero.title')}
+          </Text>
+          
+          {/* Short tagline */}
+          <Text style={styles.heroTagline}>
+            Skip the brokers. Find shippers directly.
+          </Text>
+          
           <View style={styles.heroButtons}>
             <TouchableOpacity
               style={styles.primaryButton}
               onPress={() => router.push('/(auth)/register')}
             >
               <Text style={styles.primaryButtonText}>{t('web.hero.cta_primary')}</Text>
+              <ArrowRight size={18} color="#FFFFFF" style={{ marginLeft: 8 }} />
             </TouchableOpacity>
             <TouchableOpacity
               style={[
@@ -173,41 +189,98 @@ export default function LandingPage() {
               ]}>{t('web.cta.learn_more')}</Text>
             </TouchableOpacity>
           </View>
-        </View>
-      </View>
-
-      {/* Trust Badge Section */}
-      <View style={[styles.trustSection, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}>
-        <View style={styles.trustContent}>
-          <View style={styles.trustIconGroup}>
-            <Star size={32} color="#ff6b35" fill="#ff6b35" />
-            <Star size={32} color="#ff6b35" fill="#ff6b35" />
-            <Star size={32} color="#ff6b35" fill="#ff6b35" />
-            <Star size={32} color="#ff6b35" fill="#ff6b35" />
-            <Star size={32} color="#ff6b35" fill="#ff6b35" />
-          </View>
-          <Text style={[styles.trustTitle, { color: theme.colors.text }]}>{t('web.hero.trust_badge')}</Text>
-          <View style={styles.trustFeatures}>
-            {trustFeatureKeys.map((key) => (
-              <View key={key} style={styles.trustFeatureItem}>
-                <CheckCircle size={20} color={theme.colors.success} />
-                <Text style={[styles.trustFeatureText, { color: theme.colors.textSecondary }]}>{t(key)}</Text>
+          
+          {/* Founder Quote - Compact */}
+          <View style={styles.heroFounderQuote}>
+            <Text style={styles.heroQuoteText}>
+              "{t('web.about.founder_quote')}"
+            </Text>
+            <View style={styles.heroFounderInfo}>
+              <View style={styles.heroFounderAvatar}>
+                <Text style={styles.heroFounderAvatarText}>GB</Text>
               </View>
-            ))}
+              <Text style={styles.heroFounderName}>— George Bogdan, Founder</Text>
+            </View>
           </View>
         </View>
       </View>
 
-      {/* Problem-Solution Section */}
-      <View style={[styles.section, styles.problemSolution, { backgroundColor: theme.colors.background }]}>
-        <View style={styles.twoColumn}>
-          <View style={styles.column}>
-            <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>{t('web.problem_solution.problem_title')}</Text>
-            <Text style={[styles.sectionText, { color: theme.colors.textSecondary }]}>{t('web.problem_solution.problem_desc')}</Text>
+      {/* Value Props Strip - Visual Cards */}
+      <View style={[styles.valuePropsBar, { backgroundColor: theme.mode === 'dark' ? '#1E293B' : '#FFFFFF' }]}>
+        <View style={styles.valuePropsBarItems}>
+          <View style={[styles.valuePropsCard, { backgroundColor: theme.mode === 'dark' ? '#0F172A' : '#FFF7ED' }]}>
+            <View style={styles.valuePropsIconCircle}>
+              <DollarSign size={20} color="#FF5722" />
+            </View>
+            <Text style={[styles.valuePropsCardTitle, { color: theme.colors.text }]}>Zero Broker Fees</Text>
+            <Text style={[styles.valuePropsCardDesc, { color: theme.colors.textSecondary }]}>Keep 100% of your rate</Text>
           </View>
-          <View style={styles.column}>
-            <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>{t('web.problem_solution.solution_title')}</Text>
-            <Text style={[styles.sectionText, { color: theme.colors.textSecondary }]}>{t('web.problem_solution.solution_desc')}</Text>
+          <View style={[styles.valuePropsCard, { backgroundColor: theme.mode === 'dark' ? '#0F172A' : '#FFF7ED' }]}>
+            <View style={styles.valuePropsIconCircle}>
+              <MapPin size={20} color="#FF5722" />
+            </View>
+            <Text style={[styles.valuePropsCardTitle, { color: theme.colors.text }]}>GPS Search</Text>
+            <Text style={[styles.valuePropsCardDesc, { color: theme.colors.textSecondary }]}>Find leads where you park</Text>
+          </View>
+          <View style={[styles.valuePropsCard, { backgroundColor: theme.mode === 'dark' ? '#0F172A' : '#FFF7ED' }]}>
+            <View style={styles.valuePropsIconCircle}>
+              <Phone size={20} color="#FF5722" />
+            </View>
+            <Text style={[styles.valuePropsCardTitle, { color: theme.colors.text }]}>Direct Contact</Text>
+            <Text style={[styles.valuePropsCardDesc, { color: theme.colors.textSecondary }]}>WhatsApp, Email, Call</Text>
+          </View>
+          <View style={[styles.valuePropsCard, { backgroundColor: theme.mode === 'dark' ? '#0F172A' : '#FFF7ED' }]}>
+            <View style={styles.valuePropsIconCircle}>
+              <Users size={20} color="#FF5722" />
+            </View>
+            <Text style={[styles.valuePropsCardTitle, { color: theme.colors.text }]}>Driver Community</Text>
+            <Text style={[styles.valuePropsCardDesc, { color: theme.colors.textSecondary }]}>Share routes & loads</Text>
+          </View>
+        </View>
+      </View>
+
+      {/* Features Grid - MOVED UP */}
+      <View style={[styles.section, styles.features, { backgroundColor: theme.colors.background }]}>
+        <Text style={[styles.mainTitle, { color: theme.colors.text }]}>{t('web.features.title')}</Text>
+        <Text style={[styles.mainSubtitle, { color: theme.colors.textSecondary }]}>{t('web.features.subtitle')}</Text>
+        <View style={styles.featuresGrid}>
+          {features.map((feature, index) => {
+            const Icon = feature.icon;
+            return (
+              <View key={index} style={[styles.featureCard, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}>
+                <View style={[styles.featureIconContainer, { backgroundColor: theme.mode === 'dark' ? 'rgba(255, 87, 34, 0.15)' : '#FFF7ED' }]}>
+                  <Icon size={28} color="#FF5722" />
+                </View>
+                <Text style={[styles.featureTitle, { color: theme.colors.text }]}>{feature.title}</Text>
+                <Text style={[styles.featureDesc, { color: theme.colors.textSecondary }]}>{feature.desc}</Text>
+              </View>
+            );
+          })}
+        </View>
+      </View>
+
+      {/* Problem-Solution Section - Brand Colors (Navy + Orange) */}
+      <View style={[styles.section, styles.problemSolution, { backgroundColor: theme.mode === 'dark' ? '#0F172A' : '#F8FAFC' }]}>
+        <View style={styles.problemSolutionHeader}>
+          <View style={styles.sectionBadge}>
+            <Text style={styles.sectionBadgeText}>THE REAL PROBLEM</Text>
+          </View>
+          <Text style={[styles.mainTitle, { color: theme.colors.text }]}>{t('web.problem_solution.problem_title')}</Text>
+        </View>
+        <View style={styles.twoColumn}>
+          <View style={[styles.problemCard, { backgroundColor: theme.mode === 'dark' ? '#1E293B' : '#0F172A' }]}>
+            <View style={styles.problemIcon}>
+              <Text style={styles.problemIconText}>😤</Text>
+            </View>
+            <Text style={[styles.problemTitle, { color: '#FFFFFF' }]}>The Broker Trap</Text>
+            <Text style={[styles.sectionText, { color: 'rgba(255, 255, 255, 0.8)' }]}>{t('web.problem_solution.problem_desc')}</Text>
+          </View>
+          <View style={[styles.solutionCard, { backgroundColor: '#FF5722' }]}>
+            <View style={styles.solutionIcon}>
+              <Text style={styles.solutionIconText}>🎯</Text>
+            </View>
+            <Text style={[styles.solutionTitle, { color: '#FFFFFF' }]}>{t('web.problem_solution.solution_title')}</Text>
+            <Text style={[styles.sectionText, { color: 'rgba(255, 255, 255, 0.9)' }]}>{t('web.problem_solution.solution_desc')}</Text>
           </View>
         </View>
       </View>
@@ -229,25 +302,38 @@ export default function LandingPage() {
         </View>
       </View>
 
-      {/* Features Grid */}
-      <View style={[styles.section, styles.features, { backgroundColor: theme.colors.background }]}>
-        <Text style={[styles.mainTitle, { color: theme.colors.text }]}>{t('web.features.title')}</Text>
-        <Text style={[styles.mainSubtitle, { color: theme.colors.textSecondary }]}>{t('web.features.subtitle')}</Text>
-        <View style={styles.featuresGrid}>
-          {features.map((feature, index) => {
-            const Icon = feature.icon;
-            return (
-              <View key={index} style={[styles.featureCard, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}>
-                <Icon size={32} color={theme.colors.primary} />
-                <Text style={[styles.featureTitle, { color: theme.colors.text }]}>{feature.title}</Text>
-                <Text style={[styles.featureDesc, { color: theme.colors.textSecondary }]}>{feature.desc}</Text>
-              </View>
-            );
-          })}
+      {/* Trust Stats Section - MOVED DOWN */}
+      <View style={[styles.trustSection, { backgroundColor: theme.mode === 'dark' ? '#1E293B' : '#FFF7ED', borderColor: theme.colors.border }]}>
+        <View style={styles.trustContent}>
+          <View style={styles.trustIconGroup}>
+            <Star size={28} color="#FF5722" fill="#FF5722" />
+            <Star size={28} color="#FF5722" fill="#FF5722" />
+            <Star size={28} color="#FF5722" fill="#FF5722" />
+            <Star size={28} color="#FF5722" fill="#FF5722" />
+            <Star size={28} color="#FF5722" fill="#FF5722" />
+          </View>
+          <Text style={[styles.trustSubtitle, { color: theme.colors.textSecondary }]}>Trusted by owner-operators across Europe</Text>
+          <View style={styles.trustLogos}>
+            <View style={[styles.trustLogoItem, { backgroundColor: theme.colors.card }]}>
+              <Truck size={24} color={theme.colors.primary} />
+              <Text style={[styles.trustLogoText, { color: theme.colors.text }]}>1000+</Text>
+              <Text style={[styles.trustLogoLabel, { color: theme.colors.textSecondary }]}>Drivers</Text>
+            </View>
+            <View style={[styles.trustLogoItem, { backgroundColor: theme.colors.card }]}>
+              <MapPin size={24} color={theme.colors.primary} />
+              <Text style={[styles.trustLogoText, { color: theme.colors.text }]}>5000+</Text>
+              <Text style={[styles.trustLogoLabel, { color: theme.colors.textSecondary }]}>Companies</Text>
+            </View>
+            <View style={[styles.trustLogoItem, { backgroundColor: theme.colors.card }]}>
+              <Globe size={24} color={theme.colors.primary} />
+              <Text style={[styles.trustLogoText, { color: theme.colors.text }]}>6</Text>
+              <Text style={[styles.trustLogoLabel, { color: theme.colors.textSecondary }]}>Countries</Text>
+            </View>
+          </View>
         </View>
       </View>
 
-      {/* Social Proof */}
+      {/* Social Proof / Testimonials */}
       <View style={[styles.section, styles.socialProof, Platform.OS === 'web' && { background: socialProofGradient } as any]}>
         <Text style={[styles.mainTitle, { color: theme.colors.text }]}>{t('web.social_proof.title')}</Text>
         <View style={styles.testimonials}>
@@ -496,15 +582,16 @@ const styles = StyleSheet.create({
     minWidth: 200,
     alignItems: 'center',
     ...(Platform.OS === 'web' && {
-      background: 'linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%)',
-      boxShadow: '0 10px 30px -5px rgba(255, 107, 53, 0.4)',
+      background: 'linear-gradient(135deg, #FF5722 0%, #FF8A65 100%)',
+      boxShadow: '0 10px 30px -5px rgba(255, 87, 34, 0.5)',
       transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+      cursor: 'pointer',
       '@media (max-width: 600px)': {
         width: '100%',
         paddingVertical: 18,
       },
     }),
-    backgroundColor: '#ff6b35',
+    backgroundColor: '#FF5722',
   },
   primaryButtonText: {
     fontSize: 19,
@@ -691,10 +778,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 24,
     ...(Platform.OS === 'web' && {
-      background: 'linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%)',
-      boxShadow: '0 15px 35px -10px rgba(255, 107, 53, 0.5), 0 0 0 4px rgba(255, 107, 53, 0.1)',
+      background: 'linear-gradient(135deg, #FF5722 0%, #FF8A65 100%)',
+      boxShadow: '0 15px 35px -10px rgba(255, 87, 34, 0.5), 0 0 0 4px rgba(255, 87, 34, 0.15)',
     }),
-    backgroundColor: '#ff6b35',
+    backgroundColor: '#FF5722',
   },
   stepNumberText: {
     fontSize: 32,
@@ -840,9 +927,9 @@ const styles = StyleSheet.create({
     position: 'relative',
     overflow: 'hidden',
     ...(Platform.OS === 'web' && {
-      background: 'linear-gradient(135deg, #ff6b35 0%, #ff8c42 50%, #ff5722 100%)', // Passionate Orange
+      background: 'linear-gradient(135deg, #0F172A 0%, #1E293B 40%, #FF5722 100%)', // Navy to Passionate Orange - Brand colors
     }),
-    backgroundColor: '#ff6b35',
+    backgroundColor: '#FF5722',
   },
   finalCtaBackground: {
     position: 'absolute',
@@ -1007,8 +1094,320 @@ const styles = StyleSheet.create({
   signUpCtaButtonText: {
     fontSize: 20,
     fontWeight: '800',
-    color: '#ff6b35',
+    color: '#FF5722',
     letterSpacing: 0.5,
+  },
+  // Hero Tagline
+  heroTagline: {
+    fontSize: 20,
+    fontWeight: '500',
+    color: 'rgba(255, 255, 255, 0.85)',
+    textAlign: 'center',
+    marginBottom: 32,
+    ...(Platform.OS === 'web' && {
+      '@media (max-width: 768px)': {
+        fontSize: 17,
+        marginBottom: 24,
+      },
+    }),
+  },
+  // Hero Badge Styles
+  heroBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    backgroundColor: 'rgba(255, 87, 34, 0.15)',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 50,
+    marginBottom: 24,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 87, 34, 0.3)',
+  },
+  heroBadgeText: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#FF8A65',
+    letterSpacing: 0.5,
+  },
+  // Value Props Bar - Redesigned with Cards
+  valuePropsBar: {
+    paddingVertical: 40,
+    paddingHorizontal: 20,
+    ...(Platform.OS === 'web' && {
+      '@media (max-width: 768px)': {
+        paddingVertical: 32,
+      },
+    }),
+  },
+  valuePropsBarItems: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 20,
+    justifyContent: 'center',
+    maxWidth: 1200,
+    marginHorizontal: 'auto',
+    width: '100%',
+    ...(Platform.OS === 'web' && {
+      '@media (max-width: 900px)': {
+        gap: 16,
+      },
+      '@media (max-width: 600px)': {
+        flexDirection: 'column',
+        alignItems: 'center',
+      },
+    }),
+  },
+  valuePropsCard: {
+    flex: 1,
+    minWidth: 220,
+    maxWidth: 280,
+    padding: 24,
+    borderRadius: 16,
+    alignItems: 'center',
+    ...(Platform.OS === 'web' && {
+      boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
+      transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+      ':hover': {
+        transform: 'translateY(-4px)',
+        boxShadow: '0 8px 30px rgba(255, 87, 34, 0.15)',
+      },
+      '@media (max-width: 600px)': {
+        minWidth: 280,
+        maxWidth: 320,
+      },
+    }),
+  },
+  valuePropsIconCircle: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: 'rgba(255, 87, 34, 0.15)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 16,
+  },
+  valuePropsCardTitle: {
+    fontSize: 16,
+    fontWeight: '700',
+    marginBottom: 6,
+    textAlign: 'center',
+  },
+  valuePropsCardDesc: {
+    fontSize: 14,
+    fontWeight: '500',
+    textAlign: 'center',
+  },
+  // Hero Founder Quote (below buttons)
+  heroFounderQuote: {
+    alignItems: 'center',
+    marginTop: 40,
+    paddingHorizontal: 20,
+    maxWidth: 600,
+    opacity: 0.9,
+  },
+  heroQuoteIcon: {
+    marginBottom: 16,
+  },
+  heroQuoteText: {
+    fontSize: 15,
+    fontWeight: '400',
+    fontStyle: 'italic',
+    textAlign: 'center',
+    color: 'rgba(255, 255, 255, 0.7)',
+    lineHeight: 24,
+    marginBottom: 12,
+  },
+  heroFounderInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  heroFounderAvatar: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: '#FF5722',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  heroFounderAvatarText: {
+    fontSize: 11,
+    fontWeight: '800',
+    color: '#FFFFFF',
+  },
+  heroFounderName: {
+    fontSize: 13,
+    fontWeight: '500',
+    color: 'rgba(255, 255, 255, 0.6)',
+  },
+  // Feature Icon Container
+  featureIconContainer: {
+    width: 56,
+    height: 56,
+    borderRadius: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 16,
+  },
+  // Founder Section Styles (keeping for backward compatibility)
+  founderSection: {
+    paddingVertical: 64,
+    paddingHorizontal: 24,
+    ...(Platform.OS === 'web' && {
+      '@media (max-width: 768px)': {
+        paddingVertical: 48,
+        paddingHorizontal: 20,
+      },
+    }),
+  },
+  founderContent: {
+    maxWidth: 800,
+    marginHorizontal: 'auto',
+    alignItems: 'center',
+  },
+  founderQuoteIcon: {
+    marginBottom: 20,
+    opacity: 0.8,
+  },
+  founderQuote: {
+    fontSize: 22,
+    fontWeight: '500',
+    fontStyle: 'italic',
+    textAlign: 'center',
+    lineHeight: 34,
+    marginBottom: 32,
+    ...(Platform.OS === 'web' && {
+      '@media (max-width: 768px)': {
+        fontSize: 18,
+        lineHeight: 28,
+      },
+    }),
+  },
+  founderInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 16,
+  },
+  founderAvatar: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: '#FF5722',
+    alignItems: 'center',
+    justifyContent: 'center',
+    ...(Platform.OS === 'web' && {
+      boxShadow: '0 4px 12px rgba(255, 87, 34, 0.3)',
+    }),
+  },
+  founderAvatarText: {
+    fontSize: 20,
+    fontWeight: '800',
+    color: '#FFFFFF',
+  },
+  founderName: {
+    fontSize: 18,
+    fontWeight: '700',
+  },
+  founderTitle: {
+    fontSize: 14,
+    fontWeight: '500',
+  },
+  // Trust Section Updates
+  trustSubtitle: {
+    fontSize: 16,
+    fontWeight: '500',
+    textAlign: 'center',
+    marginBottom: 32,
+  },
+  trustLogos: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 24,
+    justifyContent: 'center',
+  },
+  trustLogoItem: {
+    alignItems: 'center',
+    padding: 24,
+    borderRadius: 16,
+    minWidth: 120,
+    ...(Platform.OS === 'web' && {
+      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.05)',
+    }),
+  },
+  trustLogoText: {
+    fontSize: 28,
+    fontWeight: '800',
+    marginTop: 12,
+  },
+  trustLogoLabel: {
+    fontSize: 13,
+    fontWeight: '500',
+    marginTop: 4,
+  },
+  // Problem-Solution Updates
+  problemSolutionHeader: {
+    alignItems: 'center',
+    marginBottom: 48,
+  },
+  sectionBadge: {
+    backgroundColor: 'rgba(255, 87, 34, 0.1)',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 50,
+    marginBottom: 16,
+  },
+  sectionBadgeText: {
+    fontSize: 12,
+    fontWeight: '800',
+    color: '#FF5722',
+    letterSpacing: 1.5,
+  },
+  problemCard: {
+    flex: 1,
+    minWidth: 300,
+    padding: 32,
+    borderRadius: 20,
+    ...(Platform.OS === 'web' && {
+      boxShadow: '0 20px 40px -10px rgba(0, 0, 0, 0.3)',
+      '@media (max-width: 768px)': {
+        minWidth: '100%',
+      },
+    }),
+  },
+  solutionCard: {
+    flex: 1,
+    minWidth: 300,
+    padding: 32,
+    borderRadius: 20,
+    ...(Platform.OS === 'web' && {
+      boxShadow: '0 20px 40px -10px rgba(255, 87, 34, 0.4)',
+      '@media (max-width: 768px)': {
+        minWidth: '100%',
+      },
+    }),
+  },
+  problemIcon: {
+    marginBottom: 16,
+  },
+  problemIconText: {
+    fontSize: 40,
+  },
+  solutionIcon: {
+    marginBottom: 16,
+  },
+  solutionIconText: {
+    fontSize: 40,
+  },
+  problemTitle: {
+    fontSize: 24,
+    fontWeight: '800',
+    marginBottom: 12,
+  },
+  solutionTitle: {
+    fontSize: 24,
+    fontWeight: '800',
+    marginBottom: 12,
   },
   finalCtaStats: {
     flexDirection: 'row',
