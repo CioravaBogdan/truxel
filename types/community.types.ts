@@ -211,4 +211,5 @@ export interface LocationInfo {
   directionFromMajor?: string;
   nearestMajorCityName?: string;
   nearestMajorCityId?: string;
+  detectedCity?: City;
 }

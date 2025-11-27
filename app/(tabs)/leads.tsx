@@ -111,11 +111,14 @@ export default function LeadsScreen() {
     try {
       const locationInfo = await cityService.getCurrentLocationCity();
       
-      if (locationInfo?.nearestMajorCity) {
-        const { country_code, country_name } = locationInfo.nearestMajorCity;
+      // Use detectedCity (exact location) if available, otherwise fallback to nearestMajorCity
+      const targetCity = locationInfo?.detectedCity || locationInfo?.nearestMajorCity;
+
+      if (targetCity) {
+        const { country_code, country_name } = targetCity;
         
         setSelectedCountry({ code: country_code, name: country_name });
-        setSelectedCity(locationInfo.nearestMajorCity); // Pass full City object
+        setSelectedCity(targetCity); // Pass full City object
       }
     } catch (error) {
       console.log('[LeadsScreen] GPS initialization failed (non-critical):', error);

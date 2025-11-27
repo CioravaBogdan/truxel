@@ -15,6 +15,19 @@ import Toast from 'react-native-toast-message';
 import { initRevenueCat, logoutRevenueCat } from '@/lib/revenueCat';
 import { ThemeProvider } from '@/lib/theme';
 import { useNotificationStore } from '@/store/notificationStore';
+import * as Notifications from 'expo-notifications';
+import { Audio } from 'expo-av';
+
+// Configure global notification handler
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false, // We play custom sound manually
+    shouldSetBadge: false,
+    shouldShowBanner: true,
+    shouldShowList: true,
+  }),
+});
 
 export default function RootLayout() {
   useFrameworkReady();
@@ -229,6 +242,39 @@ export default function RootLayout() {
 
     return () => clearTimeout(timer);
   }, []);
+
+  // Notification listeners
+  useEffect(() => {
+    // Listener for when user taps notification
+    const responseListener = Notifications.addNotificationResponseReceivedListener(response => {
+      console.log('Notification tapped:', response);
+      // Navigate to notifications screen
+      // We use a small timeout to ensure navigation is ready
+      setTimeout(() => {
+        router.push('/notifications');
+      }, 500);
+    });
+
+    // Listener for when notification is received while app is foreground
+    const receivedListener = Notifications.addNotificationReceivedListener(async notification => {
+      console.log('Notification received in foreground:', notification);
+      
+      // Play custom sound
+      try {
+        const { sound } = await Audio.Sound.createAsync(
+          require('../assets/sounds/notification.mp3')
+        );
+        await sound.playAsync();
+      } catch (error) {
+        console.log('Failed to play notification sound:', error);
+      }
+    });
+
+    return () => {
+      responseListener.remove();
+      receivedListener.remove();
+    };
+  }, [router]);
 
   useEffect(() => {
     if (!isNavigationReady || isLoading) {

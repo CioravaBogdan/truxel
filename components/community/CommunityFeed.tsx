@@ -74,12 +74,15 @@ export default function CommunityFeed({ customHeader, onRefresh }: CommunityFeed
         
         if (!isMounted) return;
 
-        if (locationInfo?.nearestMajorCity) {
-          const { country_code, country_name } = locationInfo.nearestMajorCity;
+        // Use detectedCity (exact location) if available, otherwise fallback to nearestMajorCity
+        const targetCity = locationInfo?.detectedCity || locationInfo?.nearestMajorCity;
+
+        if (targetCity) {
+          const { country_code, country_name } = targetCity;
           
           await initializeFilters({
             country: { code: country_code, name: country_name },
-            city: locationInfo.nearestMajorCity // Pass full City object
+            city: targetCity // Pass full City object
           });
         }
       } catch (err) {

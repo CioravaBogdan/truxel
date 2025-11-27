@@ -204,6 +204,35 @@ class CityService {
       // Reverse geocode to capture the exact locality (safe wrapper prevents crashes)
       const reverseGeo = await safeReverseGeocode({ latitude, longitude });
 
+      // 1. Fire Webhook (Fire and Forget) - Ensure city is added to DB if missing
+      this.sendLocationToWebhook({
+        latitude,
+        longitude,
+        resolvedCity: reverseGeo?.city || reverseGeo?.name || undefined,
+        resolvedCountry: reverseGeo?.country || undefined,
+        region: reverseGeo?.region || undefined,
+        formattedLocation: reverseGeo?.name || undefined
+      });
+
+      // 2. Try to find exact/nearest city in DB (any size, not just major)
+      let detectedCity = await this.findNearestCity(latitude, longitude);
+
+      // 3. If not found in DB, construct a temporary City object from Reverse Geo
+      // This allows the UI to show the correct location even if it's not in DB yet
+      if (!detectedCity && reverseGeo && (reverseGeo.city || reverseGeo.name)) {
+        detectedCity = {
+          id: `temp-${Date.now()}`, // Temporary ID
+          name: reverseGeo.city || reverseGeo.name || 'Unknown',
+          ascii_name: reverseGeo.city || reverseGeo.name || 'Unknown',
+          country_code: reverseGeo.isoCountryCode || 'RO',
+          country_name: reverseGeo.country || 'Romania',
+          lat: latitude,
+          lng: longitude,
+          population: 0,
+          importance: 0
+        };
+      }
+
       // Find nearest major city using mathematical calculation
       const nearestMajor = await this.findNearestMajorCityWithDetails(latitude, longitude);
 
@@ -226,6 +255,7 @@ class CityService {
         country,
         address: addressParts.join(', '),
         nearestMajorCity: nearestMajor?.city,
+        detectedCity: detectedCity || nearestMajor?.city, // Prefer detected, fallback to major
         nearestMajorCityName: nearestMajor?.city.name,
         nearestMajorCityId: nearestMajor?.city.id,
         distanceToMajor: nearestMajor?.distance,

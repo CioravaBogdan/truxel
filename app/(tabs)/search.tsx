@@ -103,6 +103,45 @@ export default function SearchScreen() {
     return unsubscribe;
   }, [user, activeSearch, t]);
 
+  // Polling fallback for search status (in case Realtime is disabled/unreliable)
+  useEffect(() => {
+    if (!user || !activeSearch || activeSearch.status !== 'pending') return;
+
+    const pollInterval = setInterval(async () => {
+      try {
+        const updatedSearch = await searchesService.getSearch(activeSearch.id);
+        if (updatedSearch && updatedSearch.status !== 'pending') {
+          setActiveSearch(updatedSearch);
+          
+          // Trigger notification logic if status changed to completed/failed
+          if (updatedSearch.status === 'completed') {
+            safeScheduleNotification(
+              {
+                title: t('search.search_complete'),
+                body: t('search.results_ready'),
+                sound: true,
+              },
+              null
+            );
+          } else if (updatedSearch.status === 'failed') {
+            safeScheduleNotification(
+              {
+                title: t('search.search_failed'),
+                body: t('search.please_try_again'),
+                sound: true,
+              },
+              null
+            );
+          }
+        }
+      } catch (error) {
+        console.warn('[Search] Polling failed:', error);
+      }
+    }, 5000); // Poll every 5 seconds
+
+    return () => clearInterval(pollInterval);
+  }, [user, activeSearch, t]);
+
   // Timer for elapsed time
   useEffect(() => {
     if (!activeSearch || activeSearch.status !== 'pending') {
