@@ -51,10 +51,12 @@ export interface Lead {
   company_name: string;
   contact_person_name?: string;
   email?: string;
+  emails?: string; // New column
   phone?: string;
+  phones?: string; // New column
   whatsapp?: string;
   linkedin?: string;
-  linkedin_profile_url?: string;
+  // linkedin_profile_url removed as it's not in DB schema
   facebook?: string;
   instagram?: string;
   website?: string;
@@ -75,6 +77,20 @@ export interface Lead {
   founded_year?: number;
   annual_revenue?: string;
   social_links?: { [key: string]: string };
+  review_count?: string;
+  snapchat?: string;
+  telegram?: string;
+  tiktok?: string;
+  X?: string;
+  yelp?: string;
+  youtube?: string;
+  company_id?: string;
+  keywords_searched?: string;
+  region?: string;
+  google_place_id?: string;
+  google_url_place?: string;
+  google_url_photo?: string;
+  google_rating?: string;
   created_at: string;
   updated_at: string;
 }
