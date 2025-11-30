@@ -204,13 +204,20 @@ class CityService {
       // Reverse geocode to capture the exact locality (safe wrapper prevents crashes)
       const reverseGeo = await safeReverseGeocode({ latitude, longitude });
 
+      // Find nearest major city using mathematical calculation
+      const nearestMajor = await this.findNearestMajorCityWithDetails(latitude, longitude);
+
       // 1. Fire Webhook (Fire and Forget) - Ensure city is added to DB if missing
+      // MOVED AFTER nearestMajor calculation to provide better fallbacks
       this.sendLocationToWebhook({
         latitude,
         longitude,
-        resolvedCity: reverseGeo?.city || reverseGeo?.name || undefined,
-        resolvedCountry: reverseGeo?.country || undefined,
-        region: reverseGeo?.region || undefined,
+        nearestCityId: nearestMajor?.city.id,
+        nearestCityName: nearestMajor?.city.name,
+        distance: nearestMajor?.distance,
+        resolvedCity: reverseGeo?.city || reverseGeo?.name || nearestMajor?.city.name || undefined,
+        resolvedCountry: reverseGeo?.country || nearestMajor?.city.country_name || undefined,
+        region: reverseGeo?.region || reverseGeo?.subregion || undefined,
         formattedLocation: reverseGeo?.name || undefined
       });
 
@@ -234,7 +241,8 @@ class CityService {
       }
 
       // Find nearest major city using mathematical calculation
-      const nearestMajor = await this.findNearestMajorCityWithDetails(latitude, longitude);
+      // Already calculated above for webhook
+      // const nearestMajor = await this.findNearestMajorCityWithDetails(latitude, longitude);
 
       const locality = reverseGeo?.city || reverseGeo?.district || reverseGeo?.name || reverseGeo?.subregion || undefined;
       const region = reverseGeo?.region || reverseGeo?.subregion || undefined;
@@ -481,15 +489,15 @@ class CityService {
     const payload = {
       lat: locationData.latitude,
       lng: locationData.longitude,
-      nearest_city_id: locationData.nearestCityId,
-      nearest_city_name: locationData.nearestCityName,
-      distance_km: locationData.distance,
-      user_id: locationData.userId,
+      nearest_city_id: locationData.nearestCityId || null,
+      nearest_city_name: locationData.nearestCityName || null,
+      distance_km: locationData.distance || null,
+      user_id: locationData.userId || null,
       timestamp: locationData.timestamp || new Date().toISOString(),
-      resolved_city: locationData.resolvedCity,
-      resolved_country: locationData.resolvedCountry,
-      region: locationData.region,
-      formatted_location: locationData.formattedLocation,
+      resolved_city: locationData.resolvedCity || null,
+      resolved_country: locationData.resolvedCountry || null,
+      region: locationData.region || null,
+      formatted_location: locationData.formattedLocation || null,
       source: 'truxel_mobile_app'
     };
 

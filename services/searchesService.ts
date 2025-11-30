@@ -178,12 +178,12 @@ export const searchesService = {
       const formattedLocation = distanceDescriptor ? `${baseCity} - ${distanceDescriptor}` : baseCity;
 
       locationDetails = {
-        nearest_city_id: nearestMajor?.city.id,
+        nearest_city_id: nearestMajor?.city.id || null,
         nearest_city_name: majorCityName,
-        distance_km: nearestMajor?.distance,
+        distance_km: nearestMajor?.distance || null,
         resolved_city: baseCity,
-        resolved_country: reverseGeo?.country || nearestMajor?.city.country_name,
-        region: reverseGeo?.region || reverseGeo?.subregion,
+        resolved_country: reverseGeo?.country || nearestMajor?.city.country_name || null,
+        region: reverseGeo?.region || reverseGeo?.subregion || null,
         formatted_location: formattedLocation
       };
     } catch (e) {
