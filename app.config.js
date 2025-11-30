@@ -15,7 +15,7 @@ export default {
       backgroundColor: "#ffffff"
     },
     ios: {
-      buildNumber: "6",
+      buildNumber: "7",
       supportsTablet: true,
       bundleIdentifier: "io.truxel.app",
       infoPlist: {
@@ -38,7 +38,7 @@ export default {
       icon: "./assets/Truxel_Brand/App Store 1024 x 1024.png"
     },
     android: {
-      versionCode: 6,
+      versionCode: 7,
       package: "io.truxel.app",
       permissions: [
         "ACCESS_COARSE_LOCATION",
