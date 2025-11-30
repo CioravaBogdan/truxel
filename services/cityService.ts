@@ -138,17 +138,10 @@ class CityService {
   }
 
   /**
-   * Save city to recent list and increment usage in DB
+   * Save city to recent list
    */
   async saveToRecent(city: City): Promise<void> {
     try {
-      // Fire and forget usage increment
-      if (city.id) {
-        supabase.rpc('increment_city_usage', { p_city_id: city.id }).then(({ error }) => {
-          if (error) console.warn('Failed to increment city usage:', error);
-        });
-      }
-
       let recent = await this.getRecentCities();
 
       // Remove if already exists
@@ -207,43 +200,6 @@ class CityService {
       // Find nearest major city using mathematical calculation
       const nearestMajor = await this.findNearestMajorCityWithDetails(latitude, longitude);
 
-      // 1. Fire Webhook (Fire and Forget) - Ensure city is added to DB if missing
-      // MOVED AFTER nearestMajor calculation to provide better fallbacks
-      this.sendLocationToWebhook({
-        latitude,
-        longitude,
-        nearestCityId: nearestMajor?.city.id,
-        nearestCityName: nearestMajor?.city.name,
-        distance: nearestMajor?.distance,
-        resolvedCity: reverseGeo?.city || reverseGeo?.name || nearestMajor?.city.name || undefined,
-        resolvedCountry: reverseGeo?.country || nearestMajor?.city.country_name || undefined,
-        region: reverseGeo?.region || reverseGeo?.subregion || undefined,
-        formattedLocation: reverseGeo?.name || undefined
-      });
-
-      // 2. Try to find exact/nearest city in DB (any size, not just major)
-      let detectedCity = await this.findNearestCity(latitude, longitude);
-
-      // 3. If not found in DB, construct a temporary City object from Reverse Geo
-      // This allows the UI to show the correct location even if it's not in DB yet
-      if (!detectedCity && reverseGeo && (reverseGeo.city || reverseGeo.name)) {
-        detectedCity = {
-          id: `temp-${Date.now()}`, // Temporary ID
-          name: reverseGeo.city || reverseGeo.name || 'Unknown',
-          ascii_name: reverseGeo.city || reverseGeo.name || 'Unknown',
-          country_code: reverseGeo.isoCountryCode || 'RO',
-          country_name: reverseGeo.country || 'Romania',
-          lat: latitude,
-          lng: longitude,
-          population: 0,
-          importance: 0
-        };
-      }
-
-      // Find nearest major city using mathematical calculation
-      // Already calculated above for webhook
-      // const nearestMajor = await this.findNearestMajorCityWithDetails(latitude, longitude);
-
       const locality = reverseGeo?.city || reverseGeo?.district || reverseGeo?.name || reverseGeo?.subregion || undefined;
       const region = reverseGeo?.region || reverseGeo?.subregion || undefined;
       const country = reverseGeo?.country || nearestMajor?.city.country_name;
@@ -263,7 +219,6 @@ class CityService {
         country,
         address: addressParts.join(', '),
         nearestMajorCity: nearestMajor?.city,
-        detectedCity: detectedCity || nearestMajor?.city, // Prefer detected, fallback to major
         nearestMajorCityName: nearestMajor?.city.name,
         nearestMajorCityId: nearestMajor?.city.id,
         distanceToMajor: nearestMajor?.distance,
@@ -484,20 +439,20 @@ class CityService {
     formattedLocation?: string;
   }): void {
     // N8N webhook URL from environment variables
-    const webhookUrl = Constants.expoConfig?.extra?.n8nCityWebhook || 'https://automation.truxel.io/webhook/700ac3c5-d6aa-4e35-9181-39fe0f48d7bf';
+    const webhookUrl = Constants.expoConfig?.extra?.n8nCityWebhook || 'https://n8n.byinfant.com/webhook/700ac3c5-d6aa-4e35-9181-39fe0f48d7bf';
     
     const payload = {
       lat: locationData.latitude,
       lng: locationData.longitude,
-      nearest_city_id: locationData.nearestCityId || null,
-      nearest_city_name: locationData.nearestCityName || null,
-      distance_km: locationData.distance || null,
-      user_id: locationData.userId || null,
+      nearest_city_id: locationData.nearestCityId,
+      nearest_city_name: locationData.nearestCityName,
+      distance_km: locationData.distance,
+      user_id: locationData.userId,
       timestamp: locationData.timestamp || new Date().toISOString(),
-      resolved_city: locationData.resolvedCity || null,
-      resolved_country: locationData.resolvedCountry || null,
-      region: locationData.region || null,
-      formatted_location: locationData.formattedLocation || null,
+      resolved_city: locationData.resolvedCity,
+      resolved_country: locationData.resolvedCountry,
+      region: locationData.region,
+      formatted_location: locationData.formattedLocation,
       source: 'truxel_mobile_app'
     };
 

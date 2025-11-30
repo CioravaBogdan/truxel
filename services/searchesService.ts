@@ -2,13 +2,9 @@ import { supabase } from '@/lib/supabase';
 import { Search, Profile } from '@/types/database.types';
 import axios from 'axios';
 import Constants from 'expo-constants';
-import { cityService } from './cityService';
-import { safeReverseGeocode } from '@/utils/safeNativeModules';
-import { convertDistance } from '@/utils/distance';
-import i18n from '@/lib/i18n';
 
 // N8N webhook URL from environment variables
-const WEBHOOK_URL = Constants.expoConfig?.extra?.n8nSearchWebhook || 'https://automation.truxel.io/webhook/51f66c9a-0283-4711-b034-337c66e1bedd';
+const WEBHOOK_URL = Constants.expoConfig?.extra?.n8nSearchWebhook || 'https://n8n.byinfant.com/webhook/51f66c9a-0283-4711-b034-337c66e1bedd';
 
 interface SearchParams {
   keywords: string;
@@ -143,53 +139,6 @@ export const searchesService = {
 
     const tierFeatures = await this.getTierFeatures(profile.subscription_tier);
 
-    // Get detailed location info to match city webhook structure
-    let locationDetails = {};
-    try {
-      // 1. Get nearest major city details
-      const nearestMajor = await cityService.findNearestMajorCityWithDetails(params.latitude, params.longitude);
-      
-      // 2. Reverse geocode for resolved city/region
-      const reverseGeo = await safeReverseGeocode({ 
-        latitude: params.latitude, 
-        longitude: params.longitude 
-      });
-
-      // 3. Construct formatted location string
-      const majorCityName = nearestMajor?.city.name || 'Unknown';
-      const baseCity = reverseGeo?.city || reverseGeo?.district || reverseGeo?.name || reverseGeo?.subregion || majorCityName;
-      
-      // Use profile preference or default to km
-      const distanceUnit = (profile.preferred_distance_unit as 'km' | 'mi') || 'km';
-      
-      let distanceDescriptor = '';
-      if (nearestMajor && nearestMajor.distance >= 5) {
-        const distanceInKm = nearestMajor.distance;
-        const convertedDistance = Math.round(convertDistance(distanceInKm, distanceUnit));
-        
-        if (nearestMajor.direction && distanceInKm >= 30) {
-          const directionText = i18n.t(nearestMajor.direction);
-          distanceDescriptor = `${convertedDistance}${distanceUnit} ${directionText} ${i18n.t('directions.of')} ${majorCityName}`;
-        } else {
-          distanceDescriptor = `${convertedDistance}${distanceUnit} ${i18n.t('directions.of')} ${majorCityName}`;
-        }
-      }
-
-      const formattedLocation = distanceDescriptor ? `${baseCity} - ${distanceDescriptor}` : baseCity;
-
-      locationDetails = {
-        nearest_city_id: nearestMajor?.city.id || null,
-        nearest_city_name: majorCityName,
-        distance_km: nearestMajor?.distance || null,
-        resolved_city: baseCity,
-        resolved_country: reverseGeo?.country || nearestMajor?.city.country_name || null,
-        region: reverseGeo?.region || reverseGeo?.subregion || null,
-        formatted_location: formattedLocation
-      };
-    } catch (e) {
-      console.warn('Failed to enrich search webhook with location details:', e);
-    }
-
     const webhookPayload = {
       search_id: newSearch.id,
       user_id: userId,
@@ -201,12 +150,6 @@ export const searchesService = {
       tier: profile.subscription_tier,
       features: tierFeatures,
       credit_source: creditSource,
-      // Enhanced location data matching city webhook
-      lat: params.latitude,
-      lng: params.longitude,
-      timestamp: new Date().toISOString(),
-      source: 'truxel_mobile_app',
-      ...locationDetails
     };
 
     try {
