@@ -140,6 +140,10 @@
   },
   "leads": {
     "title": "Mano potencialūs klientai",
+    "all_results": "Visi rezultatai",
+    "latest_search": "Naujausia paieška",
+    "no_latest_results": "Nėra naujausios paieškos rezultatų",
+    "start_search_hint": "Pradėkite naują paiešką, kad matytumėte rezultatus čia",
     "no_leads": "Potencialių klientų nerasta",
     "search_results": "Paieškos rezultatai",
     "hot_leads": "Karšti potencialūs klientai",
@@ -188,7 +192,11 @@
     "lead_deleted": "Potencialus klientas sėkmingai ištrintas",
     "share_contact": "Bendrinti kontaktą",
     "contact_shared": "Kontakto kortelė sėkmingai bendrinama",
-    "share_error": "Bendrinimo klaida"
+    "share_error": "Bendrinimo klaida",
+    "collected_contacts": "Kontaktai iš interneto",
+    "phone_from_web": "Telefonas (žiniatinklis)",
+    "email_from_web": "El. paštas (žiniatinklis)",
+    "followers": "Sekėjai"
   },
   "subscription": {
     "title": "Prenumerata",
@@ -326,6 +334,8 @@
     "searches": "Paieškos",
     "buy_now": "Pirkti dabar",
     "one_time_purchase": "Vienkartinis pirkimas. Niekada nesibaigia.",
+    "no_plans_available": "Šiuo metu nėra galimų prenumeratos planų.",
+    "android_debug_hint": "(Android: patikrinkite Play Store ryšį arba testuotojo paskyros būseną)",
     "failed_load_options": "Nepavyko įkelti kainodaros parinkčių",
     "login_to_continue": "Jei norite tęsti, prisijunkite",
     "purchase_failed_message": "Pirkimas nepavyko. Bandykite dar kartą.",

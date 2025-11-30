@@ -140,6 +140,10 @@
   },
   "leads": {
     "title": "Mis clientes potenciales",
+    "all_results": "Todos los resultados",
+    "latest_search": "Búsqueda más reciente",
+    "no_latest_results": "Sin resultados de la última búsqueda",
+    "start_search_hint": "Inicia una nueva búsqueda para ver resultados aquí",
     "no_leads": "No se encontraron clientes potenciales",
     "search_results": "Resultados de búsqueda",
     "hot_leads": "Clientes calientes",
@@ -188,7 +192,11 @@
     "lead_deleted": "Cliente potencial eliminado exitosamente",
     "share_contact": "Compartir Contacto",
     "contact_shared": "Tarjeta de contacto compartida con éxito",
-    "share_error": "Error al compartir"
+    "share_error": "Error al compartir",
+    "collected_contacts": "Contactos desde la web",
+    "phone_from_web": "Teléfono (Web)",
+    "email_from_web": "Correo (Web)",
+    "followers": "Seguidores"
   },
   "subscription": {
     "title": "Suscripción",
@@ -326,6 +334,8 @@
     "searches": "Búsquedas",
     "buy_now": "Comprar ahora",
     "one_time_purchase": "Compra única. Nunca caduca.",
+    "no_plans_available": "No hay planes de suscripción disponibles por el momento.",
+    "android_debug_hint": "(Android: Revisa la conexión con Play Store o el estado de la cuenta de tester)",
     "failed_load_options": "No se pudieron cargar las opciones de precios",
     "login_to_continue": "Por favor inicia sesión para continuar",
     "purchase_failed_message": "Compra fallida. Por favor inténtalo de nuevo.",
@@ -341,6 +351,13 @@
     "special_discount": "descuento especial",
     "intro_offer": "por {{cycles}} {{period}}s",
     "apply": "Aplicar",
+    "code_applied": "¡Código aplicado! 🎉",
+    "special_offer_unlocked": "Oferta especial desbloqueada: {{description}}",
+    "invalid_code": "Código promocional no válido o vencido",
+    "failed_redeem": "No se pudo canjear el código",
+    "remove_offer": "Eliminar oferta aplicada",
+    "offer_removed": "Oferta eliminada",
+    "showing_standard": "Mostrando precios estándar",
     "footer_note": "Todos los planes incluyen información básica de la empresa, contactos y ubicación. Cancela en cualquier momento."
   },
   "errors": {

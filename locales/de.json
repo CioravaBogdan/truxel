@@ -140,6 +140,10 @@
   },
   "leads": {
     "title": "Meine Leads",
+    "all_results": "Alle Ergebnisse",
+    "latest_search": "Neueste Suche",
+    "no_latest_results": "Keine Ergebnisse aus der neuesten Suche",
+    "start_search_hint": "Starten Sie eine neue Suche, um hier Ergebnisse zu sehen",
     "no_leads": "Sie haben noch keine Leads",
     "search_results": "Suchergebnisse",
     "hot_leads": "Heiße Leads",
@@ -188,7 +192,11 @@
     "lead_deleted": "Lead erfolgreich gelöscht",
     "share_contact": "Kontakt teilen",
     "contact_shared": "Kontaktkarte erfolgreich geteilt",
-    "share_error": "Fehler teilen"
+    "share_error": "Fehler teilen",
+    "collected_contacts": "Kontakte aus dem Web",
+    "phone_from_web": "Telefon (Web)",
+    "email_from_web": "E-Mail (Web)",
+    "followers": "Follower"
   },
   "subscription": {
     "title": "Abonnement",

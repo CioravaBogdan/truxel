@@ -7,6 +7,7 @@ import {
   ActivityIndicator,
   TouchableOpacity,
 } from 'react-native';
+import { useRouter, useFocusEffect } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocation } from '@/hooks/useLocation';
@@ -17,7 +18,9 @@ import { Card } from '@/components/Card';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
 import { useAuthStore } from '@/store/authStore';
+import { useLeadsStore } from '@/store/leadsStore';
 import { searchesService } from '@/services/searchesService';
+import { cityService } from '@/services/cityService';
 import { Search as SearchType } from '@/types/database.types';
 import Toast from 'react-native-toast-message';
 import { MapPin, Crosshair, Clock, CheckCircle, AlertCircle } from 'lucide-react-native';
@@ -41,6 +44,7 @@ try {
 export default function SearchScreen() {
   const { t } = useTranslation();
   const { theme } = useTheme();
+  const router = useRouter();
   const { user, profile } = useAuthStore();
   const [keywords, setKeywords] = useState('');
   const [keywordsList, setKeywordsList] = useState<string[]>([]);
@@ -52,6 +56,18 @@ export default function SearchScreen() {
   const [activeSearch, setActiveSearch] = useState<SearchType | null>(null);
   const [elapsedTime, setElapsedTime] = useState(0);
   const [isAutoLocationFetched, setIsAutoLocationFetched] = useState(false);
+
+  // Clear completed search when leaving the screen
+  useFocusEffect(
+    useCallback(() => {
+      return () => {
+        // When screen loses focus, if search is completed, clear it
+        if (activeSearch?.status === 'completed') {
+          setActiveSearch(null);
+        }
+      };
+    }, [activeSearch])
+  );
 
   useEffect(() => {
     if (user) {
@@ -366,6 +382,32 @@ export default function SearchScreen() {
     }
   };
 
+  const handleCheckResults = async () => {
+    if (!activeSearch) return;
+
+    try {
+      // Set tab to Latest Search
+      useLeadsStore.getState().setSelectedTab('latest');
+      
+      // Set the specific search ID to filter by
+      useLeadsStore.getState().setSelectedSearchId(activeSearch.id);
+
+      // Clear location filters to ensure we see all results from this search
+      useLeadsStore.getState().setSelectedCountry(null);
+      useLeadsStore.getState().setSelectedCity(null);
+    } catch (error) {
+      console.error('Error setting search filters:', error);
+      // Fallback
+      useLeadsStore.getState().setSelectedTab('latest');
+    }
+
+    // Clear the active search card so it disappears
+    setActiveSearch(null);
+
+    // Navigate to Leads tab
+    router.push('/(tabs)/leads');
+  };
+
   const formatTime = (seconds: number): string => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
@@ -442,11 +484,13 @@ export default function SearchScreen() {
             )}
 
             {activeSearch.status === 'completed' && (
-              <View style={[styles.completedInfo, { backgroundColor: theme.colors.success + '20' }]}>
-                <CheckCircle size={16} color={theme.colors.success} />
-                <Text style={[styles.completedText, { color: theme.colors.success }]}>
-                  {t('search.check_leads_tab')}
-                </Text>
+              <View style={{ marginTop: 16 }}>
+                <Button
+                  title={t('search.check_leads_tab')}
+                  onPress={handleCheckResults}
+                  variant="secondary"
+                  size="medium"
+                />
               </View>
             )}
 

@@ -140,6 +140,10 @@
   },
   "leads": {
     "title": "My Leads",
+    "all_results": "All Results",
+    "latest_search": "Latest Search",
+    "no_latest_results": "No results from latest search",
+    "start_search_hint": "Start a new search to see results here",
     "no_leads": "No leads found",
     "search_results": "Search Results",
     "hot_leads": "Hot Leads",

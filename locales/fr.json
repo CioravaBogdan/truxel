@@ -140,6 +140,10 @@
   },
   "leads": {
     "title": "Mes prospects",
+    "all_results": "Tous les résultats",
+    "latest_search": "Dernière recherche",
+    "no_latest_results": "Aucun résultat pour la dernière recherche",
+    "start_search_hint": "Commencez une nouvelle recherche pour voir les résultats ici",
     "no_leads": "Vous n'avez pas encore de prospects",
     "search_results": "Résultats de recherche",
     "hot_leads": "Prospects chauds",
@@ -188,7 +192,11 @@
     "lead_deleted": "Prospect supprimé avec succès",
     "share_contact": "Partager Contact",
     "contact_shared": "Carte de contact partagée avec succès",
-    "share_error": "Partager l'erreur"
+    "share_error": "Partager l'erreur",
+    "collected_contacts": "Contacts depuis le Web",
+    "phone_from_web": "Téléphone (Web)",
+    "email_from_web": "E-mail (Web)",
+    "followers": "Abonnés"
   },
   "subscription": {
     "title": "Abonnement",
@@ -326,6 +334,8 @@
     "searches": "Recherches",
     "buy_now": "Acheter maintenant",
     "one_time_purchase": "Achat unique. N'expire jamais.",
+    "no_plans_available": "Aucune offre d'abonnement disponible pour le moment.",
+    "android_debug_hint": "(Android : vérifiez la connexion Play Store ou le statut du compte testeur)",
     "failed_load_options": "Échec du chargement des options de tarification",
     "login_to_continue": "Veuillez vous connecter pour continuer",
     "purchase_failed_message": "L'achat a échoué. Veuillez réessayer.",

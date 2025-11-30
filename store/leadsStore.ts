@@ -1,20 +1,24 @@
 import { create } from 'zustand';
 import { Lead, LeadStatus } from '@/types/database.types';
-import type { CommunityPost } from '@/types/community.types';
+import type { CommunityPost, Country, City } from '@/types/community.types';
 
 interface LeadsState {
   // Tab state
-  selectedTab: 'search' | 'hotleads' | 'mybook';
+  selectedTab: 'all' | 'latest' | 'mybook';
   
-  // Search Results tab (N8N leads)
+  // All Search Results tab
   leads: Lead[];
   
-  // Hot Leads tab (saved community posts)
-  savedPosts: CommunityPost[];
-  hotLeadsFilter: 'all' | 'drivers' | 'forwarding';
+  // Latest Search tab
+  latestSearchLeads: Lead[];
+  selectedSearchId: string | null;
   
   // My Book tab (converted leads)
   convertedLeads: Lead[];
+  
+  // Legacy Hot Leads (kept for compatibility if needed, but unused in UI)
+  savedPosts: CommunityPost[];
+  hotLeadsFilter: 'all' | 'drivers' | 'forwarding';
   
   // Lead detail modal (cross-tab communication)
   selectedLeadId: string | null;
@@ -26,13 +30,21 @@ interface LeadsState {
   sortBy: 'distance' | 'name' | 'date';
   searchQuery: string;
   
-  // Search Results actions
+  // Location Filters
+  selectedCountry: Country | null;
+  selectedCity: City | null;
+  
+  // Actions
   setLeads: (leads: Lead[]) => void;
+  setLatestSearchLeads: (leads: Lead[]) => void;
+  setSelectedSearchId: (id: string | null) => void;
+  loadLatestSearchLeads: (userId: string, searchId?: string | null) => Promise<void>;
+  
   addLead: (lead: Lead) => void;
   updateLead: (id: string, updates: Partial<Lead>) => void;
   deleteLead: (id: string) => void;
   
-  // Hot Leads actions
+  // Hot Leads actions (Legacy)
   setSavedPosts: (posts: CommunityPost[]) => void;
   setHotLeadsFilter: (filter: 'all' | 'drivers' | 'forwarding') => void;
   loadSavedPosts: (userId: string) => Promise<void>;
@@ -44,7 +56,7 @@ interface LeadsState {
   promoteLeadToMyBook: (userLeadId: string, userId: string) => Promise<void>;
   
   // Tab navigation
-  setSelectedTab: (tab: 'search' | 'hotleads' | 'mybook') => void;
+  setSelectedTab: (tab: 'all' | 'latest' | 'mybook') => void;
   
   // Lead detail modal actions
   setSelectedLeadId: (id: string | null) => void;
@@ -55,13 +67,20 @@ interface LeadsState {
   setFilterContactType: (type: 'all' | 'email' | 'phone' | 'whatsapp' | 'linkedin') => void;
   setSortBy: (sortBy: 'distance' | 'name' | 'date') => void;
   setSearchQuery: (query: string) => void;
+  
+  // Location Filter Actions
+  setSelectedCountry: (country: Country | null) => void;
+  setSelectedCity: (city: City | null) => void;
+  
   reset: () => void;
 }
 
 export const useLeadsStore = create<LeadsState>((set, get) => ({
   // Initial state
-  selectedTab: 'search', // Default to Search Results tab
+  selectedTab: 'all',
   leads: [],
+  latestSearchLeads: [],
+  selectedSearchId: null,
   savedPosts: [],
   hotLeadsFilter: 'all',
   convertedLeads: [],
@@ -71,9 +90,42 @@ export const useLeadsStore = create<LeadsState>((set, get) => ({
   filterContactType: 'all',
   sortBy: 'date',
   searchQuery: '',
+  selectedCountry: null,
+  selectedCity: null,
 
-  // Search Results actions
+  // Actions
   setLeads: (leads) => set({ leads }),
+  setLatestSearchLeads: (leads) => set({ latestSearchLeads: leads }),
+  setSelectedSearchId: (id) => set({ selectedSearchId: id }),
+
+  loadLatestSearchLeads: async (userId: string, searchId?: string | null) => {
+    set({ isLoading: true });
+    try {
+      const { leadsService } = await import('@/services/leadsService');
+      const { searchesService } = await import('@/services/searchesService');
+      
+      let targetSearchId = searchId;
+
+      // If no searchId provided, find the most recent one
+      if (!targetSearchId) {
+        const searches = await searchesService.getSearches(userId);
+        if (searches && searches.length > 0) {
+          targetSearchId = searches[0].id;
+          set({ selectedSearchId: targetSearchId });
+        }
+      }
+
+      if (targetSearchId) {
+        const leads = await leadsService.getLeadsBySearch(targetSearchId);
+        set({ latestSearchLeads: leads, isLoading: false });
+      } else {
+        set({ latestSearchLeads: [], isLoading: false });
+      }
+    } catch (error) {
+      console.error('Error loading latest search leads:', error);
+      set({ isLoading: false });
+    }
+  },
 
   addLead: (lead) => set((state) => ({
     leads: [lead, ...state.leads],
@@ -83,10 +135,14 @@ export const useLeadsStore = create<LeadsState>((set, get) => ({
     leads: state.leads.map((lead) =>
       lead.id === id ? { ...lead, ...updates } : lead
     ),
+    latestSearchLeads: state.latestSearchLeads.map((lead) =>
+      lead.id === id ? { ...lead, ...updates } : lead
+    ),
   })),
 
   deleteLead: (id) => set((state) => ({
     leads: state.leads.filter((lead) => lead.id !== id),
+    latestSearchLeads: state.latestSearchLeads.filter((lead) => lead.id !== id),
   })),
 
   // Hot Leads actions
@@ -159,7 +215,7 @@ export const useLeadsStore = create<LeadsState>((set, get) => ({
   },
 
   // Tab navigation
-  setSelectedTab: (tab: 'search' | 'hotleads' | 'mybook') => {
+  setSelectedTab: (tab: 'all' | 'latest' | 'mybook') => {
     set({ selectedTab: tab });
   },
 
@@ -177,9 +233,15 @@ export const useLeadsStore = create<LeadsState>((set, get) => ({
 
   setSearchQuery: (searchQuery) => set({ searchQuery }),
 
+  // Location Filter Actions
+  setSelectedCountry: (country) => set({ selectedCountry: country }),
+  setSelectedCity: (city) => set({ selectedCity: city }),
+
   reset: () => set({
-    selectedTab: 'search',
+    selectedTab: 'all',
     leads: [],
+    latestSearchLeads: [],
+    selectedSearchId: null,
     savedPosts: [],
     hotLeadsFilter: 'all',
     convertedLeads: [],
@@ -189,5 +251,7 @@ export const useLeadsStore = create<LeadsState>((set, get) => ({
     filterContactType: 'all',
     sortBy: 'date',
     searchQuery: '',
+    selectedCountry: null,
+    selectedCity: null,
   }),
 }));

@@ -43,8 +43,6 @@ import {
   Search as SearchIcon,
   Zap,
   BookMarked,
-  Users,
-  Truck,
   Globe,
   Share2,
 } from 'lucide-react-native';
@@ -83,14 +81,17 @@ export default function LeadsScreen() {
     setSelectedTab,
     leads, 
     setLeads, 
-    savedPosts,
-    hotLeadsFilter,
-    setHotLeadsFilter,
+    latestSearchLeads,
+    selectedSearchId,
     convertedLeads,
     searchQuery, 
     setSearchQuery,
     selectedLeadId,
     setSelectedLeadId,
+    selectedCountry,
+    setSelectedCountry,
+    selectedCity,
+    setSelectedCity,
   } = useLeadsStore();
   const [isRefreshing, setIsRefreshing] = useState(false);
   
@@ -100,14 +101,24 @@ export default function LeadsScreen() {
   const [sourceTab, setSourceTab] = useState<string | null>(null); // Track which tab opened the modal
 
   // Filter state (Country + City - identical to Community Feed)
-  const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
-  const [selectedCity, setSelectedCity] = useState<City | null>(null);
   const [isCountryPickerVisible, setCountryPickerVisible] = useState(false);
   const [isCityPickerVisible, setCityPickerVisible] = useState(false);
   const [isInitializingFilters, setIsInitializingFilters] = useState(true);
 
   // Initialize filters with GPS location (on mount)
   const initializeFilters = useCallback(async () => {
+    // Don't auto-init filters on Latest Search tab
+    if (selectedTab === 'latest') {
+      setIsInitializingFilters(false);
+      return;
+    }
+
+    // Only initialize if filters are not already set (e.g. from Search tab navigation)
+    if (selectedCountry || selectedCity) {
+      setIsInitializingFilters(false);
+      return;
+    }
+
     try {
       const locationInfo = await cityService.getCurrentLocationCity();
       
@@ -125,7 +136,7 @@ export default function LeadsScreen() {
     } finally {
       setIsInitializingFilters(false);
     }
-  }, []);
+  }, [selectedCountry, selectedCity, setSelectedCountry, setSelectedCity, selectedTab]);
 
   useEffect(() => {
     let isMounted = true;
@@ -157,14 +168,19 @@ export default function LeadsScreen() {
   useEffect(() => {
     if (!user) return;
     
-    if (selectedTab === 'search') {
+    if (selectedTab === 'all') {
       void loadLeads();
-    } else if (selectedTab === 'hotleads') {
-      void useLeadsStore.getState().loadSavedPosts(user.id);
+    } else if (selectedTab === 'latest') {
+      // Clear filters when switching to Latest Search to ensure all results are visible
+      // (especially important for radius searches where cities differ)
+      setSelectedCity(null);
+      setSelectedCountry(null);
+      
+      void useLeadsStore.getState().loadLatestSearchLeads(user.id, selectedSearchId);
     } else if (selectedTab === 'mybook') {
       void useLeadsStore.getState().loadConvertedLeads(user.id);
     }
-  }, [selectedTab, user, loadLeads]);
+  }, [selectedTab, user, loadLeads, selectedSearchId, setSelectedCity, setSelectedCountry]);
 
   // Watch for selectedLeadId changes (navigation from Home screen)
   useEffect(() => {
@@ -189,10 +205,10 @@ export default function LeadsScreen() {
     if (!user) return;
     setIsRefreshing(true);
     
-    if (selectedTab === 'search') {
+    if (selectedTab === 'all') {
       await loadLeads();
-    } else if (selectedTab === 'hotleads') {
-      await useLeadsStore.getState().loadSavedPosts(user.id);
+    } else if (selectedTab === 'latest') {
+      await useLeadsStore.getState().loadLatestSearchLeads(user.id, selectedSearchId);
     } else if (selectedTab === 'mybook') {
       await useLeadsStore.getState().loadConvertedLeads(user.id);
     }
@@ -219,21 +235,21 @@ export default function LeadsScreen() {
   const handleCountrySelect = useCallback((country: Country) => {
     setSelectedCountry(country);
     setCountryPickerVisible(false);
-  }, []);
+  }, [setSelectedCountry]);
 
   const handleCitySelect = useCallback((city: City) => {
     setSelectedCity(city);
     setCityPickerVisible(false);
-  }, []);
+  }, [setSelectedCity]);
 
   const handleClearCountry = useCallback(() => {
     setSelectedCountry(null);
     setSelectedCity(null); // Clear city when country is cleared
-  }, []);
+  }, [setSelectedCountry, setSelectedCity]);
 
   const handleClearCity = useCallback(() => {
     setSelectedCity(null);
-  }, []);
+  }, [setSelectedCity]);
 
   // Delete lead from My Book (unsave converted post)
   const handleDeleteFromMyBook = async (lead: Lead) => {
@@ -498,7 +514,7 @@ export default function LeadsScreen() {
 
   // Filter logic based on selected tab
   const getFilteredData = () => {
-    if (selectedTab === 'search') {
+    if (selectedTab === 'all') {
       let filtered = leads;
       
       // Apply Country filter - accept both ISO code and full name (flexible for different sources)
@@ -522,34 +538,28 @@ export default function LeadsScreen() {
       }
       
       return filtered;
-    } else if (selectedTab === 'hotleads') {
-      let filtered = savedPosts;
+    } else if (selectedTab === 'latest') {
+      // For Latest Search, we show everything returned by the search ID
+      // But we still allow local filtering if user wants to narrow it down
+      let filtered = latestSearchLeads;
       
-      // Apply Country filter - compare with full country name
+      // Apply Country filter
       if (selectedCountry) {
-        filtered = filtered.filter(p => p.origin_country === selectedCountry.name);
+        filtered = filtered.filter(lead => 
+          lead.country === selectedCountry.code || lead.country === selectedCountry.name
+        );
       }
       
-      // Apply City filter - extract clean city name from formatted text
+      // Apply City filter
       if (selectedCity) {
-        filtered = filtered.filter(p => {
-          const cleanCity = p.origin_city?.split(' - ')[0];
-          return cleanCity === selectedCity.name;
-        });
-      }
-      
-      // Apply post type filter
-      if (hotLeadsFilter === 'drivers') {
-        filtered = filtered.filter(p => p.post_type === 'DRIVER_AVAILABLE');
-      } else if (hotLeadsFilter === 'forwarding') {
-        filtered = filtered.filter(p => p.post_type === 'LOAD_AVAILABLE');
+        filtered = filtered.filter(lead => lead.city === selectedCity.name);
       }
       
       // Apply search query
       if (searchQuery) {
-        filtered = filtered.filter(p =>
-          p.origin_city?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          p.profile?.company_name?.toLowerCase().includes(searchQuery.toLowerCase())
+        filtered = filtered.filter((lead) =>
+          lead.company_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          lead.city?.toLowerCase().includes(searchQuery.toLowerCase())
         );
       }
       
@@ -588,7 +598,6 @@ export default function LeadsScreen() {
     }
   };
 
-  // Render functions for different card types
   const renderLeadCard = ({ item: lead }: { item: Lead }) => {
     // Check if this lead is in My Book
     const isMyBookLead = selectedTab === 'mybook';
@@ -749,21 +758,6 @@ export default function LeadsScreen() {
     );
   };
 
-  const renderHotLeadCard = ({ item: post }: { item: CommunityPost }) => (
-    <View style={styles.hotLeadCardWrapper}>
-      <PostCard 
-        post={post} 
-        onUnsave={() => {
-          // Reload Hot Leads after unsaving
-          if (user) {
-            void useLeadsStore.getState().loadSavedPosts(user.id);
-          }
-        }}
-        onAddToMyBook={() => handleAddToMyBook(post)}
-      />
-    </View>
-  );
-
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]} edges={['top']}>
       <View style={styles.webContainer}>
@@ -776,40 +770,40 @@ export default function LeadsScreen() {
 
       {/* Tabs Container */}
       <View style={[styles.tabsContainer, { backgroundColor: theme.colors.card, shadowColor: theme.shadows.small.shadowColor }]}>
-        {/* Top row: Search Results + Hot Leads */}
+        {/* Top row: All Results + Latest Search */}
         <View style={styles.tabsRow}>
           <TouchableOpacity
             style={[
               styles.tabHalf, 
-              { backgroundColor: selectedTab === 'search' ? theme.colors.secondary : theme.colors.secondary + '15' },
-              selectedTab === 'search' && styles.activeTab
+              { backgroundColor: selectedTab === 'all' ? theme.colors.secondary : theme.colors.secondary + '15' },
+              selectedTab === 'all' && styles.activeTab
             ]}
-            onPress={() => setSelectedTab('search')}
+            onPress={() => setSelectedTab('all')}
           >
-            <SearchIcon size={18} color={selectedTab === 'search' ? 'white' : theme.colors.secondary} />
+            <SearchIcon size={18} color={selectedTab === 'all' ? 'white' : theme.colors.secondary} />
             <Text style={[
               styles.tabText,
-              { color: selectedTab === 'search' ? 'white' : theme.colors.secondary },
-              selectedTab === 'search' && styles.activeTabText
+              { color: selectedTab === 'all' ? 'white' : theme.colors.secondary },
+              selectedTab === 'all' && styles.activeTabText
             ]}>
-              {t('leads.search_results').toUpperCase()}
+              {t('leads.all_results').toUpperCase()}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[
               styles.tabHalf, 
-              { backgroundColor: selectedTab === 'hotleads' ? theme.colors.warning : theme.colors.warning + '15' },
-              selectedTab === 'hotleads' && styles.activeTab
+              { backgroundColor: selectedTab === 'latest' ? theme.colors.warning : theme.colors.warning + '15' },
+              selectedTab === 'latest' && styles.activeTab
             ]}
-            onPress={() => setSelectedTab('hotleads')}
+            onPress={() => setSelectedTab('latest')}
           >
-            <Zap size={18} color={selectedTab === 'hotleads' ? 'white' : theme.colors.warning} />
+            <Zap size={18} color={selectedTab === 'latest' ? 'white' : theme.colors.warning} />
             <Text style={[
               styles.tabText,
-              { color: selectedTab === 'hotleads' ? 'white' : theme.colors.warning },
-              selectedTab === 'hotleads' && styles.activeTabText
+              { color: selectedTab === 'latest' ? 'white' : theme.colors.warning },
+              selectedTab === 'latest' && styles.activeTabText
             ]}>
-              {t('leads.hot_leads').toUpperCase()}
+              {t('leads.latest_search').toUpperCase()}
             </Text>
           </TouchableOpacity>
         </View>
@@ -904,62 +898,7 @@ export default function LeadsScreen() {
         )}
       </View>
 
-      {/* Hot Leads Filter Buttons */}
-      {selectedTab === 'hotleads' && (
-        <View style={styles.filterButtons}>
-          <TouchableOpacity
-            style={[
-              styles.filterButton,
-              { backgroundColor: theme.colors.card, borderColor: theme.colors.border },
-              hotLeadsFilter === 'all' && { backgroundColor: theme.colors.secondary, borderColor: theme.colors.secondary }
-            ]}
-            onPress={() => setHotLeadsFilter('all')}
-          >
-            <Text style={[
-              styles.filterButtonText,
-              { color: theme.colors.textSecondary },
-              hotLeadsFilter === 'all' && { color: 'white' }
-            ]}>
-              {t('leads.filter_all')}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              styles.filterButton,
-              { backgroundColor: theme.colors.card, borderColor: theme.colors.border },
-              hotLeadsFilter === 'drivers' && { backgroundColor: theme.colors.secondary, borderColor: theme.colors.secondary }
-            ]}
-            onPress={() => setHotLeadsFilter('drivers')}
-          >
-            <Users size={16} color={hotLeadsFilter === 'drivers' ? 'white' : theme.colors.textSecondary} />
-            <Text style={[
-              styles.filterButtonText,
-              { color: theme.colors.textSecondary },
-              hotLeadsFilter === 'drivers' && { color: 'white' }
-            ]}>
-              {t('leads.filter_drivers')}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              styles.filterButton,
-              { backgroundColor: theme.colors.card, borderColor: theme.colors.border },
-              hotLeadsFilter === 'forwarding' && { backgroundColor: theme.colors.secondary, borderColor: theme.colors.secondary }
-            ]}
-            onPress={() => setHotLeadsFilter('forwarding')}
-          >
-            <Truck size={16} color={hotLeadsFilter === 'forwarding' ? 'white' : theme.colors.textSecondary} />
-            <Text style={[
-              styles.filterButtonText,
-              { color: theme.colors.textSecondary },
-              hotLeadsFilter === 'forwarding' && { color: 'white' }
-            ]}>
-              {t('leads.filter_forwarding')}
-            </Text>
-          </TouchableOpacity>
-        </View>
-      )}
-
+      {/* Hot Leads Filter Buttons - REMOVED */}
       {/* Search Input */}
       <View style={styles.searchContainer}>
         <Input
@@ -972,7 +911,7 @@ export default function LeadsScreen() {
       </View>
 
       {/* Conditional FlatList based on selectedTab */}
-      {selectedTab === 'search' && (
+      {selectedTab === 'all' && (
         <FlatList
           data={getFilteredData() as Lead[]}
           renderItem={renderLeadCard}
@@ -990,10 +929,10 @@ export default function LeadsScreen() {
         />
       )}
 
-      {selectedTab === 'hotleads' && (
+      {selectedTab === 'latest' && (
         <FlatList
-          data={getFilteredData() as CommunityPost[]}
-          renderItem={renderHotLeadCard}
+          data={getFilteredData() as Lead[]}
+          renderItem={renderLeadCard}
           keyExtractor={(item) => item.id}
           contentContainerStyle={styles.listContent}
           refreshControl={
@@ -1002,8 +941,8 @@ export default function LeadsScreen() {
           ListEmptyComponent={
             <View style={styles.emptyContainer}>
               <Zap size={48} color={theme.colors.disabled} />
-              <Text style={[styles.emptyText, { color: theme.colors.textSecondary }]}>{t('leads.no_hot_leads')}</Text>
-              <Text style={[styles.emptyHint, { color: theme.colors.disabled }]}>{t('leads.save_posts_hint')}</Text>
+              <Text style={[styles.emptyText, { color: theme.colors.textSecondary }]}>{t('leads.no_latest_results')}</Text>
+              <Text style={[styles.emptyHint, { color: theme.colors.disabled }]}>{t('leads.start_search_hint')}</Text>
             </View>
           }
         />

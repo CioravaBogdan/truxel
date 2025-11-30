@@ -140,6 +140,10 @@
   },
   "leads": {
     "title": "I miei lead",
+    "all_results": "Tutti i risultati",
+    "latest_search": "Ultima ricerca",
+    "no_latest_results": "Nessun risultato dall'ultima ricerca",
+    "start_search_hint": "Avvia una nuova ricerca per vedere qui i risultati",
     "no_leads": "Non hai ancora lead",
     "search_results": "Risultati di ricerca",
     "hot_leads": "Lead caldi",
@@ -188,7 +192,11 @@
     "lead_deleted": "Lead eliminato correttamente",
     "share_contact": "Condividi contatto",
     "contact_shared": "Scheda contatto condivisa correttamente",
-    "share_error": "Errore di condivisione"
+    "share_error": "Errore di condivisione",
+    "collected_contacts": "Contatti dal web",
+    "phone_from_web": "Telefono (Web)",
+    "email_from_web": "E-mail (Web)",
+    "followers": "Follower"
   },
   "subscription": {
     "title": "Abbonamento",
@@ -326,6 +334,8 @@
     "searches": "Ricerche",
     "buy_now": "Acquista ora",
     "one_time_purchase": "Acquisto una tantum. Non scade mai.",
+    "no_plans_available": "Nessun piano di abbonamento disponibile al momento.",
+    "android_debug_hint": "(Android: controlla la connessione al Play Store o lo stato dell'account tester)",
     "failed_load_options": "Impossibile caricare le opzioni di prezzo",
     "login_to_continue": "Effettua il login per continuare",
     "purchase_failed_message": "Acquisto fallito. Per favore riprova.",

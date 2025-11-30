@@ -140,6 +140,10 @@
   },
   "leads": {
     "title": "Moje leady",
+    "all_results": "Wszystkie wyniki",
+    "latest_search": "Ostatnie wyszukiwanie",
+    "no_latest_results": "Brak wyników z ostatniego wyszukiwania",
+    "start_search_hint": "Rozpocznij nowe wyszukiwanie, aby zobaczyć tutaj wyniki",
     "no_leads": "Nie znaleziono leadów",
     "search_results": "Wyniki wyszukiwania",
     "hot_leads": "Gorące leady",
@@ -188,7 +192,11 @@
     "lead_deleted": "Lead usunięty pomyślnie",
     "share_contact": "Udostępnij kontakt",
     "contact_shared": "Pomyślnie udostępniono wizytówkę",
-    "share_error": "Udostępnij błąd"
+    "share_error": "Udostępnij błąd",
+    "collected_contacts": "Kontakty z internetu",
+    "phone_from_web": "Telefon (internet)",
+    "email_from_web": "Email (internet)",
+    "followers": "Obserwujący"
   },
   "subscription": {
     "title": "Subskrypcja",
@@ -326,6 +334,8 @@
     "searches": "Wyszukiwania",
     "buy_now": "Kup teraz",
     "one_time_purchase": "Jednorazowy zakup. Nigdy nie wygasa.",
+    "no_plans_available": "Brak dostępnych planów subskrypcji w tej chwili.",
+    "android_debug_hint": "(Android: sprawdź połączenie z Play Store lub status konta testera)",
     "failed_load_options": "Nie udało się wczytać opcji cenowych",
     "login_to_continue": "Zaloguj się, aby kontynuować",
     "purchase_failed_message": "Zakup nie powiódł się. Spróbuj ponownie.",
@@ -338,6 +348,7 @@
     "promo_influencer_deal": "Oferta Influencera",
     "promo_success_title": "Kod zastosowany!",
     "promo_success_message": "Odblokowałeś {{percent}}% zniżki na subskrypcję.",
+    "first_month_discount_influencer": "Pierwszy miesiąc ze zniżką dzięki {{name}}",
     "special_discount": "Specjalna zniżka",
     "apply": "Zastosuj",
     "code_applied": "Kod zastosowany! 🎉",
