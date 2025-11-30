@@ -27,6 +27,7 @@ import {
   Package,
   Save,
   Edit3,
+  Users,
 } from 'lucide-react-native';
 import { Lead } from '@/types/database.types';
 import { useAuthStore } from '@/store/authStore';
@@ -45,6 +46,28 @@ interface LeadDetailModalProps {
   onAddToMyBook?: (lead: Lead) => void;
   onNotesUpdated?: () => void; // Callback to reload leads after saving notes
 }
+
+// Helper to parse contact lists that might be JSON arrays or comma-separated strings
+const parseContactList = (input?: string): string[] => {
+  if (!input) return [];
+  
+  try {
+    // Try parsing as JSON first (e.g. ["+123", "+456"])
+    const parsed = JSON.parse(input);
+    if (Array.isArray(parsed)) {
+      return parsed.map(item => String(item).trim()).filter(Boolean);
+    }
+  } catch (e) {
+    // Not valid JSON, fall back to split
+  }
+  
+  // Fallback: split by comma, newline, or semicolon
+  // Also clean up any leftover JSON artifacts like brackets or quotes if the string was malformed
+  return input
+    .split(/[,\n;]/)
+    .map(item => item.replace(/[\[\]"]/g, '').trim()) // Remove [ ] " chars
+    .filter(Boolean);
+};
 
 export default function LeadDetailModal({ lead, visible, onClose, onAddToMyBook, onNotesUpdated }: LeadDetailModalProps) {
   const { t } = useTranslation();
@@ -77,6 +100,13 @@ export default function LeadDetailModal({ lead, visible, onClose, onAddToMyBook,
 
   // Collect all emails
   const emails = [lead.email].filter(Boolean);
+
+  // Parse additional contacts (collected from web)
+  const additionalPhones = parseContactList(lead.phones)
+    .filter(p => p !== lead.phone && p !== lead.whatsapp);
+    
+  const additionalEmails = parseContactList(lead.emails)
+    .filter(e => e !== lead.email);
 
   // Social media links
   const socialLinks = [
@@ -348,10 +378,78 @@ export default function LeadDetailModal({ lead, visible, onClose, onAddToMyBook,
             </View>
           )}
 
+          {/* Additional Contacts Section (Collected from Web) */}
+          {(additionalPhones.length > 0 || additionalEmails.length > 0) && (
+            <View style={[styles.section, { backgroundColor: theme.colors.surface }]}>
+              <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>🌐 {t('leads.collected_contacts', 'Contacts from Web')}</Text>
+              
+              {/* Additional Phones */}
+              {additionalPhones.map((phone, idx) => (
+                <View key={`add-phone-${idx}`} style={[styles.contactItem, { borderBottomColor: theme.colors.border }]}>
+                  <View style={styles.contactInfo}>
+                    <Phone size={18} color={theme.colors.textSecondary} />
+                    <View style={styles.contactTextContainer}>
+                      <Text style={[styles.contactLabel, { color: theme.colors.textSecondary }]}>
+                        {t('leads.phone_from_web', 'Phone (Web)')}
+                      </Text>
+                      <Text style={[styles.contactValue, { color: theme.colors.text }]}>{phone}</Text>
+                    </View>
+                  </View>
+                  
+                  <View style={styles.contactActions}>
+                    <TouchableOpacity
+                      style={[styles.iconButton, { backgroundColor: '#10B98110' }]}
+                      onPress={() => handleWhatsApp(phone)}
+                    >
+                      <MessageCircle size={18} color="#10B981" />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={[styles.iconButton, { backgroundColor: theme.colors.primary + '10' }]}
+                      onPress={() => handleCall(phone)}
+                    >
+                      <Phone size={18} color={theme.colors.primary} />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              ))}
+
+              {/* Additional Emails */}
+              {additionalEmails.map((email, idx) => (
+                <View key={`add-email-${idx}`} style={[styles.contactItem, { borderBottomColor: theme.colors.border }]}>
+                  <View style={styles.contactInfo}>
+                    <Mail size={18} color={theme.colors.textSecondary} />
+                    <View style={styles.contactTextContainer}>
+                      <Text style={[styles.contactLabel, { color: theme.colors.textSecondary }]}>
+                        {t('leads.email_from_web', 'Email (Web)')}
+                      </Text>
+                      <Text style={[styles.contactValue, { color: theme.colors.text }]}>{email}</Text>
+                    </View>
+                  </View>
+                  
+                  <TouchableOpacity
+                    style={[styles.iconButton, { backgroundColor: theme.colors.primary + '10' }]}
+                    onPress={() => handleEmail(email)}
+                  >
+                    <Mail size={18} color={theme.colors.primary} />
+                  </TouchableOpacity>
+                </View>
+              ))}
+            </View>
+          )}
+
           {/* Social Media & Maps */}
-          {(socialLinks.length > 0 || (lead as any).google_url_place || lead.latitude) && (
+          {(socialLinks.length > 0 || (lead as any).google_url_place || lead.latitude || lead.followers) && (
             <View style={[styles.section, { backgroundColor: theme.colors.surface }]}>
               <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>🌐 {t('leads.view_website', 'Online Presence')}</Text>
+              
+              {lead.followers && (
+                 <View style={{ marginBottom: 16, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 4 }}>
+                    <Users size={18} color={theme.colors.textSecondary} />
+                    <Text style={{ marginLeft: 12, color: theme.colors.text, fontWeight: '600', fontSize: 15 }}>
+                      {lead.followers} {t('leads.followers', 'Followers')}
+                    </Text>
+                 </View>
+              )}
               
               <View style={styles.socialGrid}>
                 {socialLinks.map((link, idx) => (

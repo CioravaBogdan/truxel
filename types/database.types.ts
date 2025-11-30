@@ -54,6 +54,7 @@ export interface Lead {
   emails?: string; // New column
   phone?: string;
   phones?: string; // New column
+  followers?: string; // New column
   whatsapp?: string;
   linkedin?: string;
   // linkedin_profile_url removed as it's not in DB schema

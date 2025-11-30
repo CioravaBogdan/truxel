@@ -11,7 +11,7 @@ import { Platform } from 'react-native';
 import Constants from 'expo-constants';
 
 // N8N webhook URL from environment variables
-const N8N_WEBHOOK_URL = Constants.expoConfig?.extra?.n8nChatWebhook || 'https://n8n.byinfant.com/webhook/70100ffe-0d06-4cff-9ad1-b7001713ab5c';
+const N8N_WEBHOOK_URL = Constants.expoConfig?.extra?.n8nChatWebhook || 'https://automation.truxel.io/webhook/70100ffe-0d06-4cff-9ad1-b7001713ab5c';
 
 export interface ChatMessage {
   userId: string;

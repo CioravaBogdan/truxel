@@ -23,9 +23,9 @@ EXPO_PUBLIC_N8N_CHAT_WEBHOOK=https://n8n.byinfant.com/webhook/70100ffe-0d06-4cff
 
 ### EAS Build Secrets (Production):
 ```bash
-TRUXEL_N8N_SEARCH_WEBHOOK=https://n8n.byinfant.com/webhook/51f66c9a-0283-4711-b034-337c66e1bedd
-TRUXEL_N8N_CITY_WEBHOOK=https://n8n.byinfant.com/webhook/700ac3c5-d6aa-4e35-9181-39fe0f48d7bf
-TRUXEL_N8N_CHAT_WEBHOOK=https://n8n.byinfant.com/webhook/70100ffe-0d06-4cff-9ad1-b7001713ab5c
+TRUXEL_N8N_SEARCH_WEBHOOK=https://automation.truxel.io/webhook/51f66c9a-0283-4711-b034-337c66e1bedd
+TRUXEL_N8N_CITY_WEBHOOK=https://automation.truxel.io/webhook/700ac3c5-d6aa-4e35-9181-39fe0f48d7bf
+TRUXEL_N8N_CHAT_WEBHOOK=https://automation.truxel.io/webhook/70100ffe-0d06-4cff-9ad1-b7001713ab5c
 ```
 
 ---
@@ -37,13 +37,13 @@ Run these commands in terminal:
 
 ```bash
 # N8N Search Webhook (Lead scraping)
-eas secret:create --scope project --name TRUXEL_N8N_SEARCH_WEBHOOK --value https://n8n.byinfant.com/webhook/51f66c9a-0283-4711-b034-337c66e1bedd --type string
+eas secret:create --scope project --name TRUXEL_N8N_SEARCH_WEBHOOK --value https://automation.truxel.io/webhook/51f66c9a-0283-4711-b034-337c66e1bedd --type string
 
 # N8N City Webhook (Location analytics)
-eas secret:create --scope project --name TRUXEL_N8N_CITY_WEBHOOK --value https://n8n.byinfant.com/webhook/700ac3c5-d6aa-4e35-9181-39fe0f48d7bf --type string
+eas secret:create --scope project --name TRUXEL_N8N_CITY_WEBHOOK --value https://automation.truxel.io/webhook/700ac3c5-d6aa-4e35-9181-39fe0f48d7bf --type string
 
 # N8N Chat Webhook (Support AI)
-eas secret:create --scope project --name TRUXEL_N8N_CHAT_WEBHOOK --value https://n8n.byinfant.com/webhook/70100ffe-0d06-4cff-9ad1-b7001713ab5c --type string
+eas secret:create --scope project --name TRUXEL_N8N_CHAT_WEBHOOK --value https://automation.truxel.io/webhook/70100ffe-0d06-4cff-9ad1-b7001713ab5c --type string
 ```
 
 ### Step 2: Verify Secrets
@@ -77,7 +77,7 @@ EAS will automatically inject secrets into the build.
 import Constants from 'expo-constants';
 
 const WEBHOOK_URL = Constants.expoConfig?.extra?.n8nSearchWebhook || 
-  'https://n8n.byinfant.com/webhook/51f66c9a-0283-4711-b034-337c66e1bedd';
+  'https://automation.truxel.io/webhook/51f66c9a-0283-4711-b034-337c66e1bedd';
 ```
 
 **When triggered:**
@@ -103,7 +103,7 @@ const WEBHOOK_URL = Constants.expoConfig?.extra?.n8nSearchWebhook ||
 import Constants from 'expo-constants';
 
 const webhookUrl = Constants.expoConfig?.extra?.n8nCityWebhook || 
-  'https://n8n.byinfant.com/webhook/700ac3c5-d6aa-4e35-9181-39fe0f48d7bf';
+  'https://automation.truxel.io/webhook/700ac3c5-d6aa-4e35-9181-39fe0f48d7bf';
 ```
 
 **When triggered:**
@@ -133,7 +133,7 @@ const webhookUrl = Constants.expoConfig?.extra?.n8nCityWebhook ||
 import Constants from 'expo-constants';
 
 const N8N_WEBHOOK_URL = Constants.expoConfig?.extra?.n8nChatWebhook || 
-  'https://n8n.byinfant.com/webhook/70100ffe-0d06-4cff-9ad1-b7001713ab5c';
+  'https://automation.truxel.io/webhook/70100ffe-0d06-4cff-9ad1-b7001713ab5c';
 ```
 
 **When triggered:**
@@ -142,7 +142,7 @@ const N8N_WEBHOOK_URL = Constants.expoConfig?.extra?.n8nChatWebhook ||
 
 **Payload (GET request):**
 ```
-GET https://n8n.byinfant.com/webhook/70100ffe-0d06-4cff-9ad1-b7001713ab5c?
+GET https://automation.truxel.io/webhook/70100ffe-0d06-4cff-9ad1-b7001713ab5c?
   userId=uuid&
   userName=John Doe&
   message=I need help with search&
@@ -215,7 +215,7 @@ eas build --platform ios --profile production
 3. Check N8N webhook logs
 4. Test webhook directly with curl:
 ```bash
-curl -X POST https://n8n.byinfant.com/webhook/51f66c9a-0283-4711-b034-337c66e1bedd \
+curl -X POST https://automation.truxel.io/webhook/51f66c9a-0283-4711-b034-337c66e1bedd \
   -H "Content-Type: application/json" \
   -d '{"test": true}'
 ```
@@ -224,7 +224,7 @@ curl -X POST https://n8n.byinfant.com/webhook/51f66c9a-0283-4711-b034-337c66e1be
 If env vars not found, code falls back to hardcoded production URLs:
 ```typescript
 const URL = Constants.expoConfig?.extra?.n8nSearchWebhook || 
-  'https://n8n.byinfant.com/webhook/51f66c9a-0283-4711-b034-337c66e1bedd';
+  'https://automation.truxel.io/webhook/51f66c9a-0283-4711-b034-337c66e1bedd';
 ```
 
 This ensures app works even if secrets misconfigured.

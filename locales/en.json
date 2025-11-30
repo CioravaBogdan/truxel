@@ -188,7 +188,11 @@
     "lead_deleted": "Lead deleted successfully",
     "share_contact": "Share Contact",
     "contact_shared": "Contact card shared successfully",
-    "share_error": "Share Error"
+    "share_error": "Share Error",
+    "collected_contacts": "Contacts from Web",
+    "phone_from_web": "Phone (Web)",
+    "email_from_web": "Email (Web)",
+    "followers": "Followers"
   },
   "subscription": {
     "title": "Subscription",

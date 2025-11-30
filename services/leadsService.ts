@@ -66,7 +66,8 @@ export const leadsService = {
           google_place_id,
           google_url_place,
           google_url_photo,
-          google_rating,
+          potential_owner_profiles,
+          followers,
           created_at,
           updated_at
         )
@@ -182,6 +183,7 @@ export const leadsService = {
         company_id: lead.company_id,
         keywords_searched: lead.keywords_searched,
         region: lead.region,
+        followers: lead.followers,
       }, {
         onConflict: 'phone', // Deduplicate by phone
         ignoreDuplicates: false,

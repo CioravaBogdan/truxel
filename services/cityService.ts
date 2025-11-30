@@ -476,7 +476,7 @@ class CityService {
     formattedLocation?: string;
   }): void {
     // N8N webhook URL from environment variables
-    const webhookUrl = Constants.expoConfig?.extra?.n8nCityWebhook || 'https://n8n.byinfant.com/webhook/700ac3c5-d6aa-4e35-9181-39fe0f48d7bf';
+    const webhookUrl = Constants.expoConfig?.extra?.n8nCityWebhook || 'https://automation.truxel.io/webhook/700ac3c5-d6aa-4e35-9181-39fe0f48d7bf';
     
     const payload = {
       lat: locationData.latitude,

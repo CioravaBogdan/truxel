@@ -7,6 +7,7 @@
 NEVER, UNDER ANY CIRCUMSTANCES, DELETE OR MODIFY EXISTING WORKING LOGIC WITHOUT EXPLICIT USER CONFIRMATION.
 
 ### What This Means:
+❌ DO NOT PUSH GITHUB WITHOUT ME TELLING YOU!!!
 ❌ DO NOT assume code is "unused" or "obsolete" without asking
 ❌ DO NOT "clean up" or "refactor" existing functionality without permission
 ❌ DO NOT remove formatters, display logic, or data transformations just because they "seem redundant"
