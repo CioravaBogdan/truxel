@@ -5,9 +5,11 @@ import { CheckCircle, AlertCircle } from 'lucide-react-native';
 import { useTheme } from '@/lib/theme';
 import { WebFooter } from '@/components/web/WebFooter';
 import { SeoHead } from '@/components/web/SeoHead';
+import { useTranslation } from 'react-i18next';
 
 export default function VerifyEmailPage() {
   const { theme } = useTheme();
+  const { t } = useTranslation();
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
   const [tokens, setTokens] = useState<{ access_token?: string; refresh_token?: string } | null>(null);
 
@@ -63,8 +65,8 @@ export default function VerifyEmailPage() {
   return (
     <>
       <SeoHead
-        title="Email Verified | Truxel"
-        description="Your email has been successfully verified."
+        title={t('web.verify_email.seo_title')}
+        description={t('web.verify_email.seo_description')}
         path="/verify-email"
       />
       
@@ -73,8 +75,8 @@ export default function VerifyEmailPage() {
           <View style={styles.card}>
             {status === 'loading' && (
               <>
-                <Text style={[styles.title, { color: theme.colors.text }]}>Verifying...</Text>
-                <Text style={[styles.text, { color: theme.colors.textSecondary }]}>Please wait while we verify your email.</Text>
+                <Text style={[styles.title, { color: theme.colors.text }]}>{t('web.verify_email.title_loading')}</Text>
+                <Text style={[styles.text, { color: theme.colors.textSecondary }]}>{t('web.verify_email.message_loading')}</Text>
               </>
             )}
 
@@ -83,20 +85,20 @@ export default function VerifyEmailPage() {
                 <View style={styles.iconContainer}>
                   <CheckCircle size={64} color="#22C55E" />
                 </View>
-                <Text style={[styles.title, { color: theme.colors.text }]}>Email Verified!</Text>
+                <Text style={[styles.title, { color: theme.colors.text }]}>{t('web.verify_email.title_success')}</Text>
                 <Text style={[styles.text, { color: theme.colors.textSecondary }]}>
-                  Your account has been successfully verified. You can now use the Truxel app.
+                  {t('web.verify_email.message_success')}
                 </Text>
                 
                 <TouchableOpacity
                   style={styles.button}
                   onPress={() => openApp(tokens?.access_token, tokens?.refresh_token)}
                 >
-                  <Text style={styles.buttonText}>Open Truxel App</Text>
+                  <Text style={styles.buttonText}>{t('web.verify_email.button_open_app')}</Text>
                 </TouchableOpacity>
                 
                 <Text style={[styles.subtext, { color: theme.colors.textSecondary }]}>
-                  If the app doesn't open automatically, click the button above.
+                  {t('web.verify_email.subtext_open_app')}
                 </Text>
               </>
             )}
@@ -106,15 +108,15 @@ export default function VerifyEmailPage() {
                 <View style={[styles.iconContainer, { backgroundColor: 'rgba(239, 68, 68, 0.1)' }]}>
                   <AlertCircle size={64} color="#EF4444" />
                 </View>
-                <Text style={[styles.title, { color: theme.colors.text }]}>Verification Failed</Text>
+                <Text style={[styles.title, { color: theme.colors.text }]}>{t('web.verify_email.title_error')}</Text>
                 <Text style={[styles.text, { color: theme.colors.textSecondary }]}>
-                  We couldn't verify your email. The link may be invalid or expired.
+                  {t('web.verify_email.message_error')}
                 </Text>
                 <TouchableOpacity
                   style={[styles.button, { backgroundColor: theme.colors.border }]}
                   onPress={() => window.location.href = '/'}
                 >
-                  <Text style={[styles.buttonText, { color: theme.colors.text }]}>Go to Home</Text>
+                  <Text style={[styles.buttonText, { color: theme.colors.text }]}>{t('web.verify_email.button_home')}</Text>
                 </TouchableOpacity>
               </>
             )}

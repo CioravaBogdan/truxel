@@ -587,6 +587,19 @@
       "login": "Login",
       "signup": "Sign Up"
     },
+    "verify_email": {
+      "title_loading": "Verifying...",
+      "message_loading": "Please wait while we verify your email.",
+      "title_success": "Email Verified!",
+      "message_success": "Your account has been successfully verified. You can now use the Truxel app.",
+      "button_open_app": "Open Truxel App",
+      "subtext_open_app": "If the app doesn't open automatically, click the button above.",
+      "title_error": "Verification Failed",
+      "message_error": "We couldn't verify your email. The link may be invalid or expired.",
+      "button_home": "Go to Home",
+      "seo_title": "Email Verified | Truxel",
+      "seo_description": "Your email has been successfully verified."
+    },
     "hero": {
       "title": "Built by Drivers, For Drivers",
       "subtitle": "Stop paying broker fees. Truxel gives you the power to discover shippers around you and the opportunity to connect directly—no more knocking on warehouse doors.",
