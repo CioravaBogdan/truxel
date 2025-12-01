@@ -20,11 +20,12 @@ export interface SignUpData {
 
 export const authService = {
   async signUp(data: SignUpData) {
-    // Use the same redirect URI as OAuth (truxel://auth/callback) to ensure consistency
-    // This requires 'truxel://' to be whitelisted in Supabase > Authentication > URL Configuration > Redirect URLs
+    // Use a web-based redirect URL to avoid "white page" on desktop
+    // This page (app/(web)/verify-email.tsx) will handle the token and deep link to the app
+    // Ensure 'https://truxel.io/verify-email' is whitelisted in Supabase
     const redirectTo = Platform.OS === 'web'
       ? window.location.origin
-      : 'truxel://auth/callback';
+      : 'https://truxel.io/verify-email';
 
     const { data: authData, error: authError } = await supabase.auth.signUp({
       email: data.email,
@@ -88,7 +89,7 @@ export const authService = {
   async resetPassword(email: string) {
     const redirectTo = Platform.OS === 'web'
       ? window.location.origin
-      : 'truxel://auth/callback';
+      : 'https://truxel.io/verify-email';
 
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo,
