@@ -25,6 +25,7 @@ import { signInWithApple, isAppleAuthAvailable, isGoogleAuthAvailable } from '@/
 import { supabase } from '@/lib/supabase';
 import Toast from 'react-native-toast-message';
 import { useTheme } from '@/lib/theme';
+import { LinearGradient } from 'expo-linear-gradient';
 
 // Required for web OAuth completion
 WebBrowser.maybeCompleteAuthSession();
@@ -250,17 +251,20 @@ export default function LoginScreen() {
       style={[styles.container, { backgroundColor: theme.colors.background }]}
     >
       <ScrollView contentContainerStyle={styles.scrollContent} bounces={false}>
-        <View style={styles.headerContainer}>
+        <LinearGradient
+          colors={['#0F172A', '#1E293B']}
+          style={styles.headerContainer}
+        >
           <View style={styles.headerContent}>
             <Image 
-              source={require('@/assets/images/Untitled design (5).svg')} 
+              source={require('@/assets/images/360x120.png')} 
               style={styles.logo}
               resizeMode="contain"
             />
             <Text style={styles.headerTitle}>{t('auth.welcome')}</Text>
             <Text style={styles.headerSubtitle}>{t('auth.sign_in_subtitle')}</Text>
           </View>
-        </View>
+        </LinearGradient>
 
         <View style={styles.formContainer}>
           <Card style={styles.card}>
@@ -320,6 +324,7 @@ export default function LoginScreen() {
                 onPress={handleSubmit(onSubmit)}
                 loading={isLoading}
                 style={styles.button}
+                variant="primary"
               />
 
               {/* Social Sign In Divider */}
@@ -394,7 +399,6 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   headerContainer: {
-    backgroundColor: '#0F172A', // Navy Brand Color
     paddingTop: 80,
     paddingBottom: 60,
     alignItems: 'center',
@@ -439,6 +443,7 @@ const styles = StyleSheet.create({
   button: {
     marginTop: 8,
     marginBottom: 16,
+    backgroundColor: '#FF5722', // Brand Orange
   },
   divider: {
     flexDirection: 'row',

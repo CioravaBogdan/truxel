@@ -7,6 +7,9 @@ import * as Localization from 'expo-localization';
 import Constants from 'expo-constants';
 import { initRevenueCat, logoutRevenueCat } from '@/lib/revenueCat';
 
+import { Platform } from 'react-native';
+import * as Linking from 'expo-linking';
+
 export interface SignUpData {
   email: string;
   password: string;
@@ -17,10 +20,17 @@ export interface SignUpData {
 
 export const authService = {
   async signUp(data: SignUpData) {
+    // Use the same redirect URI as OAuth (truxel://auth/callback) to ensure consistency
+    // This requires 'truxel://' to be whitelisted in Supabase > Authentication > URL Configuration > Redirect URLs
+    const redirectTo = Platform.OS === 'web'
+      ? window.location.origin
+      : 'truxel://auth/callback';
+
     const { data: authData, error: authError } = await supabase.auth.signUp({
       email: data.email,
       password: data.password,
       options: {
+        emailRedirectTo: redirectTo,
         data: {
           full_name: data.full_name,
           phone_number: data.phone_number,
@@ -76,7 +86,13 @@ export const authService = {
   },
 
   async resetPassword(email: string) {
-    const { error } = await supabase.auth.resetPasswordForEmail(email);
+    const redirectTo = Platform.OS === 'web'
+      ? window.location.origin
+      : 'truxel://auth/callback';
+
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo,
+    });
     if (error) throw error;
   },
 

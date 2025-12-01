@@ -24,7 +24,7 @@ export function WebFooter() {
         {/* Brand Column */}
         <View style={styles.brandSection}>
           <Image 
-            source={require('@/assets/images/Untitled design (5).svg')} 
+            source={require('@/assets/images/360x120.png')} 
             style={styles.footerLogo}
             resizeMode="contain"
           />

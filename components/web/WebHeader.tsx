@@ -37,7 +37,7 @@ export function WebHeader() {
         <View style={styles.leftSection}>
           <Link href="/" style={styles.logoContainer}>
             <Image 
-              source={require('@/assets/images/Untitled design (5).svg')}
+              source={require('@/assets/images/360x120.png')}
               style={styles.logoImage}
               resizeMode="contain"
             />

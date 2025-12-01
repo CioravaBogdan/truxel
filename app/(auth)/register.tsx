@@ -9,6 +9,7 @@ import {
   Image,
   TouchableOpacity,
   Linking as RNLinking,
+  Modal,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
@@ -17,6 +18,7 @@ import * as AppleAuthentication from 'expo-apple-authentication';
 import * as WebBrowser from 'expo-web-browser';
 import * as QueryParams from 'expo-auth-session/build/QueryParams';
 import { FontAwesome } from '@expo/vector-icons';
+import { Mail } from 'lucide-react-native';
 import { Card } from '@/components/Card';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
@@ -25,6 +27,7 @@ import { signInWithApple, isAppleAuthAvailable, isGoogleAuthAvailable } from '@/
 import { supabase } from '@/lib/supabase';
 import Toast from 'react-native-toast-message';
 import { useTheme } from '@/lib/theme';
+import { LinearGradient } from 'expo-linear-gradient';
 
 // Required for web OAuth completion
 WebBrowser.maybeCompleteAuthSession();
@@ -46,6 +49,7 @@ export default function RegisterScreen() {
   const [isAppleAvailable, setIsAppleAvailable] = useState(false);
   const [isGoogleAvailable, setIsGoogleAvailable] = useState(false);
   const [isFacebookAvailable, setIsFacebookAvailable] = useState(false);
+  const [showEmailModal, setShowEmailModal] = useState(false);
 
   const {
     control,
@@ -226,15 +230,8 @@ export default function RegisterScreen() {
           text1: t('auth.register_success'),
         });
       } else {
-        Toast.show({
-          type: 'info',
-          text1: t('auth.check_email'),
-          text2: t('auth.verify_email_message'),
-          visibilityTime: 6000,
-        });
-        setTimeout(() => {
-          router.replace('/(auth)/login');
-        }, 2500);
+        // Show custom modal instead of toast
+        setShowEmailModal(true);
       }
     } catch (error: any) {
       Toast.show({
@@ -253,17 +250,20 @@ export default function RegisterScreen() {
       style={[styles.container, { backgroundColor: theme.colors.background }]}
     >
       <ScrollView contentContainerStyle={styles.scrollContent} bounces={false}>
-        <View style={styles.headerContainer}>
+        <LinearGradient
+          colors={['#0F172A', '#1E293B']}
+          style={styles.headerContainer}
+        >
           <View style={styles.headerContent}>
             <Image 
-              source={require('@/assets/images/Untitled design (5).svg')} 
+              source={require('@/assets/images/360x120.png')} 
               style={styles.logo}
               resizeMode="contain"
             />
             <Text style={styles.headerTitle}>{t('auth.sign_up')}</Text>
             <Text style={styles.headerSubtitle}>{t('auth.create_account')}</Text>
           </View>
-        </View>
+        </LinearGradient>
 
         <View style={styles.formContainer}>
           <Card style={styles.card}>
@@ -390,6 +390,7 @@ export default function RegisterScreen() {
                 onPress={handleSubmit(onSubmit)}
                 loading={isLoading}
                 style={styles.button}
+                variant="primary"
               />
 
               {/* Social Sign In Divider */}
@@ -451,6 +452,36 @@ export default function RegisterScreen() {
           </Card>
         </View>
       </ScrollView>
+
+      {/* Email Confirmation Modal */}
+      <Modal
+        visible={showEmailModal}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setShowEmailModal(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={[styles.modalContent, { backgroundColor: theme.colors.card }]}>
+            <View style={styles.modalIconContainer}>
+              <Mail size={48} color="#FF5722" />
+            </View>
+            <Text style={[styles.modalTitle, { color: theme.colors.text }]}>
+              {t('auth.check_email')}
+            </Text>
+            <Text style={[styles.modalText, { color: theme.colors.textSecondary }]}>
+              {t('auth.verify_email_message')}
+            </Text>
+            <Button
+              title={t('auth.go_to_login')}
+              onPress={() => {
+                setShowEmailModal(false);
+                router.replace('/(auth)/login');
+              }}
+              style={styles.modalButton}
+            />
+          </View>
+        </View>
+      </Modal>
     </KeyboardAvoidingView>
   );
 }
@@ -463,7 +494,6 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   headerContainer: {
-    backgroundColor: '#0F172A', // Navy Brand Color
     paddingTop: 80,
     paddingBottom: 60,
     alignItems: 'center',
@@ -508,6 +538,7 @@ const styles = StyleSheet.create({
   button: {
     marginTop: 8,
     marginBottom: 16,
+    backgroundColor: '#FF5722', // Brand Orange
   },
   divider: {
     flexDirection: 'row',
@@ -573,5 +604,48 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '700',
     color: '#FFFFFF',
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 24,
+  },
+  modalContent: {
+    width: '100%',
+    padding: 32,
+    borderRadius: 24,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.25,
+    shadowRadius: 20,
+    elevation: 10,
+  },
+  modalIconContainer: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: 'rgba(255, 87, 34, 0.1)', // Orange with opacity
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 24,
+  },
+  modalTitle: {
+    fontSize: 24,
+    fontWeight: '800',
+    marginBottom: 12,
+    textAlign: 'center',
+  },
+  modalText: {
+    fontSize: 16,
+    textAlign: 'center',
+    marginBottom: 32,
+    lineHeight: 24,
+  },
+  modalButton: {
+    width: '100%',
+    backgroundColor: '#FF5722',
   },
 });

@@ -18,6 +18,7 @@ import { authService } from '@/services/authService';
 import { useAuthStore } from '@/store/authStore';
 import Toast from 'react-native-toast-message';
 import { useTheme } from '@/lib/theme';
+import { LinearGradient } from 'expo-linear-gradient';
 
 interface CompleteProfileForm {
   fullName: string;
@@ -91,10 +92,13 @@ export default function CompleteProfileScreen() {
       style={[styles.container, { backgroundColor: theme.colors.background }]}
     >
       <ScrollView contentContainerStyle={styles.scrollContent} bounces={false}>
-        <View style={styles.headerContainer}>
+        <LinearGradient
+          colors={['#0F172A', '#1E293B']}
+          style={styles.headerContainer}
+        >
           <View style={styles.headerContent}>
             <Image 
-              source={require('@/assets/images/Untitled design (5).svg')} 
+              source={require('@/assets/images/360x120.png')} 
               style={styles.logo}
               resizeMode="contain"
             />
@@ -103,7 +107,7 @@ export default function CompleteProfileScreen() {
               {t('auth.complete_profile_subtitle')}
             </Text>
           </View>
-        </View>
+        </LinearGradient>
 
         <View style={styles.formContainer}>
           <Card style={styles.card}>
@@ -164,6 +168,7 @@ export default function CompleteProfileScreen() {
                 onPress={handleSubmit(onSubmit)}
                 loading={isLoading}
                 style={styles.button}
+                variant="primary"
               />
             </View>
           </Card>
@@ -181,7 +186,6 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   headerContainer: {
-    backgroundColor: '#0F172A', // Navy Brand Color
     paddingTop: 80,
     paddingBottom: 60,
     alignItems: 'center',
@@ -228,5 +232,6 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 24,
+    backgroundColor: '#FF5722', // Brand Orange
   },
 });
