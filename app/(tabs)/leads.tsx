@@ -571,7 +571,7 @@ export default function LeadsScreen() {
   };
 
   // Filter logic based on selected tab
-  const getFilteredData = () => {
+  const getFilteredData = useCallback(() => {
     if (selectedTab === 'all') {
       let filtered = leads;
       
@@ -654,7 +654,28 @@ export default function LeadsScreen() {
       
       return filtered;
     }
-  };
+  }, [selectedTab, leads, latestSearchLeads, convertedLeads, selectedCountry, selectedCity, searchQuery]);
+
+  // Navigation handlers for LeadDetailModal
+  const handleNextLead = useCallback(() => {
+    const currentList = getFilteredData() as Lead[];
+    if (!selectedLead || currentList.length === 0) return;
+
+    const currentIndex = currentList.findIndex(l => l.id === selectedLead.id);
+    if (currentIndex !== -1 && currentIndex < currentList.length - 1) {
+      setSelectedLead(currentList[currentIndex + 1]);
+    }
+  }, [selectedLead, getFilteredData]);
+
+  const handlePrevLead = useCallback(() => {
+    const currentList = getFilteredData() as Lead[];
+    if (!selectedLead || currentList.length === 0) return;
+
+    const currentIndex = currentList.findIndex(l => l.id === selectedLead.id);
+    if (currentIndex > 0) {
+      setSelectedLead(currentList[currentIndex - 1]);
+    }
+  }, [selectedLead, getFilteredData]);
 
   const renderLeadCard = ({ item: lead }: { item: Lead }) => {
     // Check if this lead is in My Book
@@ -1095,6 +1116,8 @@ export default function LeadsScreen() {
             }
             setSourceTab(null);
           }}
+          onNext={handleNextLead}
+          onPrev={handlePrevLead}
           onNotesUpdated={loadLeads} // Reload leads after notes are saved
           onAddToMyBook={selectedLead && selectedLead.source_type !== 'community' ? async (lead) => {
             if (!user) return;

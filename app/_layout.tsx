@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { Platform } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useFrameworkReady } from '@/hooks/useFrameworkReady';
 import { useAuthStore } from '@/store/authStore';
 import { authService } from '@/services/authService';
@@ -327,14 +328,16 @@ export default function RootLayout() {
   }, [isAuthenticated, segments, isNavigationReady, router, isLoading, profile]);
 
   return (
-    <ThemeProvider>
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
-      <Toast />
-    </ThemeProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <ThemeProvider>
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="+not-found" />
+        </Stack>
+        <StatusBar style="auto" />
+        <Toast />
+      </ThemeProvider>
+    </GestureHandlerRootView>
   );
 }

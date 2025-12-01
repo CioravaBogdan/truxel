@@ -10,10 +10,21 @@ import {
   TextInput,
   ActivityIndicator,
   Image,
+  Dimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import Toast from 'react-native-toast-message';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import Animated, { 
+  useSharedValue, 
+  useAnimatedStyle, 
+  withSpring, 
+  runOnJS,
+  SlideInRight,
+  SlideOutLeft,
+  FadeIn,
+} from 'react-native-reanimated';
 import {
   X,
   Building2,
@@ -45,6 +56,8 @@ interface LeadDetailModalProps {
   onClose: () => void;
   onAddToMyBook?: (lead: Lead) => void;
   onNotesUpdated?: () => void; // Callback to reload leads after saving notes
+  onNext?: () => void;
+  onPrev?: () => void;
 }
 
 // Helper to parse contact lists that might be JSON arrays or comma-separated strings
@@ -69,7 +82,7 @@ const parseContactList = (input?: string): string[] => {
     .filter(Boolean);
 };
 
-export default function LeadDetailModal({ lead, visible, onClose, onAddToMyBook, onNotesUpdated }: LeadDetailModalProps) {
+export default function LeadDetailModal({ lead, visible, onClose, onAddToMyBook, onNotesUpdated, onNext, onPrev }: LeadDetailModalProps) {
   const { t } = useTranslation();
   const { theme } = useTheme();
   const { profile, user } = useAuthStore();
@@ -78,6 +91,36 @@ export default function LeadDetailModal({ lead, visible, onClose, onAddToMyBook,
   const [isEditingNotes, setIsEditingNotes] = useState(false);
   const [notesText, setNotesText] = useState('');
   const [isSavingNotes, setIsSavingNotes] = useState(false);
+  
+  // Animation State
+  const translateX = useSharedValue(0);
+
+  const pan = Gesture.Pan()
+    .activeOffsetX([-20, 20]) // Ignore vertical scrolls
+    .onUpdate((event) => {
+      translateX.value = event.translationX;
+    })
+    .onEnd((event) => {
+      if (event.translationX < -100 && onNext) {
+        // Swipe Left -> Next
+        runOnJS(onNext)();
+      } else if (event.translationX > 100) {
+        // Swipe Right -> Close
+        runOnJS(onClose)();
+      } else {
+        // Reset
+        translateX.value = withSpring(0);
+      }
+    });
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: translateX.value }],
+  }));
+
+  // Reset translation when lead changes
+  React.useEffect(() => {
+    translateX.value = 0;
+  }, [lead?.id]);
   
   // Initialize notes text when modal opens
   React.useEffect(() => {
@@ -272,7 +315,14 @@ export default function LeadDetailModal({ lead, visible, onClose, onAddToMyBook,
           </TouchableOpacity>
         </View>
 
-        <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+        <GestureDetector gesture={pan}>
+          <Animated.View 
+            key={lead.id} 
+            entering={SlideInRight} 
+            exiting={SlideOutLeft} 
+            style={[styles.content, animatedStyle]}
+          >
+            <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
           {/* Company Info Card */}
           <View style={[styles.companyCard, { backgroundColor: theme.colors.surface }]}>
             <View style={[styles.avatarContainer, { backgroundColor: theme.colors.primary + '15' }]}>
@@ -556,7 +606,9 @@ export default function LeadDetailModal({ lead, visible, onClose, onAddToMyBook,
 
           {/* Bottom padding */}
           <View style={{ height: 40 }} />
-        </ScrollView>
+            </ScrollView>
+          </Animated.View>
+        </GestureDetector>
       </SafeAreaView>
     </Modal>
   );
