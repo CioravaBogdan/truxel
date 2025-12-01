@@ -3,7 +3,6 @@ import {
   View,
   Text,
   StyleSheet,
-  FlatList,
   TouchableOpacity,
   RefreshControl,
   ActivityIndicator,
@@ -13,6 +12,12 @@ import {
   Linking,
   Image,
 } from 'react-native';
+import Animated, { 
+  useSharedValue, 
+  useAnimatedStyle, 
+  useAnimatedScrollHandler, 
+  runOnJS 
+} from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
@@ -26,7 +31,6 @@ import { Input } from '@/components/Input';
 import { useAuthStore } from '@/store/authStore';
 import { useLeadsStore } from '@/store/leadsStore';
 import { leadsService } from '@/services/leadsService';
-import PostCard from '@/components/community/PostCard';
 import CountryPickerModal from '@/components/community/CommunityFiltersModal';
 import CitySearchModal from '@/components/community/CitySearchModal';
 import LeadDetailModal from '@/components/leads/LeadDetailModal';
@@ -95,6 +99,12 @@ export default function LeadsScreen() {
   } = useLeadsStore();
   const [isRefreshing, setIsRefreshing] = useState(false);
   
+  // Animation State
+  const scrollY = useSharedValue(0);
+  const headerHeight = useSharedValue(0);
+  const translateY = useSharedValue(0);
+  const [headerHeightState, setHeaderHeightState] = useState(0);
+
   // Lead detail modal state
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
@@ -105,6 +115,45 @@ export default function LeadsScreen() {
   const [isCityPickerVisible, setCityPickerVisible] = useState(false);
   const [isInitializingFilters, setIsInitializingFilters] = useState(true);
   const hasInitialized = React.useRef(false);
+
+  const scrollHandler = useAnimatedScrollHandler({
+    onScroll: (event) => {
+      const currentY = event.contentOffset.y;
+      const diff = currentY - scrollY.value;
+
+      // Ignore negative scroll (bounce)
+      if (currentY < 0) {
+        translateY.value = 0;
+        scrollY.value = currentY;
+        return;
+      }
+
+      // Calculate new translation
+      let newTranslateY = translateY.value - diff;
+
+      // Clamp between -headerHeight and 0
+      if (newTranslateY < -headerHeight.value) {
+        newTranslateY = -headerHeight.value;
+      } else if (newTranslateY > 0) {
+        newTranslateY = 0;
+      }
+
+      translateY.value = newTranslateY;
+      scrollY.value = currentY;
+    },
+  });
+
+  const headerAnimatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ translateY: translateY.value }],
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      zIndex: 10,
+      backgroundColor: theme.colors.background,
+    };
+  });
 
   // Initialize filters with GPS location (on mount)
   const initializeFilters = useCallback(async () => {
@@ -770,296 +819,331 @@ export default function LeadsScreen() {
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]} edges={['top']}>
       <View style={styles.webContainer}>
-        <View style={styles.header}>
-        <Text style={[styles.title, { color: theme.colors.text }]}>{t('leads.title')}</Text>
-        <TouchableOpacity onPress={handleExportCSV} disabled={leads.length === 0}>
-          <Download size={24} color={leads.length > 0 ? theme.colors.secondary : theme.colors.disabled} />
-        </TouchableOpacity>
-      </View>
-
-      {/* Tabs Container */}
-      <View style={[styles.tabsContainer, { backgroundColor: theme.colors.card, shadowColor: theme.shadows.small.shadowColor }]}>
-        {/* Top row: All Results + Latest Search */}
-        <View style={styles.tabsRow}>
-          <TouchableOpacity
-            style={[
-              styles.tabHalf, 
-              { backgroundColor: selectedTab === 'all' ? theme.colors.secondary : theme.colors.secondary + '15' },
-              selectedTab === 'all' && styles.activeTab
-            ]}
-            onPress={() => setSelectedTab('all')}
-          >
-            <SearchIcon size={18} color={selectedTab === 'all' ? 'white' : theme.colors.secondary} />
-            <Text style={[
-              styles.tabText,
-              { color: selectedTab === 'all' ? 'white' : theme.colors.secondary },
-              selectedTab === 'all' && styles.activeTabText
-            ]}>
-              {t('leads.all_results').toUpperCase()}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              styles.tabHalf, 
-              { backgroundColor: selectedTab === 'latest' ? theme.colors.warning : theme.colors.warning + '15' },
-              selectedTab === 'latest' && styles.activeTab
-            ]}
-            onPress={() => setSelectedTab('latest')}
-          >
-            <Zap size={18} color={selectedTab === 'latest' ? 'white' : theme.colors.warning} />
-            <Text style={[
-              styles.tabText,
-              { color: selectedTab === 'latest' ? 'white' : theme.colors.warning },
-              selectedTab === 'latest' && styles.activeTabText
-            ]}>
-              {t('leads.latest_search').toUpperCase()}
-            </Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* Bottom row: My Book (full width) */}
-        <TouchableOpacity
-          style={[
-            styles.tabFull, 
-            { backgroundColor: selectedTab === 'mybook' ? theme.colors.success : theme.colors.success + '15' },
-            selectedTab === 'mybook' && styles.activeTab
-          ]}
-          onPress={() => setSelectedTab('mybook')}
+        
+        {/* Collapsible Header Container */}
+        <Animated.View 
+          style={headerAnimatedStyle}
+          onLayout={(e) => {
+            const height = e.nativeEvent.layout.height;
+            headerHeight.value = height;
+            runOnJS(setHeaderHeightState)(height);
+          }}
         >
-          <BookMarked size={18} color={selectedTab === 'mybook' ? 'white' : theme.colors.success} />
-          <Text style={[
-            styles.tabText,
-            { color: selectedTab === 'mybook' ? 'white' : theme.colors.success },
-            selectedTab === 'mybook' && styles.activeTabText
-          ]}>
-            {t('leads.my_book').toUpperCase()}
-          </Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* Country + City Filter Bar (identical to Community Feed) */}
-      <View style={[styles.filterBar, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}>
-        {isInitializingFilters ? (
-          <ActivityIndicator size="small" color={theme.colors.primary} />
-        ) : (
-          <>
-            {/* Country Filter */}
-            <TouchableOpacity
-              style={[styles.filterControl, { backgroundColor: theme.colors.background, borderColor: theme.colors.border }]}
-              onPress={handleCountryPress}
-            >
-              <Globe size={14} color={theme.colors.textSecondary} />
-              <View style={styles.filterLabelContainer}>
-                <Text style={[styles.filterLabel, { color: theme.colors.textSecondary }]}>{t('community.country')}</Text>
-                <Text 
-                  style={selectedCountry ? [styles.filterValueSelected, { color: theme.colors.text }] : [styles.filterValuePlaceholder, { color: theme.colors.textSecondary }]}
-                  numberOfLines={1}
-                  ellipsizeMode="tail"
-                >
-                  {selectedCountry?.name || t('community.select_country')}
-                </Text>
-              </View>
-              {selectedCountry && (
-                <TouchableOpacity
-                  style={styles.clearButton}
-                  onPress={handleClearCountry}
-                  hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-                >
-                  <Text style={[styles.clearButtonText, { color: theme.colors.textSecondary }]}>✕</Text>
-                </TouchableOpacity>
-              )}
+          <View style={styles.header}>
+            <Text style={[styles.title, { color: theme.colors.text }]}>{t('leads.title')}</Text>
+            <TouchableOpacity onPress={handleExportCSV} disabled={leads.length === 0}>
+              <Download size={24} color={leads.length > 0 ? theme.colors.secondary : theme.colors.disabled} />
             </TouchableOpacity>
+          </View>
 
-            {/* City Filter */}
+          {/* Tabs Container */}
+          <View style={[styles.tabsContainer, { backgroundColor: theme.colors.card, shadowColor: theme.shadows.small.shadowColor }]}>
+            {/* Top row: All Results + Latest Search */}
+            <View style={styles.tabsRow}>
+              <TouchableOpacity
+                style={[
+                  styles.tabHalf, 
+                  { backgroundColor: selectedTab === 'all' ? theme.colors.secondary : theme.colors.secondary + '15' },
+                  selectedTab === 'all' && styles.activeTab
+                ]}
+                onPress={() => setSelectedTab('all')}
+              >
+                <SearchIcon size={18} color={selectedTab === 'all' ? 'white' : theme.colors.secondary} />
+                <Text style={[
+                  styles.tabText,
+                  { color: selectedTab === 'all' ? 'white' : theme.colors.secondary },
+                  selectedTab === 'all' && styles.activeTabText
+                ]}>
+                  {t('leads.all_results').toUpperCase()}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  styles.tabHalf, 
+                  { backgroundColor: selectedTab === 'latest' ? theme.colors.warning : theme.colors.warning + '15' },
+                  selectedTab === 'latest' && styles.activeTab
+                ]}
+                onPress={() => setSelectedTab('latest')}
+              >
+                <Zap size={18} color={selectedTab === 'latest' ? 'white' : theme.colors.warning} />
+                <Text style={[
+                  styles.tabText,
+                  { color: selectedTab === 'latest' ? 'white' : theme.colors.warning },
+                  selectedTab === 'latest' && styles.activeTabText
+                ]}>
+                  {t('leads.latest_search').toUpperCase()}
+                </Text>
+              </TouchableOpacity>
+            </View>
+
+            {/* Bottom row: My Book (full width) */}
             <TouchableOpacity
               style={[
-                styles.filterControl, 
-                { backgroundColor: theme.colors.background, borderColor: theme.colors.border },
-                !selectedCountry && styles.filterControlDisabled
+                styles.tabFull, 
+                { backgroundColor: selectedTab === 'mybook' ? theme.colors.success : theme.colors.success + '15' },
+                selectedTab === 'mybook' && styles.activeTab
               ]}
-              onPress={handleCityPress}
-              disabled={!selectedCountry}
+              onPress={() => setSelectedTab('mybook')}
             >
-              <MapPin size={14} color={selectedCountry ? theme.colors.textSecondary : theme.colors.disabled} />
-              <View style={styles.filterLabelContainer}>
-                <Text style={[styles.filterLabel, !selectedCountry && { color: theme.colors.disabled }]}>
-                  {t('community.city')}
-                </Text>
-                <Text 
-                  style={selectedCity ? [styles.filterValueSelected, { color: theme.colors.text }] : [styles.filterValuePlaceholder, { color: theme.colors.textSecondary }]}
-                  numberOfLines={1}
-                  ellipsizeMode="tail"
-                >
-                  {selectedCity?.name || t('community.all_cities')}
-                </Text>
-              </View>
-              {selectedCity && selectedCountry && (
-                <TouchableOpacity
-                  style={styles.clearButton}
-                  onPress={handleClearCity}
-                  hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-                >
-                  <Text style={[styles.clearButtonText, { color: theme.colors.textSecondary }]}>✕</Text>
-                </TouchableOpacity>
-              )}
+              <BookMarked size={18} color={selectedTab === 'mybook' ? 'white' : theme.colors.success} />
+              <Text style={[
+                styles.tabText,
+                { color: selectedTab === 'mybook' ? 'white' : theme.colors.success },
+                selectedTab === 'mybook' && styles.activeTabText
+              ]}>
+                {t('leads.my_book').toUpperCase()}
+              </Text>
             </TouchableOpacity>
-          </>
-        )}
-      </View>
+          </View>
 
-      {/* Hot Leads Filter Buttons - REMOVED */}
-      {/* Search Input */}
-      <View style={styles.searchContainer}>
-        <Input
-          placeholder={t('common.search')}
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-          containerStyle={styles.searchInput}
-        />
-      </View>
-      </View>
+          {/* Country + City Filter Bar */}
+          <View style={[styles.filterBar, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}>
+            {isInitializingFilters ? (
+              <ActivityIndicator size="small" color={theme.colors.primary} />
+            ) : (
+              <>
+                {/* Country Filter */}
+                <TouchableOpacity
+                  style={[styles.filterControl, { backgroundColor: theme.colors.background, borderColor: theme.colors.border }]}
+                  onPress={handleCountryPress}
+                >
+                  <Globe size={14} color={theme.colors.textSecondary} />
+                  <View style={styles.filterLabelContainer}>
+                    <Text style={[styles.filterLabel, { color: theme.colors.textSecondary }]}>{t('community.country')}</Text>
+                    <Text 
+                      style={selectedCountry ? [styles.filterValueSelected, { color: theme.colors.text }] : [styles.filterValuePlaceholder, { color: theme.colors.textSecondary }]
+                      }
+                      numberOfLines={1}
+                      ellipsizeMode="tail"
+                    >
+                      {selectedCountry?.name || t('community.select_country')}
+                    </Text>
+                  </View>
+                  {selectedCountry && (
+                    <TouchableOpacity
+                      style={styles.clearButton}
+                      onPress={handleClearCountry}
+                      hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                    >
+                      <Text style={[styles.clearButtonText, { color: theme.colors.textSecondary }]}>✕</Text>
+                    </TouchableOpacity>
+                  )}
+                </TouchableOpacity>
 
-      {/* Conditional FlatList based on selectedTab */}
-      {selectedTab === 'all' && (
-        <FlatList
-          data={getFilteredData() as Lead[]}
-          renderItem={renderLeadCard}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={styles.listContent}
-          refreshControl={
-            <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} tintColor={theme.colors.secondary} />
-          }
-          ListEmptyComponent={
-            <View style={styles.emptyContainer}>
-              <SearchIcon size={48} color={theme.colors.disabled} />
-              <Text style={[styles.emptyText, { color: theme.colors.textSecondary }]}>{t('leads.no_search_results')}</Text>
-            </View>
-          }
-        />
-      )}
+                {/* City Filter */}
+                <TouchableOpacity
+                  style={[
+                    styles.filterControl, 
+                    { backgroundColor: theme.colors.background, borderColor: theme.colors.border },
+                    !selectedCountry && styles.filterControlDisabled
+                  ]}
+                  onPress={handleCityPress}
+                  disabled={!selectedCountry}
+                >
+                  <MapPin size={14} color={selectedCountry ? theme.colors.textSecondary : theme.colors.disabled} />
+                  <View style={styles.filterLabelContainer}>
+                    <Text style={[styles.filterLabel, !selectedCountry && { color: theme.colors.disabled }]}>
+                      {t('community.city')}
+                    </Text>
+                    <Text 
+                      style={selectedCity ? [styles.filterValueSelected, { color: theme.colors.text }] : [styles.filterValuePlaceholder, { color: theme.colors.textSecondary }]}
+                      numberOfLines={1}
+                      ellipsizeMode="tail"
+                    >
+                      {selectedCity?.name || t('community.all_cities')}
+                    </Text>
+                  </View>
+                  {selectedCity && selectedCountry && (
+                    <TouchableOpacity
+                      style={styles.clearButton}
+                      onPress={handleClearCity}
+                      hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                    >
+                      <Text style={[styles.clearButtonText, { color: theme.colors.textSecondary }]}>✕</Text>
+                    </TouchableOpacity>
+                  )}
+                </TouchableOpacity>
+              </>
+            )}
+          </View>
 
-      {selectedTab === 'latest' && (
-        <FlatList
-          data={getFilteredData() as Lead[]}
-          renderItem={renderLeadCard}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={styles.listContent}
-          refreshControl={
-            <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} tintColor={theme.colors.secondary} />
-          }
-          ListEmptyComponent={
-            <View style={styles.emptyContainer}>
-              <Zap size={48} color={theme.colors.disabled} />
-              <Text style={[styles.emptyText, { color: theme.colors.textSecondary }]}>{t('leads.no_latest_results')}</Text>
-              <Text style={[styles.emptyHint, { color: theme.colors.disabled }]}>{t('leads.start_search_hint')}</Text>
-            </View>
-          }
-        />
-      )}
+          {/* Search Input */}
+          <View style={styles.searchContainer}>
+            <Input
+              placeholder={t('common.search')}
+              value={searchQuery}
+              onChangeText={setSearchQuery}
+              containerStyle={styles.searchInput}
+            />
+          </View>
+        </Animated.View>
 
-      {selectedTab === 'mybook' && (
-        <FlatList
-          data={getFilteredData() as Lead[]}
-          renderItem={renderLeadCard}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={styles.listContent}
-          refreshControl={
-            <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} tintColor={theme.colors.secondary} />
-          }
-          ListEmptyComponent={
-            <View style={styles.emptyContainer}>
-              <BookMarked size={48} color={theme.colors.disabled} />
-              <Text style={[styles.emptyText, { color: theme.colors.textSecondary }]}>{t('leads.no_mybook_leads')}</Text>
-              <Text style={[styles.emptyHint, { color: theme.colors.disabled }]}>{t('leads.convert_hint')}</Text>
-            </View>
-          }
-        />
-      )}
-
-      {/* Country Picker Modal */}
-      <CountryPickerModal
-        visible={isCountryPickerVisible}
-        onClose={() => setCountryPickerVisible(false)}
-        onSelect={handleCountrySelect}
-        onClear={handleClearCountry}
-        selectedCountryCode={selectedCountry?.code}
-      />
-
-      {/* City Search Modal */}
-      <Modal
-        visible={isCityPickerVisible}
-        animationType="slide"
-        presentationStyle={Platform.OS === 'ios' ? 'pageSheet' : 'fullScreen'}
-        onRequestClose={() => setCityPickerVisible(false)}
-      >
-        <CitySearchModal
-          countryCode={selectedCountry?.code || ''}
-          onSelect={handleCitySelect}
-          onClose={() => setCityPickerVisible(false)}
-        />
-      </Modal>
-
-      {/* Lead Detail Modal */}
-      <LeadDetailModal
-        lead={selectedLead}
-        visible={modalVisible}
-        onClose={() => {
-          setModalVisible(false);
-          setSelectedLead(null);
-          // Restore source tab if modal was opened from navigation (Home screen)
-          if (sourceTab && sourceTab !== selectedTab) {
-            setSelectedTab(sourceTab as any);
-          }
-          setSourceTab(null);
-        }}
-        onNotesUpdated={loadLeads} // Reload leads after notes are saved
-        onAddToMyBook={selectedLead && selectedLead.source_type !== 'community' ? async (lead) => {
-          if (!user) return;
-
-          try {
-            const userLeadId = (lead as any).user_lead_id;
-
-            if (userLeadId) {
-              await useLeadsStore.getState().promoteLeadToMyBook(userLeadId, user.id);
-              useLeadsStore.getState().updateLead(lead.id, { source_type: 'community' as Lead['source_type'] });
-
-              Toast.show({
-                type: 'success',
-                text1: t('leads.converted_successfully'),
-              });
-            } else {
-              const communityPost = {
-                id: lead.id,
-                user_id: user.id,
-                post_type: 'LOAD_AVAILABLE' as const,
-                status: 'active' as const,
-                origin_city: lead.city || '',
-                origin_country: lead.country || '',
-                origin_lat: lead.latitude || 0,
-                origin_lng: lead.longitude || 0,
-                template_key: 'custom',
-                created_at: new Date().toISOString(),
-                profile: {
-                  full_name: lead.contact_person_name || lead.company_name,
-                  company_name: lead.company_name,
-                  phone_number: lead.phone || '',
-                  email: lead.email || '',
-                },
-                contact_phone: lead.phone || undefined,
-                contact_whatsapp: !!lead.whatsapp,
-              } as unknown as CommunityPost;
-
-              await handleAddToMyBook(communityPost);
+        {/* Conditional FlatList based on selectedTab */}
+        {selectedTab === 'all' && (
+          <Animated.FlatList
+            data={getFilteredData() as Lead[]}
+            renderItem={renderLeadCard}
+            keyExtractor={(item) => item.id}
+            contentContainerStyle={[styles.listContent, { paddingTop: headerHeightState + 16 }]
             }
+            refreshControl={
+              <RefreshControl 
+                refreshing={isRefreshing} 
+                onRefresh={onRefresh} 
+                tintColor={theme.colors.secondary} 
+                progressViewOffset={headerHeightState}
+              />
+            }
+            ListEmptyComponent={
+              <View style={[styles.emptyContainer, { marginTop: headerHeightState }]}>
+                <SearchIcon size={48} color={theme.colors.disabled} />
+                <Text style={[styles.emptyText, { color: theme.colors.textSecondary }]}>{t('leads.no_search_results')}</Text>
+              </View>
+            }
+            onScroll={scrollHandler}
+            scrollEventThrottle={16}
+          />
+        )}
 
+        {selectedTab === 'latest' && (
+          <Animated.FlatList
+            data={getFilteredData() as Lead[]}
+            renderItem={renderLeadCard}
+            keyExtractor={(item) => item.id}
+            contentContainerStyle={[styles.listContent, { paddingTop: headerHeightState + 16 }]
+            }
+            refreshControl={
+              <RefreshControl 
+                refreshing={isRefreshing} 
+                onRefresh={onRefresh} 
+                tintColor={theme.colors.secondary} 
+                progressViewOffset={headerHeightState}
+              />
+            }
+            ListEmptyComponent={
+              <View style={[styles.emptyContainer, { marginTop: headerHeightState }]}>
+                <Zap size={48} color={theme.colors.disabled} />
+                <Text style={[styles.emptyText, { color: theme.colors.textSecondary }]}>{t('leads.no_latest_results')}</Text>
+                <Text style={[styles.emptyHint, { color: theme.colors.disabled }]}>{t('leads.start_search_hint')}</Text>
+              </View>
+            }
+            onScroll={scrollHandler}
+            scrollEventThrottle={16}
+          />
+        )}
+
+        {selectedTab === 'mybook' && (
+          <Animated.FlatList
+            data={getFilteredData() as Lead[]}
+            renderItem={renderLeadCard}
+            keyExtractor={(item) => item.id}
+            contentContainerStyle={[styles.listContent, { paddingTop: headerHeightState + 16 }]
+            }
+            refreshControl={
+              <RefreshControl 
+                refreshing={isRefreshing} 
+                onRefresh={onRefresh} 
+                tintColor={theme.colors.secondary} 
+                progressViewOffset={headerHeightState}
+              />
+            }
+            ListEmptyComponent={
+              <View style={[styles.emptyContainer, { marginTop: headerHeightState }]}>
+                <BookMarked size={48} color={theme.colors.disabled} />
+                <Text style={[styles.emptyText, { color: theme.colors.textSecondary }]}>{t('leads.no_mybook_leads')}</Text>
+                <Text style={[styles.emptyHint, { color: theme.colors.disabled }]}>{t('leads.convert_hint')}</Text>
+              </View>
+            }
+            onScroll={scrollHandler}
+            scrollEventThrottle={16}
+          />
+        )}
+
+        {/* Country Picker Modal */}
+        <CountryPickerModal
+          visible={isCountryPickerVisible}
+          onClose={() => setCountryPickerVisible(false)}
+          onSelect={handleCountrySelect}
+          onClear={handleClearCountry}
+          selectedCountryCode={selectedCountry?.code}
+        />
+
+        {/* City Search Modal */}
+        <Modal
+          visible={isCityPickerVisible}
+          animationType="slide"
+          presentationStyle={Platform.OS === 'ios' ? 'pageSheet' : 'fullScreen'}
+          onRequestClose={() => setCityPickerVisible(false)}
+        >
+          <CitySearchModal
+            countryCode={selectedCountry?.code || ''}
+            onSelect={handleCitySelect}
+            onClose={() => setCityPickerVisible(false)}
+          />
+        </Modal>
+
+        {/* Lead Detail Modal */}
+        <LeadDetailModal
+          lead={selectedLead}
+          visible={modalVisible}
+          onClose={() => {
             setModalVisible(false);
             setSelectedLead(null);
+            // Restore source tab if modal was opened from navigation (Home screen)
+            if (sourceTab && sourceTab !== selectedTab) {
+              setSelectedTab(sourceTab as any);
+            }
             setSourceTab(null);
-          } catch (error) {
-            console.error('Error adding to My Book from modal:', error);
-          }
-        } : undefined}
-      />
+          }}
+          onNotesUpdated={loadLeads} // Reload leads after notes are saved
+          onAddToMyBook={selectedLead && selectedLead.source_type !== 'community' ? async (lead) => {
+            if (!user) return;
+
+            try {
+              const userLeadId = (lead as any).user_lead_id;
+
+              if (userLeadId) {
+                await useLeadsStore.getState().promoteLeadToMyBook(userLeadId, user.id);
+                useLeadsStore.getState().updateLead(lead.id, { source_type: 'community' as Lead['source_type'] });
+
+                Toast.show({
+                  type: 'success',
+                  text1: t('leads.converted_successfully'),
+                });
+              } else {
+                const communityPost = {
+                  id: lead.id,
+                  user_id: user.id,
+                  post_type: 'LOAD_AVAILABLE' as const,
+                  status: 'active' as const,
+                  origin_city: lead.city || '',
+                  origin_country: lead.country || '',
+                  origin_lat: lead.latitude || 0,
+                  origin_lng: lead.longitude || 0,
+                  template_key: 'custom',
+                  created_at: new Date().toISOString(),
+                  profile: {
+                    full_name: lead.contact_person_name || lead.company_name,
+                    company_name: lead.company_name,
+                    phone_number: lead.phone || '',
+                    email: lead.email || '',
+                  },
+                  contact_phone: lead.phone || undefined,
+                  contact_whatsapp: !!lead.whatsapp,
+                } as unknown as CommunityPost;
+
+                await handleAddToMyBook(communityPost);
+              }
+
+              setModalVisible(false);
+              setSelectedLead(null);
+              setSourceTab(null);
+            } catch (error) {
+              console.error('Error adding to My Book from modal:', error);
+            }
+          } : undefined}
+        />
+      </View>
     </SafeAreaView>
   );
 }
