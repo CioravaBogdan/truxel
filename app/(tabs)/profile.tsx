@@ -10,6 +10,8 @@ import {
   ActivityIndicator,
   Image,
   Platform,
+  Modal,
+  FlatList,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -36,6 +38,7 @@ import {
   Sun,
   Monitor,
 } from 'lucide-react-native';
+import { Ionicons } from '@expo/vector-icons';
 import i18n from '@/lib/i18n';
 import { useTheme, Theme } from '@/lib/theme';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -45,6 +48,56 @@ import {
   INDUSTRIES,
   PHONE_COUNTRIES,
 } from '@/utils/constants';
+
+// Reusable Selection Modal
+const SelectionModal = ({
+  visible,
+  onClose,
+  title,
+  data,
+  onSelect,
+  renderItem,
+}: {
+  visible: boolean;
+  onClose: () => void;
+  title: string;
+  data: any[];
+  onSelect: (item: any) => void;
+  renderItem: (item: any) => React.ReactNode;
+}) => {
+  const { theme } = useTheme();
+  const styles = useMemo(() => createStyles(theme), [theme]);
+  
+  return (
+    <Modal visible={visible} animationType="slide" transparent onRequestClose={onClose}>
+      <View style={styles.modalOverlay}>
+        <View style={[styles.modalContent, { backgroundColor: theme.colors.card }]}>
+          <View style={styles.modalHeader}>
+            <Text style={[styles.modalTitle, { color: theme.colors.text }]}>{title}</Text>
+            <TouchableOpacity onPress={onClose}>
+              <Ionicons name="close" size={24} color={theme.colors.textSecondary} />
+            </TouchableOpacity>
+          </View>
+          <FlatList
+            data={data}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                style={[styles.modalItem, { borderBottomColor: theme.colors.border }]}
+                onPress={() => {
+                  onSelect(item);
+                  onClose();
+                }}
+              >
+                {renderItem(item)}
+              </TouchableOpacity>
+            )}
+          />
+        </View>
+      </View>
+    </Modal>
+  );
+};
 
 const SUBSCRIPTION_TIERS: Record<string, any> = {
   trial: { name: 'Trial', searches: 5 },
@@ -73,6 +126,15 @@ export default function ProfileScreen() {
   const [phoneNumberLocal, setPhoneNumberLocal] = useState('');
   const [phoneError, setPhoneError] = useState<string | null>(null);
   
+  // Modals
+  const [showLanguageModal, setShowLanguageModal] = useState(false);
+  const [showCountryModal, setShowCountryModal] = useState(false);
+
+  const currentLanguage = useMemo(
+    () => LANGUAGES.find((l) => l.code === i18n.language) || LANGUAGES[0],
+    [i18n.language]
+  );
+
   // Form state
   const [fullName, setFullName] = useState('');
   const [companyName, setCompanyName] = useState('');
@@ -465,6 +527,29 @@ export default function ProfileScreen() {
             </View>
           </Card>
 
+          {/* Language Section */}
+          <Card style={[styles.section, { borderColor: theme.colors.secondary, borderWidth: 1 }]}>
+            <View style={styles.rowBetween}>
+              <View>
+                <Text style={[styles.label, { color: theme.colors.text }]}>{t('profile.language')}</Text>
+                <Text style={[styles.value, { color: theme.colors.text, fontWeight: '700', fontSize: 18 }]}>
+                  {currentLanguage.flag} {currentLanguage.name}
+                </Text>
+              </View>
+              <TouchableOpacity
+                onPress={() => setShowLanguageModal(true)}
+                style={{
+                  backgroundColor: theme.colors.secondary,
+                  paddingHorizontal: 20,
+                  paddingVertical: 10,
+                  borderRadius: 8,
+                }}
+              >
+                <Text style={{ color: '#FFF', fontWeight: '700' }}>{t('common.edit')}</Text>
+              </TouchableOpacity>
+            </View>
+          </Card>
+
           {/* Profile Form */}
           <Card style={styles.section}>
             <Text style={styles.sectionTitle}>{t('profile.personal_info')}</Text>
@@ -499,39 +584,23 @@ export default function ProfileScreen() {
 
             <View style={styles.formGroup}>
               <Text style={styles.label}>{t('profile.phone_number')}</Text>
-              <Text style={styles.helperText}>{t('profile.phone_number_helper')}</Text>
-              <ScrollView
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={styles.phoneCountryList}
-              >
-                {PHONE_COUNTRIES.map((country) => {
-                  const isActive = selectedPhoneCountry === country.iso;
-                  return (
-                    <TouchableOpacity
-                      key={country.iso}
-                      style={[
-                        styles.phoneCountryChip,
-                        isActive && styles.phoneCountryChipActive,
-                      ]}
-                      onPress={() => {
-                        setHasUnsavedChanges(true);
-                        setSelectedPhoneCountry(country.iso);
-                      }}
-                    >
-                      <Text style={[styles.phoneCountryText, isActive && styles.phoneCountryTextActive]}>
-                        {country.flag} +{country.dialCode}
-                      </Text>
-                    </TouchableOpacity>
-                  );
-                })}
-              </ScrollView>
-              <View style={styles.phoneInputRow}>
-                <View style={styles.phoneDialCode}>
-                  <Text style={styles.phoneDialCodeText}>+{selectedCountry.dialCode}</Text>
-                </View>
+              <View style={styles.explanationContainer}>
+                <Text style={styles.explanation}>
+                  To be contacted by shippers and autocomplete emails to leads.
+                </Text>
+              </View>
+              <View style={styles.phoneRow}>
+                <TouchableOpacity
+                  style={styles.countryCode}
+                  onPress={() => setShowCountryModal(true)}
+                >
+                  <Text style={styles.countryCodeText}>
+                    {selectedCountry.flag} +{selectedCountry.dialCode}
+                  </Text>
+                  <Ionicons name="chevron-down" size={16} color={theme.colors.textSecondary} />
+                </TouchableOpacity>
                 <TextInput
-                  style={styles.phoneNumberInput}
+                  style={styles.phoneInput}
                   keyboardType="phone-pad"
                   value={phoneNumberLocal}
                   onChangeText={(value) => {
@@ -554,9 +623,11 @@ export default function ProfileScreen() {
               <Truck size={24} color={theme.colors.primary} />
               <Text style={styles.sectionTitle}>{t('profile.truck_type')}</Text>
             </View>
-            <Text style={styles.sectionDescription}>
-              {t('profile.truck_type_desc')}
-            </Text>
+            <View style={styles.explanationContainer}>
+                <Text style={styles.explanation}>
+                  To match you with relevant loads.
+                </Text>
+            </View>
 
             <View style={styles.chipContainer}>
               {TRUCK_TYPES.map((truck) => (
@@ -583,15 +654,73 @@ export default function ProfileScreen() {
               ))}
             </View>
           </Card>
+
+          {/* Distance Unit Selection */}
+          <Card style={styles.section}>
+            <View style={styles.sectionHeader}>
+              <MapPin size={24} color={theme.colors.primary} />
+              <Text style={styles.sectionTitle}>{t('profile.distance_unit')}</Text>
+            </View>
+            <View style={styles.explanationContainer}>
+                <Text style={styles.explanation}>
+                  Choose your preferred unit of measurement.
+                </Text>
+            </View>
+
+            <View style={styles.radiusContainer}>
+              <TouchableOpacity
+                style={[
+                  styles.optionButton,
+                  distanceUnit === 'km' && { borderColor: theme.colors.secondary, backgroundColor: theme.mode === 'dark' ? theme.colors.secondary + '20' : theme.colors.secondary + '10' },
+                ]}
+                onPress={() => {
+                  setHasUnsavedChanges(true);
+                  setDistanceUnit('km');
+                }}
+              >
+                <Text
+                  style={[
+                    styles.optionText,
+                    distanceUnit === 'km' && { color: theme.colors.secondary },
+                  ]}
+                >
+                  {t('profile.unit_km')}
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[
+                  styles.optionButton,
+                  distanceUnit === 'mi' && { borderColor: theme.colors.secondary, backgroundColor: theme.mode === 'dark' ? theme.colors.secondary + '20' : theme.colors.secondary + '10' },
+                ]}
+                onPress={() => {
+                  setHasUnsavedChanges(true);
+                  setDistanceUnit('mi');
+                }}
+              >
+                <Text
+                  style={[
+                    styles.optionText,
+                    distanceUnit === 'mi' && { color: theme.colors.secondary },
+                  ]}
+                >
+                  {t('profile.unit_mi')}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </Card>
+
           {/* Search Radius Selection */}
           <Card style={styles.section}>
             <View style={styles.sectionHeader}>
               <MapPin size={24} color={theme.colors.primary} />
               <Text style={styles.sectionTitle}>{t('profile.search_radius')}</Text>
             </View>
-            <Text style={styles.sectionDescription}>
-              {t('profile.search_radius_desc')}
-            </Text>
+            <View style={styles.explanationContainer}>
+                <Text style={styles.explanation}>
+                  How far from your location to search for leads.
+                </Text>
+            </View>
 
             {/* Warning about larger radius */}
             <View style={styles.radiusWarning}>
@@ -605,8 +734,8 @@ export default function ProfileScreen() {
                 <TouchableOpacity
                   key={option.value}
                   style={[
-                    styles.radiusButton,
-                    searchRadius === option.value && styles.radiusButtonSelected,
+                    styles.optionButton,
+                    searchRadius === option.value && { borderColor: theme.colors.secondary, backgroundColor: theme.mode === 'dark' ? theme.colors.secondary + '20' : theme.colors.secondary + '10' },
                   ]}
                   onPress={() => {
                     setHasUnsavedChanges(true);
@@ -615,8 +744,8 @@ export default function ProfileScreen() {
                 >
                   <Text
                     style={[
-                      styles.radiusText,
-                      searchRadius === option.value && styles.radiusTextSelected,
+                      styles.optionText,
+                      searchRadius === option.value && { color: theme.colors.secondary },
                     ]}
                   >
                     {option.label}
@@ -632,17 +761,19 @@ export default function ProfileScreen() {
               <MapPin size={24} color={theme.colors.primary} />
               <Text style={styles.sectionTitle}>{t('profile.notification_radius') || 'Notification Radius'}</Text>
             </View>
-            <Text style={styles.sectionDescription}>
-              {t('profile.notification_radius_desc') || 'Set the radius for receiving notifications about new loads or drivers.'}
-            </Text>
+            <View style={styles.explanationContainer}>
+                <Text style={styles.explanation}>
+                  Receive alerts for leads within this range.
+                </Text>
+            </View>
 
             <View style={styles.radiusContainer}>
               {SEARCH_RADIUS_OPTIONS.map((option) => (
                 <TouchableOpacity
                   key={`notif-${option.value}`}
                   style={[
-                    styles.radiusButton,
-                    notificationRadius === option.value && styles.radiusButtonSelected,
+                    styles.optionButton,
+                    notificationRadius === option.value && { borderColor: theme.colors.secondary, backgroundColor: theme.mode === 'dark' ? theme.colors.secondary + '20' : theme.colors.secondary + '10' },
                   ]}
                   onPress={() => {
                     setHasUnsavedChanges(true);
@@ -651,67 +782,14 @@ export default function ProfileScreen() {
                 >
                   <Text
                     style={[
-                      styles.radiusText,
-                      notificationRadius === option.value && styles.radiusTextSelected,
+                      styles.optionText,
+                      notificationRadius === option.value && { color: theme.colors.secondary },
                     ]}
                   >
                     {option.label}
                   </Text>
                 </TouchableOpacity>
               ))}
-            </View>
-          </Card>
-
-          {/* Distance Unit Selection */}
-          <Card style={styles.section}>
-            <View style={styles.sectionHeader}>
-              <MapPin size={24} color={theme.colors.primary} />
-              <Text style={styles.sectionTitle}>{t('profile.distance_unit')}</Text>
-            </View>
-            <Text style={styles.sectionDescription}>
-              {t('profile.distance_unit_desc')}
-            </Text>
-
-            <View style={styles.radiusContainer}>
-              <TouchableOpacity
-                style={[
-                  styles.radiusButton,
-                  distanceUnit === 'km' && styles.radiusButtonSelected,
-                ]}
-                onPress={() => {
-                  setHasUnsavedChanges(true);
-                  setDistanceUnit('km');
-                }}
-              >
-                <Text
-                  style={[
-                    styles.radiusText,
-                    distanceUnit === 'km' && styles.radiusTextSelected,
-                  ]}
-                >
-                  {t('profile.unit_km')}
-                </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={[
-                  styles.radiusButton,
-                  distanceUnit === 'mi' && styles.radiusButtonSelected,
-                ]}
-                onPress={() => {
-                  setHasUnsavedChanges(true);
-                  setDistanceUnit('mi');
-                }}
-              >
-                <Text
-                  style={[
-                    styles.radiusText,
-                    distanceUnit === 'mi' && styles.radiusTextSelected,
-                  ]}
-                >
-                  {t('profile.unit_mi')}
-                </Text>
-              </TouchableOpacity>
             </View>
           </Card>
 
@@ -723,9 +801,11 @@ export default function ProfileScreen() {
                 {t('profile.preferred_industries')}
               </Text>
             </View>
-            <Text style={styles.sectionDescription}>
-              {t('profile.industries_desc', { count: selectedIndustries.length })}
-            </Text>
+            <View style={styles.explanationContainer}>
+                <Text style={styles.explanation}>
+                  Select industries you specialize in (max 5).
+                </Text>
+            </View>
 
             <View style={styles.chipContainer}>
               {INDUSTRIES.map((industry) => {
@@ -850,32 +930,7 @@ export default function ProfileScreen() {
             </View>
           </Card>
 
-          <Card style={styles.section}>
-            <Text style={styles.sectionTitle}>{t('profile.language')}</Text>
 
-            <View style={styles.languageGrid}>
-              {LANGUAGES.map((lang) => (
-                <TouchableOpacity
-                  key={lang.code}
-                  style={[
-                    styles.languageButton,
-                    i18n.language === lang.code && styles.languageButtonActive,
-                  ]}
-                  onPress={() => handleChangeLanguage(lang.code)}
-                >
-                  <Text style={styles.languageFlag}>{lang.flag}</Text>
-                  <Text
-                    style={[
-                      styles.languageName,
-                      i18n.language === lang.code && styles.languageNameActive,
-                    ]}
-                  >
-                    {lang.name}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-          </Card>
 
           {/* Support Button */}
           <TouchableOpacity
@@ -919,6 +974,38 @@ export default function ProfileScreen() {
           </View>
         </View>
       </ScrollView>
+
+      {/* Language Selection Modal */}
+      <SelectionModal
+        visible={showLanguageModal}
+        onClose={() => setShowLanguageModal(false)}
+        title={t('profile.language')}
+        data={LANGUAGES}
+        onSelect={(lang) => handleChangeLanguage(lang.code)}
+        renderItem={(item) => (
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
+            <Text style={{ fontSize: 24 }}>{item.flag}</Text>
+            <Text style={{ fontSize: 16, color: theme.colors.text }}>{item.name}</Text>
+          </View>
+        )}
+      />
+
+      {/* Phone Country Selection Modal */}
+      <SelectionModal
+        visible={showCountryModal}
+        onClose={() => setShowCountryModal(false)}
+        title={t('profile.select_country') || 'Select Country'}
+        data={PHONE_COUNTRIES}
+        onSelect={(country) => setSelectedPhoneCountry(country.iso)}
+        renderItem={(item) => (
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
+            <Text style={{ fontSize: 24 }}>{item.flag}</Text>
+            <Text style={{ fontSize: 16, color: theme.colors.text }}>
+              {item.name} (+{item.dialCode})
+            </Text>
+          </View>
+        )}
+      />
 
       {/* Chat Support Modal */}
       <ChatSupportModal
@@ -1326,6 +1413,7 @@ const createStyles = (theme: Theme) => StyleSheet.create({
   avatarContainer: {
     position: 'relative',
     marginBottom: 20,
+    borderRadius: 100,
     ...theme.shadows.large,
   },
   avatarImage: {
@@ -1378,4 +1466,67 @@ const createStyles = (theme: Theme) => StyleSheet.create({
     fontSize: 16,
     color: theme.colors.textSecondary,
   },
+  // New Styles from Complete Profile
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'flex-end',
+  },
+  modalContent: {
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    maxHeight: '80%',
+    paddingBottom: 40,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: theme.colors.border,
+  },
+  modalTitle: { fontSize: 20, fontWeight: '700' },
+  modalItem: { padding: 16, borderBottomWidth: 1 },
+  modalItemText: { fontSize: 16 },
+  explanationContainer: {
+    padding: 12,
+    borderRadius: 8,
+    marginBottom: 12,
+    borderLeftWidth: 4,
+    borderLeftColor: '#FF5722', // theme.colors.secondary
+    backgroundColor: theme.mode === 'dark' ? '#FF572215' : '#FF572210',
+  },
+  explanation: { fontSize: 14, lineHeight: 20, fontWeight: '500', color: theme.colors.text },
+  rowBetween: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  value: { fontSize: 16 },
+  phoneRow: {
+    flexDirection: 'row',
+    borderWidth: 1,
+    borderRadius: 12,
+    height: 50,
+    overflow: 'hidden',
+    borderColor: theme.colors.border,
+    backgroundColor: theme.colors.card,
+  },
+  countryCode: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 12,
+    borderRightWidth: 1,
+    gap: 4,
+    borderRightColor: theme.colors.border,
+  },
+  countryCodeText: { fontSize: 15, fontWeight: '500', color: theme.colors.text },
+  phoneInput: { flex: 1, paddingHorizontal: 12, fontSize: 16, color: theme.colors.text },
+  optionButton: {
+    flex: 1,
+    minWidth: '30%',
+    paddingVertical: 12,
+    alignItems: 'center',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: theme.colors.border,
+  },
+  optionText: { fontSize: 14, fontWeight: '600', color: theme.colors.text },
 });
