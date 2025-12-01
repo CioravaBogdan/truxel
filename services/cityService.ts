@@ -201,6 +201,22 @@ class CityService {
       const nearestMajor = await this.findNearestMajorCityWithDetails(latitude, longitude);
 
       const locality = reverseGeo?.city || reverseGeo?.district || reverseGeo?.name || reverseGeo?.subregion || undefined;
+      
+      // Try to find the exact city object in database
+      let exactCity: City | null = null;
+      if (locality) {
+        const { data } = await supabase
+          .from('cities')
+          .select('*')
+          .ilike('name', locality)
+          .limit(1)
+          .maybeSingle();
+        
+        if (data) {
+          exactCity = data as City;
+        }
+      }
+
       const region = reverseGeo?.region || reverseGeo?.subregion || undefined;
       const country = reverseGeo?.country || nearestMajor?.city.country_name;
 
@@ -223,6 +239,7 @@ class CityService {
         nearestMajorCityId: nearestMajor?.city.id,
         distanceToMajor: nearestMajor?.distance,
         directionFromMajor: nearestMajor?.direction,
+        detectedCity: exactCity, // Return the exact city object if found
       };
     } catch (error) {
       console.error('Error getting current location:', error);
@@ -439,7 +456,7 @@ class CityService {
     formattedLocation?: string;
   }): void {
     // N8N webhook URL from environment variables
-    const webhookUrl = Constants.expoConfig?.extra?.n8nCityWebhook || 'https://n8n.byinfant.com/webhook/700ac3c5-d6aa-4e35-9181-39fe0f48d7bf';
+    const webhookUrl = Constants.expoConfig?.extra?.n8nCityWebhook || 'https://automation.truxel.io/webhook/700ac3c5-d6aa-4e35-9181-39fe0f48d7bf';
     
     const payload = {
       lat: locationData.latitude,

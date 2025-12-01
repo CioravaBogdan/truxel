@@ -292,7 +292,7 @@ CREATE TRIGGER update_leads_updated_at
 ### 4. Configure n8n Webhook
 
 Your n8n workflow should:
-1. Receive webhook POST requests at `https://n8n.byinfant.com/webhook/logistics-lead-webhook`
+1. Receive webhook POST requests at `https://automation.truxel.io/webhook/logistics-lead-webhook`
 2. Process the search parameters (keywords, location, radius)
 3. Scrape/fetch company data from Google Maps or other sources
 4. Insert leads into Supabase `leads` table with matching `user_id` and `source_search_id`

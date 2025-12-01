@@ -26,7 +26,7 @@ Message appears in chat window
 ## Step 1: Webhook Receives Message
 
 Your existing webhook continues to work:
-- URL: `https://n8n.byinfant.com/webhook/70100ffe-0d06-4cff-9ad1-b7001713ab5c`
+- URL: `https://automation.truxel.io/webhook/70100ffe-0d06-4cff-9ad1-b7001713ab5c`
 - Method: POST
 - Content-Type: application/json
 

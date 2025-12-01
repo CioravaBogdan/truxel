@@ -37,7 +37,7 @@ EXPO_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 
 Your n8n workflow must:
 
-1. **Receive POST request** at: `https://n8n.byinfant.com/webhook/logistics-lead-webhook`
+1. **Receive POST request** at: `https://automation.truxel.io/webhook/logistics-lead-webhook`
 
 2. **Extract these parameters**:
    - `search_id` (uuid)

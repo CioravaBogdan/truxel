@@ -9,7 +9,7 @@ This document describes the complete N8N workflow for the Truxel chat support sy
 
 ## Webhook Configuration ✅ (Already Done)
 
-**URL:** `https://n8n.byinfant.com/webhook/70100ffe-0d06-4cff-9ad1-b7001713ab5c`
+**URL:** `https://automation.truxel.io/webhook/70100ffe-0d06-4cff-9ad1-b7001713ab5c`
 **Method:** POST
 **Content-Type:** application/json
 
@@ -298,7 +298,7 @@ $body = @{
   deviceInfo = "ios 18.6"
 } | ConvertTo-Json
 
-Invoke-WebRequest -Uri 'https://n8n.byinfant.com/webhook/70100ffe-0d06-4cff-9ad1-b7001713ab5c' -Method POST -Body $body -ContentType 'application/json'
+Invoke-WebRequest -Uri 'https://automation.truxel.io/webhook/70100ffe-0d06-4cff-9ad1-b7001713ab5c' -Method POST -Body $body -ContentType 'application/json'
 ```
 
 ### 2. Test with Real User Data

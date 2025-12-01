@@ -43,7 +43,7 @@
 ## 📋 Next Steps - N8N Setup
 
 ### Step 1: Import Workflow
-1. Open N8N: https://n8n.byinfant.com
+1. Open N8N: https://automation.truxel.io
 2. Click "Import from File"
 3. Select: `n8n-workflow-support-chat.json` (in project root)
 4. Workflow imported! ✅

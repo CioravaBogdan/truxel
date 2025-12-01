@@ -82,7 +82,7 @@
    Should show your message with `sender_type = 'user'`
 
 7. **Check N8N webhook** (if configured):
-   - Go to N8N: https://n8n.byinfant.com
+   - Go to N8N: https://automation.truxel.io
    - Check executions → Should see webhook received
    - Payload should include: `conversationId`, `message`, `userId`
 

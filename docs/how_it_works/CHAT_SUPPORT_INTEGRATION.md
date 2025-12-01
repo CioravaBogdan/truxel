@@ -6,7 +6,7 @@ Integrated in-app chat support system with N8N webhook backend for AI-powered as
 
 ## N8N Webhook Details
 
-**Webhook URL:** `https://n8n.byinfant.com/webhook/70100ffe-0d06-4cff-9ad1-b7001713ab5c`
+**Webhook URL:** `https://automation.truxel.io/webhook/70100ffe-0d06-4cff-9ad1-b7001713ab5c`
 
 **Method:** GET (with query parameters)
 
@@ -113,7 +113,7 @@ Templates are i18n-ready with translation keys in all supported languages.
 
 **Request Format:**
 ```
-GET https://n8n.byinfant.com/webhook/70100ffe-0d06-4cff-9ad1-b7001713ab5c?
+GET https://automation.truxel.io/webhook/70100ffe-0d06-4cff-9ad1-b7001713ab5c?
   userId=user-123&
   userName=Acme+Logistics&
   userEmail=user@example.com&
@@ -239,7 +239,7 @@ npx expo start
 ### Webhook Testing (PowerShell)
 ```powershell
 # Test N8N webhook directly
-Invoke-WebRequest -Uri 'https://n8n.byinfant.com/webhook/70100ffe-0d06-4cff-9ad1-b7001713ab5c?userId=test-user-123&userName=TestUser&message=Hello from Truxel&platform=ios' -Method GET
+Invoke-WebRequest -Uri 'https://automation.truxel.io/webhook/70100ffe-0d06-4cff-9ad1-b7001713ab5c?userId=test-user-123&userName=TestUser&message=Hello from Truxel&platform=ios' -Method GET
 ```
 
 **Expected Output:**
@@ -376,7 +376,7 @@ To complete the support system, configure N8N workflow:
 ## User Request & Implementation
 
 **User Request:**
-> "apropo de chat, integreaza te rog un chat support si trimite mesajele cum ai zis/payload catre acest webhook https://n8n.byinfant.com/webhook/70100ffe-0d06-4cff-9ad1-b7001713ab5c, POTI SA-L TESTEZI, VEI PRIMI SI UN RESPOND ,dar nu e complet moementabn,trebuie sa creez si flow-ul sa raspunda la intrebari si probleme"
+> "apropo de chat, integreaza te rog un chat support si trimite mesajele cum ai zis/payload catre acest webhook https://automation.truxel.io/webhook/70100ffe-0d06-4cff-9ad1-b7001713ab5c, POTI SA-L TESTEZI, VEI PRIMI SI UN RESPOND ,dar nu e complet moementabn,trebuie sa creez si flow-ul sa raspunda la intrebari si probleme"
 
 **Implementation Time:** ~45 minutes (service + UI + translations + docs)
 
@@ -391,7 +391,7 @@ To complete the support system, configure N8N workflow:
 ## Contact Information
 
 **Webhook Owner:** office@infant.ro
-**N8N Instance:** https://n8n.byinfant.com
+**N8N Instance:** https://automation.truxel.io
 **Support Email:** (To be configured in N8N workflow)
 **WhatsApp Business:** (Existing number - can be integrated)
 

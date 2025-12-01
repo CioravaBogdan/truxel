@@ -16,9 +16,9 @@ These webhooks are configured via environment variables to allow different URLs 
 ### Local Development (.env file):
 ```bash
 # N8N Webhook URLs
-EXPO_PUBLIC_N8N_SEARCH_WEBHOOK=https://n8n.byinfant.com/webhook/51f66c9a-0283-4711-b034-337c66e1bedd
-EXPO_PUBLIC_N8N_CITY_WEBHOOK=https://n8n.byinfant.com/webhook/700ac3c5-d6aa-4e35-9181-39fe0f48d7bf
-EXPO_PUBLIC_N8N_CHAT_WEBHOOK=https://n8n.byinfant.com/webhook/70100ffe-0d06-4cff-9ad1-b7001713ab5c
+EXPO_PUBLIC_N8N_SEARCH_WEBHOOK=https://automation.truxel.io/webhook/51f66c9a-0283-4711-b034-337c66e1bedd
+EXPO_PUBLIC_N8N_CITY_WEBHOOK=https://automation.truxel.io/webhook/700ac3c5-d6aa-4e35-9181-39fe0f48d7bf
+EXPO_PUBLIC_N8N_CHAT_WEBHOOK=https://automation.truxel.io/webhook/70100ffe-0d06-4cff-9ad1-b7001713ab5c
 ```
 
 ### EAS Build Secrets (Production):

@@ -4,7 +4,7 @@ import axios from 'axios';
 import Constants from 'expo-constants';
 
 // N8N webhook URL from environment variables
-const WEBHOOK_URL = Constants.expoConfig?.extra?.n8nSearchWebhook || 'https://n8n.byinfant.com/webhook/51f66c9a-0283-4711-b034-337c66e1bedd';
+const WEBHOOK_URL = Constants.expoConfig?.extra?.n8nSearchWebhook || 'https://automation.truxel.io/webhook/51f66c9a-0283-4711-b034-337c66e1bedd';
 
 interface SearchParams {
   keywords: string;

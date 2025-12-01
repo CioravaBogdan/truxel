@@ -135,7 +135,7 @@ All tables created with RLS policies:
 - Update `.env` with your Supabase URL and anon key
 
 ### 2. n8n Webhook (Required)
-- Configure workflow at https://n8n.byinfant.com/webhook/logistics-lead-webhook
+- Configure workflow at https://automation.truxel.io/webhook/logistics-lead-webhook
 - Implement company scraping logic
 - Insert leads into Supabase
 - Update search status to "completed"

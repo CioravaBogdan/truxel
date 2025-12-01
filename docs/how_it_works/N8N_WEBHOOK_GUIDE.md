@@ -2,7 +2,7 @@
 
 ## Webhook Endpoint
 
-**URL**: `https://n8n.byinfant.com/webhook/truxel-webhook`
+**URL**: `https://automation.truxel.io/webhook/truxel-webhook`
 **Method**: POST
 **Content-Type**: application/json
 
@@ -164,7 +164,7 @@ If search fails:
 ### Using curl:
 
 ```bash
-curl -X POST https://n8n.byinfant.com/webhook/truxel-webhook \
+curl -X POST https://automation.truxel.io/webhook/truxel-webhook \
   -H "Content-Type: application/json" \
   -d '{
     "search_id": "550e8400-e29b-41d4-a716-446655440000",

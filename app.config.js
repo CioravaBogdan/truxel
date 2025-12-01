@@ -111,9 +111,9 @@ export default {
       revenueCatWebKey: process.env.TRUXEL_REVENUECAT_WEB_KEY || '',
       revenueCatWebAppId: process.env.TRUXEL_REVENUECAT_WEB_APP_ID || '',
       // N8N Webhook URLs (for analytics and automation)
-      n8nSearchWebhook: process.env.TRUXEL_N8N_SEARCH_WEBHOOK,
-      n8nCityWebhook: process.env.TRUXEL_N8N_CITY_WEBHOOK,
-      n8nChatWebhook: process.env.TRUXEL_N8N_CHAT_WEBHOOK,
+      n8nSearchWebhook: process.env.TRUXEL_N8N_SEARCH_WEBHOOK || 'https://automation.truxel.io/webhook/51f66c9a-0283-4711-b034-337c66e1bedd',
+      n8nCityWebhook: process.env.TRUXEL_N8N_CITY_WEBHOOK || 'https://automation.truxel.io/webhook/700ac3c5-d6aa-4e35-9181-39fe0f48d7bf',
+      n8nChatWebhook: process.env.TRUXEL_N8N_CHAT_WEBHOOK || 'https://automation.truxel.io/webhook/70100ffe-0d06-4cff-9ad1-b7001713ab5c',
       eas: {
         projectId: "ec6e92c9-663d-4a34-a69a-88ce0ddaafab"
       }

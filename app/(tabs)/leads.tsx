@@ -104,6 +104,7 @@ export default function LeadsScreen() {
   const [isCountryPickerVisible, setCountryPickerVisible] = useState(false);
   const [isCityPickerVisible, setCityPickerVisible] = useState(false);
   const [isInitializingFilters, setIsInitializingFilters] = useState(true);
+  const hasInitialized = React.useRef(false);
 
   // Initialize filters with GPS location (on mount)
   const initializeFilters = useCallback(async () => {
@@ -113,8 +114,15 @@ export default function LeadsScreen() {
       return;
     }
 
+    // Prevent re-initialization if already done
+    if (hasInitialized.current) {
+      setIsInitializingFilters(false);
+      return;
+    }
+
     // Only initialize if filters are not already set (e.g. from Search tab navigation)
     if (selectedCountry || selectedCity) {
+      hasInitialized.current = true;
       setIsInitializingFilters(false);
       return;
     }
@@ -131,6 +139,7 @@ export default function LeadsScreen() {
         setSelectedCountry({ code: country_code, name: country_name });
         setSelectedCity(targetCity); // Pass full City object
       }
+      hasInitialized.current = true;
     } catch (error) {
       console.log('[LeadsScreen] GPS initialization failed (non-critical):', error);
     } finally {

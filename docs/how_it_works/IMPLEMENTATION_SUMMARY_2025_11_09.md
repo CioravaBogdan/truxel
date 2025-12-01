@@ -30,7 +30,7 @@ Created defensive initialization pattern:
 ## 2. Chat Support Integration ✅
 
 ### User Request
-> "integreaza te rog un chat support si trimite mesajele cum ai zis/payload catre acest webhook https://n8n.byinfant.com/webhook/70100ffe-0d06-4cff-9ad1-b7001713ab5c"
+> "integreaza te rog un chat support si trimite mesajele cum ai zis/payload catre acest webhook https://automation.truxel.io/webhook/70100ffe-0d06-4cff-9ad1-b7001713ab5c"
 
 ### Implementation
 
@@ -63,7 +63,7 @@ Created defensive initialization pattern:
 - ⚠️ Other languages need translation (PL, TR, LT, ES, UK, FR, DE, IT)
 
 ### N8N Webhook Details
-- **URL:** `https://n8n.byinfant.com/webhook/70100ffe-0d06-4cff-9ad1-b7001713ab5c`
+- **URL:** `https://automation.truxel.io/webhook/70100ffe-0d06-4cff-9ad1-b7001713ab5c`
 - **Method:** GET
 - **Status:** Active (response flow incomplete - needs AI agent config)
 
@@ -169,7 +169,7 @@ feat(support): integrated N8N webhook chat support system
 - Added i18n translations (EN, RO) with 5 quick templates
 - User context included in webhook payload (language, tier, device)
 
-Webhook: https://n8n.byinfant.com/webhook/70100ffe-0d06-4cff-9ad1-b7001713ab5c
+Webhook: https://automation.truxel.io/webhook/70100ffe-0d06-4cff-9ad1-b7001713ab5c
 Status: Ready for N8N AI agent flow configuration
 ```
 
