@@ -319,6 +319,19 @@ export default function LoginScreen() {
                 )}
               />
 
+              <View style={styles.forgotPasswordContainer}>
+                <TouchableOpacity onPress={() => router.push('/(auth)/forgot-password')}>
+                  <Text style={[styles.forgotPasswordText, { color: theme.colors.primary }]}>
+                    {t('auth.forgot_password_question')}
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => router.push('/(auth)/resend-confirmation')} style={{ marginTop: 8 }}>
+                  <Text style={[styles.forgotPasswordText, { color: theme.colors.textSecondary, fontSize: 12 }]}>
+                    {t('auth.resend_confirmation')}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+
               <Button
                 title={t('auth.sign_in')}
                 onPress={handleSubmit(onSubmit)}
@@ -439,6 +452,15 @@ const styles = StyleSheet.create({
   },
   form: {
     width: '100%',
+  },
+  forgotPasswordContainer: {
+    alignItems: 'flex-end',
+    marginBottom: 16,
+    marginTop: -8,
+  },
+  forgotPasswordText: {
+    fontSize: 14,
+    fontWeight: '600',
   },
   button: {
     marginTop: 8,

@@ -6,58 +6,103 @@ import { useTheme } from '@/lib/theme';
 import { WebFooter } from '@/components/web/WebFooter';
 import { SeoHead } from '@/components/web/SeoHead';
 import { useTranslation } from 'react-i18next';
+import { supabase } from '@/lib/supabase';
 
 export default function VerifyEmailPage() {
   const { theme } = useTheme();
   const { t } = useTranslation();
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
   const [tokens, setTokens] = useState<{ access_token?: string; refresh_token?: string } | null>(null);
+  const [authType, setAuthType] = useState<string | null>(null);
 
   useEffect(() => {
-    // Parse hash parameters from URL
-    if (Platform.OS === 'web') {
-      const hash = window.location.hash.substring(1); // Remove #
-      const params = new URLSearchParams(hash);
-      
-      const accessToken = params.get('access_token');
-      const refreshToken = params.get('refresh_token');
-      const error = params.get('error');
-      const errorDescription = params.get('error_description');
+    if (Platform.OS !== 'web') return;
 
-      if (error) {
-        console.error('Verification error:', error, errorDescription);
-        setStatus('error');
-      } else if (accessToken) {
-        setTokens({ access_token: accessToken, refresh_token: refreshToken || undefined });
-        setStatus('success');
-        
-        // Attempt to open app automatically after a short delay
-        setTimeout(() => {
-          openApp(accessToken, refreshToken || undefined);
-        }, 1000);
-      } else {
-        // If no hash, check query params (sometimes Supabase sends them there)
-        const searchParams = new URLSearchParams(window.location.search);
-        const code = searchParams.get('code'); // PKCE flow
-        
-        if (code) {
-           // If we have a code, we might need to exchange it, but usually for implicit flow we get tokens in hash
-           // For now, assume if we reached here without tokens in hash, it might be just a landing
-           setStatus('error'); 
-        } else {
-           // Just landed here without params?
-           setStatus('error');
-        }
-      }
+    // 1. Check for explicit errors in URL (hash or query)
+    const hash = window.location.hash.substring(1);
+    const hashParams = new URLSearchParams(hash);
+    const searchParams = new URLSearchParams(window.location.search);
+
+    const error = hashParams.get('error') || searchParams.get('error');
+    const errorDescription = hashParams.get('error_description') || searchParams.get('error_description');
+
+    if (error) {
+      console.error('Verification error:', error, errorDescription);
+      setStatus('error');
+      return;
     }
+
+    // Capture auth type (e.g. recovery, signup, invite)
+    const type = hashParams.get('type') || searchParams.get('type');
+    if (type) setAuthType(type);
+
+    // 2. Check for Implicit Flow tokens (access_token in hash)
+    const accessToken = hashParams.get('access_token');
+    const refreshToken = hashParams.get('refresh_token');
+
+    if (accessToken) {
+      setTokens({ access_token: accessToken, refresh_token: refreshToken || undefined });
+      setStatus('success');
+      setTimeout(() => openApp(accessToken, refreshToken || undefined, type || undefined), 1000);
+      return;
+    }
+
+    // 3. Check for PKCE Flow (code in query)
+    const code = searchParams.get('code');
+    if (code) {
+      // If we have a code, Supabase client (initialized with detectSessionInUrl: true)
+      // should automatically exchange it. We just wait for the session.
+      console.log('PKCE code detected, waiting for session...');
+    }
+
+    // 4. Listen for session (handles PKCE exchange success)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log('Auth state change:', event);
+      if (event === 'SIGNED_IN' && session) {
+        setTokens({ access_token: session.access_token, refresh_token: session.refresh_token });
+        setStatus('success');
+        // For PKCE, type might not be in URL anymore if Supabase cleaned it up, 
+        // but we captured it from initial URL params above if it was there.
+        // Also event might be PASSWORD_RECOVERY if Supabase detected it.
+        const finalType = (event === 'PASSWORD_RECOVERY') ? 'recovery' : (type || undefined);
+        setTimeout(() => openApp(session.access_token, session.refresh_token, finalType), 1000);
+      } else if (event === 'PASSWORD_RECOVERY' && session) {
+         // Explicit recovery event
+         setTokens({ access_token: session.access_token, refresh_token: session.refresh_token });
+         setStatus('success');
+         setTimeout(() => openApp(session.access_token, session.refresh_token, 'recovery'), 1000);
+      }
+    });
+
+    // 5. Check if session is already active
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
+        setTokens({ access_token: session.access_token, refresh_token: session.refresh_token });
+        setStatus('success');
+        setTimeout(() => openApp(session.access_token, session.refresh_token, type || undefined), 1000);
+      } else if (!code) {
+        // No error, no token, no code, no session -> Unknown state (maybe just visited page)
+        // But don't show error immediately if we are waiting for something?
+        // If truly nothing, maybe show error or redirect home.
+        // For now, if no code and no session, it's likely an error or invalid link.
+        setStatus('error');
+      }
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
-  const openApp = (accessToken?: string, refreshToken?: string) => {
+  const openApp = (accessToken?: string, refreshToken?: string, type?: string) => {
     if (!accessToken) return;
     
     // Construct deep link with tokens
     // We use the same hash format that the app expects
-    const deepLink = `truxel://auth/callback#access_token=${accessToken}&refresh_token=${refreshToken || ''}`;
+    let deepLink = `truxel://auth/callback#access_token=${accessToken}&refresh_token=${refreshToken || ''}`;
+    if (type) {
+      deepLink += `&type=${type}`;
+    }
     
     window.location.href = deepLink;
   };
@@ -92,7 +137,7 @@ export default function VerifyEmailPage() {
                 
                 <TouchableOpacity
                   style={styles.button}
-                  onPress={() => openApp(tokens?.access_token, tokens?.refresh_token)}
+                  onPress={() => openApp(tokens?.access_token, tokens?.refresh_token, authType || undefined)}
                 >
                   <Text style={styles.buttonText}>{t('web.verify_email.button_open_app')}</Text>
                 </TouchableOpacity>

@@ -97,6 +97,21 @@ export const authService = {
     if (error) throw error;
   },
 
+  async resendConfirmation(email: string) {
+    const redirectTo = Platform.OS === 'web'
+      ? window.location.origin
+      : 'https://truxel.io/verify-email';
+
+    const { error } = await supabase.auth.resend({
+      type: 'signup',
+      email,
+      options: {
+        emailRedirectTo: redirectTo,
+      }
+    });
+    if (error) throw error;
+  },
+
   async getProfile(
     userId: string,
     accessToken?: string,

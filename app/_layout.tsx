@@ -18,6 +18,8 @@ import { ThemeProvider } from '@/lib/theme';
 import { useNotificationStore } from '@/store/notificationStore';
 import * as Notifications from 'expo-notifications';
 import { Audio } from 'expo-av';
+import * as Linking from 'expo-linking';
+import { supabase } from '@/lib/supabase';
 
 // Configure global notification handler
 Notifications.setNotificationHandler({
@@ -35,11 +37,55 @@ export default function RootLayout() {
   const [isNavigationReady, setIsNavigationReady] = useState(false);
   const [nativeModulesReady, setNativeModulesReady] = useState(false);
   const [revenueCatReady, setRevenueCatReady] = useState(false);
+  const [isPasswordRecovery, setIsPasswordRecovery] = useState(false);
 
   const router = useRouter();
   const segments = useSegments();
   const { setSession, setUser, setProfile, setIsLoading, isAuthenticated, isLoading, profile } = useAuthStore();
   const { subscribeToNotifications, fetchNotifications } = useNotificationStore();
+
+  // Handle deep links (Password Reset, Email Verification)
+  useEffect(() => {
+    const handleDeepLink = async (event: { url: string }) => {
+      const { url } = event;
+      console.log('RootLayout: Deep link received:', url);
+      
+      if (url.includes('access_token') && url.includes('refresh_token')) {
+         const hashIndex = url.indexOf('#');
+         if (hashIndex !== -1) {
+             const hash = url.substring(hashIndex + 1);
+             const params = new URLSearchParams(hash);
+             const access_token = params.get('access_token');
+             const refresh_token = params.get('refresh_token');
+             const type = params.get('type');
+             
+             if (type === 'recovery') {
+                 console.log('RootLayout: Recovery type detected in deep link');
+                 setIsPasswordRecovery(true);
+             }
+
+             if (access_token && refresh_token) {
+                 console.log('RootLayout: Setting session from deep link tokens');
+                 const { error } = await supabase.auth.setSession({
+                     access_token,
+                     refresh_token,
+                 });
+                 if (error) console.error('RootLayout: Failed to set session from deep link:', error);
+             }
+         }
+      }
+    };
+
+    const subscription = Linking.addEventListener('url', handleDeepLink);
+    
+    Linking.getInitialURL().then((url) => {
+        if (url) handleDeepLink({ url });
+    });
+
+    return () => {
+        subscription.remove();
+    };
+  }, []);
 
   // Initialize native modules first (prevents iOS crashes)
   useEffect(() => {
@@ -137,6 +183,12 @@ export default function RootLayout() {
     const { data: authListener } = authService.onAuthStateChange(
       async (event, session) => {
         console.log('RootLayout: Auth state changed:', { event, hasSession: !!session });
+        
+        if (event === 'PASSWORD_RECOVERY') {
+          console.log('RootLayout: Password recovery event detected');
+          setIsPasswordRecovery(true);
+        }
+
         setSession(session);
         setUser(session?.user || null);
 
@@ -287,6 +339,7 @@ export default function RootLayout() {
     const inWebGroup = segments[0] === '(web)';
     const isRootScreen = !segments[0];
     const inCompleteProfile = segments[1] === 'complete-profile';
+    const inUpdatePassword = segments[1] === 'update-password';
     
     // Check profile completeness
     const isProfileComplete = !!(profile?.phone_number && profile?.company_name);
@@ -298,6 +351,8 @@ export default function RootLayout() {
       isRootScreen,
       isProfileComplete,
       inCompleteProfile,
+      inUpdatePassword,
+      isPasswordRecovery,
       segments,
       currentPath: segments.join('/'),
     });
@@ -314,7 +369,12 @@ export default function RootLayout() {
     } 
     // Authenticated logic
     else if (isAuthenticated) {
-      if (!isProfileComplete && !inCompleteProfile) {
+      if (isPasswordRecovery) {
+        if (!inUpdatePassword) {
+          console.log('RootLayout: Password recovery mode, redirecting to update-password');
+          router.replace('/(auth)/update-password');
+        }
+      } else if (!isProfileComplete && !inCompleteProfile) {
         console.log('RootLayout: Profile incomplete, redirecting to complete-profile');
         router.replace('/(auth)/complete-profile');
       } else if (isProfileComplete && (inAuthGroup || (isRootScreen && Platform.OS !== 'web'))) {
@@ -325,7 +385,7 @@ export default function RootLayout() {
     } else {
       console.log('RootLayout: No navigation needed, staying on current screen');
     }
-  }, [isAuthenticated, segments, isNavigationReady, router, isLoading, profile]);
+  }, [isAuthenticated, segments, isNavigationReady, router, isLoading, profile, isPasswordRecovery]);
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
