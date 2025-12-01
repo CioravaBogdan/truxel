@@ -118,7 +118,14 @@ export default function HomeScreen() {
           {leads.length > 5 && (
             <TouchableOpacity
               onPress={() => {
-                setSelectedTab('search');
+                // Reset filters to ensure we see all results
+                useLeadsStore.getState().setSelectedCountry(null);
+                useLeadsStore.getState().setSelectedCity(null);
+                useLeadsStore.getState().setFilterStatus('all');
+                useLeadsStore.getState().setFilterContactType('all');
+                useLeadsStore.getState().setSearchQuery('');
+                
+                setSelectedTab('latest');
                 router.push('/(tabs)/leads');
               }}
               style={[styles.viewAllButton, { backgroundColor: theme.colors.secondary + '20' }]} // 20% opacity
@@ -140,7 +147,14 @@ export default function HomeScreen() {
               <TouchableOpacity
                 key={lead.id}
                 onPress={() => {
-                  setSelectedTab('mybook');
+                  // Reset filters to ensure we see all results
+                  useLeadsStore.getState().setSelectedCountry(null);
+                  useLeadsStore.getState().setSelectedCity(null);
+                  useLeadsStore.getState().setFilterStatus('all');
+                  useLeadsStore.getState().setFilterContactType('all');
+                  useLeadsStore.getState().setSearchQuery('');
+
+                  setSelectedTab('latest');
                   setSelectedLeadId(lead.id);
                   router.push('/(tabs)/leads');
                 }}

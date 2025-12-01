@@ -109,6 +109,7 @@ export default function LeadsScreen() {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
   const [sourceTab, setSourceTab] = useState<string | null>(null); // Track which tab opened the modal
+  const [isFromNavigation, setIsFromNavigation] = useState(false); // Track if opened from external navigation (e.g. Home)
 
   // Filter state (Country + City - identical to Community Feed)
   const [isCountryPickerVisible, setCountryPickerVisible] = useState(false);
@@ -253,6 +254,7 @@ export default function LeadsScreen() {
       setModalVisible(true);
       // Track source tab when opening from navigation (Home screen recent leads)
       setSourceTab(selectedTab);
+      setIsFromNavigation(true);
     }
 
     // Clear selectedLeadId after opening modal
@@ -685,6 +687,7 @@ export default function LeadsScreen() {
       setSelectedLead(lead);
       setModalVisible(true);
       setSourceTab(selectedTab); // Track current tab when opening modal
+      setIsFromNavigation(false);
     };
     
     // Get image URL (google_url_photo or default)
@@ -1107,6 +1110,7 @@ export default function LeadsScreen() {
         <LeadDetailModal
           lead={selectedLead}
           visible={modalVisible}
+          enableSwipe={!isFromNavigation}
           onClose={() => {
             setModalVisible(false);
             setSelectedLead(null);
@@ -1115,6 +1119,7 @@ export default function LeadsScreen() {
               setSelectedTab(sourceTab as any);
             }
             setSourceTab(null);
+            setIsFromNavigation(false);
           }}
           onNext={handleNextLead}
           onPrev={handlePrevLead}

@@ -24,6 +24,8 @@ import Animated, {
   SlideInRight,
   SlideOutLeft,
   FadeIn,
+  useAnimatedScrollHandler,
+  useAnimatedRef,
 } from 'react-native-reanimated';
 import {
   X,
@@ -39,6 +41,7 @@ import {
   Save,
   Edit3,
   Users,
+  FileText,
 } from 'lucide-react-native';
 import { Lead } from '@/types/database.types';
 import { useAuthStore } from '@/store/authStore';
@@ -58,6 +61,7 @@ interface LeadDetailModalProps {
   onNotesUpdated?: () => void; // Callback to reload leads after saving notes
   onNext?: () => void;
   onPrev?: () => void;
+  enableSwipe?: boolean;
 }
 
 // Helper to parse contact lists that might be JSON arrays or comma-separated strings
@@ -82,7 +86,7 @@ const parseContactList = (input?: string): string[] => {
     .filter(Boolean);
 };
 
-export default function LeadDetailModal({ lead, visible, onClose, onAddToMyBook, onNotesUpdated, onNext, onPrev }: LeadDetailModalProps) {
+const LeadCardContent = React.memo(({ lead, onNext, onPrev, onClose, onAddToMyBook, onNotesUpdated, enableSwipe = true }: any) => {
   const { t } = useTranslation();
   const { theme } = useTheme();
   const { profile, user } = useAuthStore();
@@ -94,34 +98,92 @@ export default function LeadDetailModal({ lead, visible, onClose, onAddToMyBook,
   
   // Animation State
   const translateX = useSharedValue(0);
+  const translateY = useSharedValue(0);
+  const scrollY = useSharedValue(0);
+  const scrollViewRef = useAnimatedRef<Animated.ScrollView>();
+
+  // Reset position when lead changes (instead of remounting component)
+  React.useEffect(() => {
+    translateX.value = 0;
+    translateY.value = 0;
+    scrollY.value = 0;
+    // Scroll to top when lead changes
+    if (scrollViewRef.current) {
+      scrollViewRef.current.scrollTo({ y: 0, animated: false });
+    }
+  }, [lead.id]);
+
+  const scrollHandler = useAnimatedScrollHandler({
+    onScroll: (event) => {
+      scrollY.value = event.contentOffset.y;
+    },
+  });
 
   const pan = Gesture.Pan()
-    .activeOffsetX([-20, 20]) // Ignore vertical scrolls
+    .simultaneousWithExternalGesture(scrollViewRef)
+    .minDistance(10)
+    .enabled(enableSwipe) // Disable swipe if enableSwipe is false
     .onUpdate((event) => {
-      translateX.value = event.translationX;
+      // Handle Horizontal Swipe (Next/Prev)
+      let x = event.translationX;
+      
+      // Resistance at boundaries
+      if (x > 0 && !onPrev) {
+        x = x * 0.3; // Dampen if no previous
+      } else if (x < 0 && !onNext) {
+        x = x * 0.3; // Dampen if no next
+      }
+      
+      translateX.value = x;
+      
+      // Handle Vertical Swipe (Close)
+      // Only allow dragging down (positive Y) AND when scroll is at top
+      let y = event.translationY;
+      
+      // If we are scrolled down, don't allow dragging down to close
+      // Unless we are dragging UP (scrolling down), which ScrollView handles
+      if (scrollY.value > 0 && y > 0) {
+        y = 0;
+      }
+      
+      if (y < 0) y = y * 0.3; // Dampen upward drag
+      
+      translateY.value = y;
     })
     .onEnd((event) => {
-      if (event.translationX < -100 && onNext) {
-        // Swipe Left -> Next
-        runOnJS(onNext)();
-      } else if (event.translationX > 100) {
-        // Swipe Right -> Close
+      const SWIPE_THRESHOLD = 100;
+      const VELOCITY_THRESHOLD = 500;
+
+      // 1. Handle Vertical Close (Swipe Down)
+      // Only if we are at the top
+      if (scrollY.value <= 0 && (event.translationY > 150 || (event.translationY > 50 && event.velocityY > VELOCITY_THRESHOLD))) {
         runOnJS(onClose)();
-      } else {
-        // Reset
-        translateX.value = withSpring(0);
+        return;
+      }
+
+      // 2. Handle Horizontal Navigation
+      // Swipe Right -> Previous
+      if ((event.translationX > SWIPE_THRESHOLD || (event.translationX > 20 && event.velocityX > VELOCITY_THRESHOLD)) && onPrev) {
+        runOnJS(onPrev)();
+      } 
+      // Swipe Left -> Next
+      else if ((event.translationX < -SWIPE_THRESHOLD || (event.translationX < -20 && event.velocityX < -VELOCITY_THRESHOLD)) && onNext) {
+        runOnJS(onNext)();
+      } 
+      // 3. Reset / Bounce Back
+      else {
+        translateX.value = withSpring(0, { damping: 15, stiffness: 150 });
+        translateY.value = withSpring(0, { damping: 15, stiffness: 150 });
       }
     });
 
   const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ translateX: translateX.value }],
+    transform: [
+      { translateX: translateX.value },
+      { translateY: translateY.value }
+    ],
   }));
 
-  // Reset translation when lead changes
-  React.useEffect(() => {
-    translateX.value = 0;
-  }, [lead?.id]);
-  
   // Initialize notes text when modal opens
   React.useEffect(() => {
     if (lead) {
@@ -300,29 +362,17 @@ export default function LeadDetailModal({ lead, visible, onClose, onAddToMyBook,
   };
 
   return (
-    <Modal
-      visible={visible}
-      animationType="slide"
-      presentationStyle="fullScreen"
-      onRequestClose={onClose}
-    >
-      <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]} edges={['bottom']}>
-        {/* Header */}
-        <View style={[styles.header, { backgroundColor: theme.colors.surface, borderBottomColor: theme.colors.border }]}>
-          <Text style={[styles.headerTitle, { color: theme.colors.text }]}>{t('leads.lead_details')}</Text>
-          <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-            <X size={24} color={theme.colors.textSecondary} />
-          </TouchableOpacity>
-        </View>
-
-        <GestureDetector gesture={pan}>
-          <Animated.View 
-            key={lead.id} 
-            entering={SlideInRight} 
-            exiting={SlideOutLeft} 
-            style={[styles.content, animatedStyle]}
-          >
-            <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+    <GestureDetector gesture={pan}>
+      <Animated.View 
+        style={[styles.content, animatedStyle]}
+      >
+        <Animated.ScrollView 
+          ref={scrollViewRef}
+          style={styles.content} 
+          showsVerticalScrollIndicator={false}
+          onScroll={scrollHandler}
+          scrollEventThrottle={16}
+        >
           {/* Company Info Card */}
           <View style={[styles.companyCard, { backgroundColor: theme.colors.surface }]}>
             <View style={[styles.avatarContainer, { backgroundColor: theme.colors.primary + '15' }]}>
@@ -354,6 +404,21 @@ export default function LeadDetailModal({ lead, visible, onClose, onAddToMyBook,
               </View>
             )}
           </View>
+
+          {/* Description Section (AI Generated) */}
+          {lead.description && (
+            <View style={[styles.section, { backgroundColor: theme.colors.surface, marginTop: 16 }]}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
+                <FileText size={18} color={theme.colors.primary} />
+                <Text style={[styles.sectionTitle, { color: theme.colors.text, marginBottom: 0, marginLeft: 8 }]}>
+                  {t('leads.about_company', 'About Company')}
+                </Text>
+              </View>
+              <Text style={[styles.infoText, { color: theme.colors.text, lineHeight: 22 }]}>
+                {lead.description}
+              </Text>
+            </View>
+          )}
 
           {/* Add to My Book Button - Only show if not already in My Book and callback provided */}
           {onAddToMyBook && !isAlreadyInMyBook && (
@@ -606,9 +671,45 @@ export default function LeadDetailModal({ lead, visible, onClose, onAddToMyBook,
 
           {/* Bottom padding */}
           <View style={{ height: 40 }} />
-            </ScrollView>
-          </Animated.View>
-        </GestureDetector>
+        </Animated.ScrollView>
+      </Animated.View>
+    </GestureDetector>
+  );
+});
+
+export default function LeadDetailModal({ lead, visible, onClose, onAddToMyBook, onNotesUpdated, onNext, onPrev, enableSwipe = true }: LeadDetailModalProps) {
+  const { theme } = useTheme();
+  const { t } = useTranslation();
+
+  if (!lead) return null;
+
+  return (
+    <Modal
+      visible={visible}
+      animationType="slide"
+      presentationStyle="fullScreen"
+      onRequestClose={onClose}
+    >
+      <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]} edges={['bottom']}>
+        {/* Header */}
+        <View style={[styles.header, { backgroundColor: theme.colors.surface, borderBottomColor: theme.colors.border }]}>
+          <Text style={[styles.headerTitle, { color: theme.colors.text }]}>{t('leads.lead_details')}</Text>
+          <TouchableOpacity onPress={onClose} style={styles.closeButton}>
+            <X size={24} color={theme.colors.textSecondary} />
+          </TouchableOpacity>
+        </View>
+
+        <LeadCardContent 
+          // Removed key={lead.id} to prevent full remounting and improve performance
+          // State reset is handled inside LeadCardContent via useEffect
+          lead={lead}
+          onNext={onNext}
+          onPrev={onPrev}
+          onClose={onClose}
+          onAddToMyBook={onAddToMyBook}
+          onNotesUpdated={onNotesUpdated}
+          enableSwipe={enableSwipe}
+        />
       </SafeAreaView>
     </Modal>
   );
