@@ -79,6 +79,15 @@ When using global MCP tools (Stripe/Supabase), ALWAYS use these Truxel-specific 
 - `store/`: Zustand stores
 - `supabase/`: Edge Functions and migrations
 
+### UI Patterns & Gestures (NEW)
+- **LeadDetailModal:**
+  - Uses `react-native-gesture-handler` + `reanimated`.
+  - **Swipe Down to Close:** Implemented with `Gesture.Pan().simultaneousWithExternalGesture(scrollViewRef)`.
+  - **Logic:** `activeOffsetY([-1000, 10])` allows pull-down to close while preserving ScrollView functionality.
+  - **Data Display:** ALWAYS render the `description` field (AI-generated) if available.
+- **Navigation:**
+  - **Home -> Lead:** When opening a lead from "Recent Leads", reset all filters (`country`, `city`, `status`) and navigate to `(tabs)/leads` with `selectedTab: 'latest'`.
+
 ### Community Feature Architecture
 - **Template Pattern:** Use translation keys (`community.templates.available_now`), NOT hardcoded text.
 - **Database:** `community_posts`, `user_post_usage`, `subscription_limits`.
