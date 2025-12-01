@@ -181,9 +181,9 @@ class CityService {
         }),
         new Promise<Location.LocationObject | null>((resolve) => 
           setTimeout(() => {
-            console.warn('[CityService] Location timeout after 30s');
+            console.warn('[CityService] Location timeout after 10s - using last known or null');
             resolve(null);
-          }, 30000)
+          }, 10000)
         )
       ]);
 
