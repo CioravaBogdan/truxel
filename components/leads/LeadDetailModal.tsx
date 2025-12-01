@@ -121,7 +121,8 @@ const LeadCardContent = React.memo(({ lead, onNext, onPrev, onClose, onAddToMyBo
 
   const pan = Gesture.Pan()
     .simultaneousWithExternalGesture(scrollViewRef)
-    .minDistance(10)
+    .activeOffsetX([-10, 10]) // Activate on horizontal swipe > 10px
+    .activeOffsetY([-1000, 10]) // Activate on vertical pull-down > 10px (ignore scroll-down/push-up)
     .enabled(enableSwipe) // Disable swipe if enableSwipe is false
     .onUpdate((event) => {
       // Handle Horizontal Swipe (Next/Prev)
@@ -142,7 +143,8 @@ const LeadCardContent = React.memo(({ lead, onNext, onPrev, onClose, onAddToMyBo
       
       // If we are scrolled down, don't allow dragging down to close
       // Unless we are dragging UP (scrolling down), which ScrollView handles
-      if (scrollY.value > 0 && y > 0) {
+      // We use a small threshold (5) for scrollY to account for bounce/precision
+      if (scrollY.value > 5 && y > 0) {
         y = 0;
       }
       
@@ -155,8 +157,8 @@ const LeadCardContent = React.memo(({ lead, onNext, onPrev, onClose, onAddToMyBo
       const VELOCITY_THRESHOLD = 500;
 
       // 1. Handle Vertical Close (Swipe Down)
-      // Only if we are at the top
-      if (scrollY.value <= 0 && (event.translationY > 150 || (event.translationY > 50 && event.velocityY > VELOCITY_THRESHOLD))) {
+      // Only if we are at the top (with small threshold)
+      if (scrollY.value <= 5 && (event.translationY > 150 || (event.translationY > 50 && event.velocityY > VELOCITY_THRESHOLD))) {
         runOnJS(onClose)();
         return;
       }
