@@ -293,7 +293,9 @@
     "permission_required": "Permiso requerido",
     "photo_permission_message": "Necesitamos acceso a la galería de fotos para subir tu foto de perfil",
     "avatar_updated": "Foto de perfil actualizada exitosamente",
-    "avatar_upload_failed": "Error al subir la foto de perfil"
+    "avatar_upload_failed": "Error al subir la foto de perfil",
+    "notification_radius": "Notification Radius",
+    "notification_radius_desc": "Set the radius for receiving notifications about new loads or drivers."
   },
   "templates": {
     "email_subject": "Oportunidad de asociación logística - {{company}}",

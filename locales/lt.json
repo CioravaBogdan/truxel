@@ -293,7 +293,9 @@
     "permission_required": "Reikalingas leidimas",
     "photo_permission_message": "Mums reikia prieigos prie nuotraukų galerijos, kad įkeltume jūsų profilio nuotrauką",
     "avatar_updated": "Profilio nuotrauka sėkmingai atnaujinta",
-    "avatar_upload_failed": "Nepavyko įkelti profilio nuotraukos"
+    "avatar_upload_failed": "Nepavyko įkelti profilio nuotraukos",
+    "notification_radius": "Notification Radius",
+    "notification_radius_desc": "Set the radius for receiving notifications about new loads or drivers."
   },
   "templates": {
     "email_subject": "Logistikos partnerystės galimybė - {{company}}",

@@ -1,4 +1,4 @@
-﻿{
+{
   "common": {
     "login": "Autentificare",
     "register": "ÃŽnregistrare",
@@ -293,7 +293,9 @@
     "permission_required": "Permisiune NecesarÄƒ",
     "photo_permission_message": "Avem nevoie de acces la galeria foto pentru a Ã®ncÄƒrca poza de profil",
     "avatar_updated": "Poza de profil a fost actualizatÄƒ cu succes",
-    "avatar_upload_failed": "ÃŽncÄƒrcarea pozei de profil a eÈ™uat"
+    "avatar_upload_failed": "ÃŽncÄƒrcarea pozei de profil a eÈ™uat",
+    "notification_radius": "Rază Notificare",
+    "notification_radius_desc": "Primește notificări când apar mărfuri noi în această distanță"
   },
   "templates": {
     "email_subject": "Oportunitate Parteneriat Logistic - {{company}}",

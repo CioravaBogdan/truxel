@@ -1,4 +1,4 @@
-﻿{
+{
   "common": {
     "login": "GiriÅŸ Yap",
     "register": "KayÄ±t Ol",
@@ -293,7 +293,9 @@
     "permission_required": "Ä°zin Gerekli",
     "photo_permission_message": "Profil fotoÄŸrafÄ±nÄ±zÄ± yÃ¼klemek iÃ§in fotoÄŸraf galerisine eriÅŸime ihtiyacÄ±mÄ±z var",
     "avatar_updated": "Profil fotoÄŸrafÄ± baÅŸarÄ±yla gÃ¼ncellendi",
-    "avatar_upload_failed": "Profil fotoÄŸrafÄ± yÃ¼klenemedi"
+    "avatar_upload_failed": "Profil fotoÄŸrafÄ± yÃ¼klenemedi",
+    "notification_radius": "Bildirim Yarıçapı",
+    "notification_radius_desc": "Bu mesafe içinde yeni yükler göründüğünde bildirim alın"
   },
   "templates": {
     "email_subject": "Lojistik OrtaklÄ±k FÄ±rsatÄ± - {{company}}",

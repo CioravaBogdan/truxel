@@ -9,7 +9,9 @@ import notificationSound from '@/assets/sounds/notification.mp3';
 import {
   safeRequestNotificationPermissions,
   safeGetExpoPushToken,
-  safeScheduleNotification
+  safeScheduleNotification,
+  safeGetCurrentPosition,
+  safeReverseGeocode
 } from '@/utils/safeNativeModules';
 
 const LAST_CHECK_KEY = 'notification_last_check';
@@ -23,6 +25,7 @@ const POLLING_INTERVAL = 7 * 60 * 1000; // 7 minutes (between 5-10min as request
  * - Filters posts by user's city/location
  * - Sends local notification when new load appears
  * - Checks on app open + periodic background checks
+ * - Updates user location on startup
  * 
  * User Requirement: "sa primeasca notificatia cand se posteaza un load 
  * din orasul unde sunt ei, sa avem un fel de interogare de supabase 
@@ -36,6 +39,7 @@ class NotificationService {
    * Initialize notification service
    * - Requests permissions
    * - Registers push token
+   * - Updates user location (City + Lat/Lng)
    * - Performs initial check
    */
   async initialize(userId: string): Promise<boolean> {
@@ -65,6 +69,9 @@ class NotificationService {
         return false;
       }
 
+      // Update User Location (Lat/Lng + City)
+      await this.updateUserLocation(userId);
+
       // Get and save Expo push token (safe wrapper prevents crashes)
       if (Platform.OS !== 'web') {
         const token = await safeGetExpoPushToken({
@@ -87,10 +94,10 @@ class NotificationService {
 
         if (updateError) {
           console.error('[NotificationService] Error saving push token:', updateError);
-          throw updateError;
+          // Don't throw, just log - we want to continue initialization
+        } else {
+          console.log('[NotificationService] Push token saved to profile');
         }
-
-        console.log('[NotificationService] Push token saved to profile');
       }
 
       // Perform initial check
@@ -101,6 +108,56 @@ class NotificationService {
     } catch (error) {
       console.error('[NotificationService] Initialization failed:', error);
       return false;
+    }
+  }
+
+  /**
+   * Update user's location in profile
+   */
+  private async updateUserLocation(userId: string): Promise<void> {
+    try {
+      console.log('[NotificationService] Updating user location...');
+      
+      // Get current position (Low accuracy for speed on Android)
+      const location = Platform.OS === 'android'
+        ? await safeGetCurrentPosition({ accuracy: 1 }) // Location.Accuracy.Low = 1
+        : await safeGetCurrentPosition();
+
+      if (!location) {
+        console.log('[NotificationService] Could not get current location');
+        return;
+      }
+
+      const { latitude, longitude } = location.coords;
+
+      // Reverse geocode to get city
+      const address = await safeReverseGeocode({ latitude, longitude });
+      
+      if (address && (address.city || address.region)) {
+        const city = address.city || address.region;
+        const country = address.country || '';
+        const fullCity = country ? `${city}, ${country}` : city; // Store as "City, Country" or just "City"
+
+        console.log(`[NotificationService] Location found: ${fullCity} (${latitude}, ${longitude})`);
+
+        // Update profile
+        const { error } = await supabase
+          .from('profiles')
+          .update({
+            last_known_lat: latitude,
+            last_known_lng: longitude,
+            last_known_city: city // Store just the city name for matching
+          })
+          .eq('user_id', userId);
+
+        if (error) {
+          console.error('[NotificationService] Error updating profile location:', error);
+        } else {
+          console.log('[NotificationService] Profile location updated');
+        }
+      }
+    } catch (error) {
+      console.error('[NotificationService] Error in updateUserLocation:', error);
     }
   }
 
@@ -159,7 +216,7 @@ class NotificationService {
       // Query new posts near user's location
       const { data: posts, error } = await supabase
         .from('community_posts')
-        .select('id, post_type, origin_city, cargo_type, cargo_weight, created_at, profiles(company_name)')
+        .select('id, post_type, origin_city, metadata, created_at, profiles(company_name)')
         .gte('created_at', lastCheckDate.toISOString())
         .order('created_at', { ascending: false });
 
@@ -276,8 +333,13 @@ class NotificationService {
     try {
       const companyName = post.profiles?.company_name || 'A company';
       const city = post.origin_city?.split(' - ')[0] || 'your area';
-      const cargoInfo = post.cargo_type 
-        ? `${post.cargo_type}${post.cargo_weight ? ` (${post.cargo_weight}t)` : ''}`
+      
+      const metadata = post.metadata || {};
+      const type = metadata.cargo_type || metadata.truck_type || metadata.truck_type_required || 'cargo';
+      const weight = metadata.cargo_weight || metadata.weight;
+      
+      const cargoInfo = type 
+        ? `${type}${weight ? ` (${weight}t)` : ''}`
         : 'cargo';
 
       const notificationId = await safeScheduleNotification(

@@ -293,7 +293,9 @@
     "permission_required": "Autorisation requise",
     "photo_permission_message": "Nous avons besoin d'un accès à la photothèque pour télécharger votre photo de profil",
     "avatar_updated": "Photo de profil mise à jour avec succès",
-    "avatar_upload_failed": "Échec du téléchargement de la photo de profil"
+    "avatar_upload_failed": "Échec du téléchargement de la photo de profil",
+    "notification_radius": "Notification Radius",
+    "notification_radius_desc": "Set the radius for receiving notifications about new loads or drivers."
   },
   "templates": {
     "email_subject": "Opportunité de partenariat logistique - {{company}}",

@@ -293,7 +293,9 @@
     "permission_required": "Erlaubnis erforderlich",
     "photo_permission_message": "Um Ihr Profilbild hochzuladen, benötigen wir Zugriff auf die Fotobibliothek",
     "avatar_updated": "Profilbild erfolgreich aktualisiert",
-    "avatar_upload_failed": "Profilbild konnte nicht hochgeladen werden"
+    "avatar_upload_failed": "Profilbild konnte nicht hochgeladen werden",
+    "notification_radius": "Notification Radius",
+    "notification_radius_desc": "Set the radius for receiving notifications about new loads or drivers."
   },
   "templates": {
     "email_subject": "Möglichkeit einer Logistikpartnerschaft – {{company}}",
@@ -358,8 +360,7 @@
     "promo_success_message": "Genieße dein {{description}}! Gutes Geld verdienen!",
     "first_month_discount_influencer": "Erster Monat mit Rabatt dank {{name}}",
     "special_discount": "Sonderrabatt",
-    "intro_offer": "für {{cycles}} {{period}}e",
-    "footer_note": "Alle Pläne enthalten grundlegende Unternehmensinformationen, Kontaktdaten und den Standort. Jederzeit kündbar."
+    "intro_offer": "für {{cycles}} {{period}}e"
   },
   "errors": {
     "network_error": "Netzwerkfehler. Bitte überprüfen Sie Ihre Verbindung.",

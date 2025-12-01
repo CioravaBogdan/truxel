@@ -293,7 +293,9 @@
     "permission_required": "Autorizzazione richiesta",
     "photo_permission_message": "Abbiamo bisogno dell'accesso alla libreria di foto per caricare la tua immagine del profilo",
     "avatar_updated": "Immagine del profilo aggiornata correttamente",
-    "avatar_upload_failed": "Impossibile caricare l'immagine del profilo"
+    "avatar_upload_failed": "Impossibile caricare l'immagine del profilo",
+    "notification_radius": "Notification Radius",
+    "notification_radius_desc": "Set the radius for receiving notifications about new loads or drivers."
   },
   "templates": {
     "email_subject": "Opportunità di partnership logistica - {{company}}",

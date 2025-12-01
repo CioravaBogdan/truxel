@@ -155,6 +155,7 @@ export default function ProfileScreen() {
   const [companyName, setCompanyName] = useState('');
   const [truckType, setTruckType] = useState<string | null>(null);
   const [searchRadius, setSearchRadius] = useState(10);
+  const [notificationRadius, setNotificationRadius] = useState(25);
   const [distanceUnit, setDistanceUnit] = useState<DistanceUnit>('km');
   const [selectedIndustries, setSelectedIndustries] = useState<string[]>([]);
 
@@ -166,9 +167,8 @@ export default function ProfileScreen() {
   
   // Dynamic radius options based on user's preferred distance unit
   const SEARCH_RADIUS_OPTIONS = useMemo(() => {
-    const distanceUnit = profile?.preferred_distance_unit || 'km';
     return getRadiusOptions(distanceUnit);
-  }, [profile?.preferred_distance_unit]);
+  }, [distanceUnit]);
 
   // Upload avatar function
   const handleUploadAvatar = async () => {
@@ -268,6 +268,7 @@ export default function ProfileScreen() {
       setCompanyName(profile.company_name || '');
       setTruckType(profile.truck_type || null);
       setSearchRadius(profile.search_radius_km || 10);
+      setNotificationRadius(profile.notification_radius_km || 25);
       setDistanceUnit(profile.preferred_distance_unit || 'km');
       setSelectedIndustries(profile.preferred_industries || []);
 
@@ -340,10 +341,11 @@ export default function ProfileScreen() {
       setIsSaving(true);
       await authService.updateProfile(profile.user_id, {
         full_name: fullName,
-        company_name: companyName || undefined,
         truck_type: truckType || undefined,
         search_radius_km: searchRadius,
+        notification_radius_km: notificationRadius,
         preferred_distance_unit: distanceUnit,
+        preferred_industries: selectedIndustries,
         preferred_industries: selectedIndustries,
         phone_number: phoneUpdate,
       });
@@ -659,7 +661,6 @@ export default function ProfileScreen() {
               ))}
             </View>
           </Card>
-
           {/* Search Radius Selection */}
           <Card style={styles.section}>
             <View style={styles.sectionHeader}>
@@ -694,6 +695,42 @@ export default function ProfileScreen() {
                     style={[
                       styles.radiusText,
                       searchRadius === option.value && styles.radiusTextSelected,
+                    ]}
+                  >
+                    {option.label}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </Card>
+
+          {/* Notification Radius Selection */}
+          <Card style={styles.section}>
+            <View style={styles.sectionHeader}>
+              <MapPin size={24} color={theme.colors.primary} />
+              <Text style={styles.sectionTitle}>{t('profile.notification_radius') || 'Notification Radius'}</Text>
+            </View>
+            <Text style={styles.sectionDescription}>
+              {t('profile.notification_radius_desc') || 'Set the radius for receiving notifications about new loads or drivers.'}
+            </Text>
+
+            <View style={styles.radiusContainer}>
+              {SEARCH_RADIUS_OPTIONS.map((option) => (
+                <TouchableOpacity
+                  key={`notif-${option.value}`}
+                  style={[
+                    styles.radiusButton,
+                    notificationRadius === option.value && styles.radiusButtonSelected,
+                  ]}
+                  onPress={() => {
+                    setHasUnsavedChanges(true);
+                    setNotificationRadius(option.value);
+                  }}
+                >
+                  <Text
+                    style={[
+                      styles.radiusText,
+                      notificationRadius === option.value && styles.radiusTextSelected,
                     ]}
                   >
                     {option.label}

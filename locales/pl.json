@@ -293,7 +293,9 @@
     "permission_required": "Wymagane uprawnienie",
     "photo_permission_message": "Potrzebujemy dostępu do galerii zdjęć, aby przesłać zdjęcie profilowe",
     "avatar_updated": "Zdjęcie profilowe zaktualizowane pomyślnie",
-    "avatar_upload_failed": "Nie udało się przesłać zdjęcia profilowego"
+    "avatar_upload_failed": "Nie udało się przesłać zdjęcia profilowego",
+    "notification_radius": "Notification Radius",
+    "notification_radius_desc": "Set the radius for receiving notifications about new loads or drivers."
   },
   "templates": {
     "email_subject": "Możliwość partnerstwa logistycznego - {{company}}",
