@@ -202,6 +202,35 @@ export default function LandingPage() {
               <Text style={styles.heroFounderName}>— George Bogdan, Founder</Text>
             </View>
           </View>
+
+          {/* Mobile Experience & Download Buttons */}
+          <View style={styles.mobileExperienceContainer}>
+            <Text style={[styles.mobileExperienceText, { color: Platform.OS === 'web' ? 'rgba(255,255,255,0.8)' : theme.colors.textSecondary }]}>
+              {t('web.hero.mobile_experience')}
+            </Text>
+            <View style={styles.heroStoreButtons}>
+              <TouchableOpacity
+                onPress={() => Linking.openURL('https://apps.apple.com/ro/app/truxel/id6739166827')}
+                style={styles.storeBadgeContainer}
+              >
+                <Image 
+                  source={require('@/assets/images/download_apple_store.svg')} 
+                  style={styles.storeBadgeSmall}
+                  resizeMode="contain"
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => Linking.openURL('https://play.google.com/store/apps/details?id=io.truxel.app')}
+                style={styles.storeBadgeContainer}
+              >
+                <Image 
+                  source={require('@/assets/images/download_google_store.svg')} 
+                  style={styles.storeBadgeSmall}
+                  resizeMode="contain"
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
         </View>
       </View>
 
@@ -1483,5 +1512,29 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     color: 'rgba(255, 255, 255, 0.8)',
+  },
+  // Mobile Experience Styles
+  mobileExperienceContainer: {
+    marginTop: 40,
+    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
+  mobileExperienceText: {
+    fontSize: 16,
+    fontWeight: '500',
+    textAlign: 'center',
+    marginBottom: 16,
+    maxWidth: 500,
+    lineHeight: 24,
+  },
+  heroStoreButtons: {
+    flexDirection: 'row',
+    gap: 16,
+    justifyContent: 'center',
+    flexWrap: 'wrap',
+  },
+  storeBadgeSmall: {
+    width: 140,
+    height: 42,
   },
 });

@@ -416,6 +416,28 @@ export default function LoginScreen() {
                 variant="ghost"
                 style={styles.registerButton}
               />
+
+              <View style={styles.storeButtonsContainer}>
+                <Text style={[styles.storeButtonsText, { color: theme.colors.textSecondary }]}>
+                  {t('web.hero.mobile_experience')}
+                </Text>
+                <View style={styles.storeButtonsRow}>
+                  <TouchableOpacity onPress={() => RNLinking.openURL('https://apps.apple.com/ro/app/truxel/id6739166827')}>
+                    <Image 
+                      source={require('@/assets/images/download_apple_store.svg')} 
+                      style={styles.storeBadge}
+                      resizeMode="contain"
+                    />
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => RNLinking.openURL('https://play.google.com/store/apps/details?id=io.truxel.app')}>
+                    <Image 
+                      source={require('@/assets/images/download_google_store.svg')} 
+                      style={styles.storeBadge}
+                      resizeMode="contain"
+                    />
+                  </TouchableOpacity>
+                </View>
+              </View>
             </View>
           </Card>
         </View>
@@ -554,5 +576,27 @@ const styles = StyleSheet.create({
   },
   registerButton: {
     marginTop: 8,
+  },
+  storeButtonsContainer: {
+    marginTop: 32,
+    alignItems: 'center',
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(0,0,0,0.05)',
+    paddingTop: 24,
+  },
+  storeButtonsText: {
+    fontSize: 14,
+    textAlign: 'center',
+    marginBottom: 16,
+    maxWidth: 300,
+  },
+  storeButtonsRow: {
+    flexDirection: 'row',
+    gap: 12,
+    justifyContent: 'center',
+  },
+  storeBadge: {
+    width: 120,
+    height: 40,
   },
 });

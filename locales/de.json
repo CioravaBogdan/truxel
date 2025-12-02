@@ -62,8 +62,8 @@
     "sign_in_with_apple": "Melden Sie sich bei Apple an",
     "sign_in_subtitle": "Melden Sie sich an, um fortzufahren",
     "create_account": "Erstellen Sie Ihr Konto",
-    "check_spam": "Bitte prüfen Sie Ihren Spam-Ordner, falls Sie die E-Mail nicht sehen.",
     "check_email": "Überprüfen Sie Ihre E-Mails",
+    "check_spam": "Bitte prüfen Sie Ihren Spam-Ordner, falls Sie die E-Mail nicht sehen.",
     "verify_email_message": "Bitte bestätigen Sie Ihre E-Mail-Adresse, um die Registrierung abzuschließen.",
     "email_placeholder": "your@email.com",
     "auth_failed": "Die Authentifizierung ist fehlgeschlagen",
@@ -603,7 +603,6 @@
       "features": "Funktionen",
       "pricing": "Preise",
       "about": "Über uns",
-      "story": "Unsere Geschichte",
       "contact": "Kontakt",
       "login": "Anmelden",
       "signup": "Registrieren"
@@ -621,68 +620,6 @@
       "seo_title": "E-Mail bestätigt | Truxel",
       "seo_description": "Ihre E-Mail-Adresse wurde erfolgreich bestätigt."
     },
-    "story": {
-      "seo_title": "Die Truxel-Geschichte | Von Fahrer zu Fahrer",
-      "seo_description": "Die Geschichte hinter Truxel – einer Plattform, die von einem Fahrer für Fahrer entwickelt wurde, um Zwischenhändler zu eliminieren und den Eigentümern und Betreibern die Freiheit zurückzugeben.",
-      "hero": {
-        "badge": "UNSERE GESCHICHTE",
-        "title": "Von Fahrer zu Fahrer",
-        "subtitle": "Wir sind kein Unternehmen. Wir sind die Lösung für ein Problem, das wir selbst gelebt haben."
-      },
-      "letter": {
-        "title": "Offener Brief an alle Eigentümerbetreiber",
-        "p1": "Mein Name ist George Bogdan. Ich habe jetzt 10 LKWs, aber ich habe als Fahrer in Großbritannien angefangen.",
-        "p2": "Wissen Sie, wie es ist, monatelang um 1 Uhr morgens aufzustehen, um die Milch pünktlich zum Supermarkt zu bringen? Wissen Sie, wie es ist, Ihre Fahrstunden und Bußgelder zu riskieren, nur weil der Disponent Ihnen gesagt hat: „Es muss heute ankommen“?",
-        "p3": "Ich weiß.",
-        "p4": "Und wissen Sie, was danach passiert? Nachdem Sie sich den Rücken gebrochen haben, um pünktlich zu liefern? Genau – sie finden jemanden, der um 50 € günstiger ist, und vergessen, dass Sie existieren. Das ist die Realität bei Speditionen.",
-        "p5": "Ich habe versucht, Boards zu laden. Ich erinnere mich an einen Fall – ich habe eine „Firma“ gefunden, die nach Transportmitteln suchte. Als ich bei der eigentlichen Ladung ankam, musste ich mich an sechs Zwischenhändler wenden. Sechs! Jeder nahm einen Teil meines Lohns.",
-        "p6": "Und das Schlimmste? Ich klopfe nicht gern an Türen. Ich mag es nicht, von Fabrik zu Fabrik zu gehen, auf die Sekretärin zu warten und vom Logistiker herabgewürdigt zu werden, weil ich zu IHNEN gekommen bin.",
-        "p7": "Aber welche Alternative hatte ich? Ich befand mich oft in riesigen Industriegebieten, in ganzen Städten voller Fabriken und hatte keine Ladung, die ich verlassen konnte. Ich kannte die Sprache nicht. Ich kannte niemanden.",
-        "p8": "Dort wurde Truxel geboren.",
-        "p9": "Nicht als „Logistik-App“. Aber als Lösung für mein eigenes Problem. Als Werkzeug, das ich mir gewünscht hätte, als ich mit dem Telefon in der Hand auf dem Parkplatz eines Industriegebiets in Deutschland saß und nicht wusste, wen ich anrufen sollte.",
-        "signature_name": "Georg Bogdan",
-        "signature_role": "Gründer Truxel & Inhaber Betreiber"
-      },
-      "profiles": {
-        "title": "Für wen ist Truxel geeignet?",
-        "subtitle": "Wir sind nicht jedermanns Sache. Wir sind für diejenigen, die Unabhängigkeit wollen.",
-        "solo": {
-          "title": "Solokrieger",
-          "subtitle": "Eigentümer und Betreiber mit 1 LKW",
-          "desc": "Für den, der alles macht: fahren, verhandeln, abrechnen. Wer möchte wissen, dass er nächste Woche Arbeit hat und keine 20 % mehr an Vermittler verliert?"
-        },
-        "hustle": {
-          "title": "Hustle Builder",
-          "subtitle": "Besitzer einer kleinen Flotte (2-5 LKWs)",
-          "desc": "Für denjenigen, der aus einem einzigen LKW herausgewachsen ist und jetzt jongliert, um alle beladen zu halten. Wer möchte, dass Direktkunden nachhaltig wachsen?"
-        },
-        "runner": {
-          "title": "Internationaler Läufer",
-          "subtitle": "Fernfahrer",
-          "desc": "Für den, der die Routen kennt, aber nicht die Länder. Wer in einem Industriegebiet in Deutschland oder Frankreich ankommt und schnell lokale Ladung finden möchte."
-        }
-      },
-      "manifesto": {
-        "title": "Was wir glauben",
-        "freedom": {
-          "title": "Freiheit",
-          "desc": "Verlassen Sie sich bei Ihrer nächsten Ladung auf niemanden. Sie finden die Unternehmen, Sie warten nicht darauf, dass sie Sie finden."
-        },
-        "simplicity": {
-          "title": "Einfachheit",
-          "desc": "In 30 Sekunden haben Sie Kontakte. Keine komplizierten Formulare, keine dicken Verträge."
-        },
-        "community": {
-          "title": "Gemeinschaft",
-          "desc": "Du bist nicht allein unterwegs. Wir sind Tausende, die sich gegenseitig helfen. Fahrer hilft Fahrer."
-        }
-      },
-      "cta": {
-        "title": "Finden Sie Ihre eigene Ladung.",
-        "subtitle": "Lassen Sie die Makler warten.",
-        "button": "Beginnen Sie jetzt"
-      }
-    },
     "hero": {
       "title": "Finden Sie Fracht und Verbinden Sie sich Sofort mit Transportunternehmen",
       "subtitle": "Die erste GPS-basierte Logistikplattform, die Fahrer, Spediteure und Verlader in Echtzeit verbindet",
@@ -692,7 +629,8 @@
         "no_broker_fees": "No Broker Fees",
         "dead_zones": "Find Shippers in Dead Zones",
         "instant_contact": "Instant Contact Methods"
-      }
+      },
+      "mobile_experience": "Für das beste Erlebnis laden Sie unsere mobile App herunter. Truxel funktioniert auf dem PC, ist aber für unterwegs konzipiert."
     },
     "cta": {
       "learn_more": "Mehr Erfahren"

@@ -629,7 +629,8 @@
         "no_broker_fees": "Zero Broker Fees",
         "dead_zones": "Find Loads in Dead Zones",
         "instant_contact": "Direct Contact Opportunity"
-      }
+      },
+      "mobile_experience": "For the best experience, download our mobile app. Truxel works on PC, but it's built for the road."
     },
     "cta": {
       "learn_more": "See How It Works"

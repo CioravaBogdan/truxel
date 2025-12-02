@@ -62,8 +62,8 @@
     "sign_in_with_apple": "Accedi con Apple",
     "sign_in_subtitle": "Accedi per continuare",
     "create_account": "Crea il tuo account",
-    "check_spam": "Controlla la cartella spam se non vedi l'email.",
     "check_email": "Controlla la tua email",
+    "check_spam": "Controlla la cartella spam se non vedi l'email.",
     "verify_email_message": "Verifica la tua email per completare la registrazione.",
     "email_placeholder": "tuo@email.com",
     "auth_failed": "Autenticazione non riuscita",
@@ -363,9 +363,14 @@
     "purchase_failed_message": "Acquisto fallito. Per favore riprova.",
     "login_to_restore": "Effettua il login per ripristinare gli acquisti",
     "restore_failed_message": "Impossibile ripristinare gli acquisti. Per favore riprova.",
-    "footer_note": "Tutti i piani includono informazioni di base sull'azienda, dettagli di contatto e posizione. Annulla in qualsiasi momento.",
     "promo_code_title": "Hai un codice promozionale?",
     "promo_code_placeholder": "Inserisci il codice (es. TRUXEL20)",
+    "promo_save_badge": "RISPARMIA {{percent}}%",
+    "promo_influencer_deal": "Offerta Influencer",
+    "promo_success_title": "Codice applicato!",
+    "promo_success_message": "Hai sbloccato il {{percent}}% di sconto sul tuo abbonamento.",
+    "first_month_discount_influencer": "Primo mese scontato grazie a {{name}}",
+    "special_discount": "Sconto speciale",
     "apply": "Applica",
     "code_applied": "Codice applicato! 🎉",
     "special_offer_unlocked": "Offerta speciale sbloccata: {{description}}",
@@ -374,13 +379,8 @@
     "remove_offer": "Rimuovi offerta",
     "offer_removed": "Offerta rimossa",
     "showing_standard": "Visualizzazione prezzi standard",
-    "promo_save_badge": "RISPARMIA {{percent}}%",
-    "promo_influencer_deal": "Offerta Influencer",
-    "promo_success_title": "Codice applicato!",
-    "promo_success_message": "Hai sbloccato il {{percent}}% di sconto sul tuo abbonamento.",
-    "first_month_discount_influencer": "Primo mese scontato grazie a {{name}}",
-    "special_discount": "Sconto speciale",
-    "intro_offer": "per {{cycles}} {{period}}"
+    "intro_offer": "per {{cycles}} {{period}}",
+    "footer_note": "Tutti i piani includono informazioni di base sull'azienda, dettagli di contatto e posizione. Annulla in qualsiasi momento."
   },
   "errors": {
     "network_error": "Errore di rete. Per favore controlla la tua connessione.",
@@ -629,7 +629,8 @@
         "no_broker_fees": "No Broker Fees",
         "dead_zones": "Find Shippers in Dead Zones",
         "instant_contact": "Instant Contact Methods"
-      }
+      },
+      "mobile_experience": "Per la migliore esperienza, scarica la nostra app mobile. Truxel funziona su PC, ma è progettato per la strada."
     },
     "cta": {
       "learn_more": "Scopri Di Più"

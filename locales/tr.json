@@ -629,7 +629,8 @@
         "no_broker_fees": "No Broker Fees",
         "dead_zones": "Find Shippers in Dead Zones",
         "instant_contact": "Instant Contact Methods"
-      }
+      },
+      "mobile_experience": "En iyi deneyim için mobil uygulamamızı indirin. Truxel PC'de çalışır ancak yol için tasarlanmıştır."
     },
     "cta": {
       "learn_more": "Daha Fazla Bilgi"

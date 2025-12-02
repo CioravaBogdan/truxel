@@ -62,8 +62,8 @@
     "sign_in_with_apple": "Connectez-vous avec Apple",
     "sign_in_subtitle": "Connectez-vous pour continuer",
     "create_account": "Créez votre compte",
-    "check_spam": "Vérifiez le dossier spam si vous ne voyez pas l'e-mail.",
     "check_email": "Vérifiez votre courrier électronique",
+    "check_spam": "Vérifiez le dossier spam si vous ne voyez pas l'e-mail.",
     "verify_email_message": "Veuillez vérifier votre adresse e-mail pour finaliser votre inscription.",
     "email_placeholder": "votre@email.com",
     "auth_failed": "L'authentification a échoué",
@@ -363,7 +363,6 @@
     "purchase_failed_message": "L'achat a échoué. Veuillez réessayer.",
     "login_to_restore": "Veuillez vous connecter pour restaurer les achats",
     "restore_failed_message": "Échec de la restauration des achats. Veuillez réessayer.",
-    "footer_note": "Tous les forfaits incluent des informations de base sur l'entreprise, les coordonnées et l'emplacement. Annulez à tout moment.",
     "promo_code_title": "Avez-vous un code promo ?",
     "promo_code_placeholder": "Entrez le code (ex. TRUXEL20)",
     "promo_save_badge": "ÉCONOMISEZ {{percent}}%",
@@ -380,7 +379,8 @@
     "remove_offer": "Supprimer l'offre",
     "offer_removed": "Offre supprimée",
     "showing_standard": "Affichage des prix standard",
-    "intro_offer": "pour {{cycles}} {{period}}s"
+    "intro_offer": "pour {{cycles}} {{period}}s",
+    "footer_note": "Tous les forfaits incluent des informations de base sur l'entreprise, les coordonnées et l'emplacement. Annulez à tout moment."
   },
   "errors": {
     "network_error": "Erreur réseau. Veuillez vérifier votre connexion.",
@@ -629,7 +629,8 @@
         "no_broker_fees": "No Broker Fees",
         "dead_zones": "Find Shippers in Dead Zones",
         "instant_contact": "Instant Contact Methods"
-      }
+      },
+      "mobile_experience": "Pour la meilleure expérience, téléchargez notre application mobile. Truxel fonctionne sur PC, mais il est conçu pour la route."
     },
     "cta": {
       "learn_more": "En Savoir Plus"

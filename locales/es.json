@@ -62,8 +62,8 @@
     "sign_in_with_apple": "Iniciar sesión con Apple",
     "sign_in_subtitle": "Inicia sesión para continuar",
     "create_account": "Crea tu cuenta",
-    "check_spam": "Revisa la carpeta de spam si no ves el correo.",
     "check_email": "Revisa tu correo electrónico",
+    "check_spam": "Revisa la carpeta de spam si no ves el correo.",
     "verify_email_message": "Por favor verifique su correo electrónico para completar el registro.",
     "email_placeholder": "tu@correo electrónico.com",
     "auth_failed": "Error de autenticación",
@@ -603,7 +603,6 @@
       "features": "Funciones",
       "pricing": "Precios",
       "about": "Nosotros",
-      "story": "Nuestra historia",
       "contact": "Contacto",
       "login": "Iniciar sesión",
       "signup": "Registrarse"
@@ -621,68 +620,6 @@
       "seo_title": "Correo electrónico verificado | Truxel",
       "seo_description": "Su correo electrónico ha sido verificado exitosamente."
     },
-    "story": {
-      "seo_title": "La historia de Truxel | De conductor a conductor",
-      "seo_description": "La historia detrás de Truxel: una plataforma creada por un conductor para conductores, para eliminar intermediarios y devolver la libertad a los operadores propietarios.",
-      "hero": {
-        "badge": "NUESTRA HISTORIA",
-        "title": "De conductor a conductor",
-        "subtitle": "No somos una corporación. Somos la solución a un problema que vivimos nosotros mismos."
-      },
-      "letter": {
-        "title": "Carta abierta a todos los operadores propietarios",
-        "p1": "Mi nombre es George Bogdan. Ahora tengo 10 camiones, pero comencé como conductor en el Reino Unido.",
-        "p2": "¿Sabes lo que es despertarse a la 1 de la madrugada, durante meses, para llevar la leche al supermercado a tiempo? ¿Sabes lo que es arriesgar tus horas de conducción, arriesgarte a recibir multas, sólo porque el despachador te dijo \"tiene que llegar hoy\"?",
-        "p3": "Lo sé.",
-        "p4": "¿Y sabes qué pasa después? ¿Después de que te rompiste la espalda para entregar a tiempo? Exacto, encuentran a alguien más barato por 50€ y se olvidan de que existes. Esa es la realidad con los transitarios.",
-        "p5": "Probé tablas de carga. Recuerdo un caso: encontré una \"empresa\" que buscaba transporte. Cuando llegué a la carga real, pasé por 6 intermediarios. ¡Seis! Cada uno tomó una parte de mi salario.",
-        "p6": "¿Y la peor parte? No me gusta tocar puertas. No me gusta ir de fábrica en fábrica, esperando a la secretaria, que el logista me menosprecie porque llegué a ELLOS.",
-        "p7": "¿Pero qué alternativa tenía? Me encontré muchas veces en enormes zonas industriales, ciudades enteras llenas de fábricas, y no tenía nada que hacer para salir. No conocía el idioma. No conocía a nadie.",
-        "p8": "Ahí nació Truxel.",
-        "p9": "No como una \"aplicación de logística\". Sino como una solución a mi propio problema. Como herramienta que deseaba tener cuando estaba sentado en el estacionamiento de una zona industrial en Alemania, teléfono en mano, sin saber a quién llamar.",
-        "signature_name": "George Bogdan",
-        "signature_role": "Fundador Truxel y Operador Propietario"
-      },
-      "profiles": {
-        "title": "¿Para quién es Truxel?",
-        "subtitle": "No somos para todos. Somos para aquellos que quieren independencia.",
-        "solo": {
-          "title": "guerrero solitario",
-          "subtitle": "Propietario Operador con 1 camión",
-          "desc": "Para quien lo hace todo: conduce, negocia, factura. Quien quiere saber que tiene trabajo la semana que viene y dejar de perder el 20% con los intermediarios."
-        },
-        "hustle": {
-          "title": "Constructor de ajetreo",
-          "subtitle": "Propietario de flota pequeña (2-5 camiones)",
-          "desc": "Para el que creció a partir de un camión y ahora hace malabarismos para mantenerlos todos cargados. Que quiere que los clientes directos crezcan de forma sostenible."
-        },
-        "runner": {
-          "title": "Corredor Internacional",
-          "subtitle": "Conductor de larga distancia",
-          "desc": "Para el que conoce las rutas, pero no los países. Quien llega a una zona industrial en Alemania o Francia y quiere encontrar rápidamente carga local."
-        }
-      },
-      "manifesto": {
-        "title": "lo que creemos",
-        "freedom": {
-          "title": "Libertad",
-          "desc": "No dependas de nadie para tu próxima carga. Encuentras las empresas, no esperas a que ellas te encuentren."
-        },
-        "simplicity": {
-          "title": "Sencillez",
-          "desc": "En 30 segundos tienes contactos. Sin formularios complicados, sin contratos gruesos."
-        },
-        "community": {
-          "title": "Comunidad",
-          "desc": "No estás solo en el camino. Somos miles ayudándonos unos a otros. El conductor ayuda al conductor."
-        }
-      },
-      "cta": {
-        "title": "Encuentra tu propia carga.",
-        "subtitle": "Dejemos esperar a los corredores.",
-        "button": "Empezar ahora"
-      }
-    },
     "hero": {
       "title": "Encuentra Cargas y Conéctate con Empresas de Transporte al Instante",
       "subtitle": "La primera plataforma logística basada en GPS que conecta conductores, transitarios y cargadores en tiempo real",
@@ -692,7 +629,8 @@
         "no_broker_fees": "No Broker Fees",
         "dead_zones": "Find Shippers in Dead Zones",
         "instant_contact": "Instant Contact Methods"
-      }
+      },
+      "mobile_experience": "Para obtener la mejor experiencia, descargue nuestra aplicación móvil. Truxel funciona en PC, pero está diseñado para viajar."
     },
     "cta": {
       "learn_more": "Saber Más"

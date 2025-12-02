@@ -62,8 +62,8 @@
     "sign_in_with_apple": "Zaloguj się za pomocą Apple",
     "sign_in_subtitle": "Zaloguj się, aby kontynuować",
     "create_account": "Utwórz swoje konto",
-    "check_spam": "Sprawdź folder spam, jeśli nie widzisz e-maila.",
     "check_email": "Sprawdź swój e-mail",
+    "check_spam": "Sprawdź folder spam, jeśli nie widzisz e-maila.",
     "verify_email_message": "Aby dokończyć rejestrację, zweryfikuj swój adres e-mail.",
     "email_placeholder": "twój@email.com",
     "auth_failed": "Uwierzytelnienie nie powiodło się",
@@ -363,7 +363,6 @@
     "purchase_failed_message": "Zakup nie powiódł się. Spróbuj ponownie.",
     "login_to_restore": "Zaloguj się, aby przywrócić zakupy",
     "restore_failed_message": "Nie udało się przywrócić zakupów. Spróbuj ponownie.",
-    "footer_note": "Wszystkie plany zawierają podstawowe informacje o firmach, kontaktach i lokalizacjach. Anuluj w dowolnym momencie.",
     "promo_code_title": "Masz kod promocyjny?",
     "promo_code_placeholder": "Wpisz kod (np. TRUXEL20)",
     "promo_save_badge": "OSZCZĘDŹ {{percent}}%",
@@ -379,8 +378,9 @@
     "failed_redeem": "Nie udało się zrealizować kodu",
     "remove_offer": "Usuń ofertę",
     "offer_removed": "Oferta usunięta",
+    "showing_standard": "Wyświetlanie standardowych cen",
     "intro_offer": "Oferta wstępna",
-    "showing_standard": "Wyświetlanie standardowych cen"
+    "footer_note": "Wszystkie plany zawierają podstawowe informacje o firmach, kontaktach i lokalizacjach. Anuluj w dowolnym momencie."
   },
   "errors": {
     "network_error": "Błąd sieci. Sprawdź połączenie.",
@@ -629,7 +629,8 @@
         "no_broker_fees": "No Broker Fees",
         "dead_zones": "Find Shippers in Dead Zones",
         "instant_contact": "Instant Contact Methods"
-      }
+      },
+      "mobile_experience": "Aby uzyskać najlepsze wrażenia, pobierz naszą aplikację mobilną. Truxel działa na PC, ale jest stworzony do podróży."
     },
     "cta": {
       "learn_more": "Dowiedz się więcej"
