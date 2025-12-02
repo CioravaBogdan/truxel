@@ -59,14 +59,14 @@ export function WebFooter() {
             </TouchableOpacity>
             
             <View style={styles.storeButtons}>
-              <TouchableOpacity onPress={() => Linking.openURL('https://apps.apple.com')}>
+              <TouchableOpacity onPress={() => Linking.openURL('https://apps.apple.com/ro/app/truxel/id6739166827')}>
                 <Image 
                   source={require('@/assets/images/download_apple_store.svg')} 
                   style={styles.storeBadge}
                   resizeMode="contain"
                 />
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => Linking.openURL('https://play.google.com')}>
+              <TouchableOpacity onPress={() => Linking.openURL('https://play.google.com/store/apps/details?id=io.truxel.app')}>
                 <Image 
                   source={require('@/assets/images/download_google_store_footer.png')} 
                   style={styles.storeBadge}

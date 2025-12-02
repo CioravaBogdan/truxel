@@ -423,7 +423,7 @@ export default function LandingPage() {
             </View>
             <View style={styles.storeButtonsRow}>
               <TouchableOpacity
-                onPress={() => Linking.openURL('https://apps.apple.com')}
+                onPress={() => Linking.openURL('https://apps.apple.com/ro/app/truxel/id6739166827')}
                 style={styles.storeBadgeContainer}
               >
                 <Image 
@@ -433,7 +433,7 @@ export default function LandingPage() {
                 />
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => Linking.openURL('https://play.google.com')}
+                onPress={() => Linking.openURL('https://play.google.com/store/apps/details?id=io.truxel.app')}
                 style={styles.storeBadgeContainer}
               >
                 <Image 
