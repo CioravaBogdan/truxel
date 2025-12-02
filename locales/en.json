@@ -63,6 +63,7 @@
     "sign_in_subtitle": "Sign in to continue",
     "create_account": "Create your account",
     "check_email": "Check your email",
+    "check_spam": "Please check your spam folder if you don't see the email.",
     "verify_email_message": "Please verify your email to complete registration.",
     "email_placeholder": "your@email.com",
     "auth_failed": "Authentication failed",

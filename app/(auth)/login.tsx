@@ -43,6 +43,7 @@ export default function LoginScreen() {
   const [isAppleAvailable, setIsAppleAvailable] = useState(false);
   const [isGoogleAvailable, setIsGoogleAvailable] = useState(false);
   const [isFacebookAvailable, setIsFacebookAvailable] = useState(false);
+  const [loginError, setLoginError] = useState<string | null>(null);
 
   const {
     control,
@@ -90,6 +91,7 @@ export default function LoginScreen() {
 
   const onSubmit = async (data: LoginForm) => {
     setIsLoading(true);
+    setLoginError(null);
     try {
       await authService.signIn(data.email, data.password);
       Toast.show({
@@ -97,6 +99,14 @@ export default function LoginScreen() {
         text1: t('auth.login_success'),
       });
     } catch (error: any) {
+      const msg = error.message || '';
+      if (msg.includes('Invalid login credentials')) {
+        setLoginError('invalid_credentials');
+      } else if (msg.includes('Email not confirmed')) {
+        setLoginError('email_not_confirmed');
+      } else {
+        setLoginError('other');
+      }
       Toast.show({
         type: 'error',
         text1: t('common.error'),
@@ -320,16 +330,26 @@ export default function LoginScreen() {
               />
 
               <View style={styles.forgotPasswordContainer}>
-                <TouchableOpacity onPress={() => router.push('/(auth)/forgot-password')}>
-                  <Text style={[styles.forgotPasswordText, { color: theme.colors.primary }]}>
-                    {t('auth.forgot_password_question')}
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => router.push('/(auth)/resend-confirmation')} style={{ marginTop: 8 }}>
-                  <Text style={[styles.forgotPasswordText, { color: theme.colors.textSecondary, fontSize: 12 }]}>
-                    {t('auth.resend_confirmation')}
-                  </Text>
-                </TouchableOpacity>
+                {loginError === 'invalid_credentials' && (
+                  <TouchableOpacity onPress={() => router.push('/(auth)/forgot-password')}>
+                    <Text style={[styles.forgotPasswordText, { color: theme.colors.primary }]}>
+                      {t('auth.forgot_password_question')}
+                    </Text>
+                  </TouchableOpacity>
+                )}
+                
+                {loginError === 'email_not_confirmed' && (
+                  <View style={{ alignItems: 'flex-end' }}>
+                    <TouchableOpacity onPress={() => router.push('/(auth)/resend-confirmation')}>
+                      <Text style={[styles.forgotPasswordText, { color: theme.colors.primary }]}>
+                        {t('auth.resend_confirmation')}
+                      </Text>
+                    </TouchableOpacity>
+                    <Text style={{ color: theme.colors.textSecondary, fontSize: 12, marginTop: 4, textAlign: 'right' }}>
+                      {t('auth.check_spam')}
+                    </Text>
+                  </View>
+                )}
               </View>
 
               <Button
