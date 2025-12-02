@@ -32,6 +32,7 @@ export interface Profile {
   last_known_city?: string;
   last_known_lat?: number;
   last_known_lng?: number;
+  country?: string;
   notification_radius_km?: number;
   community_notifications_enabled?: boolean;
   stripe_customer_id?: string;
@@ -157,5 +158,27 @@ export interface Transaction {
   stripe_subscription_id?: string;
   searches_added?: number;
   status: TransactionStatus;
+  created_at: string;
+}
+
+export interface Survey {
+  id: string;
+  title: string;
+  questions: string[];
+  options?: string[][];
+  target_countries?: string[];
+  min_subscription_tier?: string;
+  status: 'active' | 'completed' | 'draft' | 'archived';
+  starts_at?: string;
+  ends_at?: string;
+  created_at: string;
+}
+
+export interface SurveyResponse {
+  id: string;
+  survey_id: string;
+  user_id: string;
+  answers: Record<string, string>;
+  custom_response?: string;
   created_at: string;
 }

@@ -738,7 +738,7 @@
       "rights": "Toate drepturile rezervate."
     },
     "gdpr": {
-      "message": "Folosim cookie-uri pentru a vÄƒ Ã®mbunÄƒtÄƒÈ›i experienÈ›a. ContinuÃ¢nd, sunteÈ›i de acord cu utilizarea cookie-urilor.",
+      "message": "Folosim cookie-uri pentru a vÄƒ Ã®mbunÄƒtÄƒi experienÈ›a. ContinuÃ¢nd, sunteÈ›i de acord cu utilizarea cookie-urilor.",
       "learn_more": "AflÄƒ mai multe",
       "accept": "AcceptaÈ›i toate",
       "decline": "Declin"
@@ -1078,5 +1078,16 @@
         }
       }
     }
+  },
+  "survey": {
+    "widget_title": "Spune-ne ce îți dorești",
+    "widget_subtitle": "{{count}} întrebări • Ajută-ne să îmbunătățim Truxel",
+    "modal_title": "Cercetare de Piață",
+    "intro_text": "Feedback-ul tău ne ajută să construim un instrument mai bun pentru tine. Te rugăm să răspunzi la următoarele întrebări:",
+    "submit_btn": "Trimite Feedback",
+    "sending_btn": "Se trimite...",
+    "additional_comments": "Comentarii Adiționale (Opțional)",
+    "additional_comments_placeholder": "Spune-ne ce crezi...",
+    "additional_comments_helper": "Orice alt feedback, sugestii de funcționalități sau gânduri?"
   }
 }

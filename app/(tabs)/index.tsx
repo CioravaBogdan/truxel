@@ -19,6 +19,9 @@ import CommunityFeed from '@/components/community/CommunityFeed';
 import { useTheme } from '@/lib/theme';
 import { NotificationBadge } from '@/components/NotificationBadge';
 import { useNotificationStore } from '@/store/notificationStore';
+import { useSurveyStore } from '@/store/surveyStore';
+import { SurveyWidget } from '@/components/surveys/SurveyWidget';
+import { SurveyModal } from '@/components/surveys/SurveyModal';
 
 export default function HomeScreen() {
   const { t } = useTranslation();
@@ -27,7 +30,9 @@ export default function HomeScreen() {
   const { profile, user } = useAuthStore();
   const { leads, setLeads, setSelectedLeadId, setSelectedTab } = useLeadsStore();
   const { fetchNotifications } = useNotificationStore();
+  const { activeSurvey, fetchActiveSurvey } = useSurveyStore();
   const [searchesRemaining, setSearchesRemaining] = useState(0);
+  const [surveyModalVisible, setSurveyModalVisible] = useState(false);
 
   const loadData = useCallback(async () => {
     if (!user || !profile) return;
@@ -37,6 +42,7 @@ export default function HomeScreen() {
         leadsService.getLeads(user.id),
         searchesService.getSearchesRemaining(user.id),
         fetchNotifications(user.id),
+        fetchActiveSurvey(),
       ]);
 
       setLeads(leadsData);
@@ -44,7 +50,7 @@ export default function HomeScreen() {
     } catch (error) {
       console.error('Error loading home data:', error);
     }
-  }, [profile, setLeads, user, fetchNotifications]);
+  }, [profile, setLeads, user, fetchNotifications, fetchActiveSurvey]);
 
   useEffect(() => {
     loadData();
@@ -113,80 +119,89 @@ export default function HomeScreen() {
       </TouchableOpacity>
 
       <View style={styles.section}>
-        <View style={styles.sectionHeader}>
-          <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>{t('home.recent_leads')}</Text>
-          {leads.length > 5 && (
-            <TouchableOpacity
-              onPress={() => {
-                // Reset filters to ensure we see all results
-                useLeadsStore.getState().setSelectedCountry(null);
-                useLeadsStore.getState().setSelectedCity(null);
-                useLeadsStore.getState().setFilterStatus('all');
-                useLeadsStore.getState().setFilterContactType('all');
-                useLeadsStore.getState().setSearchQuery('');
-                
-                setSelectedTab('latest');
-                router.push('/(tabs)/leads');
-              }}
-              style={[styles.viewAllButton, { backgroundColor: theme.colors.secondary + '20' }]} // 20% opacity
-            >
-              <Text style={[styles.viewAllText, { color: theme.colors.secondary }]}>{t('home.view_all_results')}</Text>
-            </TouchableOpacity>
-          )}
-        </View>
-
-        {recentLeads.length === 0 ? (
-          <Card style={styles.emptyCard}>
-            <Text style={[styles.emptyText, { color: theme.colors.textSecondary }]}>
-              {t('leads.no_leads')}
-            </Text>
-          </Card>
+        {activeSurvey ? (
+          <SurveyWidget 
+            survey={activeSurvey} 
+            onPress={() => setSurveyModalVisible(true)} 
+          />
         ) : (
           <>
-            {recentLeads.map((lead) => (
-              <TouchableOpacity
-                key={lead.id}
-                onPress={() => {
-                  // Reset filters to ensure we see all results
-                  useLeadsStore.getState().setSelectedCountry(null);
-                  useLeadsStore.getState().setSelectedCity(null);
-                  useLeadsStore.getState().setFilterStatus('all');
-                  useLeadsStore.getState().setFilterContactType('all');
-                  useLeadsStore.getState().setSearchQuery('');
+            <View style={styles.sectionHeader}>
+              <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>{t('home.recent_leads')}</Text>
+              {leads.length > 5 && (
+                <TouchableOpacity
+                  onPress={() => {
+                    // Reset filters to ensure we see all results
+                    useLeadsStore.getState().setSelectedCountry(null);
+                    useLeadsStore.getState().setSelectedCity(null);
+                    useLeadsStore.getState().setFilterStatus('all');
+                    useLeadsStore.getState().setFilterContactType('all');
+                    useLeadsStore.getState().setSearchQuery('');
+                    
+                    setSelectedTab('latest');
+                    router.push('/(tabs)/leads');
+                  }}
+                  style={[styles.viewAllButton, { backgroundColor: theme.colors.secondary + '20' }]} // 20% opacity
+                >
+                  <Text style={[styles.viewAllText, { color: theme.colors.secondary }]}>{t('home.view_all_results')}</Text>
+                </TouchableOpacity>
+              )}
+            </View>
 
-                  setSelectedTab('latest');
-                  setSelectedLeadId(lead.id);
-                  router.push('/(tabs)/leads');
-                }}
-              >
-                <Card style={styles.leadCard}>
-                  <View style={styles.leadContent}>
-                    <View style={[styles.leadIconContainer, { backgroundColor: theme.colors.secondary + '15' }]}>
-                      {(lead as any).google_url_photo ? (
-                        <Image 
-                          source={{ uri: (lead as any).google_url_photo }} 
-                          style={{ width: 40, height: 40, borderRadius: 20 }}
-                        />
-                      ) : (
-                        <Building2 size={20} color={theme.colors.secondary} />
-                      )}
-                    </View>
-                    <View style={styles.leadInfo}>
-                      <Text style={[styles.leadName, { color: theme.colors.text }]}>{lead.company_name}</Text>
-                      {lead.industry && (
-                        <Text style={[styles.leadIndustry, { color: theme.colors.textSecondary }]}>{lead.industry}</Text>
-                      )}
-                      {lead.city && (
-                        <View style={styles.leadLocation}>
-                          <MapPin size={12} color={theme.colors.textSecondary} />
-                          <Text style={[styles.leadCity, { color: theme.colors.textSecondary }]}>{lead.city}</Text>
+            {recentLeads.length === 0 ? (
+              <Card style={styles.emptyCard}>
+                <Text style={[styles.emptyText, { color: theme.colors.textSecondary }]}>
+                  {t('leads.no_leads')}
+                </Text>
+              </Card>
+            ) : (
+              <>
+                {recentLeads.map((lead) => (
+                  <TouchableOpacity
+                    key={lead.id}
+                    onPress={() => {
+                      // Reset filters to ensure we see all results
+                      useLeadsStore.getState().setSelectedCountry(null);
+                      useLeadsStore.getState().setSelectedCity(null);
+                      useLeadsStore.getState().setFilterStatus('all');
+                      useLeadsStore.getState().setFilterContactType('all');
+                      useLeadsStore.getState().setSearchQuery('');
+
+                      setSelectedTab('latest');
+                      setSelectedLeadId(lead.id);
+                      router.push('/(tabs)/leads');
+                    }}
+                  >
+                    <Card style={styles.leadCard}>
+                      <View style={styles.leadContent}>
+                        <View style={[styles.leadIconContainer, { backgroundColor: theme.colors.secondary + '15' }]}>
+                          {(lead as any).google_url_photo ? (
+                            <Image 
+                              source={{ uri: (lead as any).google_url_photo }} 
+                              style={{ width: 40, height: 40, borderRadius: 20 }}
+                            />
+                          ) : (
+                            <Building2 size={20} color={theme.colors.secondary} />
+                          )}
                         </View>
-                      )}
-                    </View>
-                  </View>
-                </Card>
-              </TouchableOpacity>
-            ))}
+                        <View style={styles.leadInfo}>
+                          <Text style={[styles.leadName, { color: theme.colors.text }]}>{lead.company_name}</Text>
+                          {lead.industry && (
+                            <Text style={[styles.leadIndustry, { color: theme.colors.textSecondary }]}>{lead.industry}</Text>
+                          )}
+                          {lead.city && (
+                            <View style={styles.leadLocation}>
+                              <MapPin size={12} color={theme.colors.textSecondary} />
+                              <Text style={[styles.leadCity, { color: theme.colors.textSecondary }]}>{lead.city}</Text>
+                            </View>
+                          )}
+                        </View>
+                      </View>
+                    </Card>
+                  </TouchableOpacity>
+                ))}
+              </>
+            )}
           </>
         )}
       </View>
@@ -208,6 +223,11 @@ export default function HomeScreen() {
       <CommunityFeed 
         customHeader={renderStatsHeader()}
         onRefresh={loadData}
+      />
+      <SurveyModal 
+        visible={surveyModalVisible}
+        survey={activeSurvey}
+        onClose={() => setSurveyModalVisible(false)}
       />
     </SafeAreaView>
   );

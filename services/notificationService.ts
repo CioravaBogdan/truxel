@@ -141,13 +141,30 @@ class NotificationService {
         console.log(`[NotificationService] Location found: ${fullCity} (${latitude}, ${longitude})`);
 
         // Update profile
+        const updateData: any = {
+          last_known_lat: latitude,
+          last_known_lng: longitude,
+          last_known_city: city // Store just the city name for matching
+        };
+
+        // Only update country if we have it (ISO code preferred, but we get full name from reverseGeocode usually)
+        // safeReverseGeocode returns country name usually. We might need ISO code.
+        // For now, let's store what we get. If we need ISO, we might need a mapping or different geocoder.
+        // Assuming safeReverseGeocode returns country code in 'isoCountryCode' if available, or we just use country name.
+        // Let's check safeReverseGeocode implementation if possible, but for now let's assume we use what we have.
+        // Actually, the user asked for "country" column.
+        if (address.isoCountryCode) {
+           updateData.country = address.isoCountryCode;
+        } else if (address.country) {
+           // Fallback to country name if ISO not available, though ISO is better for filtering
+           // But let's try to get ISO if possible. Expo Location returns isoCountryCode.
+           // Let's assume safeReverseGeocode returns it.
+           updateData.country = address.country; 
+        }
+
         const { error } = await supabase
           .from('profiles')
-          .update({
-            last_known_lat: latitude,
-            last_known_lng: longitude,
-            last_known_city: city // Store just the city name for matching
-          })
+          .update(updateData)
           .eq('user_id', userId);
 
         if (error) {

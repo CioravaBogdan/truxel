@@ -1077,6 +1077,17 @@
           "feature_sharing": "Share Contact Cards anywhere"
         }
       }
+    },
+    "survey": {
+      "widget_title": "Tell us what you want",
+      "widget_subtitle": "{{count}} questions • Help us improve Truxel",
+      "modal_title": "Market Research",
+      "intro_text": "Your feedback helps us build a better tool for you. Please answer the following questions:",
+      "submit_btn": "Send Feedback",
+      "sending_btn": "Sending...",
+      "additional_comments": "Additional Comments (Optional)",
+      "additional_comments_placeholder": "Tell us what you think...",
+      "additional_comments_helper": "Any other feedback, feature requests, or thoughts?"
     }
   }
 }
