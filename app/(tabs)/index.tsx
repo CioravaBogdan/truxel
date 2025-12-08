@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
-import { useRouter } from 'expo-router';
+import { useRouter, useFocusEffect } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Card } from '@/components/Card';
@@ -52,9 +52,11 @@ export default function HomeScreen() {
     }
   }, [profile, setLeads, user, fetchNotifications, fetchActiveSurvey]);
 
-  useEffect(() => {
-    loadData();
-  }, [loadData]);
+  useFocusEffect(
+    useCallback(() => {
+      loadData();
+    }, [loadData])
+  );
 
   const recentLeads = leads.slice(0, 5);
   const contactedCount = leads.filter((l) => l.status === 'contacted').length;

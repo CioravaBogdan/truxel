@@ -124,3 +124,12 @@ Pentru a trimite sondajele din N8N, vei folosi nodul Supabase:
 
 ---
 Aștept feedback-ul tău pe acest plan. Dacă ești de acord, putem trece la pasul 1 (crearea structurii SQL).
+
+INSERT INTO surveys (title, questions, options, status, target_countries)
+VALUES (
+  'Ce funcționalitate lipsește?',
+  '["Ce ți-ar plăcea să vezi în Truxel?", "Cât de des folosești aplicația?"]'::jsonb,
+  '[["Bursă de transport", "Mai multe lead-uri", "Altele"], ["Zilnic", "Săptămânal"]]'::jsonb,
+  'active',
+  ARRAY['RO']
+);

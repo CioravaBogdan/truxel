@@ -45,6 +45,7 @@ import {
 } from 'lucide-react-native';
 import { Lead } from '@/types/database.types';
 import { useAuthStore } from '@/store/authStore';
+import { useLeadsStore } from '@/store/leadsStore';
 import {
   safeOpenWhatsApp,
   safeOpenEmail,
@@ -243,6 +244,27 @@ const LeadCardContent = React.memo(({ lead, onNext, onPrev, onClose, onAddToMyBo
     },
   ].filter(link => link.url);
 
+  const markAsContacted = async () => {
+    if (!user || !lead.user_lead_id) return;
+    
+    try {
+      // Update in DB
+      await leadsService.updateLeadStatus(lead.user_lead_id, 'contacted', user.id);
+      
+      // Update in Store (Optimistic)
+      useLeadsStore.getState().updateLead(lead.id, { 
+        status: 'contacted',
+        last_contacted_at: new Date().toISOString()
+      });
+      
+      // Notify parent to reload if needed
+      if (onNotesUpdated) onNotesUpdated();
+      
+    } catch (error) {
+      console.error('Error updating lead status:', error);
+    }
+  };
+
   const handleWhatsApp = async (phone: string) => {
     const message = t('templates.whatsapp_message', {
       contactName: lead.contact_person_name || lead.company_name,
@@ -261,7 +283,9 @@ const LeadCardContent = React.memo(({ lead, onNext, onPrev, onClose, onAddToMyBo
       'WhatsApp not available'
     );
 
-    if (!result.success) {
+    if (result.success) {
+      markAsContacted();
+    } else {
       Toast.show({
         type: 'error',
         text1: 'WhatsApp Error',
@@ -285,7 +309,9 @@ const LeadCardContent = React.memo(({ lead, onNext, onPrev, onClose, onAddToMyBo
 
     const result = await safeOpenEmail(email, subject, body, 'Cannot open email');
 
-    if (!result.success) {
+    if (result.success) {
+      markAsContacted();
+    } else {
       Toast.show({
         type: 'error',
         text1: 'Email Error',
@@ -297,7 +323,9 @@ const LeadCardContent = React.memo(({ lead, onNext, onPrev, onClose, onAddToMyBo
   const handleCall = async (phone: string) => {
     const result = await safeOpenPhone(phone, 'Cannot make phone call');
 
-    if (!result.success) {
+    if (result.success) {
+      markAsContacted();
+    } else {
       Toast.show({
         type: 'error',
         text1: 'Phone Error',
