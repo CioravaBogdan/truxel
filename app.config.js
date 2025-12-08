@@ -4,13 +4,13 @@ export default {
     slug: "truxel",
     version: "1.0.7",
     orientation: "portrait",
-    icon: "./assets/images/icon.png",
+    icon: "./assets/Truxel_Brand/App Store 1024 x 1024.png",
     scheme: "truxel",
     userInterfaceStyle: "automatic",
     newArchEnabled: true,
     owner: "cioravabogdan",
     splash: {
-      image: "./assets/images/icon.png",
+      image: "./assets/Truxel_Brand/App Store 1024 x 1024.png",
       resizeMode: "contain",
       backgroundColor: "#ffffff"
     },
