@@ -2,7 +2,7 @@ export default {
   expo: {
     name: "Truxel",
     slug: "truxel",
-    version: "1.0.4",
+    version: "1.0.7",
     orientation: "portrait",
     icon: "./assets/images/icon.png",
     scheme: "truxel",
@@ -15,7 +15,7 @@ export default {
       backgroundColor: "#ffffff"
     },
     ios: {
-      buildNumber: "10",
+      buildNumber: "13",
       supportsTablet: true,
       bundleIdentifier: "io.truxel.app",
       infoPlist: {
@@ -38,7 +38,7 @@ export default {
       icon: "./assets/Truxel_Brand/App Store 1024 x 1024.png"
     },
     android: {
-      versionCode: 10,
+      versionCode: 13,
       package: "io.truxel.app",
       permissions: [
         "ACCESS_COARSE_LOCATION",
@@ -88,7 +88,7 @@ export default {
       [
         "expo-notifications",
         {
-          icon: "./assets/images/icon.png",
+          icon: "./assets/Truxel_Brand/androind launcher 192x192.png",
           color: "#ffffff",
           sounds: ["./assets/sounds/notification.mp3"]
         }
