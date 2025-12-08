@@ -92,19 +92,39 @@ export const leadsService = {
   },
 
   /**
-   * Get leads saved from a specific search
-   * Uses user_leads junction table with source_search_id filter
+   * Get the ID of the most recent search that actually has leads saved
+   */
+  async getLatestActiveSearchId(userId: string): Promise<string | null> {
+    const { data, error } = await supabase
+      .from('user_leads')
+      .select('source_search_id')
+      .eq('user_id', userId)
+      .not('source_search_id', 'is', null)
+      .order('saved_at', { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (error) throw error;
+    return data?.source_search_id || null;
+  },
+
+  /**
+   * Get leads from a specific search (from user_leads table)
+   * Uses source_search_id to find all results from that search
    */
   async getLeadsBySearch(searchId: string): Promise<Lead[]> {
     const { data, error } = await supabase
       .from('user_leads')
       .select(`
         id,
-        user_id,
         status,
         user_notes,
         saved_at,
-        lead:leads!inner (*)
+        source_type,
+        source_id,
+        lead:leads!inner (
+          *
+        )
       `)
       .eq('source_search_id', searchId)
       .order('saved_at', { ascending: false });
@@ -118,6 +138,7 @@ export const leadsService = {
       status: ul.status,
       user_notes: ul.user_notes,
       saved_at: ul.saved_at,
+      source_type: ul.source_type,
     })) || [];
   },
 

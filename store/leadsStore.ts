@@ -102,15 +102,13 @@ export const useLeadsStore = create<LeadsState>((set, get) => ({
     set({ isLoading: true });
     try {
       const { leadsService } = await import('@/services/leadsService');
-      const { searchesService } = await import('@/services/searchesService');
       
       let targetSearchId = searchId;
 
-      // If no searchId provided, find the most recent one
+      // If no searchId provided, find the most recent one that actually has data
       if (!targetSearchId) {
-        const searches = await searchesService.getSearches(userId);
-        if (searches && searches.length > 0) {
-          targetSearchId = searches[0].id;
+        targetSearchId = await leadsService.getLatestActiveSearchId(userId);
+        if (targetSearchId) {
           set({ selectedSearchId: targetSearchId });
         }
       }
@@ -119,7 +117,7 @@ export const useLeadsStore = create<LeadsState>((set, get) => ({
         const leads = await leadsService.getLeadsBySearch(targetSearchId);
         set({ latestSearchLeads: leads, isLoading: false });
       } else {
-        set({ latestSearchLeads: [], isLoading: false });
+        set({ latestSearchLeads: [], selectedSearchId: null, isLoading: false });
       }
     } catch (error) {
       console.error('Error loading latest search leads:', error);
