@@ -48,6 +48,8 @@ export const leadsService = {
           longitude,
           description,
           ai_match_score,
+          verified_by_users_count,
+          last_verified_at,
           match_reasons,
           employee_count,
           founded_year,

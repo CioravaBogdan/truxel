@@ -42,6 +42,7 @@ import {
   Edit3,
   Users,
   FileText,
+  ShieldCheck,
 } from 'lucide-react-native';
 import { Lead } from '@/types/database.types';
 import { useAuthStore } from '@/store/authStore';
@@ -418,6 +419,16 @@ const LeadCardContent = React.memo(({ lead, onNext, onPrev, onClose, onAddToMyBo
             
             <Text style={[styles.companyName, { color: theme.colors.text }]}>{lead.company_name}</Text>
             
+            {/* Verified Badge */}
+            {(lead.verified_by_users_count || 0) > 0 && (
+              <View style={styles.verifiedBadge}>
+                <ShieldCheck size={14} color={theme.colors.success} />
+                <Text style={[styles.verifiedText, { color: theme.colors.success }]}>
+                  Verified by {lead.verified_by_users_count} users
+                </Text>
+              </View>
+            )}
+            
             {lead.city && (
               <View style={styles.infoRow}>
                 <MapPin size={16} color={theme.colors.textSecondary} />
@@ -780,19 +791,26 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 2,
   },
-  avatarContainer: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
+  companyName: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 8,
+  },
+  verifiedBadge: {
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 16,
-  },
-  companyName: {
-    fontSize: 24,
-    fontWeight: '700',
-    textAlign: 'center',
+    gap: 6,
     marginBottom: 12,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 12,
+    backgroundColor: '#F0FDF4', // Light green background
+  },
+  verifiedText: {
+    fontSize: 13,
+    fontWeight: '600',
   },
   infoRow: {
     flexDirection: 'row',

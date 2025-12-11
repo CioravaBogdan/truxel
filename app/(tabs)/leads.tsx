@@ -49,6 +49,7 @@ import {
   BookMarked,
   Globe,
   Share2,
+  ShieldCheck,
 } from 'lucide-react-native';
 import { Lead } from '@/types/database.types';
 import type { CommunityPost, Country, City } from '@/types/community.types';
@@ -719,6 +720,15 @@ export default function LeadsScreen() {
               )}
               {lead.industry && (
                 <Text style={[styles.leadIndustry, { color: theme.colors.textSecondary }]} numberOfLines={1}>{lead.industry}</Text>
+              )}
+              {/* Verified Badge */}
+              {(lead.verified_by_users_count || 0) > 0 && (
+                <View style={styles.verifiedBadge}>
+                  <ShieldCheck size={12} color={theme.colors.success} />
+                  <Text style={[styles.verifiedText, { color: theme.colors.success }]}>
+                    Verified by {lead.verified_by_users_count} users
+                  </Text>
+                </View>
               )}
             </View>
             
@@ -1469,6 +1479,16 @@ const styles = StyleSheet.create({
   leadIndustry: {
     fontSize: 13,
     color: '#94A3B8',
+  },
+  verifiedBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    marginTop: 2,
+  },
+  verifiedText: {
+    fontSize: 11,
+    fontWeight: '600',
   },
   lastContactedBadge: {
     paddingHorizontal: 8,

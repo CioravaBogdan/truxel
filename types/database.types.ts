@@ -73,6 +73,8 @@ export interface Lead {
   user_notes?: string;
   saved_at?: string; // When user saved this lead (from user_leads)
   last_contacted_at?: string; // When user last contacted this lead (from user_leads)
+  verified_by_users_count?: number; // How many users saved this lead
+  last_verified_at?: string; // When it was last saved
   ai_match_score?: number;
   match_reasons?: { reason: string; weight: number }[];
   employee_count?: number;

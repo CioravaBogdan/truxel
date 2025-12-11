@@ -14,7 +14,7 @@ import { useAuthStore } from '@/store/authStore';
 import { useLeadsStore } from '@/store/leadsStore';
 import { leadsService } from '@/services/leadsService';
 import { searchesService } from '@/services/searchesService';
-import { Briefcase, Clock, CreditCard, MapPin, Building2, Users } from 'lucide-react-native';
+import { Briefcase, Clock, CreditCard, MapPin, Building2, Users, ShieldCheck } from 'lucide-react-native';
 import CommunityFeed from '@/components/community/CommunityFeed';
 import { useTheme } from '@/lib/theme';
 import { NotificationBadge } from '@/components/NotificationBadge';
@@ -188,6 +188,17 @@ export default function HomeScreen() {
                         </View>
                         <View style={styles.leadInfo}>
                           <Text style={[styles.leadName, { color: theme.colors.text }]}>{lead.company_name}</Text>
+                          
+                          {/* Verified Badge */}
+                          {(lead.verified_by_users_count || 0) > 0 && (
+                            <View style={styles.verifiedBadge}>
+                              <ShieldCheck size={10} color={theme.colors.success} />
+                              <Text style={[styles.verifiedText, { color: theme.colors.success }]}>
+                                Verified by {lead.verified_by_users_count} users
+                              </Text>
+                            </View>
+                          )}
+
                           {lead.industry && (
                             <Text style={[styles.leadIndustry, { color: theme.colors.textSecondary }]}>{lead.industry}</Text>
                           )}
@@ -347,8 +358,8 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    alignItems: 'center',
     justifyContent: 'center',
+    alignItems: 'center',
     marginRight: 12,
   },
   leadInfo: {
@@ -358,6 +369,16 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: '700',
     marginBottom: 4,
+  },
+  verifiedBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    marginBottom: 4,
+  },
+  verifiedText: {
+    fontSize: 11,
+    fontWeight: '600',
   },
   leadIndustry: {
     fontSize: 14,
