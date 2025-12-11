@@ -8,6 +8,7 @@ import {
   Country,
 } from '../types/community.types';
 import { communityService } from '../services/communityService';
+import { useAuthStore } from './authStore';
 
 interface CommunityState {
   // Posts data
@@ -67,6 +68,8 @@ interface CommunityState {
   unsavePost: (postId: string, userId: string) => Promise<void>;
   recordContact: (postId: string, userId: string) => Promise<void>;
   recordView: (postId: string, userId: string) => Promise<void>;
+  reportPost: (postId: string, userId: string, reason: string) => Promise<void>;
+  blockUser: (blockerId: string, blockedId: string) => Promise<void>;
 
   // Filter actions
   setSelectedTab: (tab: 'availability' | 'routes' | 'saved') => void;
@@ -116,6 +119,7 @@ export const useCommunityStore = create<CommunityState>((set, get) => ({
   // Load posts with current filters
   loadPosts: async (reset = false) => {
     const { filters, selectedTab, nextCursor } = get();
+    const userId = useAuthStore.getState().user?.id;
 
     if (reset) {
       set({ posts: [], nextCursor: undefined, hasMore: true });
@@ -130,6 +134,7 @@ export const useCommunityStore = create<CommunityState>((set, get) => ({
         ...filters,
         post_type: postType,
         cursor: reset ? undefined : nextCursor,
+        exclude_blocked_by: userId,
       });
 
       set({
@@ -417,6 +422,39 @@ export const useCommunityStore = create<CommunityState>((set, get) => ({
           [postId]: true,
         },
       }));
+    }
+  },
+
+  reportPost: async (postId, userId, reason) => {
+    try {
+      await communityService.reportPost(postId, userId, reason);
+    } catch (error) {
+      console.error('Error reporting post:', error);
+      throw error;
+    }
+  },
+
+  blockUser: async (blockerId, blockedId) => {
+    const removeUserPosts = () => {
+      set((state) => ({
+        posts: state.posts.filter(p => p.user_id !== blockedId),
+        savedPosts: state.savedPosts.filter(p => p.user_id !== blockedId),
+        userActivePosts: state.userActivePosts.filter(p => p.user_id !== blockedId)
+      }));
+    };
+
+    try {
+      await communityService.blockUser(blockerId, blockedId);
+      removeUserPosts();
+    } catch (error: any) {
+      // Handle duplicate block (already blocked) as success
+      if (error?.code === '23505') {
+        console.log('User already blocked, updating local state anyway');
+        removeUserPosts();
+        return;
+      }
+      console.error('Error blocking user:', error);
+      throw error;
     }
   },
 

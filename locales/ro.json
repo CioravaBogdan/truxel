@@ -568,9 +568,25 @@
       "return": "ÃŽntoarcere goalÄƒ de la {{origin}} {{dest}}"
     },
     "post_types": {
-      "DRIVER_AVAILABLE": "È˜ofer Disponibil",
-      "LOAD_AVAILABLE": "MarfÄƒ DisponibilÄƒ"
-    }
+      "DRIVER_AVAILABLE": "Șofer Disponibil",
+      "LOAD_AVAILABLE": "Marfă Disponibilă"
+    },
+    "post_options": "Opțiuni Postare",
+    "report_post": "Raportează Postarea",
+    "block_user": "Blochează Utilizator",
+    "report_submitted_title": "Raport Trimis",
+    "report_submitted_message": "Mulțumim pentru raport. Vom revizui această postare.",
+    "report_failed": "Nu s-a putut trimite raportul. Încearcă din nou.",
+    "report_post_title": "Raportează Postarea",
+    "report_post_message": "De ce raportezi această postare?",
+    "report_spam": "Spam",
+    "report_inappropriate": "Conținut Nepotrivit",
+    "report_scam": "Înșelătorie / Fraudă",
+    "block_user_title": "Blochează Utilizator",
+    "block_user_message": "Ești sigur că vrei să blochezi pe {{name}}? Nu vei mai vedea postările acestuia.",
+    "block_confirm": "Blochează",
+    "user_blocked_success": "Utilizator blocat cu succes",
+    "block_failed": "Nu s-a putut bloca utilizatorul"
   },
   "support": {
     "title": "Contact Suport",

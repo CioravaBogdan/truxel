@@ -195,6 +195,7 @@ export interface PostFilters {
   status?: PostStatus;
   limit?: number;
   cursor?: string;
+  exclude_blocked_by?: string;
 }
 
 // Location types

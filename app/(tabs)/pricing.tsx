@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   Alert,
   Platform,
+  Linking,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -27,10 +28,8 @@ import {
   Compass,
   ChevronDown,
   ChevronUp,
-  Ticket,
 } from 'lucide-react-native';
 import { useTheme } from '@/lib/theme';
-import { Input } from '@/components/Input';
 import { supabase } from '@/lib/supabase';
 
 // Import RevenueCat for native builds
@@ -159,12 +158,6 @@ export default function PricingScreen() {
   const [isLoading, setIsLoading] = useState(true);
   const [purchasingPackage, setPurchasingPackage] = useState<string | null>(null);
   
-  // Promo Code State
-  const [promoCode, setPromoCode] = useState('');
-  const [isRedeeming, setIsRedeeming] = useState(false);
-  const [activeOfferingId, setActiveOfferingId] = useState<string | null>(null);
-  const [influencerName, setInfluencerName] = useState<string | null>(null);
-  
   // UI State
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
   const [showSupportModal, setShowSupportModal] = useState(false);
@@ -228,16 +221,6 @@ export default function PricingScreen() {
       'truxel_fleet_manager_monthly': 'fleet_manager',
       'truxel_pro_freighter_monthly': 'pro_freighter',
       'truxel_search_pack_25': 'search_pack',
-
-      // Influencer Special Packages
-      'standard_monthly': 'standard',
-      'pro_monthly': 'pro',
-      'prod_tts9xfkrbvir4q': 'standard', // Standard Tier Influencer (Old)
-      'prod_tts7rn03e1porw': 'pro',      // Pro Tier Influencer (Old)
-      'pro_tier_influencer': 'pro',      // Pro Tier Influencer (New Web)
-      'standard_tier_influencer': 'standard', // Standard Tier Influencer (New Web)
-      'truxel_pro_influencer': 'pro',    // Pro Tier Influencer (New iOS)
-      'truxel_standard_influencer': 'standard', // Standard Tier Influencer (New iOS)
     };
 
     const cleanId = identifier.toLowerCase();
@@ -263,7 +246,7 @@ export default function PricingScreen() {
     return tierName;
   };
 
-  const loadRevenueCatOfferings = useCallback(async (overrideOfferingId?: string) => {
+  const loadRevenueCatOfferings = useCallback(async () => {
     if (!profile?.user_id) {
       console.error('❌ No user_id available for RevenueCat');
       return;
@@ -272,13 +255,8 @@ export default function PricingScreen() {
     try {
       setIsLoading(true);
       
-      // Determine which offering to use:
-      // 1. Override ID (from promo code)
-      // 2. Active state ID (if previously redeemed)
-      // 3. Default (undefined) -> Service uses 'current'
-      const targetOfferingId = overrideOfferingId || activeOfferingId || undefined;
-      
-      const offerings = await getRevenueCatOfferings(profile.user_id, targetOfferingId);
+      // Use default offering (current)
+      const offerings = await getRevenueCatOfferings(profile.user_id);
       
       // Trust getOfferings() to handle filtering and fallbacks for both Web and Mobile
       const userSubscriptions = offerings.subscriptions;
@@ -332,70 +310,12 @@ export default function PricingScreen() {
     } finally {
       setIsLoading(false);
     }
-  }, [t, profile?.user_id, activeOfferingId]);
+  }, [t, profile?.user_id]);
 
   useEffect(() => {
     loadRevenueCatOfferings();
     checkSubscriptionStatus();
   }, [loadRevenueCatOfferings, checkSubscriptionStatus]);
-
-  const handleRedeemCode = async () => {
-    if (!promoCode.trim()) return;
-
-    try {
-      setIsRedeeming(true);
-      
-      // 1. Use RPC to validate and redeem code
-      const { data, error } = await supabase
-        .rpc('redeem_promo_code', { code_input: promoCode.trim().toUpperCase() });
-
-      if (error || !data || !data.valid) {
-        Toast.show({
-          type: 'error',
-          text1: t('common.error'),
-          text2: data?.message || t('pricing.invalid_code'),
-        });
-        return;
-      }
-
-      // 2. Apply the offering
-      setActiveOfferingId(data.offering_id);
-      
-      // Fetch influencer name separately if needed, or just use generic
-      // For now, we can fetch it if we really want the name, but the RPC doesn't return it yet.
-      // Let's do a quick fetch for the name to keep the UI nice
-      const { data: promoData } = await supabase
-        .from('promo_codes')
-        .select('influencers (name)')
-        .eq('code', promoCode.trim().toUpperCase())
-        .single();
-        
-      // @ts-ignore
-      const influencerName = promoData?.influencers?.name || promoData?.influencers?.[0]?.name || 'Influencer';
-      setInfluencerName(influencerName);
-
-      await loadRevenueCatOfferings(data.offering_id);
-      
-      Toast.show({
-        type: 'success',
-        text1: t('pricing.promo_success_title', { name: influencerName }),
-        text2: t('pricing.promo_success_message', { description: data.description || t('pricing.special_discount') }),
-        visibilityTime: 4000,
-      });
-      
-      setPromoCode(''); // Clear input
-      
-    } catch (err) {
-      console.error('Redemption error:', err);
-      Toast.show({
-        type: 'error',
-        text1: t('common.error'),
-        text2: t('pricing.failed_redeem'),
-      });
-    } finally {
-      setIsRedeeming(false);
-    }
-  };
 
   const handleRevenueCatPurchase = async (pkg: OfferingPackage) => {
     if (!profile?.user_id) {
@@ -542,6 +462,10 @@ export default function PricingScreen() {
     );
   };
 
+  const openLegalLink = (url: string) => {
+    Linking.openURL(url).catch(err => console.error("Couldn't load page", err));
+  };
+
   if (isLoading) {
     return (
       <SafeAreaView style={styles.container} edges={['top']}>
@@ -645,7 +569,7 @@ export default function PricingScreen() {
             const isActive = profile?.subscription_tier === uiTier.mobileId;
             const Icon = uiTier.icon;
 
-            // --- PROMO LOGIC ---
+            // --- PROMO LOGIC REMOVED ---
             let discountPercent = 0;
             let originalPriceDisplay = null;
             let finalDisplayPrice = pkg.product.priceString;
@@ -670,19 +594,6 @@ export default function PricingScreen() {
                 originalPriceDisplay = `${symbol}${standardPrice.toFixed(2)}`;
             }
 
-            // --- INFLUENCER OVERRIDE LOGIC ---
-            // Force display of intro price for Influencer offers (especially on Web where introPrice might be missing from SDK)
-            let effectiveIntroPriceString = pkg.product.introPrice?.priceString;
-            
-            if (activeOfferingId && influencerName && !effectiveIntroPriceString) {
-               const currencySymbol = pkg.product.priceString.replace(/[0-9.,\s]/g, '') || '€';
-               if (uiTier.mobileId === 'standard') {
-                  effectiveIntroPriceString = `${currencySymbol}19.99`;
-               } else if (uiTier.mobileId === 'pro') {
-                  effectiveIntroPriceString = `${currencySymbol}29.99`;
-               }
-            }
-
             // Dynamic values for translation
             const translationParams = {
               count: uiTier.mobileId === 'standard' || uiTier.mobileId === 'fleet_manager' ? 30 : 50,
@@ -703,34 +614,10 @@ export default function PricingScreen() {
                     shadowOpacity: 0.15,
                     shadowRadius: 12,
                   },
-                  // Promo Styling Override
-                  activeOfferingId && (discountPercent > 0 || effectiveIntroPriceString) && { 
-                    borderColor: '#EF4444', 
-                    borderWidth: 2, 
-                    backgroundColor: '#FEF2F2',
-                    transform: [{ scale: 1.02 }] 
-                  },
                   isActive && { backgroundColor: '#F8FAFC', borderColor: theme.colors.success }
                 ]}
               >
-                {/* Promo Badge */}
-                {activeOfferingId && discountPercent > 0 && (
-                   <View style={{ position: 'absolute', top: -12, right: -8, backgroundColor: '#EF4444', paddingHorizontal: 10, paddingVertical: 6, borderRadius: 8, transform: [{rotate: '5deg'}], zIndex: 20, shadowColor: '#000', shadowOpacity: 0.2, shadowRadius: 4 }}>
-                      <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 12 }}>{t('pricing.promo_save_badge', { percent: discountPercent })}</Text>
-                   </View>
-                )}
-
-                {/* Influencer Tag */}
-                {activeOfferingId && influencerName && (
-                   <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
-                      <Zap size={14} color="#EF4444" fill="#EF4444" />
-                      <Text style={{ color: '#EF4444', fontWeight: '800', fontSize: 11, marginLeft: 4, textTransform: 'uppercase', letterSpacing: 0.5 }}>
-                          {t('pricing.promo_influencer_deal', { name: influencerName })}
-                      </Text>
-                   </View>
-                )}
-
-                {uiTier.popular && !isActive && !activeOfferingId && (
+                {uiTier.popular && !isActive && (
                   <View style={[styles.popularBadge, { backgroundColor: uiTier.accentColor }]}>
                     <Text style={styles.popularBadgeText}>{t('web.pricing.cta_popular')}</Text>
                   </View>
@@ -759,22 +646,15 @@ export default function PricingScreen() {
                        </Text>
                     )}
 
-                    {effectiveIntroPriceString ? (
+                    {pkg.product.introPrice ? (
                       <>
-                        <Text style={[styles.price, { color: activeOfferingId ? '#EF4444' : uiTier.accentColor, fontSize: 24 }]}>
-                          {effectiveIntroPriceString}
+                        <Text style={[styles.price, { color: uiTier.accentColor, fontSize: 24 }]}>
+                          {pkg.product.introPrice.priceString}
                         </Text>
                         
-                        {/* Special Influencer Message */}
-                        {activeOfferingId && influencerName ? (
-                           <Text style={[styles.perMonth, { color: '#EF4444', fontSize: 11, fontWeight: '700', marginTop: 2 }]}>
-                              {t('pricing.first_month_discount_influencer', { name: influencerName })}
-                           </Text>
-                        ) : (
-                           <Text style={[styles.perMonth, { color: theme.colors.textSecondary, fontSize: 11 }]}>
-                             {t('pricing.intro_offer', { cycles: pkg.product.introPrice?.cycles || 1, period: pkg.product.introPrice?.periodUnit.toLowerCase() || 'month' })}
-                           </Text>
-                        )}
+                        <Text style={[styles.perMonth, { color: theme.colors.textSecondary, fontSize: 11 }]}>
+                          {t('pricing.intro_offer', { cycles: pkg.product.introPrice.cycles, period: pkg.product.introPrice.periodUnit.toLowerCase() })}
+                        </Text>
 
                         <Text style={[styles.perMonth, { color: theme.colors.textSecondary, textDecorationLine: 'line-through', marginTop: 2 }]}>
                           {pkg.product.priceString}/{t('pricing.month')}
@@ -782,7 +662,7 @@ export default function PricingScreen() {
                       </>
                     ) : (
                       <>
-                        <Text style={[styles.price, { color: activeOfferingId ? '#EF4444' : uiTier.accentColor }]}>
+                        <Text style={[styles.price, { color: uiTier.accentColor }]}>
                           {finalDisplayPrice}
                         </Text>
                         <Text style={[styles.perMonth, { color: theme.colors.textSecondary }]}>/{t('pricing.month')}</Text>
@@ -814,48 +694,6 @@ export default function PricingScreen() {
               </Card>
             );
           })}
-        </View>
-
-        {/* Promo Code Section */}
-        <View style={{ paddingHorizontal: 16, marginTop: 24 }}>
-          <View style={[styles.promoSection, { 
-            backgroundColor: theme.colors.secondary + '08', 
-            borderColor: theme.colors.secondary,
-            borderStyle: 'dashed',
-            borderWidth: 1.5
-          }]}>
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 16 }}>
-              <Ticket size={20} color={theme.colors.secondary} />
-              <Text style={[styles.promoTitle, { color: theme.colors.text, marginBottom: 0 }]}>{t('pricing.promo_code_title')}</Text>
-            </View>
-
-            <View style={styles.promoRow}>
-              <Input
-                placeholder={t('pricing.promo_code_placeholder')}
-                value={promoCode}
-                onChangeText={setPromoCode}
-                autoCapitalize="characters"
-                containerStyle={{ flex: 1, marginBottom: 0 }}
-              />
-              <Button
-                title={t('pricing.apply')}
-                onPress={handleRedeemCode}
-                loading={isRedeeming}
-                disabled={!promoCode.trim()}
-                variant="primary"
-                style={{ minWidth: 90, paddingHorizontal: 20, paddingVertical: 12 }} 
-              />
-            </View>
-            {activeOfferingId && (
-              <TouchableOpacity onPress={() => {
-                setActiveOfferingId(null);
-                loadRevenueCatOfferings(undefined);
-                Toast.show({ type: 'info', text1: t('pricing.offer_removed'), text2: t('pricing.showing_standard') });
-              }}>
-                <Text style={[styles.removePromo, { color: theme.colors.error }]}>{t('pricing.remove_offer')}</Text>
-              </TouchableOpacity>
-            )}
-          </View>
         </View>
 
         {/* Search Packs - Addon Section */}
@@ -980,6 +818,21 @@ export default function PricingScreen() {
         <View style={[styles.footer, { backgroundColor: theme.colors.surface }]}>
           <View style={styles.webContainer}>
             <Text style={[styles.footerText, { color: theme.colors.textSecondary }]}>{t('pricing.footer_note')}</Text>
+            
+            {/* Legal Links */}
+            <View style={styles.legalLinks}>
+              <TouchableOpacity onPress={() => openLegalLink('https://truxel.com/privacy')}>
+                <Text style={[styles.legalLinkText, { color: theme.colors.primary }]}>{t('auth.privacy_policy')}</Text>
+              </TouchableOpacity>
+              <Text style={[styles.legalSeparator, { color: theme.colors.textSecondary }]}>•</Text>
+              <TouchableOpacity onPress={() => openLegalLink('https://truxel.com/terms')}>
+                <Text style={[styles.legalLinkText, { color: theme.colors.primary }]}>{t('auth.terms_of_service')}</Text>
+              </TouchableOpacity>
+              <Text style={[styles.legalSeparator, { color: theme.colors.textSecondary }]}>•</Text>
+              <TouchableOpacity onPress={() => openLegalLink('https://www.apple.com/legal/internet-services/itunes/dev/stdeula/')}>
+                <Text style={[styles.legalLinkText, { color: theme.colors.primary }]}>EULA</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
 
@@ -1258,6 +1111,21 @@ const styles = StyleSheet.create({
     lineHeight: 18,
     opacity: 0.8,
   },
+  legalLinks: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 12,
+    flexWrap: 'wrap',
+  },
+  legalLinkText: {
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  legalSeparator: {
+    marginHorizontal: 8,
+    fontSize: 12,
+  },
   currentSubscriptionCard: {
     marginHorizontal: 16,
     marginTop: -24,
@@ -1315,27 +1183,5 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 14,
     fontWeight: '500',
-  },
-  promoSection: {
-    padding: 16,
-    borderRadius: 16,
-    borderWidth: 1,
-    marginBottom: 16,
-  },
-  promoTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    marginBottom: 12,
-  },
-  promoRow: {
-    flexDirection: 'row',
-    gap: 12,
-    alignItems: 'center', // Align center to handle input height
-  },
-  removePromo: {
-    marginTop: 12,
-    fontSize: 14,
-    fontWeight: '500',
-    textAlign: 'center',
   },
 });

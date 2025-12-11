@@ -171,6 +171,20 @@ class CommunityService {
       query = query.eq('user_id', filters.user_id);
     }
 
+    // Exclude blocked users
+    if (filters.exclude_blocked_by) {
+      const { data: blockedUsers } = await supabase
+        .from('user_blocks')
+        .select('blocked_id')
+        .eq('blocker_id', filters.exclude_blocked_by);
+      
+      if (blockedUsers && blockedUsers.length > 0) {
+        const blockedIds = blockedUsers.map(b => b.blocked_id);
+        // Use filter with explicit parentheses to avoid PostgREST parsing error
+        query = query.filter('user_id', 'not.in', `(${blockedIds.join(',')})`);
+      }
+    }
+
     // Pagination
     const limit = filters.limit || 20;
     query = query.limit(limit);
@@ -399,9 +413,17 @@ class CommunityService {
 
     const rows: SavedPostRow[] = ((data as unknown) as SavedPostRow[] | null) ?? [];
 
+    // Fetch blocked users to filter them out
+    const { data: blockedUsers } = await supabase
+      .from('user_blocks')
+      .select('blocked_id')
+      .eq('blocker_id', userId);
+    
+    const blockedIds = new Set(blockedUsers?.map(b => b.blocked_id) || []);
+
     return rows
       .map((item) => (item.post ? normalizePostRow(item.post) : null))
-      .filter((post): post is CommunityPost => Boolean(post));
+      .filter((post): post is CommunityPost => Boolean(post) && !blockedIds.has(post.user_id));
   }
 
   /**
@@ -559,6 +581,30 @@ class CommunityService {
       conversions: conversions || 0,
       contacts
     };
+  }
+
+  async reportPost(postId: string, userId: string, reason: string): Promise<void> {
+    const { error } = await supabase
+      .from('content_reports')
+      .insert({
+        post_id: postId,
+        reporter_id: userId,
+        reason: reason,
+        status: 'pending'
+      });
+
+    if (error) throw error;
+  }
+
+  async blockUser(blockerId: string, blockedId: string): Promise<void> {
+    const { error } = await supabase
+      .from('user_blocks')
+      .insert({
+        blocker_id: blockerId,
+        blocked_id: blockedId
+      });
+
+    if (error) throw error;
   }
 }
 

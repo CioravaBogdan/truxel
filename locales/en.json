@@ -570,7 +570,23 @@
     "post_types": {
       "DRIVER_AVAILABLE": "Driver Available",
       "LOAD_AVAILABLE": "Load Available"
-    }
+    },
+    "post_options": "Post Options",
+    "report_post": "Report Post",
+    "block_user": "Block User",
+    "report_submitted_title": "Report Submitted",
+    "report_submitted_message": "Thank you for your report. We will review this post.",
+    "report_failed": "Failed to submit report. Please try again.",
+    "report_post_title": "Report Post",
+    "report_post_message": "Why are you reporting this post?",
+    "report_spam": "Spam",
+    "report_inappropriate": "Inappropriate Content",
+    "report_scam": "Scam / Fraud",
+    "block_user_title": "Block User",
+    "block_user_message": "Are you sure you want to block {{name}}? You will no longer see their posts.",
+    "block_confirm": "Block",
+    "user_blocked_success": "User blocked successfully",
+    "block_failed": "Failed to block user"
   },
   "support": {
     "title": "Contact Support",

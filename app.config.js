@@ -16,7 +16,7 @@ export default {
     },
     ios: {
       buildNumber: "14",
-      supportsTablet: true,
+      supportsTablet: false,
       bundleIdentifier: "io.truxel.app",
       infoPlist: {
         ITSAppUsesNonExemptEncryption: false,

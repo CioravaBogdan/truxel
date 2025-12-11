@@ -27,6 +27,7 @@ import {
   Navigation,
   Package,
   Building2,
+  MoreVertical,
 } from 'lucide-react-native';
 import { CommunityPost } from '../../types/community.types';
 import { useAuthStore } from '../../store/authStore';
@@ -557,6 +558,79 @@ export default function PostCard({ post, onPress, onUnsave, onAddToMyBook }: Pos
     }
   };
 
+  const submitReport = async (reason: string) => {
+    if (!user) return;
+    try {
+      await useCommunityStore.getState().reportPost(post.id, user.id, reason);
+      Alert.alert(t('community.report_submitted_title'), t('community.report_submitted_message'));
+    } catch (error) {
+      Alert.alert(t('common.error'), t('community.report_failed'));
+    }
+  };
+
+  const handleReport = () => {
+    if (!user) {
+      Alert.alert(t('community.authentication_required'), t('community.must_be_logged_in'));
+      return;
+    }
+
+    Alert.alert(
+      t('community.report_post_title'),
+      t('community.report_post_message'),
+      [
+        { text: t('common.cancel'), style: 'cancel' },
+        { text: t('community.report_spam'), onPress: () => submitReport('spam') },
+        { text: t('community.report_inappropriate'), onPress: () => submitReport('inappropriate') },
+        { text: t('community.report_scam'), onPress: () => submitReport('scam') }
+      ]
+    );
+  };
+
+  const handleBlock = () => {
+    if (!user) {
+      Alert.alert(t('community.authentication_required'), t('community.must_be_logged_in'));
+      return;
+    }
+
+    Alert.alert(
+      t('community.block_user_title'),
+      t('community.block_user_message', { name: contactName }),
+      [
+        { text: t('common.cancel'), style: 'cancel' },
+        {
+          text: t('community.block_confirm'),
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              await useCommunityStore.getState().blockUser(user.id, post.user_id);
+              Toast.show({
+                type: 'success',
+                text1: t('community.user_blocked_success'),
+              });
+            } catch (error) {
+              Toast.show({
+                type: 'error',
+                text1: t('community.block_failed'),
+              });
+            }
+          }
+        }
+      ]
+    );
+  };
+
+  const showMenu = () => {
+    Alert.alert(
+      t('community.post_options'),
+      undefined,
+      [
+        { text: t('community.report_post'), onPress: handleReport },
+        { text: t('community.block_user'), onPress: handleBlock, style: 'destructive' },
+        { text: t('common.cancel'), style: 'cancel' }
+      ]
+    );
+  };
+
   return (
     <TouchableOpacity style={[styles.container, { backgroundColor: theme.colors.card, borderColor: isDriverAvailable ? theme.colors.secondary : theme.colors.info }]} onPress={onPress} activeOpacity={0.7}>
       {/* Header */}
@@ -636,6 +710,18 @@ export default function PostCard({ post, onPress, onUnsave, onAddToMyBook }: Pos
                 size={18} 
                 color={isSaved ? theme.colors.warning : theme.colors.textSecondary} 
                 fill={isSaved ? theme.colors.warning : 'none'} 
+              />
+            </TouchableOpacity>
+
+            {/* Menu Button */}
+            <TouchableOpacity 
+              style={[styles.saveIconButton, { backgroundColor: theme.colors.background, marginLeft: 4 }]} 
+              onPress={showMenu} 
+              accessibilityLabel={t('common.options')}
+            >
+              <MoreVertical 
+                size={18} 
+                color={theme.colors.textSecondary} 
               />
             </TouchableOpacity>
           </View>
