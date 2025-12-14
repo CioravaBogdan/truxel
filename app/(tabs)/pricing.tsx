@@ -182,7 +182,7 @@ export default function PricingScreen() {
         Toast.show({
           type: 'success',
           text1: t('subscription.activated'),
-          text2: `Welcome to ${updatedProfile.subscription_tier} tier! 🎉`,
+          text2: t('subscription.activated_message', { tier: t(`subscription.${updatedProfile.subscription_tier}`, updatedProfile.subscription_tier) }),
           visibilityTime: 5000,
         });
       }
@@ -340,7 +340,7 @@ export default function PricingScreen() {
       Toast.show({
         type: 'success',
         text1: t('subscription.activated'),
-        text2: `Welcome to ${newTier} tier! 🎉`,
+        text2: t('subscription.activated_message', { tier: t(`subscription.${newTier}`, newTier) }),
         visibilityTime: 5000,
       });
       
@@ -382,7 +382,7 @@ export default function PricingScreen() {
       Toast.show({
         type: 'success',
         text1: t('subscription.restored'),
-        text2: `Your ${tier} subscription has been restored.`,
+        text2: t('subscription.restored_message', { tier: t(`subscription.${tier}`, tier) }),
       });
       
       await loadRevenueCatOfferings();

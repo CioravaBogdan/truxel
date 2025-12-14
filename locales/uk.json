@@ -1,4 +1,4 @@
-{
+﻿{
   "common": {
     "login": "Ð›Ð¾Ð³Ñ–Ð½",
     "register": "Ð·Ð°Ñ€ÐµÑ”ÑÑ‚Ñ€ÑƒÐ²Ð°Ñ‚Ð¸ÑÑ",
@@ -225,6 +225,14 @@
     "standard": "Ð¡Ñ‚Ð°Ð½Ð´Ð°Ñ€Ñ‚",
     "pro": "ÐŸÑ€Ð¾Ñ„Ñ–",
     "premium": "ÐŸÑ€ÐµÐ¼Ñ–ÑƒÐ¼",
+    "fleet_manager": "Fleet Manager",
+    "pro_freighter": "Pro Freighter",
+    "activated": "Підписку активовано!",
+    "activated_message": "Ласкаво просимо до {{tier}}! 🎉",
+    "restored": "Покупки відновлено!",
+    "restored_message": "Вашу підписку {{tier}} було відновлено.",
+    "no_purchases": "Попередніх покупок немає",
+    "no_purchases_message": "Активних підписок для відновлення не знайдено.",
     "trial_desc": "Ð’ÑÑŒÐ¾Ð³Ð¾ 5 Ð¿Ð¾ÑˆÑƒÐºÑ–Ð²",
     "standard_desc": "15 Ð¿Ð¾ÑˆÑƒÐºÑ–Ð² Ð½Ð° Ð¼Ñ–ÑÑÑ†ÑŒ",
     "pro_desc": "30 Ð¿Ð¾ÑˆÑƒÐºÑ–Ð² Ð·Ð° Ð´Ð¾Ð¿Ð¾Ð¼Ð¾Ð³Ð¾ÑŽ LinkedIn Ñ– AI",
