@@ -470,6 +470,36 @@ export function hasSearchCredits(customerInfo: CustomerInfo): boolean {
 }
 
 /**
+ * Get the expiration date from CustomerInfo
+ * Checks active entitlements for the latest expiration date
+ * 
+ * @param customerInfo - Customer info from getCustomerInfo() or purchasePackage()
+ * @returns ISO date string or null if no subscription
+ */
+export function getExpirationDate(customerInfo: CustomerInfo): string | null {
+  // Check entitlements for expiration dates
+  const entitlementIds = ['pro_access', 'fleet_manager_access', 'standard_access'];
+  let latestExpiration: Date | null = null;
+  
+  for (const entitlementId of entitlementIds) {
+    const entitlement = customerInfo.entitlements.active[entitlementId];
+    if (entitlement && entitlement.expirationDate) {
+      const expDate = new Date(entitlement.expirationDate);
+      if (!latestExpiration || expDate > latestExpiration) {
+        latestExpiration = expDate;
+      }
+    }
+  }
+  
+  // Fallback: Check latestExpirationDate on CustomerInfo (mobile SDK)
+  if (!latestExpiration && 'latestExpirationDate' in customerInfo && customerInfo.latestExpirationDate) {
+    latestExpiration = new Date(customerInfo.latestExpirationDate);
+  }
+  
+  return latestExpiration ? latestExpiration.toISOString() : null;
+}
+
+/**
  * Format RevenueCat package for display
  * Works for both mobile (PurchasesPackage) and web (Package) types
  */

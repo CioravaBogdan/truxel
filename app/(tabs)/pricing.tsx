@@ -38,6 +38,7 @@ import {
   purchasePackage as purchaseRevenueCatPackage,
   restorePurchases as restoreRevenueCatPurchases,
   getUserTier,
+  getExpirationDate,
   type OfferingPackage 
 } from '@/services/revenueCatService';
 
@@ -333,6 +334,29 @@ export default function PricingScreen() {
       const info = await purchaseRevenueCatPackage(pkg, profile.user_id);
       
       const newTier = getUserTier(info);
+      const expirationDate = getExpirationDate(info);
+      
+      // Sync subscription data to Supabase immediately (don't wait for webhook)
+      // This ensures the renewal date shows correctly in the UI
+      if (newTier !== 'trial') {
+        console.log('📅 Syncing subscription to Supabase:', { tier: newTier, expirationDate });
+        const { error: syncError } = await supabase
+          .from('profiles')
+          .update({
+            subscription_tier: newTier,
+            subscription_status: 'active',
+            subscription_renewal_date: expirationDate,
+            updated_at: new Date().toISOString(),
+          })
+          .eq('user_id', profile.user_id);
+        
+        if (syncError) {
+          console.warn('⚠️ Failed to sync subscription to Supabase:', syncError);
+          // Don't throw - the webhook will handle it eventually
+        } else {
+          console.log('✅ Subscription synced to Supabase');
+        }
+      }
       
       // Refresh profile to update local state
       await authStore.refreshProfile?.();
@@ -376,6 +400,27 @@ export default function PricingScreen() {
       const info = await restoreRevenueCatPurchases(profile.user_id);
       
       const tier = getUserTier(info);
+      const expirationDate = getExpirationDate(info);
+      
+      // Sync restored subscription data to Supabase immediately
+      if (tier !== 'trial') {
+        console.log('📅 Syncing restored subscription to Supabase:', { tier, expirationDate });
+        const { error: syncError } = await supabase
+          .from('profiles')
+          .update({
+            subscription_tier: tier,
+            subscription_status: 'active',
+            subscription_renewal_date: expirationDate,
+            updated_at: new Date().toISOString(),
+          })
+          .eq('user_id', profile.user_id);
+        
+        if (syncError) {
+          console.warn('⚠️ Failed to sync restored subscription to Supabase:', syncError);
+        } else {
+          console.log('✅ Restored subscription synced to Supabase');
+        }
+      }
       
       await authStore.refreshProfile?.();
       
@@ -519,11 +564,11 @@ export default function PricingScreen() {
                 </Text>
                 <Text style={[styles.currentSubscriptionStatus, { color: theme.colors.textSecondary }]}>
                   {profile.subscription_status === 'active'
-                    ? `${t('subscription.renews_on')} ${
-                        profile.stripe_current_period_end
-                          ? new Date(profile.stripe_current_period_end).toLocaleDateString()
-                          : ''
-                      }`
+                    ? t('subscription.renews_on', {
+                        date: (profile.subscription_renewal_date || profile.stripe_current_period_end)
+                          ? new Date(profile.subscription_renewal_date || profile.stripe_current_period_end!).toLocaleDateString()
+                          : t('subscription.soon')
+                      })
                     : t('subscription.cancellation_pending')}
                 </Text>
               </View>
