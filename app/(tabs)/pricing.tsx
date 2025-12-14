@@ -359,9 +359,34 @@ export default function PricingScreen() {
       
       const info = await purchaseRevenueCatPackage(pkg, profile.user_id);
       
-      const newTier = getUserTier(info);
+      // 🔍 DEBUG: Log what we received from RevenueCat
+      console.log('🔍 DEBUG: Package purchased:', pkg.identifier);
+      console.log('🔍 DEBUG: Active entitlements:', Object.keys(info.entitlements.active));
+      console.log('🔍 DEBUG: Full entitlements object:', JSON.stringify(info.entitlements.active, null, 2));
+      
+      // Get tier from entitlements
+      let newTier = getUserTier(info);
+      console.log('🔍 DEBUG: getUserTier returned:', newTier);
+      
+      // Get the tier we JUST purchased from the package identifier
+      const purchasedTier = getTierName(pkg.identifier);
+      console.log('🔍 DEBUG: Package tier (what was purchased):', purchasedTier);
+      
+      // IMPORTANT: Always use the tier from the package we just purchased
+      // RevenueCat entitlements might not be synced immediately, or might still show old tier
+      // The package identifier is the source of truth for what was just bought
+      if (purchasedTier && purchasedTier !== 'trial' && purchasedTier !== 'search_pack') {
+        if (newTier !== purchasedTier) {
+          console.log(`⚠️ Tier mismatch: entitlements say "${newTier}" but we purchased "${purchasedTier}"`);
+          console.log('✅ Using purchased tier as source of truth:', purchasedTier);
+        }
+        newTier = purchasedTier;
+      }
+      
       const expirationDate = getExpirationDate(info);
       const searchCredits = getSearchesForTier(newTier);
+      
+      console.log('🔍 DEBUG: Will update Supabase with:', { tier: newTier, expirationDate, searchCredits, userId: profile.user_id });
       
       // Sync subscription data to Supabase immediately (don't wait for webhook)
       // This ensures the renewal date shows correctly in the UI

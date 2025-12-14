@@ -328,7 +328,8 @@ export async function purchasePackage(pkg: OfferingPackage, userId?: string): Pr
     }
     
     console.log('✅ Purchase successful!');
-    console.log('Entitlements:', Object.keys(customerInfo.entitlements.active));
+    console.log('📦 Full CustomerInfo entitlements:', JSON.stringify(customerInfo.entitlements, null, 2));
+    console.log('🔑 Active entitlements:', Object.keys(customerInfo.entitlements.active));
     
     return customerInfo;
   } catch (error: any) {

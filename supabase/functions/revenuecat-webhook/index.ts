@@ -100,10 +100,25 @@ serve(async (req) => {
 
         console.log(`✅ Updating subscription: userId=${userId}, tier=${tier}, searchCredits=${searchCredits}`);
 
+        // First check if user exists
+        const { data: existingUser, error: lookupError } = await supabase
+          .from('profiles')
+          .select('user_id, email, subscription_tier')
+          .eq('user_id', userId)
+          .single();
+        
+        if (lookupError || !existingUser) {
+          console.error(`❌ User not found in profiles: userId=${userId}, error:`, lookupError);
+          // Try to find by email from subscriber_attributes
+          console.log('🔍 subscriber_attributes:', JSON.stringify(event.subscriber_attributes));
+        } else {
+          console.log(`✅ Found user: ${existingUser.email}, current tier: ${existingUser.subscription_tier}`);
+        }
+
         // Update profile with new subscription
         // - Reset monthly_searches_used to 0 on new subscription/renewal/upgrade
         // - Set available_search_credits based on tier
-        const { error: profileError } = await supabase
+        const { error: profileError, count } = await supabase
           .from('profiles')
           .update({
             subscription_tier: tier,
@@ -120,6 +135,8 @@ serve(async (req) => {
           console.error('❌ Error updating profile:', profileError);
           throw profileError;
         }
+        
+        console.log(`✅ Profile update completed. Rows affected: ${count ?? 'unknown'}`);
 
         // Add BONUS search credits if search pack purchased (on top of tier credits)
         if (event.entitlement_ids.includes('search_credits')) {
