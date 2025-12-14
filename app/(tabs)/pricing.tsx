@@ -268,7 +268,7 @@ export default function PricingScreen() {
       // ✅ DEDUPLICATE: If multiple packages map to same tier, keep only first one
       const seenTiers = new Set<string>();
       const dedupedSubscriptions = userSubscriptions.filter((pkg) => {
-        const tierName = getTierName(pkg.identifier);
+        const tierName = getTierName(pkg.product.identifier);
         if (seenTiers.has(tierName)) {
           return false; // Skip duplicate
         }
@@ -279,7 +279,7 @@ export default function PricingScreen() {
       // ✅ DEDUPLICATE search packs by identifier AND tier name
       const seenSearchPacks = new Set<string>();
       const dedupedSearchPacks = userSearchPacks.filter((pkg) => {
-        const tierName = getTierName(pkg.identifier);
+        const tierName = getTierName(pkg.product.identifier);
         // If it's a known search pack type, deduplicate by type
         if (tierName === 'search_pack') {
           if (seenSearchPacks.has('search_pack')) {
@@ -290,7 +290,7 @@ export default function PricingScreen() {
         }
         
         // Fallback: deduplicate by identifier
-        const packName = pkg.identifier;
+        const packName = pkg.product.identifier;
         if (seenSearchPacks.has(packName)) {
           return false;
         }
@@ -338,7 +338,7 @@ export default function PricingScreen() {
     // Determine if this is an upgrade/downgrade or new purchase
     const currentTier = profile?.subscription_tier;
     const isUpgradeOrChange = currentTier && currentTier !== 'trial';
-    const targetTier = getTierName(pkg.identifier);
+    const targetTier = getTierName(pkg.product.identifier);
     
     console.log(`🛒 Purchase flow: currentTier=${currentTier}, targetTier=${targetTier}, isUpgrade=${isUpgradeOrChange}`);
 
@@ -355,7 +355,7 @@ export default function PricingScreen() {
     };
 
     try {
-      setPurchasingPackage(pkg.identifier);
+      setPurchasingPackage(pkg.product.identifier);
       
       const info = await purchaseRevenueCatPackage(pkg, profile.user_id);
       
@@ -369,7 +369,7 @@ export default function PricingScreen() {
       console.log('🔍 DEBUG: getUserTier returned:', newTier);
       
       // Get the tier we JUST purchased from the package identifier
-      const purchasedTier = getTierName(pkg.identifier);
+      const purchasedTier = getTierName(pkg.product.identifier);
       console.log('🔍 DEBUG: Package tier (what was purchased):', purchasedTier);
       
       // IMPORTANT: Always use the tier from the package we just purchased
@@ -679,7 +679,7 @@ export default function PricingScreen() {
           )}
           {UI_TIERS.map((uiTier) => {
             // Find matching RevenueCat package
-            const pkg = rcSubscriptions.find(p => getTierName(p.identifier) === uiTier.mobileId);
+            const pkg = rcSubscriptions.find(p => getTierName(p.product.identifier) === uiTier.mobileId);
             
             // If no package found for this tier, skip it (or show as unavailable)
             if (!pkg) return null;
@@ -804,7 +804,7 @@ export default function PricingScreen() {
                 <Button
                   title={isActive ? t('pricing.current_plan') : t('pricing.subscribe')}
                   onPress={() => handleRevenueCatPurchase(pkg)}
-                  loading={purchasingPackage === pkg.identifier}
+                  loading={purchasingPackage === pkg.product.identifier}
                   disabled={isActive}
                   variant={isActive ? 'outline' : 'primary'}
                   style={!isActive ? { backgroundColor: uiTier.accentColor } : {}}
@@ -853,7 +853,7 @@ export default function PricingScreen() {
                   <Button
                     title={t('pricing.buy_now')}
                     onPress={() => handleRevenueCatPurchase(pack)}
-                    loading={purchasingPackage === pack.identifier}
+                    loading={purchasingPackage === pack.product.identifier}
                     variant="primary"
                     style={{ backgroundColor: '#FF5722', marginTop: 12 }}
                     textStyle={{ color: '#FFFFFF', fontWeight: 'bold' }}
