@@ -82,7 +82,9 @@
     "passwords_dont_match": "Passwörter stimmen nicht überein",
     "login_success": "Anmeldung erfolgreich",
     "register_success": "Registrierung erfolgreich",
-    "logout_confirm": "Sind Sie sicher, dass Sie sich abmelden möchten?"
+    "logout_confirm": "Sind Sie sicher, dass Sie sich abmelden möchten?",
+    "privacy_policy": "Datenschutzrichtlinie",
+    "terms_of_service": "Nutzungsbedingungen"
   },
   "directions": {
     "north": "Norden",
@@ -279,7 +281,8 @@
     "cancel_success_title": "Abonnement gekündigt",
     "cancel_success_message": "Ihr Abonnement wurde gekündigt. Sie können jederzeit wieder aktivieren.",
     "reactivate_success_title": "Erfolgreich reaktiviert",
-    "reactivate_success_message": "Ihr Abonnement wurde reaktiviert!"
+    "reactivate_success_message": "Ihr Abonnement wurde reaktiviert!",
+    "restore_purchases": "Käufe Wiederherstellen"
   },
   "profile": {
     "title": "Profil",

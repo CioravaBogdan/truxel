@@ -82,7 +82,9 @@
     "passwords_dont_match": "Passwords don't match",
     "login_success": "Login successful",
     "register_success": "Registration successful",
-    "logout_confirm": "Are you sure you want to logout?"
+    "logout_confirm": "Are you sure you want to logout?",
+    "privacy_policy": "Privacy Policy",
+    "terms_of_service": "Terms of Service"
   },
   "directions": {
     "north": "North",
@@ -279,7 +281,8 @@
     "cancel_success_title": "Subscription Cancelled",
     "cancel_success_message": "Your subscription has been cancelled. You can reactivate anytime.",
     "reactivate_success_title": "Reactivated Successfully",
-    "reactivate_success_message": "Your subscription has been reactivated!"
+    "reactivate_success_message": "Your subscription has been reactivated!",
+    "restore_purchases": "Restore Purchases"
   },
   "profile": {
     "title": "Profile",

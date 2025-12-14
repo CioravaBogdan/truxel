@@ -1,4 +1,4 @@
-﻿{
+{
   "common": {
     "login": "Se connecter",
     "register": "Registre",
@@ -82,7 +82,9 @@
     "passwords_dont_match": "Les mots de passe ne correspondent pas",
     "login_success": "Connexion réussie",
     "register_success": "Inscription réussie",
-    "logout_confirm": "Êtes-vous sûr de vouloir vous déconnecter ?"
+    "logout_confirm": "Êtes-vous sûr de vouloir vous déconnecter ?",
+    "privacy_policy": "Politique de Confidentialité",
+    "terms_of_service": "Conditions d'Utilisation"
   },
   "directions": {
     "north": "Nord",
@@ -279,7 +281,8 @@
     "cancel_success_title": "Abonnement annulé",
     "cancel_success_message": "Votre abonnement a été annulé. Vous pouvez réactiver à tout moment.",
     "reactivate_success_title": "Réactivé avec succès",
-    "reactivate_success_message": "Votre abonnement a été réactivé !"
+    "reactivate_success_message": "Votre abonnement a été réactivé !",
+    "restore_purchases": "Restaurer les Achats"
   },
   "profile": {
     "title": "Profil",

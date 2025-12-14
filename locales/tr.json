@@ -82,7 +82,9 @@
     "passwords_dont_match": "Åžifreler eÅŸleÅŸmiyor",
     "login_success": "GiriÅŸ baÅŸarÄ±lÄ±",
     "register_success": "KayÄ±t baÅŸarÄ±lÄ±",
-    "logout_confirm": "Ã‡Ä±kÄ±ÅŸ yapmak istediÄŸinizden emin misiniz?"
+    "logout_confirm": "Ã‡Ä±kÄ±ÅŸ yapmak istediÄŸinizden emin misiniz?",
+    "privacy_policy": "Gizlilik Politikası",
+    "terms_of_service": "Hizmet Şartları"
   },
   "directions": {
     "north": "Kuzey",
@@ -279,7 +281,8 @@
     "cancel_success_title": "Abonelik Ä°ptal Edildi",
     "cancel_success_message": "AboneliÄŸiniz iptal edildi. Ä°stediÄŸiniz zaman yeniden etkinleÅŸtirebilirsiniz.",
     "reactivate_success_title": "BaÅŸarÄ±yla Yeniden EtkinleÅŸtirildi",
-    "reactivate_success_message": "AboneliÄŸiniz yeniden etkinleÅŸtirildi!"
+    "reactivate_success_message": "AboneliÄŸiniz yeniden etkinleÅŸtirildi!",
+    "restore_purchases": "Satın Alımları Geri Yükle"
   },
   "profile": {
     "title": "Profil",

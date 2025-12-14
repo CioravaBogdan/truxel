@@ -82,7 +82,9 @@
     "passwords_dont_match": "Slaptažodžiai nesutampa",
     "login_success": "Sėkmingai prisijungta",
     "register_success": "Registracija sėkminga",
-    "logout_confirm": "Ar tikrai norite atsijungti?"
+    "logout_confirm": "Ar tikrai norite atsijungti?",
+    "privacy_policy": "Privatumo Politika",
+    "terms_of_service": "Paslaugų Sąlygos"
   },
   "directions": {
     "north": "Šiaurė",
@@ -279,7 +281,8 @@
     "cancel_success_title": "Prenumerata atšaukta",
     "cancel_success_message": "Jūsų prenumerata buvo atšaukta. Galite bet kada iš naujo suaktyvinti.",
     "reactivate_success_title": "Iš naujo suaktyvinta sėkmingai",
-    "reactivate_success_message": "Jūsų prenumerata vėl suaktyvinta!"
+    "reactivate_success_message": "Jūsų prenumerata vėl suaktyvinta!",
+    "restore_purchases": "Atkurti Pirkimus"
   },
   "profile": {
     "title": "Profilis",

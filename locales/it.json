@@ -82,7 +82,9 @@
     "passwords_dont_match": "Le password non corrispondono",
     "login_success": "Accesso riuscito",
     "register_success": "Registrazione riuscita",
-    "logout_confirm": "Sei sicuro di voler uscire?"
+    "logout_confirm": "Sei sicuro di voler uscire?",
+    "privacy_policy": "Informativa sulla Privacy",
+    "terms_of_service": "Termini di Servizio"
   },
   "directions": {
     "north": "Nord",
@@ -279,7 +281,8 @@
     "cancel_success_title": "Abbonamento annullato",
     "cancel_success_message": "Il tuo abbonamento è stato annullato. Puoi riattivarlo in qualsiasi momento.",
     "reactivate_success_title": "Riattivato con successo",
-    "reactivate_success_message": "Il tuo abbonamento è stato riattivato!"
+    "reactivate_success_message": "Il tuo abbonamento è stato riattivato!",
+    "restore_purchases": "Ripristina Acquisti"
   },
   "profile": {
     "title": "Profilo",

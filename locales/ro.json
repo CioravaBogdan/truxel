@@ -82,7 +82,9 @@
     "passwords_dont_match": "Parolele nu coincid",
     "login_success": "Autentificare reuÈ™itÄƒ",
     "register_success": "ÃŽnregistrare reuÈ™itÄƒ",
-    "logout_confirm": "EÈ™ti sigur cÄƒ vrei sÄƒ te deconectezi?"
+    "logout_confirm": "EÈ™ti sigur cÄƒ vrei sÄƒ te deconectezi?",
+    "privacy_policy": "Politica de Confidențialitate",
+    "terms_of_service": "Termeni și Condiții"
   },
   "directions": {
     "north": "Nord",
@@ -279,7 +281,8 @@
     "cancel_success_title": "Abonament Anulat",
     "cancel_success_message": "Abonamentul a fost anulat. PoÈ›i reactiva oricÃ¢nd.",
     "reactivate_success_title": "Reactivat cu Succes",
-    "reactivate_success_message": "Abonamentul tÄƒu a fost reactivat!"
+    "reactivate_success_message": "Abonamentul tÄƒu a fost reactivat!",
+    "restore_purchases": "Restaurează Achizițiile"
   },
   "profile": {
     "title": "Profil",

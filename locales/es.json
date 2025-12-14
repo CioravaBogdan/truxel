@@ -82,7 +82,9 @@
     "passwords_dont_match": "Las contraseñas no coinciden",
     "login_success": "Inicio de sesión exitoso",
     "register_success": "Registro exitoso",
-    "logout_confirm": "¿Estás seguro de que quieres cerrar sesión?"
+    "logout_confirm": "¿Estás seguro de que quieres cerrar sesión?",
+    "privacy_policy": "Política de Privacidad",
+    "terms_of_service": "Términos del Servicio"
   },
   "directions": {
     "north": "Norte",
@@ -279,7 +281,8 @@
     "cancel_success_title": "Suscripción cancelada",
     "cancel_success_message": "Su suscripción ha sido cancelada. Puedes reactivarlo en cualquier momento.",
     "reactivate_success_title": "Reactivado con éxito",
-    "reactivate_success_message": "¡Tu suscripción ha sido reactivada!"
+    "reactivate_success_message": "¡Tu suscripción ha sido reactivada!",
+    "restore_purchases": "Restaurar Compras"
   },
   "profile": {
     "title": "Perfil",
