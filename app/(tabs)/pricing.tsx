@@ -328,6 +328,13 @@ export default function PricingScreen() {
       return;
     }
 
+    // Determine if this is an upgrade/downgrade or new purchase
+    const currentTier = profile?.subscription_tier;
+    const isUpgradeOrChange = currentTier && currentTier !== 'trial';
+    const targetTier = getTierName(pkg.identifier);
+    
+    console.log(`🛒 Purchase flow: currentTier=${currentTier}, targetTier=${targetTier}, isUpgrade=${isUpgradeOrChange}`);
+
     try {
       setPurchasingPackage(pkg.identifier);
       
@@ -361,10 +368,15 @@ export default function PricingScreen() {
       // Refresh profile to update local state
       await authStore.refreshProfile?.();
       
+      // Show appropriate message for upgrade vs new purchase
+      const successMessage = isUpgradeOrChange 
+        ? t('subscription.upgrade_success_message')
+        : t('subscription.activated_message', { tier: t(`subscription.${newTier}`, newTier) });
+      
       Toast.show({
         type: 'success',
-        text1: t('subscription.activated'),
-        text2: t('subscription.activated_message', { tier: t(`subscription.${newTier}`, newTier) }),
+        text1: isUpgradeOrChange ? t('subscription.upgrade_success_title') : t('subscription.activated'),
+        text2: successMessage,
         visibilityTime: 5000,
       });
       
@@ -374,10 +386,18 @@ export default function PricingScreen() {
       console.error('❌ RevenueCat purchase failed:', error);
       
       if (error.message !== 'User cancelled purchase') {
-        Alert.alert(
-          t('common.error'),
-          error.message || t('pricing.purchase_failed_message')
-        );
+        // Check for common iOS subscription errors
+        const errorMsg = error.message?.toLowerCase() || '';
+        let userMessage = error.message || t('pricing.purchase_failed_message');
+        
+        // iOS error when trying to purchase from different subscription group
+        if (errorMsg.includes('cancel') && errorMsg.includes('subscription')) {
+          userMessage = Platform.OS === 'ios' 
+            ? t('pricing.ios_subscription_conflict', 'To change plans, please manage your subscription in iPhone Settings > Apple ID > Subscriptions.')
+            : t('pricing.android_subscription_conflict', 'To change plans, please manage your subscription in Google Play Store > Subscriptions.');
+        }
+        
+        Alert.alert(t('common.error'), userMessage);
       }
     } finally {
       setPurchasingPackage(null);

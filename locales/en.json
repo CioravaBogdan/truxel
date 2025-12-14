@@ -371,6 +371,8 @@
     "purchase_failed_message": "Purchase failed. Please try again.",
     "login_to_restore": "Please login to restore purchases",
     "restore_failed_message": "Failed to restore purchases. Please try again.",
+    "ios_subscription_conflict": "To change plans, please manage your subscription in iPhone Settings > Apple ID > Subscriptions.",
+    "android_subscription_conflict": "To change plans, please manage your subscription in Google Play Store > Subscriptions.",
     "promo_code_title": "Have a promo code?",
     "promo_code_placeholder": "Enter code (e.g. TRUXEL20)",
     "promo_save_badge": "SAVE {{percent}}%",
