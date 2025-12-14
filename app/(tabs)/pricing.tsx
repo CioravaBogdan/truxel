@@ -248,20 +248,22 @@ export default function PricingScreen() {
   };
 
   const loadRevenueCatOfferings = useCallback(async () => {
-    if (!profile?.user_id) {
-      console.error('❌ No user_id available for RevenueCat');
-      return;
-    }
+    // Note: For mobile (iOS/Android), we can load offerings without a user_id
+    // The user_id is only required for web (Stripe) and for making purchases
+    // We allow viewing prices without being logged in
     
     try {
       setIsLoading(true);
       
       // Use default offering (current)
-      const offerings = await getRevenueCatOfferings(profile.user_id);
+      // Pass user_id if available, but it's optional for mobile
+      const offerings = await getRevenueCatOfferings(profile?.user_id);
       
       // Trust getOfferings() to handle filtering and fallbacks for both Web and Mobile
       const userSubscriptions = offerings.subscriptions;
       const userSearchPacks = offerings.searchPacks;
+      
+      console.log(`📦 Loaded ${userSubscriptions.length} subscriptions, ${userSearchPacks.length} search packs`);
       
       // ✅ DEDUPLICATE: If multiple packages map to same tier, keep only first one
       const seenTiers = new Set<string>();
@@ -314,9 +316,14 @@ export default function PricingScreen() {
   }, [t, profile?.user_id]);
 
   useEffect(() => {
+    // Load offerings immediately - works without login on mobile
     loadRevenueCatOfferings();
-    checkSubscriptionStatus();
-  }, [loadRevenueCatOfferings, checkSubscriptionStatus]);
+    
+    // Only check subscription status if user is logged in
+    if (profile?.user_id) {
+      checkSubscriptionStatus();
+    }
+  }, [loadRevenueCatOfferings, checkSubscriptionStatus, profile?.user_id]);
 
   const handleRevenueCatPurchase = async (pkg: OfferingPackage) => {
     if (!profile?.user_id) {
