@@ -392,16 +392,19 @@ export default function PricingScreen() {
       // Refresh profile to update local state
       await authStore.refreshProfile?.();
       
-      // Show appropriate message for upgrade vs new purchase
-      const successMessage = isUpgradeOrChange 
-        ? t('subscription.upgrade_success_message')
-
-        : t('subscription.activated_message', { tier: t(`subscription.${newTier}`, newTier) });
+      // Get translated tier name for display
+      const translatedTier = t(`subscription.${newTier}`, newTier);
       
+      // Show appropriate message for upgrade vs new purchase
+      // Both messages now include the tier name using i18n
       Toast.show({
         type: 'success',
-        text1: isUpgradeOrChange ? t('subscription.upgrade_success_title') : t('subscription.activated'),
-        text2: successMessage,
+        text1: isUpgradeOrChange 
+          ? t('subscription.upgrade_success_title', { tier: translatedTier })
+          : t('subscription.activated'),
+        text2: isUpgradeOrChange
+          ? t('subscription.upgrade_success_message', { tier: translatedTier })
+          : t('subscription.activated_message', { tier: translatedTier }),
         visibilityTime: 5000,
       });
       

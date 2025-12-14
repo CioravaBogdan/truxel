@@ -1,4 +1,4 @@
-{
+﻿{
   "common": {
     "login": "Se connecter",
     "register": "Registre",
@@ -268,8 +268,8 @@
     "cancel_warning": "Vous perdrez l'accès aux fonctionnalités premium à la fin de votre période de facturation.",
     "upgrade_confirm_title": "Abonnement de mise à niveau",
     "upgrade_confirm_message": "Passer à {{tier}} pour {{price}}/mois ?",
-    "upgrade_success_title": "Mise à niveau réussie",
-    "upgrade_success_message": "Votre abonnement a été mis à niveau !",
+    "upgrade_success_title": "Bienvenue à {{tier}} ! 🎉",
+    "upgrade_success_message": "Votre abonnement a été mis à niveau vers {{tier}} !",
     "downgrade_confirm_title": "Rétrograder l'abonnement",
     "downgrade_confirm_message": "Passer à {{tier}} pour {{price}}/mois ? Les modifications prendront effet au prochain cycle de facturation.",
     "downgrade_success_title": "Déclassement réussi",
