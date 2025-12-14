@@ -442,9 +442,13 @@ export function hasEntitlement(customerInfo: CustomerInfo, entitlementId: string
  * Get user's current subscription tier
  * 
  * @param customerInfo - Customer info from getCustomerInfo()
- * @returns 'trial' | 'standard' | 'pro' | 'fleet_manager'
+ * @returns 'trial' | 'standard' | 'pro' | 'fleet_manager' | 'pro_freighter'
  */
 export function getUserTier(customerInfo: CustomerInfo): string {
+  // Check pro_freighter FIRST as it's the highest tier
+  if (hasEntitlement(customerInfo, 'pro_freighter_access')) {
+    return 'pro_freighter';
+  }
   if (hasEntitlement(customerInfo, 'pro_access')) {
     return 'pro';
   }

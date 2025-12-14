@@ -342,6 +342,18 @@ export default function PricingScreen() {
     
     console.log(`🛒 Purchase flow: currentTier=${currentTier}, targetTier=${targetTier}, isUpgrade=${isUpgradeOrChange}`);
 
+    // Get searches per month for each tier
+    const getSearchesForTier = (tier: string): number => {
+      const searchLimits: Record<string, number> = {
+        'pro_freighter': 50,
+        'pro': 50,
+        'fleet_manager': 30,
+        'standard': 30,
+        'trial': 5,
+      };
+      return searchLimits[tier] || 5;
+    };
+
     try {
       setPurchasingPackage(pkg.identifier);
       
@@ -349,17 +361,22 @@ export default function PricingScreen() {
       
       const newTier = getUserTier(info);
       const expirationDate = getExpirationDate(info);
+      const searchCredits = getSearchesForTier(newTier);
       
       // Sync subscription data to Supabase immediately (don't wait for webhook)
       // This ensures the renewal date shows correctly in the UI
+      // Also reset monthly_searches_used and set available_search_credits
       if (newTier !== 'trial') {
-        console.log('📅 Syncing subscription to Supabase:', { tier: newTier, expirationDate });
+        console.log('📅 Syncing subscription to Supabase:', { tier: newTier, expirationDate, searchCredits });
         const { error: syncError } = await supabase
           .from('profiles')
           .update({
             subscription_tier: newTier,
             subscription_status: 'active',
             subscription_renewal_date: expirationDate,
+            subscription_start_date: new Date().toISOString(),
+            monthly_searches_used: 0, // Reset on subscription change
+            available_search_credits: searchCredits, // Set based on tier
             updated_at: new Date().toISOString(),
           })
           .eq('user_id', profile.user_id);
@@ -378,6 +395,7 @@ export default function PricingScreen() {
       // Show appropriate message for upgrade vs new purchase
       const successMessage = isUpgradeOrChange 
         ? t('subscription.upgrade_success_message')
+
         : t('subscription.activated_message', { tier: t(`subscription.${newTier}`, newTier) });
       
       Toast.show({

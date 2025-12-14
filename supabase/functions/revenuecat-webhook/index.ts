@@ -66,11 +66,25 @@ serve(async (req) => {
     const userId = event.app_user_id;
 
     // Map RevenueCat entitlements to Truxel subscription tiers
+    // Order matters! Check highest tier first
     const getTierFromEntitlements = (entitlements: string[]): string => {
-      if (entitlements.includes('fleet_manager_access')) return 'premium';
+      if (entitlements.includes('pro_freighter_access')) return 'pro_freighter';
       if (entitlements.includes('pro_access')) return 'pro';
+      if (entitlements.includes('fleet_manager_access')) return 'fleet_manager';
       if (entitlements.includes('standard_access')) return 'standard';
       return 'trial';
+    };
+    
+    // Get searches per month for each tier
+    const getSearchesForTier = (tier: string): number => {
+      const searchLimits: Record<string, number> = {
+        'pro_freighter': 50,
+        'pro': 50,
+        'fleet_manager': 30,
+        'standard': 30,
+        'trial': 5,
+      };
+      return searchLimits[tier] || 5;
     };
 
     // Handle different event types
@@ -79,19 +93,25 @@ serve(async (req) => {
       case 'RENEWAL':
       case 'PRODUCT_CHANGE': {
         const tier = getTierFromEntitlements(event.entitlement_ids);
+        const searchCredits = getSearchesForTier(tier);
         const expiresAt = event.expiration_at_ms
           ? new Date(event.expiration_at_ms).toISOString()
           : null;
 
-        console.log(`✅ Updating subscription: userId=${userId}, tier=${tier}`);
+        console.log(`✅ Updating subscription: userId=${userId}, tier=${tier}, searchCredits=${searchCredits}`);
 
         // Update profile with new subscription
+        // - Reset monthly_searches_used to 0 on new subscription/renewal/upgrade
+        // - Set available_search_credits based on tier
         const { error: profileError } = await supabase
           .from('profiles')
           .update({
             subscription_tier: tier,
             subscription_status: 'active',
             subscription_renewal_date: expiresAt,
+            subscription_start_date: new Date().toISOString(),
+            monthly_searches_used: 0, // Reset on subscription change
+            available_search_credits: searchCredits, // Set based on tier
             updated_at: new Date().toISOString(),
           })
           .eq('user_id', userId);
@@ -101,19 +121,19 @@ serve(async (req) => {
           throw profileError;
         }
 
-        // Add search credits if search pack purchased
+        // Add BONUS search credits if search pack purchased (on top of tier credits)
         if (event.entitlement_ids.includes('search_credits')) {
-          const credits = event.product_id.includes('25') ? 25 : 10;
+          const bonusCredits = event.product_id.includes('25') ? 25 : 10;
 
           const { error: creditsError } = await supabase.rpc('increment_search_credits', {
             p_user_id: userId,
-            p_credits: credits,
+            p_credits: bonusCredits,
           });
 
           if (creditsError) {
-            console.warn('⚠️ Error adding search credits:', creditsError);
+            console.warn('⚠️ Error adding bonus search credits:', creditsError);
           } else {
-            console.log(`✅ Added ${credits} search credits to user ${userId}`);
+            console.log(`✅ Added ${bonusCredits} bonus search credits to user ${userId}`);
           }
         }
 
