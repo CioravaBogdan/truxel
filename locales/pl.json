@@ -84,7 +84,8 @@
     "register_success": "Rejestracja zakończona",
     "logout_confirm": "Czy na pewno chcesz się wylogować?",
     "privacy_policy": "Polityka Prywatności",
-    "terms_of_service": "Regulamin"
+    "terms_of_service": "Regulamin",
+    "eula": "EULA"
   },
   "directions": {
     "north": "Północ",

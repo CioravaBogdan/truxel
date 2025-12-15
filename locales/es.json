@@ -84,7 +84,8 @@
     "register_success": "Registro exitoso",
     "logout_confirm": "¿Estás seguro de que quieres cerrar sesión?",
     "privacy_policy": "Política de Privacidad",
-    "terms_of_service": "Términos del Servicio"
+    "terms_of_service": "Términos del Servicio",
+    "eula": "EULA"
   },
   "directions": {
     "north": "Norte",

@@ -11,8 +11,7 @@ import PurchasesMobile, {
 import { Purchases as PurchasesWebClass } from '@revenuecat/purchases-js';
 import type { 
   CustomerInfo as CustomerInfoWeb,
-  Package as PackageWeb,
-  PurchaseResult
+  Package as PackageWeb
 } from '@revenuecat/purchases-js';
 
 import { autoDetectCurrency, CurrencyCode } from '@/utils/currency';
@@ -483,7 +482,7 @@ export function hasSearchCredits(customerInfo: CustomerInfo): boolean {
  */
 export function getExpirationDate(customerInfo: CustomerInfo): string | null {
   // Check entitlements for expiration dates
-  const entitlementIds = ['pro_access', 'fleet_manager_access', 'standard_access'];
+  const entitlementIds = ['pro_freighter_access', 'pro_access', 'fleet_manager_access', 'standard_access'];
   let latestExpiration: Date | null = null;
   
   for (const entitlementId of entitlementIds) {

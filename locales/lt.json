@@ -84,7 +84,8 @@
     "register_success": "Registracija sėkminga",
     "logout_confirm": "Ar tikrai norite atsijungti?",
     "privacy_policy": "Privatumo Politika",
-    "terms_of_service": "Paslaugų Sąlygos"
+    "terms_of_service": "Paslaugų Sąlygos",
+    "eula": "EULA"
   },
   "directions": {
     "north": "Šiaurė",

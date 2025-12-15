@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { Platform } from 'react-native';
@@ -12,14 +12,84 @@ import { nativeModulesService } from '@/services/nativeModulesService';
 import Purchases, { LOG_LEVEL } from 'react-native-purchases';
 import Constants from 'expo-constants';
 import i18n from '@/lib/i18n';
-import Toast from 'react-native-toast-message';
+import Toast, { BaseToast } from 'react-native-toast-message';
 import { initRevenueCat, logoutRevenueCat } from '@/lib/revenueCat';
-import { ThemeProvider } from '@/lib/theme';
+import { ThemeProvider, useTheme } from '@/lib/theme';
 import { useNotificationStore } from '@/store/notificationStore';
 import * as Notifications from 'expo-notifications';
 import { Audio } from 'expo-av';
 import * as Linking from 'expo-linking';
 import { supabase } from '@/lib/supabase';
+
+function ThemedToast() {
+  const { theme } = useTheme();
+
+  const toastConfig = useMemo(() => {
+    const makeBaseStyle = (accentColor: string) => ({
+      borderLeftColor: accentColor,
+      borderLeftWidth: 6,
+      backgroundColor: theme.colors.card,
+      borderRadius: theme.borderRadius.lg,
+      borderWidth: 1,
+      borderColor: theme.colors.border,
+      ...theme.shadows.small,
+    });
+
+    const text1Style = {
+      color: theme.colors.text,
+      fontSize: 15,
+      fontWeight: '800' as const,
+    };
+
+    const text2Style = {
+      color: theme.colors.textSecondary,
+      fontSize: 13,
+      fontWeight: '500' as const,
+    };
+
+    const contentContainerStyle = {
+      paddingHorizontal: theme.spacing.md,
+    };
+
+    return {
+      success: (props: any) => (
+        <BaseToast
+          {...props}
+          style={makeBaseStyle(theme.colors.success)}
+          contentContainerStyle={contentContainerStyle}
+          text1Style={text1Style}
+          text2Style={text2Style}
+        />
+      ),
+      error: (props: any) => (
+        <BaseToast
+          {...props}
+          style={makeBaseStyle(theme.colors.error)}
+          contentContainerStyle={contentContainerStyle}
+          text1Style={text1Style}
+          text2Style={text2Style}
+        />
+      ),
+      info: (props: any) => (
+        <BaseToast
+          {...props}
+          style={makeBaseStyle(theme.colors.info)}
+          contentContainerStyle={contentContainerStyle}
+          text1Style={text1Style}
+          text2Style={text2Style}
+        />
+      ),
+    };
+  }, [theme]);
+
+  return (
+    <Toast
+      config={toastConfig}
+      topOffset={theme.spacing.lg}
+      bottomOffset={theme.spacing.lg}
+    />
+  );
+}
 
 // Configure global notification handler
 Notifications.setNotificationHandler({
@@ -396,7 +466,7 @@ export default function RootLayout() {
           <Stack.Screen name="+not-found" />
         </Stack>
         <StatusBar style="auto" />
-        <Toast />
+        <ThemedToast />
       </ThemeProvider>
     </GestureHandlerRootView>
   );

@@ -32,31 +32,45 @@ export async function initRevenueCat(userId: string): Promise<void> {
     }
 
     // Configure based on platform
-    if (Platform.OS === 'ios') {
-      if (!REVENUECAT_API_KEY.ios) {
-        console.warn('RevenueCat iOS API key not found in app.config.js');
-        return;
-      }
-      await Purchases.configure({ 
-        apiKey: REVENUECAT_API_KEY.ios, 
-        appUserID: userId 
-      });
-      isRevenueCatInitialized = true;
-      console.log('✅ RevenueCat initialized (iOS)');
-    } else if (Platform.OS === 'android') {
-      if (!REVENUECAT_API_KEY.android) {
-        console.warn('RevenueCat Android API key not found in app.config.js');
-        return;
-      }
-      await Purchases.configure({ 
-        apiKey: REVENUECAT_API_KEY.android, 
-        appUserID: userId 
-      });
-      isRevenueCatInitialized = true;
-      console.log('✅ RevenueCat initialized (Android)');
-    } else {
-      console.warn('RevenueCat: Unsupported platform');
+    const apiKey = Platform.select({
+      ios: REVENUECAT_API_KEY.ios,
+      android: REVENUECAT_API_KEY.android,
+    });
+
+    if (!apiKey) {
+      console.warn(`RevenueCat ${Platform.OS} API key not found in app.config.js`);
+      return;
     }
+
+    if (Platform.OS !== 'ios' && Platform.OS !== 'android') {
+      console.warn('RevenueCat: Unsupported platform');
+      return;
+    }
+
+    let configured = false;
+    try {
+      configured = await Purchases.isConfigured();
+    } catch {
+      // Older SDK versions might not expose isConfigured reliably.
+      configured = false;
+    }
+
+    // IMPORTANT:
+    // - The app also configures RevenueCat early in app/_layout.tsx (apiKey only).
+    // - To ensure each Supabase user appears as a separate customer (and upgrades map correctly),
+    //   we must call Purchases.logIn(userId) after auth.
+    if (!configured) {
+      await Purchases.configure({ apiKey });
+    }
+
+    const loginResult = await Purchases.logIn(userId);
+    isRevenueCatInitialized = true;
+    console.log('✅ RevenueCat user identified:', {
+      platform: Platform.OS,
+      appUserID: userId,
+      originalAppUserId: (loginResult as any)?.customerInfo?.originalAppUserId,
+      activeEntitlements: Object.keys((loginResult as any)?.customerInfo?.entitlements?.active || {}),
+    });
   } catch (error) {
     console.error('❌ Failed to initialize RevenueCat:', error);
     isRevenueCatInitialized = false;
@@ -75,12 +89,20 @@ export async function logoutRevenueCat(): Promise<void> {
       return;
     }
     
-    // Only logout if RevenueCat was successfully initialized
-    if (!isRevenueCatInitialized) {
-      console.log('⚠️ RevenueCat not initialized, skipping logout');
+    // Logout is safe even if we only configured anonymously earlier.
+    // Attempt it if the SDK is configured or if we previously initialized.
+    let configured = isRevenueCatInitialized;
+    try {
+      configured = configured || (await Purchases.isConfigured());
+    } catch {
+      // ignore
+    }
+
+    if (!configured) {
+      console.log('⚠️ RevenueCat not configured, skipping logout');
       return;
     }
-    
+
     await Purchases.logOut();
     isRevenueCatInitialized = false; // Reset initialization flag
     console.log('✅ RevenueCat user logged out');

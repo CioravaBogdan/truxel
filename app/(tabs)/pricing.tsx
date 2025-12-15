@@ -10,6 +10,7 @@ import {
   Platform,
   Linking,
 } from 'react-native';
+import { useFocusEffect } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Card } from '@/components/Card';
@@ -41,6 +42,7 @@ import {
   getExpirationDate,
   type OfferingPackage 
 } from '@/services/revenueCatService';
+import { searchesService } from '@/services/searchesService';
 
 // UI Configuration from Web Version
 const UI_TIERS = [
@@ -158,6 +160,12 @@ export default function PricingScreen() {
   const [rcSearchPacks, setRcSearchPacks] = useState<OfferingPackage[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [purchasingPackage, setPurchasingPackage] = useState<string | null>(null);
+
+  const [searchCredits, setSearchCredits] = useState<{
+    purchasedCredits: number;
+    subscriptionSearchesRemaining: number;
+    totalAvailable: number;
+  } | null>(null);
   
   // UI State
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
@@ -191,6 +199,21 @@ export default function PricingScreen() {
       console.error('Error checking subscription status:', error);
     }
   }, [refreshProfile, t]);
+
+  const refreshSearchCredits = useCallback(async () => {
+    if (!profile?.user_id) {
+      setSearchCredits(null);
+      return;
+    }
+
+    try {
+      const breakdown = await searchesService.getSearchCreditsBreakdown(profile.user_id);
+      setSearchCredits(breakdown);
+    } catch (error) {
+      console.warn('⚠️ Failed to refresh search credits breakdown:', error);
+      setSearchCredits(null);
+    }
+  }, [profile?.user_id]);
 
   // ✅ Helper: Extract clean tier name from package identifier
   const getTierName = (identifier: string): string => {
@@ -233,6 +256,16 @@ export default function PricingScreen() {
 
     // Fallback: extract from identifier (e.g., "fleet_manager" from custom name)
     let tierName = 'standard'; // Default
+
+    // Detect one-time search credit packs explicitly (must NOT map to a subscription tier)
+    if (
+      cleanId.includes('search_pack') ||
+      cleanId.includes('one_time') ||
+      cleanId.includes('onetime') ||
+      (cleanId.includes('search') && cleanId.includes('25'))
+    ) {
+      return 'search_pack';
+    }
 
     if (cleanId.includes('pro_freighter') || cleanId.includes('profreighter')) {
       tierName = 'pro_freighter';
@@ -322,8 +355,18 @@ export default function PricingScreen() {
     // Only check subscription status if user is logged in
     if (profile?.user_id) {
       checkSubscriptionStatus();
+      refreshSearchCredits();
     }
-  }, [loadRevenueCatOfferings, checkSubscriptionStatus, profile?.user_id]);
+  }, [loadRevenueCatOfferings, checkSubscriptionStatus, refreshSearchCredits, profile?.user_id]);
+
+  useFocusEffect(
+    useCallback(() => {
+      if (profile?.user_id) {
+        checkSubscriptionStatus();
+        refreshSearchCredits();
+      }
+    }, [checkSubscriptionStatus, refreshSearchCredits, profile?.user_id])
+  );
 
   const handleRevenueCatPurchase = async (pkg: OfferingPackage) => {
     if (!profile?.user_id) {
@@ -339,6 +382,7 @@ export default function PricingScreen() {
     const currentTier = profile?.subscription_tier;
     const isUpgradeOrChange = currentTier && currentTier !== 'trial';
     const targetTier = getTierName(pkg.product.identifier);
+    const purchasedTier = targetTier;
     
     console.log(`🛒 Purchase flow: currentTier=${currentTier}, targetTier=${targetTier}, isUpgrade=${isUpgradeOrChange}`);
 
@@ -358,6 +402,28 @@ export default function PricingScreen() {
       setPurchasingPackage(pkg.product.identifier);
       
       const info = await purchaseRevenueCatPackage(pkg, profile.user_id);
+
+      // ✅ One-time search packs must NEVER change subscription tier/status.
+      // RevenueCat purchase responses can be transient/partial; for add-ons we only refresh credits.
+      if (purchasedTier === 'search_pack') {
+        await refreshSearchCredits();
+
+        // Best-effort: keep local profile in sync (should be unchanged)
+        await authStore.refreshProfile?.();
+
+        const inferredCredits = pkg.product.identifier.toLowerCase().includes('25') ? 25 : 0;
+        Toast.show({
+          type: 'success',
+          text1: t('pricing.search_pack_success_title', 'Credits added'),
+          text2: inferredCredits
+            ? t('pricing.search_pack_success_message', { count: inferredCredits, defaultValue: '{{count}} searches were added to your account.' })
+            : t('pricing.search_pack_success_message_generic', 'Search credits were added to your account.'),
+          visibilityTime: 5000,
+        });
+
+        // No subscription sync. Offerings typically don’t change for add-ons.
+        return;
+      }
       
       // 🔍 DEBUG: Log what we received from RevenueCat
       console.log('🔍 DEBUG: Package purchased:', pkg.identifier);
@@ -369,7 +435,6 @@ export default function PricingScreen() {
       console.log('🔍 DEBUG: getUserTier returned:', newTier);
       
       // Get the tier we JUST purchased from the package identifier
-      const purchasedTier = getTierName(pkg.product.identifier);
       console.log('🔍 DEBUG: Package tier (what was purchased):', purchasedTier);
       
       // IMPORTANT: Always use the tier from the package we just purchased
@@ -401,7 +466,6 @@ export default function PricingScreen() {
             subscription_renewal_date: expirationDate,
             subscription_start_date: new Date().toISOString(),
             monthly_searches_used: 0, // Reset on subscription change
-            available_search_credits: searchCredits, // Set based on tier
             updated_at: new Date().toISOString(),
           })
           .eq('user_id', profile.user_id);
@@ -416,6 +480,7 @@ export default function PricingScreen() {
       
       // Refresh profile to update local state
       await authStore.refreshProfile?.();
+      await refreshSearchCredits();
       
       // Get translated tier name for display
       const translatedTier = t(`subscription.${newTier}`, newTier);
@@ -484,6 +549,8 @@ export default function PricingScreen() {
             subscription_tier: tier,
             subscription_status: 'active',
             subscription_renewal_date: expirationDate,
+            subscription_start_date: new Date().toISOString(),
+            monthly_searches_used: 0,
             updated_at: new Date().toISOString(),
           })
           .eq('user_id', profile.user_id);
@@ -496,6 +563,7 @@ export default function PricingScreen() {
       }
       
       await authStore.refreshProfile?.();
+      await refreshSearchCredits();
       
       Toast.show({
         type: 'success',
@@ -651,7 +719,7 @@ export default function PricingScreen() {
                 {t('subscription.searches_remaining')}
               </Text>
               <Text style={[styles.creditValue, { color: theme.colors.text }]}>
-                {profile.available_search_credits || 0}
+                {(searchCredits?.totalAvailable ?? profile.available_search_credits ?? 0)}
               </Text>
             </View>
             {usageInsight && (
@@ -916,7 +984,7 @@ export default function PricingScreen() {
           {/* Promo Code Section moved up */}
 
           <Button
-            title={t('subscription.restore_purchases')}
+            title={t('subscription.restore_purchases', { defaultValue: 'Restore Purchases' })}
             onPress={handleRestorePurchases}
             loading={isLoading}
             variant="ghost"
@@ -940,15 +1008,15 @@ export default function PricingScreen() {
             {/* Legal Links */}
             <View style={styles.legalLinks}>
               <TouchableOpacity onPress={() => openLegalLink('https://truxel.com/privacy')}>
-                <Text style={[styles.legalLinkText, { color: theme.colors.primary }]}>{t('auth.privacy_policy')}</Text>
+                <Text style={[styles.legalLinkText, { color: theme.colors.primary }]}>{t('auth.privacy_policy', { defaultValue: 'Privacy Policy' })}</Text>
               </TouchableOpacity>
               <Text style={[styles.legalSeparator, { color: theme.colors.textSecondary }]}>•</Text>
               <TouchableOpacity onPress={() => openLegalLink('https://truxel.com/terms')}>
-                <Text style={[styles.legalLinkText, { color: theme.colors.primary }]}>{t('auth.terms_of_service')}</Text>
+                <Text style={[styles.legalLinkText, { color: theme.colors.primary }]}>{t('auth.terms_of_service', { defaultValue: 'Terms of Service' })}</Text>
               </TouchableOpacity>
               <Text style={[styles.legalSeparator, { color: theme.colors.textSecondary }]}>•</Text>
               <TouchableOpacity onPress={() => openLegalLink('https://www.apple.com/legal/internet-services/itunes/dev/stdeula/')}>
-                <Text style={[styles.legalLinkText, { color: theme.colors.primary }]}>EULA</Text>
+                <Text style={[styles.legalLinkText, { color: theme.colors.primary }]}>{t('auth.eula', { defaultValue: 'EULA' })}</Text>
               </TouchableOpacity>
             </View>
           </View>

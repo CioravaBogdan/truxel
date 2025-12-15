@@ -84,7 +84,8 @@
     "register_success": "Inscription réussie",
     "logout_confirm": "Êtes-vous sûr de vouloir vous déconnecter ?",
     "privacy_policy": "Politique de Confidentialité",
-    "terms_of_service": "Conditions d'Utilisation"
+    "terms_of_service": "Conditions d'Utilisation",
+    "eula": "EULA"
   },
   "directions": {
     "north": "Nord",

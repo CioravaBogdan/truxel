@@ -1,8 +1,43 @@
+// Keep App Store version human-readable and stable.
+// IMPORTANT:
+// - `expo.version` maps to iOS CFBundleShortVersionString (what App Store shows as “Version”).
+// - `ios.buildNumber` maps to CFBundleVersion (what App Store shows as “Build”).
+// We should never inject timestamps into `expo.version`.
+// NOTE: We previously uploaded builds with very large patch versions (e.g. 1.0.<timestamp>).
+// To ensure the next submission is accepted, bumping the minor version is safest.
+const baseVersion = "1.1.0";
+// Build number policy (3–4 digits max):
+// - Use a deterministic seed derived from version: Mmmpp (e.g. 1.1.0 -> 1100, 1.2.3 -> 1203)
+// - Let EAS autoIncrement bump it per build (configured in eas.json)
+// - Optional override via env for emergency/manual cases
+const parseVersionPart = (value) => {
+  const n = Number(value);
+  return Number.isFinite(n) && n >= 0 ? Math.floor(n) : 0;
+};
+
+const [vMajor, vMinor, vPatch] = String(baseVersion).split('.');
+const major = parseVersionPart(vMajor);
+const minor = parseVersionPart(vMinor);
+const patch = parseVersionPart(vPatch);
+
+const versionSeedBuildNumber = major * 1000 + minor * 100 + patch; // <= 9999 for 0-9.0-99
+
+const envOverrideBuildNumber = (() => {
+  const raw = process.env.TRUXEL_BUILD_NUMBER_OVERRIDE;
+  if (!raw) return null;
+  const n = Number(raw);
+  if (Number.isInteger(n) && n > 0 && n <= 9999) return n;
+  return null;
+})();
+
+const buildNumber = envOverrideBuildNumber ?? versionSeedBuildNumber;
+const computedVersion = baseVersion;
+
 export default {
   expo: {
     name: "Truxel",
     slug: "truxel",
-    version: "1.0.15",
+    version: computedVersion,
     orientation: "portrait",
     icon: "./assets/Truxel_Brand/App Store 1024 x 1024.png",
     scheme: "truxel",
@@ -15,7 +50,7 @@ export default {
       backgroundColor: "#ffffff"
     },
     ios: {
-      buildNumber: "21",
+      buildNumber: String(buildNumber),
       supportsTablet: false,
       bundleIdentifier: "io.truxel.app",
       infoPlist: {
@@ -38,7 +73,7 @@ export default {
       icon: "./assets/Truxel_Brand/App Store 1024 x 1024.png"
     },
     android: {
-      versionCode: 21,
+      versionCode: buildNumber,
       package: "io.truxel.app",
       permissions: [
         "ACCESS_COARSE_LOCATION",

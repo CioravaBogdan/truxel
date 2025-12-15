@@ -15,7 +15,8 @@ interface RevenueCatEvent {
     aliases: string[];
     original_app_user_id: string;
     product_id: string;
-    entitlement_ids: string[];
+    new_product_id?: string | null;
+    entitlement_ids: string[] | null;
     period_type: string;
     purchased_at_ms: number;
     expiration_at_ms: number | null;
@@ -27,8 +28,8 @@ interface RevenueCatEvent {
     store: string;
     takehome_percentage: number;
     currency: string;
-    price: number;
-    price_in_purchased_currency: number;
+    price: number | null;
+    price_in_purchased_currency: number | null;
     subscriber_attributes: Record<string, any>;
   };
 }
@@ -59,11 +60,22 @@ serve(async (req) => {
       type: payload.event.type,
       userId: payload.event.app_user_id,
       productId: payload.event.product_id,
+      newProductId: payload.event.new_product_id,
       entitlements: payload.event.entitlement_ids,
     });
 
     const event = payload.event;
     const userId = event.app_user_id;
+    const entitlements = event.entitlement_ids ?? [];
+
+    const isUuid = (value: string): boolean =>
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value);
+
+    let skipReason: string | null = null;
+
+    // For PRODUCT_CHANGE, RevenueCat includes new_product_id (the new plan).
+    // Prefer it when present to avoid mapping the *old* product_id.
+    const productIdForTier = (event.new_product_id ?? '').trim() || event.product_id;
 
     // Map RevenueCat entitlements to Truxel subscription tiers
     // Order matters! Check highest tier first
@@ -91,6 +103,8 @@ serve(async (req) => {
 
         // Search pack add-on (one-time)
         'truxel_2499_onetime': 'search_pack',
+        'one_time_25_searches': 'search_pack',
+        'truxel_search_pack_25': 'search_pack',
 
         // Android (Play)
         'truxel_standard_monthly': 'standard',
@@ -127,15 +141,91 @@ serve(async (req) => {
       case 'INITIAL_PURCHASE':
       case 'RENEWAL':
       case 'PRODUCT_CHANGE': {
-        const productTier = getTierFromProductId(event.product_id);
-        const entitlementTier = getTierFromEntitlements(event.entitlement_ids);
+        if (!isUuid(userId)) {
+          console.warn(`⚠️ Skipping DB update: non-UUID app_user_id=${userId}`);
+          skipReason = 'non_uuid_app_user_id';
+          break;
+        }
+
+        const productTier = getTierFromProductId(productIdForTier);
+
+        // ✅ One-time search packs should NOT reset subscription usage or change tier.
+        // They should only add purchased credits.
+        if (productTier === 'search_pack') {
+          const bonusCredits = productIdForTier.includes('25') ? 25 : 10;
+
+          console.log(`✅ Handling search pack purchase: userId=${userId}, credits=${bonusCredits}, productIdUsed=${productIdForTier}`);
+
+          // Log transaction first (best-effort)
+          const amountCents = event.price_in_purchased_currency ?? event.price ?? 0;
+          const { data: txnRows, error: transactionError } = await supabase
+            .from('transactions')
+            .insert({
+              user_id: userId,
+              transaction_type: 'search_pack',
+              tier_or_pack_name: 'search_pack',
+              amount: amountCents / 100,
+              stripe_payment_id: event.transaction_id,
+              status: 'completed',
+            })
+            .select('id')
+            .limit(1);
+
+          if (transactionError) {
+            console.warn('⚠️ Error logging search pack transaction:', transactionError);
+          }
+
+          const purchaseTransactionId = txnRows?.[0]?.id ?? null;
+
+          const { error: creditInsertError } = await supabase.from('user_search_credits').insert({
+            user_id: userId,
+            credits_purchased: bonusCredits,
+            credits_remaining: bonusCredits,
+            purchase_transaction_id: purchaseTransactionId,
+            expires_at: null,
+          });
+
+          if (creditInsertError) {
+            console.warn('⚠️ Error inserting user_search_credits row:', creditInsertError);
+          } else {
+            console.log(`✅ Added ${bonusCredits} purchased search credits to user ${userId}`);
+          }
+
+          // Update cached available_search_credits (best-effort) so UI can reflect it
+          const { data: creditTotals, error: totalsError } = await supabase.rpc('get_total_search_credits', {
+            p_user_id: userId,
+          });
+
+          if (totalsError) {
+            console.warn('⚠️ Error fetching total search credits after pack purchase:', totalsError);
+          } else {
+            const totalAvailable = creditTotals?.[0]?.total_available ?? null;
+            if (typeof totalAvailable === 'number') {
+              const { error: profileUpdateError } = await supabase
+                .from('profiles')
+                .update({
+                  available_search_credits: totalAvailable,
+                  updated_at: new Date().toISOString(),
+                })
+                .eq('user_id', userId);
+
+              if (profileUpdateError) {
+                console.warn('⚠️ Error updating available_search_credits after pack purchase:', profileUpdateError);
+              }
+            }
+          }
+
+          break;
+        }
+
+        const entitlementTier = getTierFromEntitlements(entitlements);
         const tier = productTier && productTier !== 'search_pack' ? productTier : entitlementTier;
         const searchCredits = getSearchesForTier(tier);
         const expiresAt = event.expiration_at_ms
           ? new Date(event.expiration_at_ms).toISOString()
           : null;
 
-        console.log(`✅ Updating subscription: userId=${userId}, tier=${tier}, productTier=${productTier ?? 'null'}, entitlementTier=${entitlementTier}, searchCredits=${searchCredits}, productId=${event.product_id}`);
+        console.log(`✅ Updating subscription: userId=${userId}, tier=${tier}, productTier=${productTier ?? 'null'}, entitlementTier=${entitlementTier}, searchCredits=${searchCredits}, productIdUsed=${productIdForTier}, productId=${event.product_id}, newProductId=${event.new_product_id ?? 'null'}`);
 
         // First check if user exists
         const { data: existingUser, error: lookupError } = await supabase
@@ -175,28 +265,48 @@ serve(async (req) => {
         
         console.log(`✅ Profile update completed. Rows affected: ${count ?? 'unknown'}`);
 
-        // Add BONUS search credits if search pack purchased (on top of tier credits)
-        if (event.entitlement_ids.includes('search_credits')) {
-          const bonusCredits = event.product_id.includes('25') ? 25 : 10;
-
-          const { error: creditsError } = await supabase.rpc('increment_search_credits', {
+        // ✅ Ensure cached available_search_credits reflects TOTAL credits (subscription remaining + purchased packs).
+        // The tier-based value can undercount if the user has purchased search packs.
+        try {
+          const { data: creditTotals, error: totalsError } = await supabase.rpc('get_total_search_credits', {
             p_user_id: userId,
-            p_credits: bonusCredits,
           });
 
-          if (creditsError) {
-            console.warn('⚠️ Error adding bonus search credits:', creditsError);
+          if (totalsError) {
+            console.warn('⚠️ Error fetching total search credits after subscription update:', totalsError);
           } else {
-            console.log(`✅ Added ${bonusCredits} bonus search credits to user ${userId}`);
+            const totalAvailable = creditTotals?.[0]?.total_available;
+            if (typeof totalAvailable === 'number') {
+              const { error: cacheUpdateError } = await supabase
+                .from('profiles')
+                .update({
+                  available_search_credits: totalAvailable,
+                  updated_at: new Date().toISOString(),
+                })
+                .eq('user_id', userId);
+
+              if (cacheUpdateError) {
+                console.warn('⚠️ Error updating cached available_search_credits after subscription update:', cacheUpdateError);
+              }
+            }
           }
+        } catch (e) {
+          console.warn('⚠️ Unexpected error refreshing cached credits after subscription update:', e);
+        }
+
+        // Add BONUS search credits if an entitlement grants them (on top of tier credits)
+        // Note: one-time search packs are handled earlier (productTier === 'search_pack').
+        if (entitlements.includes('search_credits')) {
+          console.log('ℹ️ search_credits entitlement active; pack purchases are handled separately');
         }
 
         // Log transaction
+        const amountCents = event.price_in_purchased_currency ?? event.price ?? 0;
         const { error: transactionError } = await supabase.from('transactions').insert({
           user_id: userId,
-          transaction_type: event.product_id.includes('onetime') ? 'search_pack' : 'subscription',
+          transaction_type: productIdForTier.includes('onetime') ? 'search_pack' : 'subscription',
           tier_or_pack_name: tier,
-          amount: event.price_in_purchased_currency / 100, // Convert cents to dollars
+          amount: amountCents / 100, // Convert cents to currency units (best-effort)
           stripe_payment_id: event.transaction_id,
           status: 'completed',
         });
@@ -210,6 +320,12 @@ serve(async (req) => {
 
       case 'CANCELLATION': {
         console.log(`⚠️ Subscription cancelled: userId=${userId}`);
+
+        if (!isUuid(userId)) {
+          console.warn(`⚠️ Skipping cancellation DB update: non-UUID app_user_id=${userId}`);
+          skipReason = 'non_uuid_app_user_id';
+          break;
+        }
 
         // Mark subscription as cancelled (but keep access until expiry)
         const { error } = await supabase
@@ -230,6 +346,12 @@ serve(async (req) => {
 
       case 'EXPIRATION': {
         console.log(`❌ Subscription expired: userId=${userId}`);
+
+        if (!isUuid(userId)) {
+          console.warn(`⚠️ Skipping expiration DB update: non-UUID app_user_id=${userId}`);
+          skipReason = 'non_uuid_app_user_id';
+          break;
+        }
 
         // Downgrade to trial tier
         const { error } = await supabase
@@ -252,6 +374,12 @@ serve(async (req) => {
 
       case 'BILLING_ISSUE': {
         console.log(`⚠️ Billing issue: userId=${userId}`);
+
+        if (!isUuid(userId)) {
+          console.warn(`⚠️ Skipping billing-issue DB update: non-UUID app_user_id=${userId}`);
+          skipReason = 'non_uuid_app_user_id';
+          break;
+        }
 
         const { error } = await supabase
           .from('profiles')
@@ -279,12 +407,27 @@ serve(async (req) => {
         console.log(`ℹ️ Unhandled event type: ${event.type}`);
     }
 
+    const responseBody: Record<string, unknown> = {
+      success: true,
+      event_type: event.type,
+      user_id: userId,
+    };
+
+    if (skipReason) {
+      responseBody.skipped = true;
+      responseBody.skip_reason = skipReason;
+    }
+
+    // Helpful for smoke testing without relying on Edge logs.
+    if (event.type !== 'TEST') {
+      responseBody.product_id = event.product_id;
+      responseBody.new_product_id = event.new_product_id ?? null;
+      responseBody.product_id_used = productIdForTier;
+      responseBody.entitlements = entitlements;
+    }
+
     return new Response(
-      JSON.stringify({
-        success: true,
-        event_type: event.type,
-        user_id: userId,
-      }),
+      JSON.stringify(responseBody),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         status: 200,
@@ -293,10 +436,19 @@ serve(async (req) => {
   } catch (error) {
     console.error('❌ Webhook error:', error);
 
+    const errorMessage = (() => {
+      if (error instanceof Error) return error.message;
+      try {
+        return JSON.stringify(error);
+      } catch {
+        return String(error);
+      }
+    })();
+
     return new Response(
       JSON.stringify({
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: errorMessage,
       }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },

@@ -20,7 +20,6 @@ import { Input } from '@/components/Input';
 import { useAuthStore } from '@/store/authStore';
 import { useLeadsStore } from '@/store/leadsStore';
 import { searchesService } from '@/services/searchesService';
-import { cityService } from '@/services/cityService';
 import { Search as SearchType } from '@/types/database.types';
 import Toast from 'react-native-toast-message';
 import { MapPin, Crosshair, Clock, CheckCircle, AlertCircle } from 'lucide-react-native';
@@ -57,6 +56,17 @@ export default function SearchScreen() {
   const [elapsedTime, setElapsedTime] = useState(0);
   const [isAutoLocationFetched, setIsAutoLocationFetched] = useState(false);
 
+  const refreshSearchesRemaining = useCallback(async () => {
+    if (!user) return;
+    try {
+      const remaining = await searchesService.getSearchesRemaining(user.id);
+      setSearchesRemaining(remaining);
+    } catch (error) {
+      console.error('[Search] Failed to refresh searches remaining:', error);
+      setSearchesRemaining(0);
+    }
+  }, [user]);
+
   // Clear completed search when leaving the screen
   useFocusEffect(
     useCallback(() => {
@@ -70,10 +80,14 @@ export default function SearchScreen() {
   );
 
   useEffect(() => {
-    if (user) {
-      searchesService.getSearchesRemaining(user.id).then(setSearchesRemaining);
-    }
-  }, [user]);
+    void refreshSearchesRemaining();
+  }, [refreshSearchesRemaining, profile?.subscription_tier]);
+
+  useFocusEffect(
+    useCallback(() => {
+      void refreshSearchesRemaining();
+    }, [refreshSearchesRemaining])
+  );
 
   // Request notification permissions on mount
   useEffect(() => {
