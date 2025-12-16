@@ -87,6 +87,16 @@ export default function CompleteProfileScreen() {
   const [isLoading, setIsLoading] = useState(false);
   const { user, profile, refreshProfile } = useAuthStore();
 
+  const isAppleAuthUser = useMemo(() => {
+    const provider = (user as any)?.app_metadata?.provider;
+    if (provider === 'apple') return true;
+    const identities = (user as any)?.identities;
+    if (Array.isArray(identities)) {
+      return identities.some((i: any) => i?.provider === 'apple');
+    }
+    return false;
+  }, [user]);
+
   // State
   const [fullName, setFullName] = useState('');
   const [companyName, setCompanyName] = useState('');
@@ -149,10 +159,9 @@ export default function CompleteProfileScreen() {
 
   const handleSave = async () => {
     if (!user) return;
-    if (!fullName.trim()) {
-      Toast.show({ type: 'error', text1: t('profile.name_required') });
-      return;
-    }
+
+    // Apple guideline: after Sign in with Apple, do not require the user to re-enter
+    // name/email. We therefore treat full name as optional at onboarding.
     if (!companyName.trim()) {
       Toast.show({ type: 'error', text1: t('auth.company_required') });
       return;
@@ -174,8 +183,7 @@ export default function CompleteProfileScreen() {
 
     setIsLoading(true);
     try {
-      await authService.updateProfile(user.id, {
-        full_name: fullName,
+      const updates: any = {
         company_name: companyName,
         phone_number: formattedPhone,
         truck_type: truckType,
@@ -183,7 +191,14 @@ export default function CompleteProfileScreen() {
         search_radius_km: searchRadius,
         notification_radius_km: notificationRadius,
         preferred_industries: selectedIndustries,
-      });
+      };
+
+      // Avoid overwriting a previously stored full name with an empty string.
+      if (fullName.trim()) {
+        updates.full_name = fullName;
+      }
+
+      await authService.updateProfile(user.id, updates);
 
       await refreshProfile();
       Toast.show({ type: 'success', text1: t('profile.profile_updated') });
@@ -231,13 +246,15 @@ export default function CompleteProfileScreen() {
             {/* Personal Info */}
             <Card style={styles.card}>
               <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>{t('profile.personal_info')}</Text>
-              
-              <Input
-                label={t('common.full_name')}
-                value={fullName}
-                onChangeText={setFullName}
-                placeholder={t('profile.enter_name')}
-              />
+
+              {!isAppleAuthUser && (
+                <Input
+                  label={t('common.full_name')}
+                  value={fullName}
+                  onChangeText={setFullName}
+                  placeholder={t('profile.enter_name')}
+                />
+              )}
               
               <Input
                 label={t('common.company_name')}

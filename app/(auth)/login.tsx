@@ -8,6 +8,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Linking as RNLinking,
+  Image,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
@@ -15,7 +16,6 @@ import { useForm, Controller } from 'react-hook-form';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import * as WebBrowser from 'expo-web-browser';
 import * as QueryParams from 'expo-auth-session/build/QueryParams';
-import { Image } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { Card } from '@/components/Card';
 import { Button } from '@/components/Button';
@@ -299,6 +299,7 @@ export default function LoginScreen() {
                     error={errors.email?.message}
                     keyboardType="email-address"
                     autoCapitalize="none"
+                    autoCorrect={false}
                     autoComplete="email"
                   />
                 )}
@@ -324,6 +325,7 @@ export default function LoginScreen() {
                     error={errors.password?.message}
                     secureTextEntry
                     autoCapitalize="none"
+                    autoCorrect={false}
                     autoComplete="password"
                   />
                 )}

@@ -5,7 +5,7 @@
 // We should never inject timestamps into `expo.version`.
 // NOTE: We previously uploaded builds with very large patch versions (e.g. 1.0.<timestamp>).
 // To ensure the next submission is accepted, bumping the minor version is safest.
-const baseVersion = "1.1.0";
+const baseVersion = "1.1.2";
 // Build number policy (3–4 digits max):
 // - Use a deterministic seed derived from version: Mmmpp (e.g. 1.1.0 -> 1100, 1.2.3 -> 1203)
 // - Let EAS autoIncrement bump it per build (configured in eas.json)

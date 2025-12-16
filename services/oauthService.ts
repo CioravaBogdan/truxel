@@ -81,10 +81,17 @@ export async function signInWithApple() {
 
       if (fullName) {
         console.log('Updating profile with Apple name:', fullName);
+        // Profile row may not exist yet (trigger can be async). Use upsert to be safe.
         await supabase
           .from('profiles')
-          .update({ full_name: fullName })
-          .eq('user_id', data.user.id);
+          .upsert(
+            {
+              user_id: data.user.id,
+              full_name: fullName,
+              updated_at: new Date().toISOString(),
+            },
+            { onConflict: 'user_id' }
+          );
       }
     }
 

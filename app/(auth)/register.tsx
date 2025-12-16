@@ -304,6 +304,7 @@ export default function RegisterScreen() {
                     error={errors.email?.message}
                     keyboardType="email-address"
                     autoCapitalize="none"
+                    autoCorrect={false}
                     autoComplete="email"
                   />
                 )}
@@ -360,6 +361,7 @@ export default function RegisterScreen() {
                     error={errors.password?.message}
                     secureTextEntry
                     autoCapitalize="none"
+                    autoCorrect={false}
                   />
                 )}
               />
@@ -381,6 +383,7 @@ export default function RegisterScreen() {
                     error={errors.confirmPassword?.message}
                     secureTextEntry
                     autoCapitalize="none"
+                    autoCorrect={false}
                   />
                 )}
               />

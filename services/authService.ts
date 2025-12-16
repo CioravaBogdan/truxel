@@ -8,7 +8,6 @@ import Constants from 'expo-constants';
 import { initRevenueCat, logoutRevenueCat } from '@/lib/revenueCat';
 
 import { Platform } from 'react-native';
-import * as Linking from 'expo-linking';
 
 export interface SignUpData {
   email: string;
@@ -20,6 +19,8 @@ export interface SignUpData {
 
 export const authService = {
   async signUp(data: SignUpData) {
+    const normalizedEmail = data.email.trim().toLowerCase();
+
     // Use a web-based redirect URL to avoid "white page" on desktop
     // This page (app/(web)/verify-email.tsx) will handle the token and deep link to the app
     // Ensure 'https://truxel.io/verify-email' is whitelisted in Supabase
@@ -28,7 +29,7 @@ export const authService = {
       : 'https://truxel.io/verify-email';
 
     const { data: authData, error: authError } = await supabase.auth.signUp({
-      email: data.email,
+      email: normalizedEmail,
       password: data.password,
       options: {
         emailRedirectTo: redirectTo,
@@ -54,8 +55,9 @@ export const authService = {
   },
 
   async signIn(email: string, password: string) {
+    const normalizedEmail = email.trim().toLowerCase();
     const { data, error } = await supabase.auth.signInWithPassword({
-      email,
+      email: normalizedEmail,
       password,
     });
 
@@ -87,24 +89,26 @@ export const authService = {
   },
 
   async resetPassword(email: string) {
+    const normalizedEmail = email.trim().toLowerCase();
     const redirectTo = Platform.OS === 'web'
       ? window.location.origin
       : 'https://truxel.io/verify-email';
 
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    const { error } = await supabase.auth.resetPasswordForEmail(normalizedEmail, {
       redirectTo,
     });
     if (error) throw error;
   },
 
   async resendConfirmation(email: string) {
+    const normalizedEmail = email.trim().toLowerCase();
     const redirectTo = Platform.OS === 'web'
       ? window.location.origin
       : 'https://truxel.io/verify-email';
 
     const { error } = await supabase.auth.resend({
       type: 'signup',
-      email,
+      email: normalizedEmail,
       options: {
         emailRedirectTo: redirectTo,
       }
