@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Platform, Linking, Image } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useRouter } from 'expo-router';
 import {
   MapPin, Users, FileText, Globe, MessageSquare, Linkedin,
   Brain, Bell, Zap, TrendingUp, Target, Star, CheckCircle,
-  Truck, Heart, Shield, Quote, DollarSign, Phone, ArrowRight
+  Truck, DollarSign, Phone, ArrowRight
 } from 'lucide-react-native';
 import { WebFooter } from '@/components/web/WebFooter';
 import { SeoHead } from '@/components/web/SeoHead';
@@ -36,12 +36,6 @@ export default function LandingPage() {
   const router = useRouter();
   const { t } = useTranslation();
   const { theme } = useTheme();
-
-  const trustFeatureKeys = [
-    'web.hero.trust_features.no_broker_fees',
-    'web.hero.trust_features.dead_zones',
-    'web.hero.trust_features.instant_contact',
-  ];
 
   const features = [
     { icon: MapPin, title: t('web.features.gps_title'), desc: t('web.features.gps_desc') },
@@ -193,7 +187,7 @@ export default function LandingPage() {
           {/* Founder Quote - Compact */}
           <View style={styles.heroFounderQuote}>
             <Text style={styles.heroQuoteText}>
-              "{t('web.about.founder_quote')}"
+              &ldquo;{t('web.about.founder_quote')}&rdquo;
             </Text>
             <View style={styles.heroFounderInfo}>
               <View style={styles.heroFounderAvatar}>
@@ -210,7 +204,7 @@ export default function LandingPage() {
             </Text>
             <View style={styles.heroStoreButtons}>
               <TouchableOpacity
-                onPress={() => Linking.openURL('https://apps.apple.com/ro/app/truxel/id6739166827')}
+                onPress={() => Linking.openURL('https://apps.apple.com/ro/app/truxel-owner-operator-tool/id6755073677')}
                 style={styles.storeBadgeContainer}
               >
                 <Image 
@@ -368,7 +362,7 @@ export default function LandingPage() {
         <View style={styles.testimonials}>
           {[1, 2, 3].map((num) => (
             <View key={num} style={[styles.testimonialCard, { backgroundColor: theme.colors.card }]}>
-              <Text style={[styles.testimonialText, { color: theme.colors.text }]}>"{t(`web.social_proof.testimonial${num}`)}"</Text>
+              <Text style={[styles.testimonialText, { color: theme.colors.text }]}>&ldquo;{t(`web.social_proof.testimonial${num}`)}&rdquo;</Text>
               <Text style={[styles.testimonialAuthor, { color: theme.colors.primary }]}>{t(`web.social_proof.testimonial${num}_author`)}</Text>
             </View>
           ))}
@@ -423,7 +417,7 @@ export default function LandingPage() {
             </View>
             <View style={styles.storeButtonsRow}>
               <TouchableOpacity
-                onPress={() => Linking.openURL('https://apps.apple.com/ro/app/truxel/id6739166827')}
+                onPress={() => Linking.openURL('https://apps.apple.com/ro/app/truxel-owner-operator-tool/id6755073677')}
                 style={styles.storeBadgeContainer}
               >
                 <Image 

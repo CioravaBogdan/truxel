@@ -457,7 +457,7 @@ export default function RegisterScreen() {
                   {t('web.hero.mobile_experience')}
                 </Text>
                 <View style={styles.storeButtonsRow}>
-                  <TouchableOpacity onPress={() => RNLinking.openURL('https://apps.apple.com/ro/app/truxel/id6739166827')}>
+                  <TouchableOpacity onPress={() => RNLinking.openURL('https://apps.apple.com/ro/app/truxel-owner-operator-tool/id6755073677')}>
                     <Image 
                       source={require('@/assets/images/download_apple_store.svg')} 
                       style={styles.storeBadge}

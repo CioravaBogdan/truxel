@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
@@ -11,6 +12,7 @@ interface RevenueCatEvent {
   event: {
     type: string;
     id: string;
+    event_timestamp_ms?: number;
     app_user_id: string;
     aliases: string[];
     original_app_user_id: string;
@@ -65,11 +67,24 @@ serve(async (req) => {
     });
 
     const event = payload.event;
-    const userId = event.app_user_id;
+    const incomingAppUserId = event.app_user_id;
     const entitlements = event.entitlement_ids ?? [];
 
     const isUuid = (value: string): boolean =>
       /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value);
+
+    const resolveSupabaseUserId = (evt: RevenueCatEvent['event']): string | null => {
+      if (isUuid(evt.app_user_id)) return evt.app_user_id;
+      if (Array.isArray(evt.aliases)) {
+        const aliasUuid = evt.aliases.find(isUuid);
+        if (aliasUuid) return aliasUuid;
+      }
+      if (isUuid(evt.original_app_user_id)) return evt.original_app_user_id;
+      return null;
+    };
+
+    const resolvedUserId = resolveSupabaseUserId(event);
+    const userId = resolvedUserId ?? incomingAppUserId;
 
     let skipReason: string | null = null;
 
@@ -141,8 +156,12 @@ serve(async (req) => {
       case 'INITIAL_PURCHASE':
       case 'RENEWAL':
       case 'PRODUCT_CHANGE': {
-        if (!isUuid(userId)) {
-          console.warn(`⚠️ Skipping DB update: non-UUID app_user_id=${userId}`);
+        if (!resolvedUserId) {
+          console.warn('⚠️ Skipping DB update: could not resolve UUID for RevenueCat user', {
+            app_user_id: incomingAppUserId,
+            original_app_user_id: event.original_app_user_id,
+            aliases: event.aliases,
+          });
           skipReason = 'non_uuid_app_user_id';
           break;
         }
@@ -157,14 +176,14 @@ serve(async (req) => {
           console.log(`✅ Handling search pack purchase: userId=${userId}, credits=${bonusCredits}, productIdUsed=${productIdForTier}`);
 
           // Log transaction first (best-effort)
-          const amountCents = event.price_in_purchased_currency ?? event.price ?? 0;
+          const amount = event.price_in_purchased_currency ?? event.price ?? 0;
           const { data: txnRows, error: transactionError } = await supabase
             .from('transactions')
             .insert({
               user_id: userId,
               transaction_type: 'search_pack',
               tier_or_pack_name: 'search_pack',
-              amount: amountCents / 100,
+              amount,
               stripe_payment_id: event.transaction_id,
               status: 'completed',
             })
@@ -173,6 +192,20 @@ serve(async (req) => {
 
           if (transactionError) {
             console.warn('⚠️ Error logging search pack transaction:', transactionError);
+          }
+
+          // Best-effort: store RevenueCat identifiers for audit/debugging
+          try {
+            await supabase
+              .from('profiles')
+              .update({
+                revenuecat_customer_id: event.original_app_user_id,
+                revenuecat_app_user_id: incomingAppUserId,
+                updated_at: new Date().toISOString(),
+              })
+              .eq('user_id', userId);
+          } catch (e) {
+            console.warn('⚠️ Error updating RevenueCat IDs on profile after search pack purchase:', e);
           }
 
           const purchaseTransactionId = txnRows?.[0]?.id ?? null;
@@ -254,6 +287,8 @@ serve(async (req) => {
             subscription_start_date: new Date().toISOString(),
             monthly_searches_used: 0, // Reset on subscription change
             available_search_credits: searchCredits, // Set based on tier
+            revenuecat_customer_id: event.original_app_user_id,
+            revenuecat_app_user_id: incomingAppUserId,
             updated_at: new Date().toISOString(),
           })
           .eq('user_id', userId);
@@ -301,12 +336,12 @@ serve(async (req) => {
         }
 
         // Log transaction
-        const amountCents = event.price_in_purchased_currency ?? event.price ?? 0;
+        const amount = event.price_in_purchased_currency ?? event.price ?? 0;
         const { error: transactionError } = await supabase.from('transactions').insert({
           user_id: userId,
           transaction_type: productIdForTier.includes('onetime') ? 'search_pack' : 'subscription',
           tier_or_pack_name: tier,
-          amount: amountCents / 100, // Convert cents to currency units (best-effort)
+          amount,
           stripe_payment_id: event.transaction_id,
           status: 'completed',
         });
@@ -321,8 +356,12 @@ serve(async (req) => {
       case 'CANCELLATION': {
         console.log(`⚠️ Subscription cancelled: userId=${userId}`);
 
-        if (!isUuid(userId)) {
-          console.warn(`⚠️ Skipping cancellation DB update: non-UUID app_user_id=${userId}`);
+        if (!resolvedUserId) {
+          console.warn('⚠️ Skipping cancellation DB update: could not resolve UUID for RevenueCat user', {
+            app_user_id: incomingAppUserId,
+            original_app_user_id: event.original_app_user_id,
+            aliases: event.aliases,
+          });
           skipReason = 'non_uuid_app_user_id';
           break;
         }
@@ -347,8 +386,12 @@ serve(async (req) => {
       case 'EXPIRATION': {
         console.log(`❌ Subscription expired: userId=${userId}`);
 
-        if (!isUuid(userId)) {
-          console.warn(`⚠️ Skipping expiration DB update: non-UUID app_user_id=${userId}`);
+        if (!resolvedUserId) {
+          console.warn('⚠️ Skipping expiration DB update: could not resolve UUID for RevenueCat user', {
+            app_user_id: incomingAppUserId,
+            original_app_user_id: event.original_app_user_id,
+            aliases: event.aliases,
+          });
           skipReason = 'non_uuid_app_user_id';
           break;
         }
@@ -375,8 +418,12 @@ serve(async (req) => {
       case 'BILLING_ISSUE': {
         console.log(`⚠️ Billing issue: userId=${userId}`);
 
-        if (!isUuid(userId)) {
-          console.warn(`⚠️ Skipping billing-issue DB update: non-UUID app_user_id=${userId}`);
+        if (!resolvedUserId) {
+          console.warn('⚠️ Skipping billing-issue DB update: could not resolve UUID for RevenueCat user', {
+            app_user_id: incomingAppUserId,
+            original_app_user_id: event.original_app_user_id,
+            aliases: event.aliases,
+          });
           skipReason = 'non_uuid_app_user_id';
           break;
         }
@@ -424,6 +471,8 @@ serve(async (req) => {
       responseBody.new_product_id = event.new_product_id ?? null;
       responseBody.product_id_used = productIdForTier;
       responseBody.entitlements = entitlements;
+      responseBody.revenuecat_app_user_id = incomingAppUserId;
+      responseBody.revenuecat_customer_id = event.original_app_user_id;
     }
 
     return new Response(

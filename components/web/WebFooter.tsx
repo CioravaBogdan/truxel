@@ -59,7 +59,7 @@ export function WebFooter() {
             </TouchableOpacity>
             
             <View style={styles.storeButtons}>
-              <TouchableOpacity onPress={() => Linking.openURL('https://apps.apple.com/ro/app/truxel/id6739166827')}>
+              <TouchableOpacity onPress={() => Linking.openURL('https://apps.apple.com/ro/app/truxel-owner-operator-tool/id6755073677')}>
                 <Image 
                   source={require('@/assets/images/download_apple_store.svg')} 
                   style={styles.storeBadge}
@@ -70,6 +70,14 @@ export function WebFooter() {
                 <Image 
                   source={require('@/assets/images/download_google_store_footer.png')} 
                   style={styles.storeBadge}
+                  resizeMode="contain"
+                />
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={() => Linking.openURL('https://apps.apple.com/ro/app/truxel-owner-operator-tool/id6755073677')}>
+                <Image
+                  source={require('@/assets/images/download_qr.svg')}
+                  style={styles.qrCode}
                   resizeMode="contain"
                 />
               </TouchableOpacity>
@@ -226,6 +234,10 @@ const styles = StyleSheet.create({
   storeBadge: {
     width: 140,
     height: 42,
+  },
+  qrCode: {
+    width: 120,
+    height: 120,
   },
   contactInfo: {
     marginTop: 8,

@@ -39,6 +39,8 @@ export interface Profile {
   stripe_subscription_id?: string;
   stripe_subscription_status?: string;
   stripe_current_period_end?: string;
+  revenuecat_customer_id?: string;
+  revenuecat_app_user_id?: string;
   pending_tier_change?: string;
   created_at: string;
   updated_at: string;
