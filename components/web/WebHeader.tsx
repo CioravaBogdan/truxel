@@ -51,6 +51,9 @@ export function WebHeader() {
               <TouchableOpacity onPress={() => router.push('/(web)/features')}>
                 <Text style={[styles.navLink, { color: theme.colors.text }]}>{t('web.nav.features')}</Text>
               </TouchableOpacity>
+              <TouchableOpacity onPress={() => router.push('/(web)/articles')}>
+                <Text style={[styles.navLink, { color: theme.colors.text }]}>{t('web.nav.articles')}</Text>
+              </TouchableOpacity>
               <TouchableOpacity onPress={() => router.push('/(web)/pricing_web')}>
                 <Text style={[styles.navLink, { color: theme.colors.text }]}>{t('web.nav.pricing')}</Text>
               </TouchableOpacity>

@@ -631,6 +631,7 @@
   "web": {
     "nav": {
       "features": "Features",
+      "articles": "Articles",
       "pricing": "Pricing",
       "about": "About",
       "contact": "Contact",

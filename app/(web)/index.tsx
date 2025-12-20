@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Platform, Linking, Image } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useRouter } from 'expo-router';
@@ -10,6 +10,8 @@ import {
 import { WebFooter } from '@/components/web/WebFooter';
 import { SeoHead } from '@/components/web/SeoHead';
 import { useTheme } from '@/lib/theme';
+import { blogService, Article } from '@/services/blogService';
+import { ArticleCard } from '@/components/web/ArticleCard';
 
 if (Platform.OS === 'web') {
   const style = document.createElement('style');
@@ -36,6 +38,20 @@ export default function LandingPage() {
   const router = useRouter();
   const { t } = useTranslation();
   const { theme } = useTheme();
+  const [latestArticles, setLatestArticles] = useState<Article[]>([]);
+
+  useEffect(() => {
+    loadLatestArticles();
+  }, []);
+
+  const loadLatestArticles = async () => {
+    try {
+      const articles = await blogService.getLatestArticles(8);
+      setLatestArticles(articles);
+    } catch (error) {
+      console.error('Failed to load latest articles', error);
+    }
+  };
 
   const features = [
     { icon: MapPin, title: t('web.features.gps_title'), desc: t('web.features.gps_desc') },
@@ -377,6 +393,31 @@ export default function LandingPage() {
         </View>
       </View>
 
+      {/* Latest Articles */}
+      {latestArticles.length > 0 && (
+        <View style={[styles.section, { backgroundColor: theme.colors.background }]}>
+          <Text style={[styles.mainTitle, { color: theme.colors.text }]}>Latest Articles</Text>
+          <ScrollView 
+            horizontal 
+            showsHorizontalScrollIndicator={Platform.OS === 'web'}
+            contentContainerStyle={{ paddingHorizontal: 24, gap: 24, paddingBottom: 24 }}
+            style={{ width: '100%' }}
+          >
+            {latestArticles.map((article) => (
+              <View key={article.id} style={{ width: 320 }}>
+                <ArticleCard article={article} />
+              </View>
+            ))}
+          </ScrollView>
+          <TouchableOpacity 
+            style={[styles.secondaryButton, { marginTop: 32, alignSelf: 'center', borderColor: theme.colors.primary }]}
+            onPress={() => router.push('/(web)/articles')}
+          >
+            <Text style={[styles.secondaryButtonText, { color: theme.colors.primary }]}>View All Articles</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+
       {/* FAQ */}
       <View style={[styles.section, styles.faq, { backgroundColor: theme.colors.background }]}>
         <Text style={[styles.mainTitle, { color: theme.colors.text }]}>{t('web.faq.title')}</Text>
@@ -602,7 +643,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 48,
     paddingVertical: 20,
     borderRadius: 16,
-    minWidth: 200,
+    width: 260,
     alignItems: 'center',
     ...(Platform.OS === 'web' && {
       background: 'linear-gradient(135deg, #FF5722 0%, #FF8A65 100%)',
@@ -630,8 +671,9 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     borderRadius: 16,
     borderWidth: 2,
-    minWidth: 200,
+    width: 260,
     alignItems: 'center',
+    justifyContent: 'center',
     ...(Platform.OS === 'web' && {
       boxShadow: '0 4px 12px -2px rgba(37, 99, 234, 0.2)',
       transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
@@ -1530,5 +1572,17 @@ const styles = StyleSheet.create({
   storeBadgeSmall: {
     width: 140,
     height: 42,
+  },
+  secondaryButton: {
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+    borderWidth: 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  secondaryButtonText: {
+    fontSize: 16,
+    fontWeight: '600',
   },
 });
