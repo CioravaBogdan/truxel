@@ -640,11 +640,12 @@ const styles = StyleSheet.create({
     }),
   },
   primaryButton: {
-    paddingHorizontal: 48,
+    paddingHorizontal: 32,
     paddingVertical: 20,
     borderRadius: 16,
-    width: 260,
+    width: 280,
     alignItems: 'center',
+    justifyContent: 'center',
     ...(Platform.OS === 'web' && {
       background: 'linear-gradient(135deg, #FF5722 0%, #FF8A65 100%)',
       boxShadow: '0 10px 30px -5px rgba(255, 87, 34, 0.5)',
@@ -661,17 +662,18 @@ const styles = StyleSheet.create({
     fontSize: 19,
     fontWeight: '800',
     color: '#FFFFFF',
+    textAlign: 'center',
     letterSpacing: 0.5,
     ...(Platform.OS === 'web' && {
       textShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
     }),
   },
   secondaryButton: {
-    paddingHorizontal: 48,
+    paddingHorizontal: 32,
     paddingVertical: 20,
     borderRadius: 16,
     borderWidth: 2,
-    width: 260,
+    width: 280,
     alignItems: 'center',
     justifyContent: 'center',
     ...(Platform.OS === 'web' && {
@@ -686,6 +688,7 @@ const styles = StyleSheet.create({
   secondaryButtonText: {
     fontSize: 19,
     fontWeight: '800',
+    textAlign: 'center',
     letterSpacing: 0.5,
   },
   trustSection: {
