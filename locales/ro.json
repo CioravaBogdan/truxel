@@ -248,7 +248,7 @@
     "upgrade_to": "Actualizează la {{plan}}",
     "buy_search_pack": "Cumpără Pachet de Căutări",
     "search_pack_10": "10 Căutări Adiționale",
-    "search_pack_price": "â‚¬24.99",
+    "search_pack_price": "€24.99",
     "purchase_success": "Achiziție reușită!",
     "purchase_failed": "Achiziția a eșuat. Te rugăm să încerci din nou.",
     "manage_subscription": "Gestionează Abonamentul",
@@ -355,7 +355,7 @@
     "ai_matching": "Potrivire de contacte cu AI",
     "advanced_research": "Analiză avansată pentru companii",
     "community_contacts": "Acces la contactele din comunitate",
-    "community_posts_limit": "{{daily}} postări/zi â€¢ {{monthly}} postări/lună",
+    "community_posts_limit": "{{daily}} postări/zi ”¢ {{monthly}} postări/lună",
     "community_priority": "Vizibilitate prioritară în feedul comunității",
     "community_unlimited_posts": "Postări nelimitate în comunitate",
     "support_priority": "Suport prioritar",
@@ -490,7 +490,7 @@
       "title": "Deblochează accesul complet la comunitate",
       "subtitle": "Mai ai {{remaining}} contacte astăzi. Fă upgrade ca să continui să discuți cu clienții.",
       "tier_name": "Plan Growth",
-      "tier_price": "â‚¬29.99 / lună",
+      "tier_price": "€29.99 / lună",
       "tier_description": "Creat pentru firme în creștere care au nevoie de acces constant la încărcători.",
       "feature_contacts": "Acces complet la datele de contact pentru toate postările",
       "feature_posts": "Până la 5 postări pe zi și 30 pe lună",
@@ -930,15 +930,15 @@
       "role": "Fondator & fost owner-operator",
       "timeline": {
         "step1": {
-          "title": "2019 â€¢ Vânătoare de expeditori direcți",
+          "title": "2019 ”¢ Vânătoare de expeditori direcți",
           "desc": "Bogdan petrecea nopți întregi cu tabele de companii, sunând depozite între curse doar ca să evite kilometrii pe gol."
         },
         "step2": {
-          "title": "2022 â€¢ Primul prototip Truxel",
+          "title": "2022 ”¢ Primul prototip Truxel",
           "desc": "După ce a construit manual o bază de date cu 6.000 de companii, a creat un instrument GPS care afișa instant expeditorii din apropiere."
         },
         "step3": {
-          "title": "2024 â€¢ Comunitatea devine live",
+          "title": "2024 ”¢ Comunitatea devine live",
           "desc": "Am lansat o rețea europeană de șoferi unde încărcăturile și disponibilitățile se împart în secunde, nu în zile."
         }
       }
@@ -1030,7 +1030,7 @@
       "hero_feature3": "Suport dedicat pentru toate planurile",
       "hero_cta": "Începe perioada de probă gratuită",
       "currency_label": "Monedă",
-      "currency_eur": "EUR (â‚¬)",
+      "currency_eur": "EUR (€)",
       "currency_usd": "USD ($)",
       "per_month": "pe lună",
       "cta": "Începe acum",
