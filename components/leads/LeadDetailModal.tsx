@@ -281,7 +281,7 @@ const LeadCardContent = React.memo(({ lead, onNext, onPrev, onClose, onAddToMyBo
     const result = await safeOpenWhatsApp(
       phoneWithCode,
       message,
-      'WhatsApp not available'
+      t('leads.whatsapp_not_available')
     );
 
     if (result.success) {
@@ -289,7 +289,7 @@ const LeadCardContent = React.memo(({ lead, onNext, onPrev, onClose, onAddToMyBo
     } else {
       Toast.show({
         type: 'error',
-        text1: 'WhatsApp Error',
+        text1: t('leads.whatsapp_error'),
         text2: result.userMessage,
       });
     }
@@ -308,28 +308,28 @@ const LeadCardContent = React.memo(({ lead, onNext, onPrev, onClose, onAddToMyBo
       userEmail: profile?.email || '',
     });
 
-    const result = await safeOpenEmail(email, subject, body, 'Cannot open email');
+    const result = await safeOpenEmail(email, subject, body, t('leads.cannot_open_email'));
 
     if (result.success) {
       markAsContacted();
     } else {
       Toast.show({
         type: 'error',
-        text1: 'Email Error',
+        text1: t('leads.email_error'),
         text2: result.userMessage,
       });
     }
   };
 
   const handleCall = async (phone: string) => {
-    const result = await safeOpenPhone(phone, 'Cannot make phone call');
+    const result = await safeOpenPhone(phone, t('leads.cannot_make_call'));
 
     if (result.success) {
       markAsContacted();
     } else {
       Toast.show({
         type: 'error',
-        text1: 'Phone Error',
+        text1: t('leads.phone_error'),
         text2: result.userMessage,
       });
     }
@@ -345,7 +345,7 @@ const LeadCardContent = React.memo(({ lead, onNext, onPrev, onClose, onAddToMyBo
     } catch {
       Toast.show({
         type: 'error',
-        text1: 'Could not open Maps',
+        text1: t('leads.maps_error'),
       });
     }
   };
@@ -354,8 +354,8 @@ const LeadCardContent = React.memo(({ lead, onNext, onPrev, onClose, onAddToMyBo
     if (!user || !(lead as any).user_lead_id) {
       Toast.show({
         type: 'error',
-        text1: 'Cannot save notes',
-        text2: 'User lead ID not found',
+        text1: t('leads.cannot_save_notes'),
+        text2: t('leads.user_lead_id_not_found'),
       });
       return;
     }
@@ -370,8 +370,8 @@ const LeadCardContent = React.memo(({ lead, onNext, onPrev, onClose, onAddToMyBo
       
       Toast.show({
         type: 'success',
-        text1: 'Notes saved',
-        text2: 'Your notes have been updated',
+        text1: t('leads.notes_saved'),
+        text2: t('leads.notes_updated'),
       });
       
       setIsEditingNotes(false);
@@ -384,8 +384,8 @@ const LeadCardContent = React.memo(({ lead, onNext, onPrev, onClose, onAddToMyBo
       console.error('Error saving notes:', error);
       Toast.show({
         type: 'error',
-        text1: 'Failed to save notes',
-        text2: 'Please try again',
+        text1: t('leads.failed_save_notes'),
+        text2: t('leads.try_again'),
       });
     } finally {
       setIsSavingNotes(false);
@@ -407,14 +407,12 @@ const LeadCardContent = React.memo(({ lead, onNext, onPrev, onClose, onAddToMyBo
           {/* Company Info Card */}
           <View style={[styles.companyCard, { backgroundColor: theme.colors.surface }]}>
             <View style={[styles.avatarContainer, { backgroundColor: theme.colors.primary + '15' }]}>
-              {(lead as any).google_url_photo ? (
-                <Image 
-                  source={{ uri: (lead as any).google_url_photo }} 
-                  style={{ width: 80, height: 80, borderRadius: 40 }}
-                />
-              ) : (
-                <Building2 size={48} color={theme.colors.primary} />
-              )}
+              <Image 
+                source={{ 
+                  uri: (lead as any).google_url_photo || 'https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&w=200&q=80' 
+                }} 
+                style={{ width: 80, height: 80, borderRadius: 40 }}
+              />
             </View>
             
             <Text style={[styles.companyName, { color: theme.colors.text }]}>{lead.company_name}</Text>
@@ -424,7 +422,7 @@ const LeadCardContent = React.memo(({ lead, onNext, onPrev, onClose, onAddToMyBo
               <View style={styles.verifiedBadge}>
                 <ShieldCheck size={14} color={theme.colors.success} />
                 <Text style={[styles.verifiedText, { color: theme.colors.success }]}>
-                  Verified by {lead.verified_by_users_count} users
+                  {t('leads.verified_by_users', { count: lead.verified_by_users_count })}
                 </Text>
               </View>
             )}
@@ -452,7 +450,7 @@ const LeadCardContent = React.memo(({ lead, onNext, onPrev, onClose, onAddToMyBo
               <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
                 <FileText size={18} color={theme.colors.primary} />
                 <Text style={[styles.sectionTitle, { color: theme.colors.text, marginBottom: 0, marginLeft: 8 }]}>
-                  {t('leads.about_company', 'About Company')}
+                  {t('leads.about_company')}
                 </Text>
               </View>
               <Text style={[styles.infoText, { color: theme.colors.text, lineHeight: 22 }]}>
@@ -487,7 +485,7 @@ const LeadCardContent = React.memo(({ lead, onNext, onPrev, onClose, onAddToMyBo
                     <phone.icon size={18} color={theme.colors.textSecondary} />
                     <View style={styles.contactTextContainer}>
                       <Text style={[styles.contactLabel, { color: theme.colors.textSecondary }]}>
-                        {phone.type === 'work' ? 'Work Phone' : 'Mobile / WhatsApp'}
+                        {phone.type === 'work' ? t('leads.work_phone') : t('leads.mobile_whatsapp')}
                       </Text>
                       <Text style={[styles.contactValue, { color: theme.colors.text }]}>{phone.number}</Text>
                     </View>
@@ -518,7 +516,7 @@ const LeadCardContent = React.memo(({ lead, onNext, onPrev, onClose, onAddToMyBo
                   <View style={styles.contactInfo}>
                     <Mail size={18} color={theme.colors.textSecondary} />
                     <View style={styles.contactTextContainer}>
-                      <Text style={[styles.contactLabel, { color: theme.colors.textSecondary }]}>Email</Text>
+                      <Text style={[styles.contactLabel, { color: theme.colors.textSecondary }]}>{t('leads.email_label')}</Text>
                       <Text style={[styles.contactValue, { color: theme.colors.text }]}>{email}</Text>
                     </View>
                   </View>
@@ -537,7 +535,7 @@ const LeadCardContent = React.memo(({ lead, onNext, onPrev, onClose, onAddToMyBo
           {/* Additional Contacts Section (Collected from Web) */}
           {(additionalPhones.length > 0 || additionalEmails.length > 0) && (
             <View style={[styles.section, { backgroundColor: theme.colors.surface }]}>
-              <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>🌐 {t('leads.collected_contacts', 'Contacts from Web')}</Text>
+              <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>🌐 {t('leads.collected_contacts')}</Text>
               
               {/* Additional Phones */}
               {additionalPhones.map((phone, idx) => (
@@ -546,7 +544,7 @@ const LeadCardContent = React.memo(({ lead, onNext, onPrev, onClose, onAddToMyBo
                     <Phone size={18} color={theme.colors.textSecondary} />
                     <View style={styles.contactTextContainer}>
                       <Text style={[styles.contactLabel, { color: theme.colors.textSecondary }]}>
-                        {t('leads.phone_from_web', 'Phone (Web)')}
+                        {t('leads.phone_from_web')}
                       </Text>
                       <Text style={[styles.contactValue, { color: theme.colors.text }]}>{phone}</Text>
                     </View>
@@ -576,7 +574,7 @@ const LeadCardContent = React.memo(({ lead, onNext, onPrev, onClose, onAddToMyBo
                     <Mail size={18} color={theme.colors.textSecondary} />
                     <View style={styles.contactTextContainer}>
                       <Text style={[styles.contactLabel, { color: theme.colors.textSecondary }]}>
-                        {t('leads.email_from_web', 'Email (Web)')}
+                        {t('leads.email_from_web')}
                       </Text>
                       <Text style={[styles.contactValue, { color: theme.colors.text }]}>{email}</Text>
                     </View>
@@ -596,13 +594,13 @@ const LeadCardContent = React.memo(({ lead, onNext, onPrev, onClose, onAddToMyBo
           {/* Social Media & Maps */}
           {(socialLinks.length > 0 || (lead as any).google_url_place || lead.latitude || lead.followers) && (
             <View style={[styles.section, { backgroundColor: theme.colors.surface }]}>
-              <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>🌐 {t('leads.view_website', 'Online Presence')}</Text>
+              <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>🌐 {t('leads.view_website')}</Text>
               
               {lead.followers && (
                  <View style={{ marginBottom: 16, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 4 }}>
                     <Users size={18} color={theme.colors.textSecondary} />
                     <Text style={{ marginLeft: 12, color: theme.colors.text, fontWeight: '600', fontSize: 15 }}>
-                      {lead.followers} {t('leads.followers', 'Followers')}
+                      {lead.followers} {t('leads.followers')}
                     </Text>
                  </View>
               )}
@@ -652,14 +650,14 @@ const LeadCardContent = React.memo(({ lead, onNext, onPrev, onClose, onAddToMyBo
           {/* Notes Editor */}
           <View style={[styles.section, { backgroundColor: theme.colors.surface }]}>
             <View style={styles.notesHeader}>
-              <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>📝 {t('leads.notes', 'Notes')}</Text>
+              <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>📝 {t('leads.notes')}</Text>
               {!isEditingNotes && (
                 <TouchableOpacity
                   onPress={() => setIsEditingNotes(true)}
                   style={[styles.editButton, { backgroundColor: theme.colors.primary + '15' }]}
                 >
                   <Edit3 size={18} color={theme.colors.primary} />
-                  <Text style={[styles.editButtonText, { color: theme.colors.primary }]}>Edit</Text>
+                  <Text style={[styles.editButtonText, { color: theme.colors.primary }]}>{t('leads.edit')}</Text>
                 </TouchableOpacity>
               )}
             </View>
@@ -670,7 +668,7 @@ const LeadCardContent = React.memo(({ lead, onNext, onPrev, onClose, onAddToMyBo
                   style={[styles.notesInput, { backgroundColor: theme.colors.background, borderColor: theme.colors.border, color: theme.colors.text }]}
                   value={notesText}
                   onChangeText={setNotesText}
-                  placeholder="Add notes about this lead..."
+                  placeholder={t('leads.add_notes_placeholder')}
                   placeholderTextColor={theme.colors.textSecondary}
                   multiline
                   numberOfLines={6}
@@ -684,7 +682,7 @@ const LeadCardContent = React.memo(({ lead, onNext, onPrev, onClose, onAddToMyBo
                       setIsEditingNotes(false);
                     }}
                   >
-                    <Text style={[styles.cancelButtonText, { color: theme.colors.textSecondary }]}>Cancel</Text>
+                    <Text style={[styles.cancelButtonText, { color: theme.colors.textSecondary }]}>{t('leads.cancel')}</Text>
                   </TouchableOpacity>
                   
                   <TouchableOpacity
@@ -697,7 +695,7 @@ const LeadCardContent = React.memo(({ lead, onNext, onPrev, onClose, onAddToMyBo
                     ) : (
                       <>
                         <Save size={18} color="#FFF" />
-                        <Text style={styles.saveButtonText}>Save</Text>
+                        <Text style={styles.saveButtonText}>{t('leads.save')}</Text>
                       </>
                     )}
                   </TouchableOpacity>
@@ -705,7 +703,7 @@ const LeadCardContent = React.memo(({ lead, onNext, onPrev, onClose, onAddToMyBo
               </>
             ) : (
               <Text style={[styles.notesText, { color: theme.colors.textSecondary }]}>
-                {notesText || 'No notes yet. Tap Edit to add notes about this lead.'}
+                {notesText || t('leads.no_notes')}
               </Text>
             )}
           </View>

@@ -27,7 +27,14 @@
     "yes": "Oui",
     "ok": "D'ACCORD",
     "upgrade": "Mise à niveau",
-    "save_continue": "Save & Continue"
+    "save_continue": "Save & Continue",
+    "time_ago_m": "{{count}}m ago",
+    "time_ago_h": "{{count}}h ago",
+    "time_ago_d": "{{count}}d ago",
+    "time_ago_w": "{{count}}w ago",
+    "time_ago_mo": "{{count}}mo ago",
+    "yesterday": "Yesterday",
+    "unknown": "Unknown"
   },
   "auth": {
     "welcome": "Bienvenue à Truxel",
@@ -85,7 +92,14 @@
     "logout_confirm": "Êtes-vous sûr de vouloir vous déconnecter ?",
     "privacy_policy": "Politique de Confidentialité",
     "terms_of_service": "Conditions d'Utilisation",
-    "eula": "EULA"
+    "eula": "EULA",
+    "login_required": "Login Required",
+    "login_required_message": "You must be logged in to post",
+    "help_us_help_you": "HELP US SO WE CAN HELP YOU!",
+    "select_truck_type": "Please select a truck type",
+    "select_industry": "Please select at least one industry",
+    "phone_explanation": "Pour être contacté par les expéditeurs et compléter automatiquement les e-mails aux prospects.",
+    "truck_explanation": "For autopost availability with 2 taps when you driving."
   },
   "directions": {
     "north": "Nord",
@@ -159,7 +173,8 @@
     "start_quick_search": "🚀 Recherche rapide",
     "quick_search_started": "Recherche rapide lancée avec vos domaines enregistrés !",
     "no_saved_domains": "Aucun domaine enregistré",
-    "please_set_domains_in_profile": "Veuillez définir vos secteurs d'activité préférés dans les paramètres du profil."
+    "please_set_domains_in_profile": "Veuillez définir vos secteurs d'activité préférés dans les paramètres du profil.",
+    "error_no_results": "Aucun résultat trouvé. Veuillez essayer de nouveaux mots-clés ou une zone plus large !"
   },
   "leads": {
     "title": "Mes prospects",
@@ -219,7 +234,30 @@
     "collected_contacts": "Contacts depuis le Web",
     "phone_from_web": "Téléphone (Web)",
     "email_from_web": "E-mail (Web)",
-    "followers": "Abonnés"
+    "followers": "Abonnés",
+    "verified_by_users": "Verified by {{count}} users",
+    "whatsapp_error": "WhatsApp Error",
+    "whatsapp_not_available": "WhatsApp not available",
+    "email_error": "Email Error",
+    "cannot_open_email": "Cannot open email",
+    "phone_error": "Phone Error",
+    "cannot_make_call": "Cannot make phone call",
+    "maps_error": "Could not open Maps",
+    "cannot_save_notes": "Cannot save notes",
+    "user_lead_id_not_found": "User lead ID not found",
+    "notes_saved": "Notes saved",
+    "notes_updated": "Your notes have been updated",
+    "failed_save_notes": "Failed to save notes",
+    "try_again": "Please try again",
+    "work_phone": "Work Phone",
+    "mobile_whatsapp": "Mobile / WhatsApp",
+    "email_label": "Email",
+    "edit": "Edit",
+    "add_notes_placeholder": "Add notes about this lead...",
+    "cancel": "Cancel",
+    "save": "Save",
+    "no_notes": "No notes yet. Tap Edit to add notes about this lead.",
+    "about_company": "About Company"
   },
   "subscription": {
     "title": "Abonnement",
@@ -326,8 +364,16 @@
     "photo_permission_message": "Nous avons besoin d'un accès à la photothèque pour télécharger votre photo de profil",
     "avatar_updated": "Photo de profil mise à jour avec succès",
     "avatar_upload_failed": "Échec du téléchargement de la photo de profil",
-    "notification_radius": "Notification Radius",
-    "notification_radius_desc": "Set the radius for receiving notifications about new loads or drivers."
+    "notification_radius": "Rayon de notification",
+    "notification_radius_desc": "Définissez le rayon pour recevoir des notifications sur les nouveaux chargements ou chauffeurs.",
+    "phone_explanation": "Pour être contacté par les expéditeurs et compléter automatiquement les e-mails aux prospects.",
+    "appearance": "Apparence",
+    "theme_light": "Clair",
+    "theme_dark": "Sombre",
+    "theme_auto": "Automatique",
+    "danger_zone": "Zone de Danger",
+    "danger_zone_desc": "Supprimez définitivement votre compte et toutes les données associées. Cette action est irréversible.",
+    "delete_account_button": "Supprimer mon compte"
   },
   "templates": {
     "email_subject": "Opportunité de partenariat logistique - {{company}}",
@@ -392,13 +438,19 @@
     "offer_removed": "Offre supprimée",
     "showing_standard": "Affichage des prix standard",
     "intro_offer": "pour {{cycles}} {{period}}s",
-    "footer_note": "Tous les forfaits incluent des informations de base sur l'entreprise, les coordonnées et l'emplacement. Annulez à tout moment."
+    "footer_note": "Tous les forfaits incluent des informations de base sur l'entreprise, les coordonnées et l'emplacement. Annulez à tout moment.",
+    "ios_subscription_conflict": "To change plans, please manage your subscription in iPhone Settings > Apple ID > Subscriptions.",
+    "android_subscription_conflict": "To change plans, please manage your subscription in Google Play Store > Subscriptions.",
+    "usage_warning": "You've used {{percent}}% of your monthly searches.",
+    "usage_remaining": "{{count}} searches left this month.",
+    "plan_suffix": "Plan"
   },
   "errors": {
     "network_error": "Erreur réseau. Veuillez vérifier votre connexion.",
     "something_went_wrong": "Quelque chose s'est mal passé. Veuillez réessayer.",
     "session_expired": "Session expirée. Veuillez vous reconnecter.",
-    "insufficient_permissions": "Autorisations insuffisantes"
+    "insufficient_permissions": "Autorisations insuffisantes",
+    "location_timeout": "Location timeout. Please ensure GPS is enabled and try again."
   },
   "community": {
     "title": "Communauté",
@@ -582,7 +634,23 @@
     "post_types": {
       "DRIVER_AVAILABLE": "Pilote disponible",
       "LOAD_AVAILABLE": "Charge disponible"
-    }
+    },
+    "post_options": "Post Options",
+    "report_post": "Report Post",
+    "block_user": "Block User",
+    "report_submitted_title": "Report Submitted",
+    "report_submitted_message": "Thank you for your report. We will review this post.",
+    "report_failed": "Failed to submit report. Please try again.",
+    "report_post_title": "Report Post",
+    "report_post_message": "Why are you reporting this post?",
+    "report_spam": "Spam",
+    "report_inappropriate": "Inappropriate Content",
+    "report_scam": "Scam / Fraud",
+    "block_user_title": "Block User",
+    "block_user_message": "Are you sure you want to block {{name}}? You will no longer see their posts.",
+    "block_confirm": "Block",
+    "user_blocked_success": "User blocked successfully",
+    "block_failed": "Failed to block user"
   },
   "support": {
     "title": "Contacter le support",
@@ -617,7 +685,8 @@
       "about": "À propos",
       "contact": "Contact",
       "login": "Connexion",
-      "signup": "S'inscrire"
+      "signup": "S'inscrire",
+      "articles": "Articles"
     },
     "verify_email": {
       "title_loading": "Vérification...",
@@ -1089,6 +1158,17 @@
           "feature_sharing": "Partagez vos fiches contact partout"
         }
       }
+    },
+    "survey": {
+      "widget_title": "Tell us what you want",
+      "widget_subtitle": "{{count}} questions • Help us improve Truxel",
+      "modal_title": "Market Research",
+      "intro_text": "Your feedback helps us build a better tool for you. Please answer the following questions:",
+      "submit_btn": "Send Feedback",
+      "sending_btn": "Sending...",
+      "additional_comments": "Additional Comments (Optional)",
+      "additional_comments_placeholder": "Tell us what you think...",
+      "additional_comments_helper": "Any other feedback, feature requests, or thoughts?"
     }
   }
 }

@@ -27,7 +27,14 @@
     "yes": "Taip",
     "ok": "Gerai",
     "upgrade": "Atnaujinti",
-    "save_continue": "Save & Continue"
+    "save_continue": "Save & Continue",
+    "time_ago_m": "{{count}}m ago",
+    "time_ago_h": "{{count}}h ago",
+    "time_ago_d": "{{count}}d ago",
+    "time_ago_w": "{{count}}w ago",
+    "time_ago_mo": "{{count}}mo ago",
+    "yesterday": "Yesterday",
+    "unknown": "Unknown"
   },
   "auth": {
     "welcome": "Sveiki atvykę į Truxel",
@@ -85,7 +92,14 @@
     "logout_confirm": "Ar tikrai norite atsijungti?",
     "privacy_policy": "Privatumo Politika",
     "terms_of_service": "Paslaugų Sąlygos",
-    "eula": "EULA"
+    "eula": "EULA",
+    "login_required": "Login Required",
+    "login_required_message": "You must be logged in to post",
+    "help_us_help_you": "HELP US SO WE CAN HELP YOU!",
+    "select_truck_type": "Please select a truck type",
+    "select_industry": "Please select at least one industry",
+    "phone_explanation": "Kad susisiektų siuntėjai ir automatiškai užpildytų el. laiškus potencialiems klientams.",
+    "truck_explanation": "For autopost availability with 2 taps when you driving."
   },
   "directions": {
     "north": "Šiaurė",
@@ -159,7 +173,8 @@
     "start_quick_search": "🚀 Greita paieška",
     "quick_search_started": "Sparti paieška prasidėjo jūsų išsaugotuose domenuose!",
     "no_saved_domains": "Nėra išsaugotų domenų",
-    "please_set_domains_in_profile": "Profilio nustatymuose nustatykite pageidaujamas pramonės šakas"
+    "please_set_domains_in_profile": "Profilio nustatymuose nustatykite pageidaujamas pramonės šakas",
+    "error_no_results": "Rezultatų nerasta. Bandykite naujus raktinius žodžius arba didesnę zoną!"
   },
   "leads": {
     "title": "Mano potencialūs klientai",
@@ -219,7 +234,30 @@
     "collected_contacts": "Kontaktai iš interneto",
     "phone_from_web": "Telefonas (žiniatinklis)",
     "email_from_web": "El. paštas (žiniatinklis)",
-    "followers": "Sekėjai"
+    "followers": "Sekėjai",
+    "verified_by_users": "Verified by {{count}} users",
+    "whatsapp_error": "WhatsApp Error",
+    "whatsapp_not_available": "WhatsApp not available",
+    "email_error": "Email Error",
+    "cannot_open_email": "Cannot open email",
+    "phone_error": "Phone Error",
+    "cannot_make_call": "Cannot make phone call",
+    "maps_error": "Could not open Maps",
+    "cannot_save_notes": "Cannot save notes",
+    "user_lead_id_not_found": "User lead ID not found",
+    "notes_saved": "Notes saved",
+    "notes_updated": "Your notes have been updated",
+    "failed_save_notes": "Failed to save notes",
+    "try_again": "Please try again",
+    "work_phone": "Work Phone",
+    "mobile_whatsapp": "Mobile / WhatsApp",
+    "email_label": "Email",
+    "edit": "Edit",
+    "add_notes_placeholder": "Add notes about this lead...",
+    "cancel": "Cancel",
+    "save": "Save",
+    "no_notes": "No notes yet. Tap Edit to add notes about this lead.",
+    "about_company": "About Company"
   },
   "subscription": {
     "title": "Prenumerata",
@@ -326,8 +364,16 @@
     "photo_permission_message": "Mums reikia prieigos prie nuotraukų galerijos, kad įkeltume jūsų profilio nuotrauką",
     "avatar_updated": "Profilio nuotrauka sėkmingai atnaujinta",
     "avatar_upload_failed": "Nepavyko įkelti profilio nuotraukos",
-    "notification_radius": "Notification Radius",
-    "notification_radius_desc": "Set the radius for receiving notifications about new loads or drivers."
+    "notification_radius": "Pranešimų spindulys",
+    "notification_radius_desc": "Nustatykite spindulį, kad gautumėte pranešimus apie naujus krovinius ar vairuotojus.",
+    "phone_explanation": "Kad susisiektų siuntėjai ir automatiškai užpildytų el. laiškus potencialiems klientams.",
+    "appearance": "Išvaizda",
+    "theme_light": "Šviesus",
+    "theme_dark": "Tamsus",
+    "theme_auto": "Automatinis",
+    "danger_zone": "Pavojinga zona",
+    "danger_zone_desc": "Visam laikui ištrinkite savo paskyrą ir visus susijusius duomenis. Šio veiksmo negalima atšaukti.",
+    "delete_account_button": "Ištrinti mano paskyrą"
   },
   "templates": {
     "email_subject": "Logistikos partnerystės galimybė - {{company}}",
@@ -392,13 +438,19 @@
     "offer_removed": "Pasiūlymas pašalintas",
     "showing_standard": "Rodoma standartinė kainodara",
     "intro_offer": "{{cycles}} {{period}} laikotarpiui",
-    "footer_note": "Visi planai apima pagrindinę informaciją apie įmones, kontaktus ir vietas. Prenumeratą galima atšaukti bet kada."
+    "footer_note": "Visi planai apima pagrindinę informaciją apie įmones, kontaktus ir vietas. Prenumeratą galima atšaukti bet kada.",
+    "ios_subscription_conflict": "To change plans, please manage your subscription in iPhone Settings > Apple ID > Subscriptions.",
+    "android_subscription_conflict": "To change plans, please manage your subscription in Google Play Store > Subscriptions.",
+    "usage_warning": "You've used {{percent}}% of your monthly searches.",
+    "usage_remaining": "{{count}} searches left this month.",
+    "plan_suffix": "Plan"
   },
   "errors": {
     "network_error": "Tinklo klaida. Patikrinkite savo ryšį.",
     "something_went_wrong": "Kažkas nutiko. Bandykite dar kartą.",
     "session_expired": "Sesija baigėsi. Prisijunkite iš naujo.",
-    "insufficient_permissions": "Nepakanka leidimų"
+    "insufficient_permissions": "Nepakanka leidimų",
+    "location_timeout": "Location timeout. Please ensure GPS is enabled and try again."
   },
   "community": {
     "title": "bendruomenė",
@@ -582,7 +634,23 @@
     "post_types": {
       "DRIVER_AVAILABLE": "Yra vairuotojas",
       "LOAD_AVAILABLE": "Galimas krovinys"
-    }
+    },
+    "post_options": "Post Options",
+    "report_post": "Report Post",
+    "block_user": "Block User",
+    "report_submitted_title": "Report Submitted",
+    "report_submitted_message": "Thank you for your report. We will review this post.",
+    "report_failed": "Failed to submit report. Please try again.",
+    "report_post_title": "Report Post",
+    "report_post_message": "Why are you reporting this post?",
+    "report_spam": "Spam",
+    "report_inappropriate": "Inappropriate Content",
+    "report_scam": "Scam / Fraud",
+    "block_user_title": "Block User",
+    "block_user_message": "Are you sure you want to block {{name}}? You will no longer see their posts.",
+    "block_confirm": "Block",
+    "user_blocked_success": "User blocked successfully",
+    "block_failed": "Failed to block user"
   },
   "support": {
     "title": "Susisiekite su palaikymu",
@@ -617,7 +685,8 @@
       "about": "Apie mus",
       "contact": "Kontaktai",
       "login": "Prisijungti",
-      "signup": "Registruotis"
+      "signup": "Registruotis",
+      "articles": "Articles"
     },
     "verify_email": {
       "title_loading": "Vykdoma patikra...",
@@ -1089,6 +1158,17 @@
           "feature_sharing": "Dalinkis kontaktu kortelemis bet kur"
         }
       }
+    },
+    "survey": {
+      "widget_title": "Tell us what you want",
+      "widget_subtitle": "{{count}} questions • Help us improve Truxel",
+      "modal_title": "Market Research",
+      "intro_text": "Your feedback helps us build a better tool for you. Please answer the following questions:",
+      "submit_btn": "Send Feedback",
+      "sending_btn": "Sending...",
+      "additional_comments": "Additional Comments (Optional)",
+      "additional_comments_placeholder": "Tell us what you think...",
+      "additional_comments_helper": "Any other feedback, feature requests, or thoughts?"
     }
   }
 }

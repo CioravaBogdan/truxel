@@ -586,7 +586,7 @@ export default function ProfileScreen() {
               <Text style={styles.label}>{t('profile.phone_number')}</Text>
               <View style={styles.explanationContainer}>
                 <Text style={styles.explanation}>
-                  To be contacted by shippers and autocomplete emails to leads.
+                  {t('profile.phone_explanation')}
                 </Text>
               </View>
               <View style={styles.phoneRow}>
@@ -625,7 +625,7 @@ export default function ProfileScreen() {
             </View>
             <View style={styles.explanationContainer}>
                 <Text style={styles.explanation}>
-                  To match you with relevant loads.
+                  {t('profile.truck_type_desc')}
                 </Text>
             </View>
 
@@ -663,7 +663,7 @@ export default function ProfileScreen() {
             </View>
             <View style={styles.explanationContainer}>
                 <Text style={styles.explanation}>
-                  Choose your preferred unit of measurement.
+                  {t('profile.distance_unit_desc')}
                 </Text>
             </View>
 
@@ -718,7 +718,7 @@ export default function ProfileScreen() {
             </View>
             <View style={styles.explanationContainer}>
                 <Text style={styles.explanation}>
-                  How far from your location to search for leads.
+                  {t('profile.search_radius_desc')}
                 </Text>
             </View>
 
@@ -763,7 +763,7 @@ export default function ProfileScreen() {
             </View>
             <View style={styles.explanationContainer}>
                 <Text style={styles.explanation}>
-                  Receive alerts for leads within this range.
+                  {t('profile.notification_radius_desc')}
                 </Text>
             </View>
 
@@ -803,7 +803,7 @@ export default function ProfileScreen() {
             </View>
             <View style={styles.explanationContainer}>
                 <Text style={styles.explanation}>
-                  Select industries you specialize in (max 5).
+                  {t('profile.industries_desc', { count: selectedIndustries.length })}
                 </Text>
             </View>
 
@@ -892,7 +892,7 @@ export default function ProfileScreen() {
           </Card>
 
           <Card style={styles.section}>
-            <Text style={styles.sectionTitle}>Appearance</Text>
+            <Text style={styles.sectionTitle}>{t('profile.appearance')}</Text>
             <View style={styles.radiusContainer}>
               <TouchableOpacity
                 style={[
@@ -903,7 +903,7 @@ export default function ProfileScreen() {
                 onPress={() => setThemeMode('light')}
               >
                 <Sun size={20} color={themeMode === 'light' ? theme.colors.primary : theme.colors.textSecondary} />
-                <Text style={[styles.radiusText, themeMode === 'light' && { color: theme.colors.primary }]}>Light</Text>
+                <Text style={[styles.radiusText, themeMode === 'light' && { color: theme.colors.primary }]}>{t('profile.theme_light')}</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={[
@@ -914,7 +914,7 @@ export default function ProfileScreen() {
                 onPress={() => setThemeMode('dark')}
               >
                 <Moon size={20} color={themeMode === 'dark' ? theme.colors.primary : theme.colors.textSecondary} />
-                <Text style={[styles.radiusText, themeMode === 'dark' && { color: theme.colors.primary }]}>Dark</Text>
+                <Text style={[styles.radiusText, themeMode === 'dark' && { color: theme.colors.primary }]}>{t('profile.theme_dark')}</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={[
@@ -925,7 +925,7 @@ export default function ProfileScreen() {
                 onPress={() => setThemeMode('auto')}
               >
                 <Monitor size={20} color={themeMode === 'auto' ? theme.colors.primary : theme.colors.textSecondary} />
-                <Text style={[styles.radiusText, themeMode === 'auto' && { color: theme.colors.primary }]}>Auto</Text>
+                <Text style={[styles.radiusText, themeMode === 'auto' && { color: theme.colors.primary }]}>{t('profile.theme_auto')}</Text>
               </TouchableOpacity>
             </View>
           </Card>
@@ -954,9 +954,9 @@ export default function ProfileScreen() {
           {/* Danger Zone - Account Deletion */}
           <Card style={styles.dangerZone}>
             <View style={styles.dangerHeader}>
-              <Text style={styles.dangerTitle}>⚠️ Danger Zone</Text>
+              <Text style={styles.dangerTitle}>⚠️ {t('profile.danger_zone')}</Text>
               <Text style={styles.dangerDescription}>
-                Permanently delete your account and all associated data. This action cannot be undone.
+                {t('profile.danger_zone_desc')}
               </Text>
             </View>
             <TouchableOpacity
@@ -964,7 +964,7 @@ export default function ProfileScreen() {
               onPress={() => setShowDeleteModal(true)}
               disabled={isLoading}
             >
-              <Text style={styles.deleteAccountButtonText}>Delete My Account</Text>
+              <Text style={styles.deleteAccountButtonText}>{t('profile.delete_account_button')}</Text>
             </TouchableOpacity>
           </Card>
 

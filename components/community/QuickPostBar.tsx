@@ -56,8 +56,8 @@ function QuickPostBar() {
       console.log('❌ No user found');
       Toast.show({
         type: 'error',
-        text1: 'Autentificare necesară',
-        text2: 'Trebuie să fii autentificat pentru a posta',
+        text1: t('auth.login_required'),
+        text2: t('auth.login_required_message'),
       });
       return;
     }
@@ -179,7 +179,7 @@ function QuickPostBar() {
       }
 
       const majorCityName = location.nearestMajorCityName || location.nearestMajorCity?.name || location.city;
-      const baseCity = location.locality || location.city || majorCityName || 'Unknown';
+      const baseCity = location.locality || location.city || majorCityName || t('common.unknown');
 
       // Convert distance to user's preferred unit (km or mi)
       const distanceUnit = profile?.preferred_distance_unit || 'km';
@@ -293,7 +293,7 @@ function QuickPostBar() {
       }
 
       const majorCityName = location.nearestMajorCityName || location.nearestMajorCity?.name || location.city;
-      const baseCity = location.locality || location.city || majorCityName || 'Unknown';
+      const baseCity = location.locality || location.city || majorCityName || t('common.unknown');
 
       // Convert distance to user's preferred unit (km or mi)
       const distanceUnit = profile?.preferred_distance_unit || 'km';

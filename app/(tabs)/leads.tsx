@@ -36,7 +36,7 @@ import CitySearchModal from '@/components/community/CitySearchModal';
 import LeadDetailModal from '@/components/leads/LeadDetailModal';
 import { cityService } from '@/services/cityService';
 import * as Sharing from 'expo-sharing';
-import { File, Paths } from 'expo-file-system';
+import * as FileSystem from 'expo-file-system';
 import Toast from 'react-native-toast-message';
 import { 
   Mail, 
@@ -55,28 +55,31 @@ import { Lead } from '@/types/database.types';
 import type { CommunityPost, Country, City } from '@/types/community.types';
 import { useTheme } from '@/lib/theme';
 
-// Helper function to format "last contacted" time
-const formatLastContacted = (lastContactedAt: string | null): string => {
-  if (!lastContactedAt) return 'New';
-  
-  const now = new Date();
-  const contacted = new Date(lastContactedAt);
-  const diffMs = now.getTime() - contacted.getTime();
-  const diffMins = Math.floor(diffMs / 60000);
-  const diffHours = Math.floor(diffMs / 3600000);
-  const diffDays = Math.floor(diffMs / 86400000);
-  
-  if (diffMins < 60) return `${diffMins}m ago`;
-  if (diffHours < 24) return `${diffHours}h ago`;
-  if (diffDays === 1) return 'Yesterday';
-  if (diffDays < 7) return `${diffDays}d ago`;
-  if (diffDays < 30) return `${Math.floor(diffDays / 7)}w ago`;
-  return `${Math.floor(diffDays / 30)}mo ago`;
-};
+
 
 export default function LeadsScreen() {
   const { t } = useTranslation();
   const { theme } = useTheme();
+
+  // Helper function to format "last contacted" time
+  const formatLastContacted = useCallback((lastContactedAt: string | null): string => {
+    if (!lastContactedAt) return t('leads.status_new');
+    
+    const now = new Date();
+    const contacted = new Date(lastContactedAt);
+    const diffMs = now.getTime() - contacted.getTime();
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMs / 3600000);
+    const diffDays = Math.floor(diffMs / 86400000);
+    
+    if (diffMins < 60) return t('common.time_ago_m', { count: diffMins });
+    if (diffHours < 24) return t('common.time_ago_h', { count: diffHours });
+    if (diffDays === 1) return t('common.yesterday');
+    if (diffDays < 7) return t('common.time_ago_d', { count: diffDays });
+    if (diffDays < 30) return t('common.time_ago_w', { count: Math.floor(diffDays / 7) });
+    return t('common.time_ago_mo', { count: Math.floor(diffDays / 30) });
+  }, [t]);
+
   const { user, profile } = useAuthStore();
   // ⚠️ DO NOT destructure Zustand functions (loadSavedPosts, loadConvertedLeads, convertToMyBook)
   // They become stale references after set() calls, causing infinite loops in useEffect
@@ -441,6 +444,21 @@ export default function LeadsScreen() {
     // Ensure phone has country code
     const phoneWithCode = phone.startsWith('+') ? phone : `+${phone}`;
 
+    if (Platform.OS === 'web') {
+      const url = `https://wa.me/${phone.replace(/\+/g, '')}?text=${encodeURIComponent(message)}`;
+      window.open(url, '_blank');
+      
+      if (user && (lead as any).user_lead_id) {
+        try {
+          await leadsService.updateLastContacted((lead as any).user_lead_id, user.id);
+          await loadLeads();
+        } catch (error) {
+          console.error('Error updating last contacted:', error);
+        }
+      }
+      return;
+    }
+
     // Use safe wrapper to prevent iOS crashes
     const result = await safeOpenWhatsApp(
       phoneWithCode,
@@ -508,24 +526,32 @@ export default function LeadsScreen() {
 
       const vCard = vCardLines.join('\n');
 
-      // Save vCard to file using expo-file-system SDK 54 API
-      const fileName = `${lead.company_name.replace(/[^a-z0-9]/gi, '_')}_Contact.vcf`;
-      const file = new File(Paths.cache, fileName);
-      
-      // Delete existing file if it exists (for re-sharing same contact)
-      try {
-        if (file.exists) {
-          await file.delete();
-        }
-      } catch {
-        // File doesn't exist, that's fine
+      if (Platform.OS === 'web') {
+        const blob = new Blob([vCard], { type: 'text/vcard' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `${lead.company_name.replace(/[^a-z0-9]/gi, '_')}_Contact.vcf`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+        
+        Toast.show({
+          type: 'success',
+          text1: t('leads.contact_shared'),
+        });
+        return;
       }
+
+      // Save vCard to file using expo-file-system
+      const fileName = `${lead.company_name.replace(/[^a-z0-9]/gi, '_')}_Contact.vcf`;
+      const fileUri = (FileSystem.cacheDirectory || '') + fileName;
       
-      await file.create();
-      await file.write(vCard);
+      await FileSystem.writeAsStringAsync(fileUri, vCard);
 
       // Share the vCard file
-      await Sharing.shareAsync(file.uri, {
+      await Sharing.shareAsync(fileUri, {
         mimeType: 'text/vcard',
         dialogTitle: t('leads.share_contact'),
         UTI: 'public.vcard',
@@ -549,12 +575,30 @@ export default function LeadsScreen() {
     try {
       const csv = await leadsService.exportLeadsToCSV(leads);
       const fileName = `Truxel_Leads_${new Date().toISOString().split('T')[0]}.csv`;
-      const file = new File(Paths.document, fileName);
 
-      await file.create();
-      await file.write(csv);
+      if (Platform.OS === 'web') {
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+        
+        Toast.show({
+          type: 'success',
+          text1: t('common.success'),
+          text2: t('leads.export_csv'),
+        });
+        return;
+      }
 
-      await Sharing.shareAsync(file.uri, {
+      const fileUri = (FileSystem.documentDirectory || FileSystem.cacheDirectory || '') + fileName;
+      await FileSystem.writeAsStringAsync(fileUri, csv);
+
+      await Sharing.shareAsync(fileUri, {
         mimeType: 'text/csv',
         dialogTitle: t('leads.export_csv'),
       });
@@ -692,7 +736,8 @@ export default function LeadsScreen() {
     };
     
     // Get image URL (google_url_photo or default)
-    const imageUrl = (lead as any).google_url_photo || 'https://via.placeholder.com/80x80.png?text=Company';
+    // Use a generic industrial zone image if no specific photo is available
+    const imageUrl = (lead as any).google_url_photo || 'https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&w=100&q=80';
     
     // Format last contacted time
     const lastContactedText = formatLastContacted((lead as any).last_contacted_at || null);
@@ -706,7 +751,6 @@ export default function LeadsScreen() {
             <Image 
               source={{ uri: imageUrl }} 
               style={[styles.leadImage, { backgroundColor: theme.colors.background }]}
-              defaultSource={require('@/assets/images/icon.png')}
             />
             
             {/* Company Info */}
@@ -1191,6 +1235,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   webContainer: {
+    flex: 1,
     width: '100%',
     maxWidth: 1200,
     alignSelf: 'center',

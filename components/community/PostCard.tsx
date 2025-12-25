@@ -9,6 +9,7 @@ import {
   Image,
   Modal,
   TouchableWithoutFeedback,
+  Platform,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import * as WebBrowser from 'expo-web-browser';
@@ -511,6 +512,29 @@ export default function PostCard({ post, onPress, onUnsave, onAddToMyBook }: Pos
 
   const handleDelete = async () => {
     if (!user) return;
+
+    if (Platform.OS === 'web') {
+      // Web-specific confirmation using browser native dialog
+      // Alert.alert on web is sometimes flaky with callbacks
+      const confirmed = window.confirm(`${t('community.delete_post_title')}\n\n${t('community.delete_post_message')}`);
+      
+      if (confirmed) {
+        try {
+          await useCommunityStore.getState().deletePost(post.id, user.id);
+          Toast.show({
+            type: 'success',
+            text1: t('community.post_deleted_success'),
+          });
+        } catch (error: any) {
+          Toast.show({
+            type: 'error',
+            text1: t('community.delete_error'),
+            text2: error.message,
+          });
+        }
+      }
+      return;
+    }
 
     Alert.alert(
       t('community.delete_post_title'),

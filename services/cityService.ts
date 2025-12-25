@@ -391,8 +391,58 @@ class CityService {
 
   /**
    * Find nearest major city with distance and direction
+   * Uses spatial query to find cities within ~50km range
    */
   async findNearestMajorCityWithDetails(latitude: number, longitude: number): Promise<{
+    city: City;
+    distance: number;
+    direction: string;
+  } | null> {
+    try {
+      // Search for cities within ~0.5 degrees (approx 55km)
+      // Filter for population > 15000 to ensure we get significant towns
+      const { data, error } = await supabase
+        .from('cities')
+        .select('*')
+        .gt('population', 15000)
+        .gte('lat', latitude - 0.5)
+        .lte('lat', latitude + 0.5)
+        .gte('lng', longitude - 0.5)
+        .lte('lng', longitude + 0.5)
+        .limit(20);
+
+      if (error) {
+        console.error('Error finding nearest major city:', error);
+        // Fallback to cached major cities if DB query fails
+        return this.findNearestMajorCityFromCache(latitude, longitude);
+      }
+
+      if (!data || data.length === 0) {
+        // If no cities found nearby, fallback to global cache
+        return this.findNearestMajorCityFromCache(latitude, longitude);
+      }
+
+      // Calculate distance to found cities
+      const citiesWithDistance = data.map(city => ({
+        city,
+        distance: this.calculateDistance(latitude, longitude, city.lat, city.lng),
+        direction: this.calculateDirection(latitude, longitude, city.lat, city.lng)
+      }));
+
+      // Sort by distance
+      citiesWithDistance.sort((a, b) => a.distance - b.distance);
+
+      return citiesWithDistance[0];
+    } catch (error) {
+      console.error('Exception finding nearest major city:', error);
+      return this.findNearestMajorCityFromCache(latitude, longitude);
+    }
+  }
+
+  /**
+   * Fallback: Find nearest major city from cached list (top 200 global)
+   */
+  private async findNearestMajorCityFromCache(latitude: number, longitude: number): Promise<{
     city: City;
     distance: number;
     direction: string;
@@ -404,19 +454,17 @@ class CityService {
         return null;
       }
 
-      // Calculate distance to all cities
       const citiesWithDistance = majorCities.map(city => ({
         city,
         distance: this.calculateDistance(latitude, longitude, city.lat, city.lng),
         direction: this.calculateDirection(latitude, longitude, city.lat, city.lng)
       }));
 
-      // Sort by distance
       citiesWithDistance.sort((a, b) => a.distance - b.distance);
 
       return citiesWithDistance[0];
     } catch (error) {
-      console.error('Error finding nearest major city:', error);
+      console.error('Error in cache fallback:', error);
       return null;
     }
   }

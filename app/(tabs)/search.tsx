@@ -234,7 +234,7 @@ export default function SearchScreen() {
         Toast.show({
           type: 'error',
           text1: t('common.error'),
-          text2: 'Location timeout. Please ensure GPS is enabled and try again.',
+          text2: t('errors.location_timeout'),
         });
       } else {
         Toast.show({
@@ -511,7 +511,11 @@ export default function SearchScreen() {
             {activeSearch.status === 'failed' && activeSearch.error_message && (
               <View style={[styles.errorInfo, { backgroundColor: theme.colors.error + '20' }]}>
                 <AlertCircle size={16} color={theme.colors.error} />
-                <Text style={[styles.errorText, { color: theme.colors.error }]}>{activeSearch.error_message}</Text>
+                <Text style={[styles.errorText, { color: theme.colors.error }]}>
+                  {activeSearch.error_message.includes('No results found') 
+                    ? t('search.error_no_results') 
+                    : activeSearch.error_message}
+                </Text>
               </View>
             )}
           </Card>

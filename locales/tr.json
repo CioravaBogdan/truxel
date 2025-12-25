@@ -4,11 +4,11 @@
     "register": "Kayıt Ol",
     "logout": "Çıkış Yap",
     "email": "E-posta",
-    "password": "Łžifre",
-    "confirm_password": "Łžifreyi Onayla",
+    "password": "Şifre",
+    "confirm_password": "Şifreyi Onayla",
     "full_name": "Ad Soyad",
     "phone_number": "Telefon Numarası",
-    "company_name": "Łžirket Adı",
+    "company_name": "Şirket Adı",
     "save": "Kaydet",
     "cancel": "İptal",
     "delete": "Sil",
@@ -27,7 +27,14 @@
     "yes": "Evet",
     "ok": "TAMAM",
     "upgrade": "Güncelleme",
-    "save_continue": "Save & Continue"
+    "save_continue": "Save & Continue",
+    "time_ago_m": "{{count}}m ago",
+    "time_ago_h": "{{count}}h ago",
+    "time_ago_d": "{{count}}d ago",
+    "time_ago_w": "{{count}}w ago",
+    "time_ago_mo": "{{count}}mo ago",
+    "yesterday": "Yesterday",
+    "unknown": "Unknown"
   },
   "auth": {
     "welcome": "Truxel'e Hoş Geldiniz",
@@ -76,16 +83,23 @@
     "redirecting": "Yönlendiriliyor...",
     "complete_in_browser": "Tarayıcınızda oturum açma işlemini tamamlayın",
     "email_required": "E-posta gerekli",
-    "password_required": "Łžifre gerekli",
+    "password_required": "Şifre gerekli",
     "invalid_email": "Geçersiz e-posta adresi",
-    "password_too_short": "Łžifre en az 6 karakter olmalı",
-    "passwords_dont_match": "Łžifreler eşleşmiyor",
+    "password_too_short": "Şifre en az 6 karakter olmalı",
+    "passwords_dont_match": "Şifreler eşleşmiyor",
     "login_success": "Giriş başarılı",
     "register_success": "Kayıt başarılı",
     "logout_confirm": "Çıkış yapmak istediğinizden emin misiniz?",
     "privacy_policy": "Gizlilik Politikası",
     "terms_of_service": "Hizmet Şartları",
-    "eula": "EULA"
+    "eula": "EULA",
+    "login_required": "Login Required",
+    "login_required_message": "You must be logged in to post",
+    "help_us_help_you": "HELP US SO WE CAN HELP YOU!",
+    "select_truck_type": "Please select a truck type",
+    "select_industry": "Please select at least one industry",
+    "phone_explanation": "Nakliyeciler tarafından iletişime geçilmek ve potansiyel müşterilere e-postaları otomatik tamamlamak için.",
+    "truck_explanation": "For autopost availability with 2 taps when you driving."
   },
   "directions": {
     "north": "Kuzey",
@@ -121,7 +135,7 @@
     "community_subtitle": "Gerçek zamanlı olarak gezileri ve sürücüleri bulun"
   },
   "search": {
-    "title": "Łžirket Bul",
+    "title": "Şirket Bul",
     "location_method": "Konum Yöntemini Seç",
     "use_current_location": "Çevremde Ara",
     "enter_address": "Adres Gir",
@@ -156,10 +170,11 @@
     "quick_search": "Hızlı Arama",
     "quick_search_description": "Araba sürerken mükemmel! Kayıtlı alan adlarınızı kullanarak, yazmanıza gerek kalmadan anında arama başlatın.",
     "your_saved_domains": "Kayıtlı alan adlarınız",
-    "start_quick_search": "ðŸš€ Hızlı Arama",
+    "start_quick_search": "🚀 Hızlı Arama",
     "quick_search_started": "Kayıtlı alan adlarınızla hızlı arama başladı!",
     "no_saved_domains": "Kaydedilmiş alan adı yok",
-    "please_set_domains_in_profile": "Lütfen tercih ettiğiniz sektörleri Profil ayarlarında belirtin"
+    "please_set_domains_in_profile": "Lütfen tercih ettiğiniz sektörleri Profil ayarlarında belirtin",
+    "error_no_results": "Sonuç bulunamadı. Lütfen yeni anahtar kelimeler veya daha büyük bir bölge deneyin!"
   },
   "leads": {
     "title": "Potansiyel Müşterilerim",
@@ -219,7 +234,30 @@
     "collected_contacts": "Web'den Kişiler",
     "phone_from_web": "Telefon (Web)",
     "email_from_web": "E-posta (Web)",
-    "followers": "Takipçiler"
+    "followers": "Takipçiler",
+    "verified_by_users": "Verified by {{count}} users",
+    "whatsapp_error": "WhatsApp Error",
+    "whatsapp_not_available": "WhatsApp not available",
+    "email_error": "Email Error",
+    "cannot_open_email": "Cannot open email",
+    "phone_error": "Phone Error",
+    "cannot_make_call": "Cannot make phone call",
+    "maps_error": "Could not open Maps",
+    "cannot_save_notes": "Cannot save notes",
+    "user_lead_id_not_found": "User lead ID not found",
+    "notes_saved": "Notes saved",
+    "notes_updated": "Your notes have been updated",
+    "failed_save_notes": "Failed to save notes",
+    "try_again": "Please try again",
+    "work_phone": "Work Phone",
+    "mobile_whatsapp": "Mobile / WhatsApp",
+    "email_label": "Email",
+    "edit": "Edit",
+    "add_notes_placeholder": "Add notes about this lead...",
+    "cancel": "Cancel",
+    "save": "Save",
+    "no_notes": "No notes yet. Tap Edit to add notes about this lead.",
+    "about_company": "About Company"
   },
   "subscription": {
     "title": "Abonelik",
@@ -253,7 +291,7 @@
     "purchase_failed": "Satın alma başarısız oldu. Lütfen tekrar deneyin.",
     "manage_subscription": "Aboneliği Yönet",
     "cancel_subscription": "Aboneliği İptal Et",
-    "upgrade_now": "Łžimdi Yükselt",
+    "upgrade_now": "Şimdi Yükselt",
     "manage": "Planı Yönet",
     "buy_more_searches": "Daha Fazla Arama Satın Alın",
     "credits_breakdown": "Kredi Dağılımı",
@@ -292,7 +330,7 @@
     "full_name": "Ad Soyad",
     "enter_name": "Tam adınızı girin",
     "company_name": "Firma Adı",
-    "enter_company": "Łžirketinizin adını girin",
+    "enter_company": "Şirketinizin adını girin",
     "email": "E-posta",
     "truck_type": "Kamyon Tipi",
     "truck_type_desc": "Sürdüğünüz kamyonun türünü seçin",
@@ -317,7 +355,7 @@
     "language": "Dil",
     "notifications": "Bildirimler",
     "enable_notifications": "Arama bildirimlerini etkinleştir",
-    "terms": "Hizmet Łžartları",
+    "terms": "Hizmet Şartları",
     "privacy": "Gizlilik Politikası",
     "support": "Destek İletişim",
     "version": "Sürüm",
@@ -327,11 +365,19 @@
     "avatar_updated": "Profil fotoğrafı başarıyla güncellendi",
     "avatar_upload_failed": "Profil fotoğrafı yüklenemedi",
     "notification_radius": "Bildirim Yarıçapı",
-    "notification_radius_desc": "Bu mesafe içinde yeni yükler göründüğünde bildirim alın"
+    "notification_radius_desc": "Bu mesafe içinde yeni yükler göründüğünde bildirim alın",
+    "phone_explanation": "Nakliyeciler tarafından iletişime geçilmek ve potansiyel müşterilere e-postaları otomatik tamamlamak için.",
+    "appearance": "Görünüm",
+    "theme_light": "Açık",
+    "theme_dark": "Koyu",
+    "theme_auto": "Otomatik",
+    "danger_zone": "Tehlike Bölgesi",
+    "danger_zone_desc": "Hesabınızı ve ilişkili tüm verileri kalıcı olarak silin. Bu işlem geri alınamaz.",
+    "delete_account_button": "Hesabımı Sil"
   },
   "templates": {
     "email_subject": "Lojistik Ortaklık Fırsatı - {{company}}",
-    "email_body": "Merhaba {{contactName}},\n\nBen {{userName}}, {{userCompany}} şirketindenim. Łžu anda {{location}} bölgesinde bulunan bir kamyon şoförüyüm ve yük fırsatları arıyorum.\n\nLojistik çözümlerde birlikte çalışabileceğimize inanıyorum. Lütfen benimle iletişime geçin:\n\nTelefon: {{userPhone}}\nE-posta: {{userEmail}}\n\nSaygılarımla,\n{{userName}}",
+    "email_body": "Merhaba {{contactName}},\n\nBen {{userName}}, {{userCompany}} şirketindenim. Şu anda {{location}} bölgesinde bulunan bir kamyon şoförüyüm ve yük fırsatları arıyorum.\n\nLojistik çözümlerde birlikte çalışabileceğimize inanıyorum. Lütfen benimle iletişime geçin:\n\nTelefon: {{userPhone}}\nE-posta: {{userEmail}}\n\nSaygılarımla,\n{{userName}}",
     "whatsapp_message": "Merhaba {{contactName}}, ben {{userName}}, {{userCompany}} şirketindenim. {{location}} bölgesinde yük arayan bir kamyon şoförüyüm. Lojistik fırsatlar hakkında konuşabilir miyiz? İletişim: {{userPhone}}"
   },
   "notifications": {
@@ -379,12 +425,12 @@
     "promo_code_placeholder": "Kodu girin (örn. TRUXEL20)",
     "promo_save_badge": "{{percent}}% TASARRUF",
     "promo_influencer_deal": "{{name}} TEKLİFİ",
-    "promo_success_title": "Boom! {{name}} size bir teklif buldu! ðŸš›ðŸ’¸",
+    "promo_success_title": "Boom! {{name}} size bir teklif buldu! 🚛💸",
     "promo_success_message": "{{description}} keyfini çıkarın! Para kazanın!",
     "first_month_discount_influencer": "{{name}} sayesinde ilk ay indirimli",
     "special_discount": "özel indirim",
     "apply": "Uygula",
-    "code_applied": "Kod uygulandı! ðŸŽ‰",
+    "code_applied": "Kod uygulandı! 🎉",
     "special_offer_unlocked": "Özel teklif açıldı: {{description}}",
     "invalid_code": "Geçersiz veya süresi dolmuş kod",
     "failed_redeem": "Kod kullanılamadı",
@@ -392,13 +438,19 @@
     "offer_removed": "Teklif kaldırıldı",
     "showing_standard": "Standart fiyatlandırma gösteriliyor",
     "intro_offer": "{{cycles}} {{period}} için",
-    "footer_note": "Tüm planlar temel firma bilgileri, iletişimler ve konum içerir. İstediğin zaman iptal edebilirsin."
+    "footer_note": "Tüm planlar temel firma bilgileri, iletişimler ve konum içerir. İstediğin zaman iptal edebilirsin.",
+    "ios_subscription_conflict": "To change plans, please manage your subscription in iPhone Settings > Apple ID > Subscriptions.",
+    "android_subscription_conflict": "To change plans, please manage your subscription in Google Play Store > Subscriptions.",
+    "usage_warning": "You've used {{percent}}% of your monthly searches.",
+    "usage_remaining": "{{count}} searches left this month.",
+    "plan_suffix": "Plan"
   },
   "errors": {
     "network_error": "Ağ hatası. Lütfen bağlantınızı kontrol edin.",
     "something_went_wrong": "Bir şeyler yanlış gitti. Lütfen tekrar deneyin.",
     "session_expired": "Oturum süresi doldu. Lütfen tekrar giriş yapın.",
-    "insufficient_permissions": "Yetersiz izinler"
+    "insufficient_permissions": "Yetersiz izinler",
+    "location_timeout": "Location timeout. Please ensure GPS is enabled and try again."
   },
   "community": {
     "title": "Toplum",
@@ -408,12 +460,12 @@
     "tab_title_drivers": "Sürücüler",
     "tab_title_loads": "Yükler",
     "country": "Ülke",
-    "city": "Łžehir",
+    "city": "Şehir",
     "select_country": "Ülke Seç",
-    "select_city": "Łžehir Seç",
-    "select_origin_city": "ðŸš€ BAŁžLANGIÇ ŁžEHRİNİ SEÇİN",
-    "select_origin_hint": "BAŁžLAMA / YÜKLEME noktasını seçin",
-    "select_country_before_city": "Łžehir seçmeden önce lütfen önce ülkeyi seçin",
+    "select_city": "Şehir Seç",
+    "select_origin_city": "🚀 BAŞLANGIÇ ŞEHRİNİ SEÇİN",
+    "select_origin_hint": "BAŞLAMA / YÜKLEME noktasını seçin",
+    "select_country_before_city": "Şehir seçmeden önce lütfen önce ülkeyi seçin",
     "search_country": "Ülke ara...",
     "clear_filter": "Filtreyi Temizle",
     "no_countries_found": "Ülke bulunamadı",
@@ -426,20 +478,20 @@
     "available": "Mevcut",
     "i_have": "bende var",
     "load": "Yük",
-    "select_template": "Łžablon Seçin",
-    "search_city": "Łžehir ara...",
-    "select_destination_hint": "ðŸŽ¯ TESLİM / BOŁžALTMA noktasını seçin",
+    "select_template": "Şablon Seçin",
+    "search_city": "Şehir ara...",
+    "select_destination_hint": "🎯 TESLİM / BOŞALTMA noktasını seçin",
     "desired_direction": "İstenilen yön:",
     "recent_cities": "Son Aramalar",
-    "popular_cities": "Popüler Łžehirler",
+    "popular_cities": "Popüler Şehirler",
     "popular": "Popüler",
     "route_available": "Rota mevcut",
-    "no_results": "Łžehir bulunamadı",
+    "no_results": "Şehir bulunamadı",
     "try_different_name": "Farklı bir isim deneyin veya yazımı kontrol edin",
     "searching": "Aranıyor...",
     "location_required": "Konum Gerekli",
     "location_required_message": "Konumunuzu alamadık. Lütfen konum erişimini etkinleştirin veya manuel olarak bir şehir seçin.",
-    "select_city_manually": "Łžehir Seçiniz",
+    "select_city_manually": "Şehir Seçiniz",
     "post_created": "Gönderi Oluşturuldu!",
     "post_created_success": "Başarıyla gönderildi! âœ…",
     "post_visible_in_feed": "Gönderiniz artık akışta görünüyor",
@@ -449,7 +501,7 @@
     "delete_post_message": "Bu gönderiyi silmek istediğinizden emin misiniz? Bu eylem geri alınamaz.",
     "delete_error": "Hatayı Sil",
     "post_limit_reached": "Sınıra Ulaşıldı",
-    "post_limit_message": "Łžimdi yayınlayamazsınız. Gönderim sınırınızı kontrol edin.",
+    "post_limit_message": "Şimdi yayınlayamazsınız. Gönderim sınırınızı kontrol edin.",
     "post_limit_check_error": "Gönderim sınırları doğrulanamadı",
     "post_error": "Gönderim Hatası",
     "post_error_message": "Gönderi oluşturulamadı",
@@ -458,7 +510,7 @@
     "upgrade_for_more": "Daha fazlası için yükseltme",
     "getting_location": "Konum alınıyor...",
     "posting": "Yayınlanıyor...",
-    "load_timing_warning_title": "ðŸ“¦ Aktif Yüklerle Daha İyi Sonuçlar",
+    "load_timing_warning_title": "📦 Aktif Yüklerle Daha İyi Sonuçlar",
     "load_timing_warning_message": "En iyi sonuçlar için BUGÜN veya YARIN müsait olan yükleri göndermenizi öneririz.\n\nAktif gönderiler yoldaki sürücülerden daha fazla yanıt alır.\n\nGönderiye devam edilsin mi?",
     "continue_posting": "Evet, Devam Et",
     "error_title": "Hata",
@@ -496,7 +548,7 @@
       "feature_posts": "Günde 5, ayda 30 gönderiye kadar",
       "feature_support": "Öncelikli destek ve kaydedilmiş filtreler",
       "secondary_cta": "Daha fazlasına mı ihtiyacınız var? Üst planlar AI eşleştirme, analiz ve LinkedIn dışa aktarmayı içerir.",
-      "upgrade_now": "Łžimdi yükselt",
+      "upgrade_now": "Şimdi yükselt",
       "view_plans": "Tüm planları gör",
       "not_now": "Belki sonra",
       "auth_error": "Planı yükseltmek için giriş yapmalısınız.",
@@ -509,11 +561,11 @@
     "authentication_required": "Kimlik Doğrulaması Gerekli",
     "must_be_logged_in": "Gönderileri kaydetmek için giriş yapmalısınız.",
     "driver_available_in": "Sürücü {{city}}'da mevcut",
-    "load_from_to": "{{from}} â†’ {{to}} yükle",
+    "load_from_to": "{{from}} → {{to}} yükle",
     "destination": "varış noktası",
     "post_available": "Gönderi mevcut",
     "a_driver": "Bir sürücü",
-    "now": "Łžimdi",
+    "now": "Şimdi",
     "today": "Bugün",
     "tomorrow": "Yarın",
     "email_not_available": "E-posta adresi mevcut değil.",
@@ -553,7 +605,7 @@
       },
       "load": {
         "loaded": "Kargo BUGÜN hazır",
-        "empty": "ŁžİRKETTEN TESLİM ALINMASI GEREKİYOR...",
+        "empty": "ŞİRKETTEN TESLİM ALINMASI GEREKİYOR...",
         "return": "Özel rota"
       }
     },
@@ -563,10 +615,10 @@
       "south": "Mevcut konumdan güneye doğru ilerliyoruz",
       "east": "Mevcut konumdan doğuya doğru ilerliyoruz",
       "west": "Mevcut konumdan batıya doğru ilerliyoruz",
-      "custom": "Kendi rotanızı seçin: NEREDEN â†’ NEREYE şehirleri seçin",
-      "loaded": "Konumumdan â†’ Hedef seç",
-      "empty": "Teslim alma şehrini seçin â†’ Konumuma",
-      "return": "Tam kontrol: BAŁžLANGIÇ â†’ ŁžEHİR şehirlerini seçin"
+      "custom": "Kendi rotanızı seçin: NEREDEN → NEREYE şehirleri seçin",
+      "loaded": "Konumumdan → Hedef seç",
+      "empty": "Teslim alma şehrini seçin → Konumuma",
+      "return": "Tam kontrol: BAŞLANGIÇ → ŞEHİR şehirlerini seçin"
     },
     "post_descriptions": {
       "local": "{{origin}} bölgesindeki yerel yükler için kullanılabilir",
@@ -574,7 +626,7 @@
       "south": "{{origin}} tarihinden itibaren güneye giden yükler için kullanılabilir",
       "east": "{{origin}} tarihinden itibaren doğuya giden yükler için kullanılabilir",
       "west": "{{origin}} tarihinden itibaren batıya giden yükler için kullanılabilir",
-      "custom": "{{origin}} â†’ {{dest}} rotası için uygun",
+      "custom": "{{origin}} → {{dest}} rotası için uygun",
       "loaded": "Yük {{origin}} {{dest}} tarihinden itibaren mevcut, bugün yola çıkıyor",
       "empty": "Yük {{origin}} {{dest}} tarihinden itibaren mevcut, çıkış yarın",
       "return": "{{origin}} {{dest}} adresinden boş dönüş"
@@ -582,7 +634,23 @@
     "post_types": {
       "DRIVER_AVAILABLE": "Sürücü Mevcut",
       "LOAD_AVAILABLE": "Mevcut Yük"
-    }
+    },
+    "post_options": "Post Options",
+    "report_post": "Report Post",
+    "block_user": "Block User",
+    "report_submitted_title": "Report Submitted",
+    "report_submitted_message": "Thank you for your report. We will review this post.",
+    "report_failed": "Failed to submit report. Please try again.",
+    "report_post_title": "Report Post",
+    "report_post_message": "Why are you reporting this post?",
+    "report_spam": "Spam",
+    "report_inappropriate": "Inappropriate Content",
+    "report_scam": "Scam / Fraud",
+    "block_user_title": "Block User",
+    "block_user_message": "Are you sure you want to block {{name}}? You will no longer see their posts.",
+    "block_confirm": "Block",
+    "user_blocked_success": "User blocked successfully",
+    "block_failed": "Failed to block user"
   },
   "support": {
     "title": "Destek ile İletişim",
@@ -592,7 +660,7 @@
     "write_custom_message": "Özel mesaj yaz",
     "your_message": "Mesajınız",
     "message_placeholder": "Mesajınızı yazın...",
-    "back_to_templates": "Łžablonlara geri dön",
+    "back_to_templates": "Şablonlara geri dön",
     "send_message": "Mesaj Gönder",
     "message_sent": "Mesaj Gönderildi!",
     "message_sent_description": "Kısa sürede yanıt alacaksınız.",
@@ -617,7 +685,8 @@
       "about": "Hakkımızda",
       "contact": "İletişim",
       "login": "Giriş Yap",
-      "signup": "Kaydol"
+      "signup": "Kaydol",
+      "articles": "Articles"
     },
     "verify_email": {
       "title_loading": "Doğrulanıyor...",
@@ -648,7 +717,7 @@
       "learn_more": "Daha Fazla Bilgi"
     },
     "features": {
-      "title": "Büyümek İçin İhtiyacınız Olan Her Łžey",
+      "title": "Büyümek İçin İhtiyacınız Olan Her Şey",
       "subtitle": "Kamyon sürücüleri için tasarlanmış güçlü özellikler",
       "gps_title": "GPS Tabanlı Arama",
       "gps_desc": "Gerçek zamanlı konumu kullanarak yakındaki firmaları anında bulun",
@@ -658,7 +727,7 @@
       "community_desc": "Müsaitliğinizi paylaşın ve diğer sürücülerden yük bulun",
       "leads_title": "Firma Potansiyelleri",
       "leads_desc": "Nakliye firmaları ve lojistik ortakları keşfedin",
-      "templates_title": "Hızlı Łžablonlar",
+      "templates_title": "Hızlı Şablonlar",
       "templates_desc": "Firmalarla daha hızlı iletişim kurmak için hazır mesajları kullanın",
       "linkedin_title": "LinkedIn Entegrasyonu",
       "linkedin_desc": "Karar vericileri ve iletişim bilgilerini anında bulun",
@@ -741,10 +810,10 @@
     "footer": {
       "tagline": "Lojistik ağlarının geleceği",
       "product": "Ürün",
-      "company": "Łžirket",
+      "company": "Şirket",
       "legal": "Yasal",
       "privacy": "Gizlilik Politikası",
-      "terms": "Hizmet Łžartları",
+      "terms": "Hizmet Şartları",
       "refund": "İade Politikası",
       "cookies": "Çerez Politikası",
       "rights": "Tüm hakları saklıdır."
@@ -825,7 +894,7 @@
           "label": "Support"
         },
         "rating": {
-          "value": "5â˜…",
+          "value": "5★",
           "label": "Rating"
         }
       }
@@ -1089,6 +1158,17 @@
           "feature_sharing": "Iletisim kartlarini her yerde paylas"
         }
       }
+    },
+    "survey": {
+      "widget_title": "Tell us what you want",
+      "widget_subtitle": "{{count}} questions • Help us improve Truxel",
+      "modal_title": "Market Research",
+      "intro_text": "Your feedback helps us build a better tool for you. Please answer the following questions:",
+      "submit_btn": "Send Feedback",
+      "sending_btn": "Sending...",
+      "additional_comments": "Additional Comments (Optional)",
+      "additional_comments_placeholder": "Tell us what you think...",
+      "additional_comments_helper": "Any other feedback, feature requests, or thoughts?"
     }
   }
 }

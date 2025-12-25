@@ -194,7 +194,7 @@ export default function HomeScreen() {
                             <View style={styles.verifiedBadge}>
                               <ShieldCheck size={10} color={theme.colors.success} />
                               <Text style={[styles.verifiedText, { color: theme.colors.success }]}>
-                                Verified by {lead.verified_by_users_count} users
+                                {t('leads.verified_by_users', { count: lead.verified_by_users_count })}
                               </Text>
                             </View>
                           )}
@@ -222,10 +222,10 @@ export default function HomeScreen() {
       <View style={styles.communityHeader}>
         <View style={styles.sectionHeaderRow}>
           <Users size={24} color={theme.colors.secondary} />
-          <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>{t('home.community_title', 'Comunitatea Truxel')}</Text>
+          <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>{t('home.community_title')}</Text>
         </View>
         <Text style={[styles.communitySubtitle, { color: theme.colors.textSecondary }]}>
-          {t('home.community_subtitle', 'Găsește curse și șoferi în timp real')}
+          {t('home.community_subtitle')}
         </Text>
       </View>
     </View>

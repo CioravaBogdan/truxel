@@ -193,7 +193,7 @@ function QuickPostBar() {
       }
 
       const majorCityName = location.nearestMajorCityName || location.nearestMajorCity?.name || location.city;
-      const baseCity = location.locality || location.city || majorCityName || 'Unknown';
+      const baseCity = location.locality || location.city || majorCityName || t('common.unknown');
 
       // Convert distance to user's preferred unit (km or mi)
       const distanceUnit = profile?.preferred_distance_unit || 'km';
@@ -307,7 +307,7 @@ function QuickPostBar() {
       }
 
       const majorCityName = location.nearestMajorCityName || location.nearestMajorCity?.name || location.city;
-      const baseCity = location.locality || location.city || majorCityName || 'Unknown';
+      const baseCity = location.locality || location.city || majorCityName || t('common.unknown');
 
       // Convert distance to user's preferred unit (km or mi)
       const distanceUnit = profile?.preferred_distance_unit || 'km';

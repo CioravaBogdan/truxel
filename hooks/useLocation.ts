@@ -40,7 +40,17 @@ export const useLocation = () => {
     });
 
     if (result) {
-      return `${result.city || result.region || ''}, ${result.country || ''}`;
+      // Try city -> town/village (subregion) -> region (county)
+      const city = result.city || result.subregion || result.region || '';
+      const country = result.country || '';
+      
+      if (city && country) {
+        return `${city}, ${country}`;
+      } else if (city) {
+        return city;
+      } else if (country) {
+        return country;
+      }
     }
 
     return '';

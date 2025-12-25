@@ -27,7 +27,14 @@
     "yes": "Da",
     "ok": "OK",
     "upgrade": "Upgrade",
-    "save_continue": "Salvează și Continuă"
+    "save_continue": "Salvează și Continuă",
+    "time_ago_m": "{{count}}m ago",
+    "time_ago_h": "{{count}}h ago",
+    "time_ago_d": "{{count}}d ago",
+    "time_ago_w": "{{count}}w ago",
+    "time_ago_mo": "{{count}}mo ago",
+    "yesterday": "Yesterday",
+    "unknown": "Unknown"
   },
   "auth": {
     "welcome": "Bine ai venit la Truxel",
@@ -85,7 +92,14 @@
     "logout_confirm": "Ești sigur că vrei să te deconectezi?",
     "privacy_policy": "Politica de Confidențialitate",
     "terms_of_service": "Termeni și Condiții",
-    "eula": "EULA"
+    "eula": "EULA",
+    "login_required": "Login Required",
+    "login_required_message": "You must be logged in to post",
+    "help_us_help_you": "HELP US SO WE CAN HELP YOU!",
+    "select_truck_type": "Please select a truck type",
+    "select_industry": "Please select at least one industry",
+    "phone_explanation": "Pentru a fi contactat de expeditori și a completa automat email-urile către lead-uri.",
+    "truck_explanation": "For autopost availability with 2 taps when you driving."
   },
   "directions": {
     "north": "Nord",
@@ -156,10 +170,11 @@
     "quick_search": "Căutare rapidă",
     "quick_search_description": "Perfect pentru când conduceți! Începeți o căutare instantaneu folosind domeniile salvate, fără a introduce text.",
     "your_saved_domains": "Domeniile dvs. salvate",
-    "start_quick_search": "ðŸš€ Căutare rapidă",
+    "start_quick_search": "🚀 Căutare rapidă",
     "quick_search_started": "Căutarea rapidă a început cu domeniile salvate!",
     "no_saved_domains": "Niciun domeniu salvat",
-    "please_set_domains_in_profile": "Vă rugăm să setați industriile preferate în setările profilului"
+    "please_set_domains_in_profile": "Vă rugăm să setați industriile preferate în setările profilului",
+    "error_no_results": "Nu s-au găsit rezultate. Vă rugăm să încercați cuvinte cheie noi sau o zonă mai mare!"
   },
   "leads": {
     "title": "Lead-urile Mele",
@@ -219,7 +234,30 @@
     "collected_contacts": "Contacte de pe web",
     "phone_from_web": "Telefon (Web)",
     "email_from_web": "Email (Web)",
-    "followers": "Urmăritori"
+    "followers": "Urmăritori",
+    "verified_by_users": "Verified by {{count}} users",
+    "whatsapp_error": "WhatsApp Error",
+    "whatsapp_not_available": "WhatsApp not available",
+    "email_error": "Email Error",
+    "cannot_open_email": "Cannot open email",
+    "phone_error": "Phone Error",
+    "cannot_make_call": "Cannot make phone call",
+    "maps_error": "Could not open Maps",
+    "cannot_save_notes": "Cannot save notes",
+    "user_lead_id_not_found": "User lead ID not found",
+    "notes_saved": "Notes saved",
+    "notes_updated": "Your notes have been updated",
+    "failed_save_notes": "Failed to save notes",
+    "try_again": "Please try again",
+    "work_phone": "Work Phone",
+    "mobile_whatsapp": "Mobile / WhatsApp",
+    "email_label": "Email",
+    "edit": "Edit",
+    "add_notes_placeholder": "Add notes about this lead...",
+    "cancel": "Cancel",
+    "save": "Save",
+    "no_notes": "No notes yet. Tap Edit to add notes about this lead.",
+    "about_company": "About Company"
   },
   "subscription": {
     "title": "Abonament",
@@ -327,7 +365,15 @@
     "avatar_updated": "Poza de profil a fost actualizată cu succes",
     "avatar_upload_failed": "Încărcarea pozei de profil a eșuat",
     "notification_radius": "Rază Notificare",
-    "notification_radius_desc": "Primește notificări când apar mărfuri noi în această distanță"
+    "notification_radius_desc": "Primește notificări când apar mărfuri noi în această distanță",
+    "phone_explanation": "Pentru a fi contactat de expeditori și a completa automat email-urile către lead-uri.",
+    "appearance": "Aspect",
+    "theme_light": "Luminos",
+    "theme_dark": "Întunecat",
+    "theme_auto": "Automat",
+    "danger_zone": "Zonă Periculoasă",
+    "danger_zone_desc": "Ștergeți permanent contul și toate datele asociate. Această acțiune este ireversibilă.",
+    "delete_account_button": "Șterge Contul Meu"
   },
   "templates": {
     "email_subject": "Oportunitate Parteneriat Logistic - {{company}}",
@@ -379,12 +425,12 @@
     "promo_code_placeholder": "Introdu codul (ex. TRUXEL20)",
     "promo_save_badge": "ECONOMISEȘTI {{percent}}%",
     "promo_influencer_deal": "OFERTA LUI {{name}}",
-    "promo_success_title": "Boom! {{name}} ți-a făcut o ofertă! ðŸš›ðŸ’¸",
+    "promo_success_title": "Boom! {{name}} ți-a făcut o ofertă! 🚛💸",
     "promo_success_message": "Bucură-te de {{description}}! Spor la bani!",
     "first_month_discount_influencer": "Prima lună redusă mulțumită lui {{name}}",
     "special_discount": "reducere specială",
     "apply": "Aplică",
-    "code_applied": "Cod aplicat! ðŸŽ‰",
+    "code_applied": "Cod aplicat! 🎉",
     "special_offer_unlocked": "Ofertă specială deblocată: {{description}}",
     "invalid_code": "Cod invalid sau expirat",
     "failed_redeem": "Nu s-a putut aplica codul",
@@ -392,13 +438,19 @@
     "offer_removed": "Ofertă eliminată",
     "showing_standard": "Se afișează prețurile standard",
     "intro_offer": "pentru {{cycles}} {{period}}e",
-    "footer_note": "Toate planurile includ informații de bază despre companii, contacte și locații. Poți anula oricând."
+    "footer_note": "Toate planurile includ informații de bază despre companii, contacte și locații. Poți anula oricând.",
+    "ios_subscription_conflict": "To change plans, please manage your subscription in iPhone Settings > Apple ID > Subscriptions.",
+    "android_subscription_conflict": "To change plans, please manage your subscription in Google Play Store > Subscriptions.",
+    "usage_warning": "You've used {{percent}}% of your monthly searches.",
+    "usage_remaining": "{{count}} searches left this month.",
+    "plan_suffix": "Plan"
   },
   "errors": {
     "network_error": "Eroare de rețea. Te rugăm să verifici conexiunea.",
     "something_went_wrong": "Ceva nu a funcționat. Te rugăm să încerci din nou.",
     "session_expired": "Sesiune expirată. Te rugăm să te autentifici din nou.",
-    "insufficient_permissions": "Permisiuni insuficiente"
+    "insufficient_permissions": "Permisiuni insuficiente",
+    "location_timeout": "Location timeout. Please ensure GPS is enabled and try again."
   },
   "community": {
     "title": "Comunitate",
@@ -411,7 +463,7 @@
     "city": "Oraș",
     "select_country": "Selectează Țara",
     "select_city": "Selectează Orașul",
-    "select_origin_city": "ðŸš€ ALEGE ORAȘUL DE PORNIRE",
+    "select_origin_city": "🚀 ALEGE ORAȘUL DE PORNIRE",
     "select_origin_hint": "Alege de unde ÎNCEPI / ÎNCARCI marfa",
     "select_country_before_city": "Te rugăm să selectezi mai întâi țara înainte de a alege orașul",
     "search_country": "Caută o țară...",
@@ -428,7 +480,7 @@
     "load": "Marfă",
     "select_template": "Selectează Șablon",
     "search_city": "Caută un oraș...",
-    "select_destination_hint": "ðŸŽ¯ Alege unde să LIVREZI / DESCARCI",
+    "select_destination_hint": "🎯 Alege unde să LIVREZI / DESCARCI",
     "desired_direction": "Direcția dorită:",
     "recent_cities": "Recente",
     "popular_cities": "Orașe Populare",
@@ -441,7 +493,7 @@
     "location_required_message": "Nu am putut obține locația ta. Te rugăm să activezi accesul la locație sau selectează manual un oraș.",
     "select_city_manually": "Selectează Oraș",
     "post_created": "Postare Creată!",
-    "post_created_success": "Postat cu succes! âœ…",
+    "post_created_success": "Postat cu succes! ✅",
     "post_visible_in_feed": "Postarea ta este acum vizibilă în feed",
     "post_created_message": "Postarea ta este acum vizibilă în comunitate",
     "post_deleted_success": "Postare ștearsă cu succes",
@@ -458,7 +510,7 @@
     "upgrade_for_more": "Actualizează pentru mai multe",
     "getting_location": "Se obține locația...",
     "posting": "Se postează...",
-    "load_timing_warning_title": "ðŸ“¦ Rezultate Mai Bune cu Transport Activ",
+    "load_timing_warning_title": "📦 Rezultate Mai Bune cu Transport Activ",
     "load_timing_warning_message": "Pentru cele mai bune rezultate, recomandăm să postezi transport disponibil AZI sau MÂINE.\n\nTransporturile active primesc mai multe răspunsuri de la șoferi pe drum.\n\nContinui postarea?",
     "continue_posting": "Da, Continuă",
     "error_title": "Eroare",
@@ -509,7 +561,7 @@
     "authentication_required": "Autentificare Necesară",
     "must_be_logged_in": "Trebuie să fii autentificat pentru a salva postări.",
     "driver_available_in": "Șofer disponibil în {{city}}",
-    "load_from_to": "Marfă {{from}} â†’ {{to}}",
+    "load_from_to": "Marfă {{from}} → {{to}}",
     "destination": "destinație",
     "post_available": "Postare disponibilă",
     "a_driver": "Un șofer",
@@ -563,10 +615,10 @@
       "south": "Direcție sud de la locația curentă",
       "east": "Direcție est de la locația curentă",
       "west": "Direcție vest de la locația curentă",
-      "custom": "Alege-ți propria rută: Selectează DIN â†’ ÎN orașe",
-      "loaded": "Din locația mea â†’ Alege destinația",
-      "empty": "Alege oraș de ridicare â†’ La locația mea",
-      "return": "Control total: Alege DIN â†’ ÎN orașe"
+      "custom": "Alege-ți propria rută: Selectează DIN → ÎN orașe",
+      "loaded": "Din locația mea → Alege destinația",
+      "empty": "Alege oraș de ridicare → La locația mea",
+      "return": "Control total: Alege DIN → ÎN orașe"
     },
     "post_descriptions": {
       "local": "Disponibil pentru mărfuri locale în zona {{origin}}",
@@ -574,7 +626,7 @@
       "south": "Disponibil pentru mărfuri spre sud de la {{origin}}",
       "east": "Disponibil pentru mărfuri spre est de la {{origin}}",
       "west": "Disponibil pentru mărfuri spre vest de la {{origin}}",
-      "custom": "Disponibil pentru ruta {{origin}} â†’ {{dest}}",
+      "custom": "Disponibil pentru ruta {{origin}} → {{dest}}",
       "loaded": "Marfă disponibilă de la {{origin}} {{dest}}, plecare astăzi",
       "empty": "Marfă disponibilă de la {{origin}} {{dest}}, plecare mâine",
       "return": "Întoarcere goală de la {{origin}} {{dest}}"
@@ -842,7 +894,7 @@
           "label": "Sprijin"
         },
         "rating": {
-          "value": "5â˜…",
+          "value": "5★",
           "label": "Evaluare"
         }
       }
@@ -1056,67 +1108,67 @@
         "standard": {
           "title": "Standard",
           "tagline": "Construit pentru șoferi independenți",
-          "description": "Prime?ti 30 de cautari de companii pe luna pentru a gasi clien?i direc?i, plus 30 de postari ï¿½n comunitate ca sa gase?ti curse la ï¿½ntoarcere. Construie?te-?i propria baza de clien?i ?i nu mai merge niciodata gol.",
+          "description": "Primești 30 de căutări de companii pe luna pentru a gasi clienți direcți, plus 30 de postari în comunitate ca sa găsești curse la întoarcere. Construiește-ți propria baza de clienți și nu mai merge niciodata gol.",
           "feature_searches": "{{count}} de căutări de companii în fiecare lună",
-          "feature_results": "Maximum 20 de leaduri per cuvï¿½nt cheie",
+          "feature_results": "Maximum 20 de leaduri per cuvînt cheie",
           "feature_posts": "{{daily}} postări pe zi ({{monthly}} în fiecare lună)",
-          "feature_community": "Acces la Comunitate & postare de ï¿½ncarcaturi",
+          "feature_community": "Acces la Comunitate & postare de încarcaturi",
           "feature_crm": "CRM integrat & export CSV",
-          "feature_contact": "Apeluri directe & ?abloane WhatsApp",
-          "feature_sharing": "Distribuie fi?ele de contact oriunde"
+          "feature_contact": "Apeluri directe & șabloane WhatsApp",
+          "feature_sharing": "Distribuie fișele de contact oriunde"
         },
         "pro": {
           "title": "Pro",
           "tagline": "Scalează-ți activitatea de vânzări",
-          "description": "50 de cautari/luna, 100 de postari ï¿½n comunitate ?i integrare exclusiva LinkedIn pentru a gasi deciden?ii. Include func?ia ï¿½Exporta leaduriï¿½ ca sa de?ii datele.",
+          "description": "50 de căutări/luna, 100 de postari în comunitate și integrare exclusiva LinkedIn pentru a gasi deciden?ii. Include func?ia Exportă leaduriî ca sa de?ii datele.",
           "feature_searches": "{{count}} de căutări cu rezultate extinse",
-          "feature_results": "Maximum 50 de leaduri per cuvï¿½nt cheie",
+          "feature_results": "Maximum 50 de leaduri per cuvînt cheie",
           "feature_posts": "{{daily}} postări pe zi ({{monthly}} în fiecare lună)",
           "feature_linkedin": "Profiluri de contact LinkedIn pentru factorii de decizie",
-          "feature_community": "Acces la Comunitate & postare de ï¿½ncarcaturi",
+          "feature_community": "Acces la Comunitate & postare de încarcaturi",
           "feature_crm": "CRM integrat & export CSV",
-          "feature_contact": "Apeluri directe & ?abloane WhatsApp",
-          "feature_sharing": "Distribuie fi?ele de contact oriunde"
+          "feature_contact": "Apeluri directe & șabloane WhatsApp",
+          "feature_sharing": "Distribuie fișele de contact oriunde"
         },
         "fleet": {
           "title": "Fleet Manager",
           "tagline": "Dispecerat la scară",
-          "description": "Gestioneaza mai multe camioane cu 30 de postari/zi (900/luna) pentru a-?i ?ine flota ï¿½n mi?care. Include 30 de cautari/luna pentru achizi?ia ?intita de clien?i.",
+          "description": "Gestioneaza mai multe camioane cu 30 de postari/zi (900/luna) pentru a-?i ?ine flota în mi?care. Include 30 de căutări/luna pentru achizi?ia ?intita de clienți.",
           "feature_searches": "{{count}} de căutări țintite în fiecare lună",
-          "feature_results": "Maximum 20 de leaduri per cuvï¿½nt cheie",
+          "feature_results": "Maximum 20 de leaduri per cuvînt cheie",
           "feature_posts": "{{daily}} postări pe zi ({{monthly}} în fiecare lună)",
           "feature_concurrent": "{{count}} de postări active simultan",
-          "feature_community": "Acces la Comunitate & postare de ï¿½ncarcaturi",
+          "feature_community": "Acces la Comunitate & postare de încarcaturi",
           "feature_crm": "CRM integrat & export CSV",
-          "feature_contact": "Apeluri directe & ?abloane WhatsApp",
-          "feature_sharing": "Distribuie fi?ele de contact oriunde"
+          "feature_contact": "Apeluri directe & șabloane WhatsApp",
+          "feature_sharing": "Distribuie fișele de contact oriunde"
         },
         "freighter": {
           "title": "Pro Freighter",
           "tagline": "Operațiuni de transport de întreprindere",
-          "description": "Domina pia?a cu 1500 de postari/luna ?i 50 de listari simultane. Include 50 de cautari ?i instrumente LinkedIn pentru opera?iuni cu volum mare.",
+          "description": "Domina pia?a cu 1500 de postari/luna și 50 de listari simultane. Include 50 de căutări și instrumente LinkedIn pentru opera?iuni cu volum mare.",
           "feature_searches": "{{count}} de căutări premium în fiecare lună",
-          "feature_results": "Maximum 50 de leaduri per cuvï¿½nt cheie",
+          "feature_results": "Maximum 50 de leaduri per cuvînt cheie",
           "feature_posts": "{{daily}} postări pe zi ({{monthly}} în fiecare lună)",
           "feature_linkedin": "Date complete de contact pentru factorii de decizie",
           "feature_concurrent": "{{count}} de postări simultane în echipe",
-          "feature_community": "Acces la Comunitate & postare de ï¿½ncarcaturi",
+          "feature_community": "Acces la Comunitate & postare de încarcaturi",
           "feature_crm": "CRM integrat & export CSV",
-          "feature_contact": "Apeluri directe & ?abloane WhatsApp",
-          "feature_sharing": "Distribuie fi?ele de contact oriunde"
+          "feature_contact": "Apeluri directe & șabloane WhatsApp",
+          "feature_sharing": "Distribuie fișele de contact oriunde"
         }
       }
+    },
+    "survey": {
+      "widget_title": "Spune-ne ce îți dorești",
+      "widget_subtitle": "{{count}} întrebări • Ajută-ne să îmbunătățim Truxel",
+      "modal_title": "Cercetare de Piață",
+      "intro_text": "Feedback-ul tău ne ajută să construim un instrument mai bun pentru tine. Te rugăm să răspunzi la următoarele întrebări:",
+      "submit_btn": "Trimite Feedback",
+      "sending_btn": "Se trimite...",
+      "additional_comments": "Comentarii Adiționale (Opțional)",
+      "additional_comments_placeholder": "Spune-ne ce crezi...",
+      "additional_comments_helper": "Orice alt feedback, sugestii de funcționalități sau gânduri?"
     }
-  },
-  "survey": {
-    "widget_title": "Spune-ne ce îți dorești",
-    "widget_subtitle": "{{count}} întrebări • Ajută-ne să îmbunătățim Truxel",
-    "modal_title": "Cercetare de Piață",
-    "intro_text": "Feedback-ul tău ne ajută să construim un instrument mai bun pentru tine. Te rugăm să răspunzi la următoarele întrebări:",
-    "submit_btn": "Trimite Feedback",
-    "sending_btn": "Se trimite...",
-    "additional_comments": "Comentarii Adiționale (Opțional)",
-    "additional_comments_placeholder": "Spune-ne ce crezi...",
-    "additional_comments_helper": "Orice alt feedback, sugestii de funcționalități sau gânduri?"
   }
 }

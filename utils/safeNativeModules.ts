@@ -179,8 +179,9 @@ export async function safeOpenPhone(
 export async function safeRequestLocationPermissions(): Promise<Location.PermissionStatus | null> {
   try {
     if (Platform.OS === 'web') {
-      console.warn('[SafeNativeModules] Location not supported on web');
-      return null;
+      // On web, permissions are requested when calling getCurrentPosition
+      // We return GRANTED to allow the flow to proceed
+      return Location.PermissionStatus.GRANTED;
     }
 
     const { status } = await Location.requestForegroundPermissionsAsync();
@@ -197,6 +198,7 @@ export async function safeRequestLocationPermissions(): Promise<Location.Permiss
  * 
  * Android: Uses Low accuracy by default (fast, network-based)
  * iOS: Uses Balanced accuracy (prevents native crashes)
+ * Web: Uses navigator.geolocation with fallback
  * 
  * @param options - Location options
  * @returns Location object or null
@@ -206,8 +208,54 @@ export async function safeGetCurrentPosition(
 ): Promise<Location.LocationObject | null> {
   try {
     if (Platform.OS === 'web') {
-      console.warn('[SafeNativeModules] Location not supported on web');
-      return null;
+      return new Promise((resolve) => {
+        if (!navigator.geolocation) {
+          console.warn('[SafeNativeModules] Geolocation not supported on web');
+          resolve(null);
+          return;
+        }
+
+        const handleSuccess = (position: any) => {
+          resolve({
+            coords: {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+              altitude: position.coords.altitude,
+              accuracy: position.coords.accuracy,
+              altitudeAccuracy: position.coords.altitudeAccuracy,
+              heading: position.coords.heading,
+              speed: position.coords.speed,
+            },
+            timestamp: position.timestamp,
+          });
+        };
+
+        const handleHighAccuracyError = (error: any) => {
+          console.warn('[SafeNativeModules] High accuracy failed, trying low accuracy:', error.message);
+          navigator.geolocation.getCurrentPosition(
+            handleSuccess,
+            (finalError) => {
+              console.error('[SafeNativeModules] Web location error:', finalError.message);
+              resolve(null);
+            },
+            {
+              enableHighAccuracy: false,
+              timeout: 15000,
+              maximumAge: 30000,
+            }
+          );
+        };
+
+        navigator.geolocation.getCurrentPosition(
+          handleSuccess,
+          handleHighAccuracyError,
+          {
+            enableHighAccuracy: true,
+            timeout: 7000,
+            maximumAge: 0,
+          }
+        );
+      });
     }
 
     // Default to Balanced accuracy if no options provided
@@ -237,8 +285,39 @@ export async function safeReverseGeocode(
 ): Promise<Location.LocationGeocodedAddress | null> {
   try {
     if (Platform.OS === 'web') {
-      console.warn('[SafeNativeModules] Geocoding not supported on web');
-      return null;
+      try {
+        const response = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${coords.latitude}&lon=${coords.longitude}&zoom=10&addressdetails=1`,
+          {
+            headers: {
+              'User-Agent': 'Truxel/1.0',
+            },
+          }
+        );
+
+        if (!response.ok) throw new Error('Reverse geocoding failed');
+
+        const data = await response.json();
+        const address = data.address || {};
+
+        // Map Nominatim response to Expo LocationGeocodedAddress format
+        // Enhanced mapping to capture hamlets, municipalities, etc.
+        return {
+          city: address.city || address.town || address.village || address.hamlet || address.municipality || address.locality,
+          district: address.suburb || address.district || address.neighbourhood,
+          street: address.road || address.pedestrian || address.highway,
+          region: address.state || address.county, 
+          subregion: address.county || address.state_district,
+          country: address.country,
+          postalCode: address.postcode,
+          name: address.house_number || address.building || address.public_building,
+          isoCountryCode: address.country_code?.toUpperCase(),
+          timezone: null,
+        };
+      } catch (error) {
+        console.error('[SafeNativeModules] Web reverse geocoding error:', error);
+        return null;
+      }
     }
 
     const results = await Location.reverseGeocodeAsync(coords);

@@ -171,11 +171,11 @@ export default function CompleteProfileScreen() {
       return;
     }
     if (!truckType) {
-      Toast.show({ type: 'error', text1: 'Please select a truck type' });
+      Toast.show({ type: 'error', text1: t('auth.select_truck_type') });
       return;
     }
     if (selectedIndustries.length === 0) {
-      Toast.show({ type: 'error', text1: 'Please select at least one industry' });
+      Toast.show({ type: 'error', text1: t('auth.select_industry') });
       return;
     }
 
@@ -216,7 +216,7 @@ export default function CompleteProfileScreen() {
         <ScrollView contentContainerStyle={styles.scrollContent}>
           <LinearGradient colors={['#0F172A', '#1E293B']} style={styles.header}>
             <Text style={styles.headerTitle}>{t('auth.complete_profile')}</Text>
-            <Text style={styles.headerSubtitle}>HELP US SO WE CAN HELP YOU!</Text>
+            <Text style={styles.headerSubtitle}>{t('auth.help_us_help_you')}</Text>
           </LinearGradient>
 
           <View style={styles.content}>
@@ -267,7 +267,7 @@ export default function CompleteProfileScreen() {
                 <Text style={[styles.label, { color: theme.colors.text }]}>{t('common.phone_number')}</Text>
                 <View style={[styles.explanationContainer, { backgroundColor: theme.colors.secondary + '15' }]}>
                   <Text style={[styles.explanation, { color: theme.colors.text }]}>
-                    To be contacted by shippers and autocomplete emails to leads.
+                    {t('auth.phone_explanation')}
                   </Text>
                 </View>
                 <View style={[styles.phoneRow, { borderColor: theme.colors.border, backgroundColor: theme.colors.card }]}>
@@ -297,7 +297,7 @@ export default function CompleteProfileScreen() {
               <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>{t('profile.truck_type')}</Text>
               <View style={[styles.explanationContainer, { backgroundColor: theme.colors.secondary + '15' }]}>
                 <Text style={[styles.explanation, { color: theme.colors.text }]}>
-                  For autopost availability with 2 taps when you driving.
+                  {t('auth.truck_explanation')}
                 </Text>
               </View>
               <View style={styles.chipContainer}>

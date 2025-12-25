@@ -609,13 +609,13 @@ export default function PricingScreen() {
     if (usageStats.percent >= 80) {
       return {
         icon: <TrendingUp size={20} color={theme.colors.error} />,
-        text: `You've used ${usageStats.percent}% of your monthly searches.`,
+        text: t('pricing.usage_warning', { percent: usageStats.percent }),
       };
     }
 
     return {
       icon: <TrendingDown size={20} color={theme.colors.success} />,
-      text: `${usageStats.remaining} searches left this month.`,
+      text: t('pricing.usage_remaining', { count: usageStats.remaining }),
     };
   }, [usageStats, theme.colors.error, theme.colors.success]);
 
@@ -701,7 +701,7 @@ export default function PricingScreen() {
               <Shield size={24} color={theme.colors.primary} />
               <View style={styles.currentSubscriptionInfo}>
                 <Text style={[styles.currentSubscriptionTitle, { color: theme.colors.text }]}>
-                  {t(`pricing.tier_${profile.subscription_tier}`)} Plan
+                  {t(`pricing.tier_${profile.subscription_tier}`)} {t('pricing.plan_suffix')}
                 </Text>
                 <Text style={[styles.currentSubscriptionStatus, { color: theme.colors.textSecondary }]}>
                   {profile.subscription_status === 'active'
