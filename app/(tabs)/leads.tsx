@@ -36,7 +36,7 @@ import CitySearchModal from '@/components/community/CitySearchModal';
 import LeadDetailModal from '@/components/leads/LeadDetailModal';
 import { cityService } from '@/services/cityService';
 import * as Sharing from 'expo-sharing';
-import * as FileSystem from 'expo-file-system';
+import * as FileSystem from 'expo-file-system/legacy';
 import Toast from 'react-native-toast-message';
 import { 
   Mail, 
