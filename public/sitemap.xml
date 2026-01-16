@@ -2,37 +2,37 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://truxel.io/</loc>
-    <lastmod>2025-12-20</lastmod>
+    <lastmod>2026-01-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://truxel.io/features</loc>
-    <lastmod>2025-12-20</lastmod>
+    <lastmod>2026-01-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://truxel.io/pricing_web</loc>
-    <lastmod>2025-12-20</lastmod>
+    <lastmod>2026-01-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://truxel.io/articles</loc>
-    <lastmod>2025-12-20</lastmod>
+    <lastmod>2026-01-16</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://truxel.io/about</loc>
-    <lastmod>2025-12-20</lastmod>
+    <lastmod>2026-01-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://truxel.io/contact</loc>
-    <lastmod>2025-12-20</lastmod>
+    <lastmod>2026-01-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -63,6 +63,12 @@
   <url>
     <loc>https://truxel.io/articles/healthy-eating-on-the-road</loc>
     <lastmod>2025-12-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://truxel.io/articles/George Bogdan analyzes the 2026 FMCSA driver crackdown. From 3,000 CDL school purges to the new carrier proficiency exam, see how to protect your authority.</loc>
+    <lastmod>2026-01-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
