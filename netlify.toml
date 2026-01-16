@@ -1,0 +1,25 @@
+# Netlify Configuration for Truxel
+
+[build]
+  publish = "dist"
+  command = "npm run build:web"
+
+# Dynamic sitemap - served from Supabase Edge Function
+[[redirects]]
+  from = "/sitemap.xml"
+  to = "https://upxocyomsfhqoflwibwn.supabase.co/functions/v1/sitemap"
+  status = 200
+  force = true
+
+# SPA fallback - handle client-side routing
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Headers for better SEO and caching
+[[headers]]
+  for = "/sitemap.xml"
+  [headers.values]
+    Content-Type = "application/xml"
+    Cache-Control = "public, max-age=3600"
