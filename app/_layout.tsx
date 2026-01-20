@@ -1,9 +1,19 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { Platform } from 'react-native';
+import { Platform, NativeModules, View, ActivityIndicator, LogBox } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useFrameworkReady } from '@/hooks/useFrameworkReady';
+
+// Ignore specific development warnings
+LogBox.ignoreLogs([
+  'Network request failed',
+  'Unable to resolve host',
+  'PurchasesError',
+  'Error fetching offerings',
+  'TypeError: Network request failed'
+]);
+
 import { useAuthStore } from '@/store/authStore';
 import { authService } from '@/services/authService';
 import { sessionService } from '@/services/sessionService';
@@ -20,6 +30,8 @@ import * as Notifications from 'expo-notifications';
 import { Audio } from 'expo-av';
 import * as Linking from 'expo-linking';
 import { supabase } from '@/lib/supabase';
+// Note: expo-tracking-transparency and react-native-fbsdk-next are imported dynamically
+// because they don't work on web (native-only modules)
 
 function ThemedToast() {
   const { theme } = useTheme();
@@ -94,7 +106,6 @@ function ThemedToast() {
 // Configure global notification handler
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
-    shouldShowAlert: true,
     shouldPlaySound: false, // We play custom sound manually
     shouldSetBadge: false,
     shouldShowBanner: true,
@@ -114,11 +125,46 @@ export default function RootLayout() {
   const { setSession, setUser, setProfile, setIsLoading, isAuthenticated, isLoading, profile } = useAuthStore();
   const { subscribeToNotifications, fetchNotifications } = useNotificationStore();
 
+  // Initialize Facebook SDK & Request Tracking Permission (Native only)
+  useEffect(() => {
+    // Skip on web - Facebook SDK requires native components
+    if (Platform.OS === 'web') {
+      return;
+    }
+
+    const askPermission = async () => {
+      try {
+        // 1. Dynamically import tracking transparency (native only)
+        const { requestTrackingPermissionsAsync } = await import('expo-tracking-transparency');
+        
+        // 2. Ask for iOS tracking permission (Required for iOS 14+)
+        const { status } = await requestTrackingPermissionsAsync();
+
+        if (status === 'granted') {
+          // CRITICAL: Check if native module exists BEFORE importing to prevent crash
+          // This handles Expo Go or old builds where FBSDK is missing
+          if (!NativeModules.FBAccessToken && !NativeModules.Settings) {
+             console.warn('Facebook SDK native module not found - skipping init. Please rebuild native app.');
+             return;
+          }
+
+          // 3. Dynamically import and enable Facebook tracking if granted
+          const { Settings } = await import('react-native-fbsdk-next');
+          Settings.setAdvertiserTrackingEnabled(true);
+          Settings.initializeSDK();
+        }
+      } catch (error) {
+        console.warn('Facebook SDK not available:', error);
+      }
+    };
+
+    askPermission();
+  }, []);
+
   // Handle deep links (Password Reset, Email Verification)
   useEffect(() => {
     const handleDeepLink = async (event: { url: string }) => {
       const { url } = event;
-      console.log('RootLayout: Deep link received:', url);
       
       if (url.includes('access_token') && url.includes('refresh_token')) {
          const hashIndex = url.indexOf('#');
@@ -130,12 +176,10 @@ export default function RootLayout() {
              const type = params.get('type');
              
              if (type === 'recovery') {
-                 console.log('RootLayout: Recovery type detected in deep link');
                  setIsPasswordRecovery(true);
              }
 
              if (access_token && refresh_token) {
-                 console.log('RootLayout: Setting session from deep link tokens');
                  const { error } = await supabase.auth.setSession({
                      access_token,
                      refresh_token,
@@ -159,11 +203,9 @@ export default function RootLayout() {
 
   // Initialize native modules first (prevents iOS crashes)
   useEffect(() => {
-    console.log('RootLayout: Initializing native modules safely...');
     nativeModulesService
       .initialize()
       .then((success) => {
-        console.log('RootLayout: Native modules initialization completed:', success);
         setNativeModulesReady(true);
       })
       .catch((error) => {
@@ -175,17 +217,8 @@ export default function RootLayout() {
   // Initialize RevenueCat SDK (after native modules)
   useEffect(() => {
     if (!nativeModulesReady) {
-      console.log('RootLayout: Waiting for native modules before RevenueCat init...');
       return;
     }
-
-    // Log environment info for debugging
-    console.log('🔍 RevenueCat Init Check:', {
-      platform: Platform.OS,
-      appOwnership: Constants.appOwnership,
-      executionEnvironment: Constants.executionEnvironment,
-      isDevice: Constants.isDevice
-    });
 
     // Check if running in Expo Go (where RevenueCat won't work on mobile)
     const isExpoGo = Constants.appOwnership === 'expo' ||
@@ -193,23 +226,16 @@ export default function RootLayout() {
 
     // Web platform ALWAYS supports RevenueCat (via purchases-js)
     if (Platform.OS === 'web') {
-      console.log('🌐 Web platform detected - RevenueCat will initialize on-demand');
-      console.log('   Web SDK uses:', Constants.expoConfig?.extra?.revenueCatWebKey?.substring(0, 12) + '...');
       setRevenueCatReady(true); // Web SDK initializes lazily in revenueCatService
       return;
     }
 
     // Mobile (iOS/Android) requires native builds (not Expo Go)
     if (isExpoGo) {
-      console.log('🟡 Expo Go detected - RevenueCat disabled for mobile');
-      console.log('   appOwnership:', Constants.appOwnership);
-      console.log('   executionEnvironment:', Constants.executionEnvironment);
-      console.log('   For RevenueCat to work, build with EAS or npx expo run:ios');
+      console.warn('Expo Go detected - RevenueCat inactive. Use Development Build or TestFlight for payments.');
       setRevenueCatReady(false);
       return;
     }
-
-    console.log('RootLayout: Initializing RevenueCat SDK for mobile...');
 
     const apiKey = Platform.select({
       ios: Constants.expoConfig?.extra?.revenueCatIosKey,
@@ -217,8 +243,7 @@ export default function RootLayout() {
     });
 
     if (!apiKey || apiKey === '' || apiKey.includes('xxx')) {
-      console.warn('⚠️ RevenueCat API key not configured for', Platform.OS);
-      console.warn('   Set TRUXEL_REVENUECAT_IOS_KEY or TRUXEL_REVENUECAT_ANDROID_KEY in .env');
+      console.warn('RevenueCat API key not configured for', Platform.OS);
       setRevenueCatReady(false);
       return;
     }
@@ -230,30 +255,20 @@ export default function RootLayout() {
       // Configure SDK with API key
       Purchases.configure({ apiKey });
 
-      console.log('✅ RevenueCat mobile SDK initialized successfully');
-      console.log('   API Key:', apiKey.substring(0, 12) + '...');
-      console.log('   Platform:', Platform.OS);
-
       setRevenueCatReady(true);
     } catch (error) {
-      console.error('❌ RevenueCat SDK initialization failed:', error);
-      console.error('   Mobile payments will not work');
+      console.error('RevenueCat SDK initialization failed:', error);
       setRevenueCatReady(false);
     }
   }, [nativeModulesReady]);
 
   useEffect(() => {
     if (!nativeModulesReady) {
-      console.log('RootLayout: Waiting for native modules to be ready...');
       return;
     }
 
-    console.log('RootLayout: Setting up auth listener (no manual getSession call)...');
-
     const { data: authListener } = authService.onAuthStateChange(
       async (event, session) => {
-        console.log('RootLayout: Auth state changed:', { event, hasSession: !!session });
-        
         if (event === 'PASSWORD_RECOVERY') {
           console.log('RootLayout: Password recovery event detected');
           setIsPasswordRecovery(true);
@@ -456,6 +471,15 @@ export default function RootLayout() {
       console.log('RootLayout: No navigation needed, staying on current screen');
     }
   }, [isAuthenticated, segments, isNavigationReady, router, isLoading, profile, isPasswordRecovery]);
+
+  // Show loading screen while checking auth state to prevent "flashing" protected content
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff' }}>
+        <ActivityIndicator size="large" color="#4F46E5" />
+      </View>
+    );
+  }
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>

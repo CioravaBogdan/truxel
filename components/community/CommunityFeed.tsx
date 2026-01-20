@@ -28,9 +28,10 @@ import { useTheme } from '@/lib/theme';
 interface CommunityFeedProps {
   customHeader?: React.ReactNode;
   onRefresh?: () => Promise<void>;
+  ListFooterComponent?: React.ReactNode;
 }
 
-export default function CommunityFeed({ customHeader, onRefresh }: CommunityFeedProps = {}) {
+export default function CommunityFeed({ customHeader, onRefresh, ListFooterComponent }: CommunityFeedProps = {}) {
   const { t } = useTranslation();
   const { theme } = useTheme();
   const { user } = useAuthStore();
@@ -86,7 +87,7 @@ export default function CommunityFeed({ customHeader, onRefresh }: CommunityFeed
           });
         }
       } catch (err) {
-        console.log('[CommunityFeed] Location init failed (non-critical):', err);
+        // Location init failed (non-critical)
       } finally {
         if (isMounted) {
           setIsInitializingFilters(false);
@@ -104,7 +105,6 @@ export default function CommunityFeed({ customHeader, onRefresh }: CommunityFeed
   // Load saved posts ONCE on mount (for bookmark status)
   useEffect(() => {
     if (user?.id) {
-      console.log('[CommunityFeed] Loading saved posts for bookmark status');
       void useCommunityStore.getState().loadSavedPosts(user.id);
     }
   }, [user?.id]);
@@ -241,11 +241,14 @@ export default function CommunityFeed({ customHeader, onRefresh }: CommunityFeed
   };
 
   const renderFooter = () => {
-    if (!hasMore) return null;
-
     return (
-      <View style={styles.footerLoader}>
-        <ActivityIndicator size="small" color={theme.colors.primary} />
+      <View>
+        {hasMore && (
+          <View style={styles.footerLoader}>
+            <ActivityIndicator size="small" color={theme.colors.primary} />
+          </View>
+        )}
+        {ListFooterComponent}
       </View>
     );
   };
@@ -447,6 +450,8 @@ export default function CommunityFeed({ customHeader, onRefresh }: CommunityFeed
         ListHeaderComponent={renderHeader}
         ListEmptyComponent={renderEmpty}
         ListFooterComponent={renderFooter}
+        automaticallyAdjustKeyboardInsets={true}
+        keyboardDismissMode="on-drag"
         refreshControl={
           <RefreshControl
             refreshing={isRefreshing}

@@ -56,12 +56,10 @@ class SupportChatService {
         .single();
 
       if (existing && !fetchError) {
-        console.log('[SupportChatService] Found existing conversation:', existing.id);
         return existing as SupportConversation;
       }
 
       // Create new conversation
-      console.log('[SupportChatService] Creating new conversation for user:', params.userId);
       const { data: newConv, error: createError } = await supabase
         .from('support_conversations')
         .insert({
@@ -79,7 +77,6 @@ class SupportChatService {
         return null;
       }
 
-      console.log('[SupportChatService] Created conversation:', newConv.id);
       return newConv as SupportConversation;
     } catch (error) {
       console.error('[SupportChatService] Error in getOrCreateConversation:', error);

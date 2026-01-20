@@ -18,7 +18,6 @@ interface ManageSubscriptionResponse {
 
 export const stripeService = {
   async getAvailableSubscriptionTiers(): Promise<SubscriptionTierData[]> {
-    console.log('stripeService: Starting getAvailableSubscriptionTiers...');
     try {
       // Use REST API directly as Supabase client query hangs
       // Use Constants for production build compatibility
@@ -38,15 +37,12 @@ export const stripeService = {
           },
         }
       );
-
-      console.log('stripeService: Response status:', response.status);
       
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       
       const data = await response.json();
-      console.log('stripeService: Returning', data?.length || 0, 'tiers');
       return data || [];
     } catch (err) {
       console.error('stripeService: Exception in getAvailableSubscriptionTiers:', err);
@@ -55,7 +51,6 @@ export const stripeService = {
   },
 
   async getAvailableSearchPacks(): Promise<AdditionalSearchPack[]> {
-    console.log('stripeService: Starting getAvailableSearchPacks...');
     try {
       // Use REST API directly as Supabase client query hangs
       // Use Constants for production build compatibility
@@ -76,14 +71,12 @@ export const stripeService = {
         }
       );
 
-      console.log('stripeService: Response status:', response.status);
       
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       
       const data = await response.json();
-      console.log('stripeService: Returning', data?.length || 0, 'packs');
       return data || [];
     } catch (err) {
       console.error('stripeService: Exception in getAvailableSearchPacks:', err);
@@ -95,7 +88,6 @@ export const stripeService = {
     couponCode: string,
     accessToken?: string
   ): Promise<{ valid: boolean; coupon?: any; error?: string }> {
-    console.log('stripeService: validateCoupon called', { couponCode });
 
     if (!accessToken) {
       throw new Error('Not authenticated - access token required');
@@ -114,7 +106,6 @@ export const stripeService = {
         }
       );
 
-      console.log('stripeService: Validate coupon response status:', response.status);
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -122,7 +113,6 @@ export const stripeService = {
       }
 
       const data = await response.json();
-      console.log('stripeService: Coupon validation result:', data);
       return data;
     } catch (error: any) {
       console.error('stripeService: Validate coupon error:', error);
@@ -138,7 +128,6 @@ export const stripeService = {
     accessToken?: string,
     couponCode?: string
   ): Promise<CheckoutSessionResponse> {
-    console.log('stripeService: createCheckoutSession called', { priceId, type, couponCode });
 
     if (!accessToken) {
       throw new Error('Not authenticated - access token required');
@@ -167,7 +156,6 @@ export const stripeService = {
       }
     );
 
-    console.log('stripeService: Checkout session response status:', response.status);
 
     if (!response.ok) {
       const error = await response.json();
@@ -176,12 +164,10 @@ export const stripeService = {
     }
 
     const result = await response.json();
-    console.log('stripeService: Checkout session created:', result.sessionId);
     return result;
   },
 
   async cancelSubscription(accessToken?: string): Promise<ManageSubscriptionResponse> {
-    console.log('stripeService: cancelSubscription called');
 
     if (!accessToken) {
       throw new Error('Not authenticated - access token required');

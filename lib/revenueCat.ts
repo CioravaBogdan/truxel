@@ -65,12 +65,6 @@ export async function initRevenueCat(userId: string): Promise<void> {
 
     const loginResult = await Purchases.logIn(userId);
     isRevenueCatInitialized = true;
-    console.log('✅ RevenueCat user identified:', {
-      platform: Platform.OS,
-      appUserID: userId,
-      originalAppUserId: (loginResult as any)?.customerInfo?.originalAppUserId,
-      activeEntitlements: Object.keys((loginResult as any)?.customerInfo?.entitlements?.active || {}),
-    });
   } catch (error) {
     console.error('❌ Failed to initialize RevenueCat:', error);
     isRevenueCatInitialized = false;
@@ -85,7 +79,6 @@ export async function logoutRevenueCat(): Promise<void> {
   try {
     // Web doesn't need RevenueCat logout (browser mode)
     if (Platform.OS === 'web') {
-      console.log('🌐 Web: Skipping RevenueCat logout (browser mode)');
       return;
     }
     

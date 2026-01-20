@@ -5,7 +5,7 @@
 // We should never inject timestamps into `expo.version`.
 // NOTE: We previously uploaded builds with very large patch versions (e.g. 1.0.<timestamp>).
 // To ensure the next submission is accepted, bumping the minor version is safest.
-const baseVersion = "1.1.3";
+const baseVersion = "1.1.9";
 // Build number policy (3–4 digits max):
 // - Use a deterministic seed derived from version: Mmmpp (e.g. 1.1.0 -> 1100, 1.2.3 -> 1203)
 // - Let EAS autoIncrement bump it per build (configured in eas.json)
@@ -42,7 +42,7 @@ export default {
     icon: "./assets/Truxel_Brand/App Store 1024 x 1024.png",
     scheme: "truxel",
     userInterfaceStyle: "automatic",
-    newArchEnabled: true,
+    newArchEnabled: true, // Reanimated v4 requires New Architecture
     owner: "cioravabogdan",
     splash: {
       image: "./assets/Truxel_Brand/App Store 1024 x 1024.png",
@@ -57,7 +57,10 @@ export default {
         ITSAppUsesNonExemptEncryption: false,
         NSLocationWhenInUseUsageDescription: "Truxel needs your location to find companies near you.",
         NSLocationAlwaysAndWhenInUseUsageDescription: "Truxel needs your location to find companies near you.",
-        LSApplicationQueriesSchemes: [
+        NSUserTrackingUsageDescription: "This identifier will be used to deliver personalized ads to you.",          SKAdNetworkItems: [
+            { SKAdNetworkIdentifier: "v9q33kiaad.skadnetwork" }, // Meta (Facebook)
+            { SKAdNetworkIdentifier: "cstr6suwn9.skadnetwork" }  // Google
+          ],        LSApplicationQueriesSchemes: [
           "whatsapp",
           "whatsapp-business",
           "whatsapp-messenger"
@@ -75,11 +78,13 @@ export default {
     android: {
       versionCode: buildNumber,
       package: "io.truxel.app",
+      googleServicesFile: "./google-services.json",
       permissions: [
         "ACCESS_COARSE_LOCATION",
         "ACCESS_FINE_LOCATION",
         "FOREGROUND_SERVICE",
         "INTERNET",
+        "ACCESS_NETWORK_STATE",
         "POST_NOTIFICATIONS"
       ],
       // Intent filters for deep linking (OAuth redirects)
@@ -127,7 +132,31 @@ export default {
           color: "#ffffff",
           sounds: ["./assets/sounds/notification.mp3"]
         }
-      ]
+      ],
+      [
+        "react-native-fbsdk-next",
+        {
+          "appID": "912711708582826",
+          "clientToken": "9dd10ac72eba7b7cba17bd6c890add4d",
+          "displayName": "Truxel",
+          "advertiserIDCollectionEnabled": true,
+          "autoLogAppEventsEnabled": true,
+          "isAutoInitEnabled": true,
+          "iosUserTrackingPermission": "This identifier will be used to deliver personalized ads to you."
+        }
+      ],
+      [
+        "react-native-google-mobile-ads",
+        {
+          "androidAppId": process.env.TRUXEL_ADMOB_ANDROID_APP_ID || "ca-app-pub-3940256099942544~3347511713",
+          "iosAppId": process.env.TRUXEL_ADMOB_IOS_APP_ID || "ca-app-pub-3940256099942544~1458002511",
+          "userTrackingUsageDescription": "This identifier will be used to deliver personalized ads to you."
+        }
+      ],
+      "expo-tracking-transparency",
+      "expo-localization",
+      "./plugins/withAndroidOnlyFirebase",
+      "./plugins/withDisableNonModularHeaders"
     ],
     experiments: {
       typedRoutes: true

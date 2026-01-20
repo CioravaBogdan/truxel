@@ -180,10 +180,7 @@ export const useCommunityStore = create<CommunityState>((set, get) => ({
   // Load saved posts
   loadSavedPosts: async (userId: string) => {
     try {
-      console.log('[loadSavedPosts] 🔄 START - userId:', userId);
       const posts = await communityService.getSavedPosts(userId);
-      console.log('[loadSavedPosts] ✅ Loaded', posts.length, 'saved posts from DB');
-      console.log('[loadSavedPosts] Post IDs:', posts.map(p => p.id));
       set({ savedPosts: posts });
     } catch (error) {
       console.error('[loadSavedPosts] ❌ ERROR:', error);
@@ -280,65 +277,40 @@ export const useCommunityStore = create<CommunityState>((set, get) => ({
   // Save a post
   savePost: async (postId: string, userId: string) => {
     try {
-      console.log('[savePost] ======= START =======');
-      console.log('[savePost] postId:', postId);
-      console.log('[savePost] userId:', userId);
-      console.log('[savePost] current savedPosts count:', get().savedPosts.length);
-      console.log('[savePost] current savedPosts IDs:', get().savedPosts.map(p => p.id));
-      
-      console.log('[savePost] Calling DB recordInteraction with type=saved...');
       const { inserted } = await communityService.recordInteraction(postId, userId, 'saved');
-      console.log('[savePost] DB response - inserted:', inserted);
 
       if (!inserted) {
-        console.log('[savePost] ⚠️ NOT INSERTED - record already exists in DB');
-        console.log('[savePost] Checking if post is in local savedPosts array...');
         const existsLocally = get().savedPosts.some(p => p.id === postId);
-        console.log('[savePost] Exists in local array?', existsLocally);
         
         if (!existsLocally) {
-          console.log('[savePost] 🚨 MISMATCH DETECTED: DB says exists, but local array is empty!');
-          console.log('[savePost] This means savedPosts was not loaded on mount. Need to reload savedPosts.');
           // Force reload saved posts to sync with DB
           await get().loadSavedPosts(userId);
-          console.log('[savePost] Reloaded savedPosts, new count:', get().savedPosts.length);
         }
         return;
       }
 
-      console.log('[savePost] ✅ DB insert successful, looking for post in arrays...');
-      console.log('[savePost] Current posts array count:', get().posts.length);
-      console.log('[savePost] Current savedPosts array count:', get().savedPosts.length);
-
       // Find post in current tab
       let post = get().posts.find(p => p.id === postId);
-      console.log('[savePost] Found in posts array?', !!post);
       
       // If not in current posts, try savedPosts (edge case)
       if (!post) {
         post = get().savedPosts.find(p => p.id === postId);
-        console.log('[savePost] Found in savedPosts array?', !!post);
       }
 
       if (post) {
-        console.log('[savePost] ✅ POST FOUND! Adding to savedPosts:', postId);
-        console.log('[savePost] Post details:', { id: post.id, type: post.post_type, origin: post.origin_city });
         
         // Check if already exists (double-check)
         const alreadyExists = get().savedPosts.some(p => p.id === postId);
         if (alreadyExists) {
-          console.log('[savePost] ⚠️ WARNING: Post already in savedPosts array, skipping duplicate add');
+
           return;
         }
         
         set(state => ({
           savedPosts: [post, ...state.savedPosts],
         }));
-        console.log('[savePost] ✅ SUCCESS! New savedPosts length:', get().savedPosts.length);
-        console.log('[savePost] Saved IDs:', get().savedPosts.map(p => p.id));
       } else {
         console.error('[savePost] ❌ CRITICAL: Post not found in any array!', postId);
-        console.log('[savePost] Available post IDs in posts:', get().posts.map(p => p.id));
       }
     } catch (error) {
       console.error('[savePost] ❌ ERROR:', error);

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "141456380254",
+    "project_id": "truxel-io",
+    "storage_bucket": "truxel-io.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:141456380254:android:2583d039baeb44ae187fcf",
+        "android_client_info": {
+          "package_name": "io.truxel.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClVpo1lmU9yD9pAIGuf-SNePx4y3umqeQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

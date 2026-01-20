@@ -11,7 +11,8 @@ import { Platform } from 'react-native';
 import Constants from 'expo-constants';
 
 // N8N webhook URL from environment variables
-const N8N_WEBHOOK_URL = Constants.expoConfig?.extra?.n8nChatWebhook || 'https://automation.truxel.io/webhook/70100ffe-0d06-4cff-9ad1-b7001713ab5c';
+const N8N_WEBHOOK_URL = 'https://automation.truxel.io/webhook/70100ffe-0d06-4cff-9ad1-b7001713ab5c'; // Force production URL
+// const N8N_WEBHOOK_URL = Constants.expoConfig?.extra?.n8nChatWebhook || 'https://automation.truxel.io/webhook/70100ffe-0d06-4cff-9ad1-b7001713ab5c';
 
 export interface ChatMessage {
   userId: string;
@@ -40,9 +41,16 @@ class ChatService {
    */
   async sendMessage(message: ChatMessage): Promise<ChatResponse> {
     try {
+      // Feature deactivated temporarily - Webhook not active
+      return {
+        success: true,
+        message: 'Message sent! We\'ll respond via email.',
+      };
+
+      /* 
+      // Prepare JSON payload for POST request
       console.log('[ChatService] Sending message to N8N:', message);
 
-      // Prepare JSON payload for POST request
       const payload = {
         userId: message.userId,
         userName: message.userName || 'Anonymous',
@@ -97,12 +105,12 @@ class ChatService {
       } catch {
         // N8N received message but flow incomplete
         console.log('[ChatService] Message received by N8N (response pending)');
-        
         return {
           success: true,
-          message: 'Message sent! Check your email for our response.',
+          message: 'Message sent! We\'ll respond via email shortly.',
         };
       }
+      */
     } catch (error) {
       console.error('[ChatService] Error sending message:', error);
       

@@ -22,6 +22,7 @@ import { useNotificationStore } from '@/store/notificationStore';
 import { useSurveyStore } from '@/store/surveyStore';
 import { SurveyWidget } from '@/components/surveys/SurveyWidget';
 import { SurveyModal } from '@/components/surveys/SurveyModal';
+import { HomeFeedbackForm } from '@/components/HomeFeedbackForm';
 
 export default function HomeScreen() {
   const { t } = useTranslation();
@@ -228,6 +229,8 @@ export default function HomeScreen() {
           {t('home.community_subtitle')}
         </Text>
       </View>
+      
+
     </View>
   );
 
@@ -236,6 +239,7 @@ export default function HomeScreen() {
       <CommunityFeed 
         customHeader={renderStatsHeader()}
         onRefresh={loadData}
+        ListFooterComponent={<HomeFeedbackForm />}
       />
       <SurveyModal 
         visible={surveyModalVisible}
