@@ -73,7 +73,8 @@ export default {
       // },
       usesAppleSignIn: true,
       // iOS App Icons (from Truxel_Brand assets)
-      icon: "./assets/Truxel_Brand/App Store 1024 x 1024.png"
+      icon: "./assets/Truxel_Brand/App Store 1024 x 1024.png",
+      googleServicesFile: "./GoogleService-Info.plist"
     },
     android: {
       versionCode: buildNumber,
@@ -155,7 +156,21 @@ export default {
       ],
       "expo-tracking-transparency",
       "expo-localization",
-      "./plugins/withAndroidOnlyFirebase",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "compileSdkVersion": 34,
+            "targetSdkVersion": 34,
+            "buildToolsVersion": "34.0.0",
+            "kotlinVersion": "1.9.20"
+          },
+          "ios": {
+            "useFrameworks": "static"
+          }
+        }
+      ],
+      "@react-native-firebase/app",
       "./plugins/withDisableNonModularHeaders"
     ],
     experiments: {
