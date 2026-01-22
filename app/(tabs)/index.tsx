@@ -241,6 +241,7 @@ export default function HomeScreen() {
     <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]} edges={['top']}>
       <CommunityFeed 
         customHeader={renderHeader()}
+        previewMode={true}
         ListFooterComponent={
           <View style={{ padding: 16 }}>
              <HomeFeedbackForm />

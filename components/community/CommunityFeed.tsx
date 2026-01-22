@@ -12,6 +12,7 @@ import {
   Platform,
   Alert,
 } from 'react-native';
+import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useFocusEffect } from '@react-navigation/native';
 import { Globe, MapPin, Package, Truck, Bookmark } from 'lucide-react-native';
@@ -29,10 +30,12 @@ interface CommunityFeedProps {
   customHeader?: React.ReactNode;
   onRefresh?: () => Promise<void>;
   ListFooterComponent?: React.ReactNode;
+  previewMode?: boolean;
 }
 
-export default function CommunityFeed({ customHeader, onRefresh, ListFooterComponent }: CommunityFeedProps = {}) {
+export default function CommunityFeed({ customHeader, onRefresh, ListFooterComponent, previewMode = false }: CommunityFeedProps = {}) {
   const { t } = useTranslation();
+  const router = useRouter();
   const { theme } = useTheme();
   const { user } = useAuthStore();
   const {
@@ -248,14 +251,48 @@ export default function CommunityFeed({ customHeader, onRefresh, ListFooterCompo
     );
   };
 
+  const displayData = useMemo(() => {
+    const sourceData = selectedTab === 'saved' ? savedPosts : posts;
+    if (previewMode) {
+      return sourceData.slice(0, 5);
+    }
+    return sourceData;
+  }, [selectedTab, savedPosts, posts, previewMode]);
+
   const renderFooter = () => {
     return (
       <View>
-        {hasMore && (
+        {!previewMode && hasMore && (
           <View style={styles.footerLoader}>
             <ActivityIndicator size="small" color={theme.colors.primary} />
           </View>
         )}
+
+        {previewMode && (
+          <TouchableOpacity
+            style={[
+              styles.tabFull,
+              { 
+                backgroundColor: selectedTab === 'availability' ? theme.colors.secondary : (selectedTab === 'routes' ? theme.colors.info : theme.colors.warning),
+                marginHorizontal: 22, // 16 (outer) + 6 (container padding) to match tabs width
+                marginBottom: 16,
+                marginTop: 8,
+                shadowColor: theme.shadows.small.shadowColor
+              }
+            ]}
+            onPress={() => router.push('/(tabs)/community')}
+          >
+            <Text style={[styles.tabText, { color: 'white' }]}>
+              {selectedTab === 'availability' 
+                ? t('community.view_all_drivers', 'View All Drivers').toUpperCase() 
+                : selectedTab === 'routes' 
+                  ? t('community.view_all_loads', 'View All Loads').toUpperCase()
+                  : t('community.view_all_saved', 'View All Saved').toUpperCase()
+              }
+            </Text>
+          </TouchableOpacity>
+        )}
+
         {ListFooterComponent}
       </View>
     );
@@ -452,7 +489,7 @@ export default function CommunityFeed({ customHeader, onRefresh, ListFooterCompo
   return (
     <>
       <FlatList
-        data={selectedTab === 'saved' ? savedPosts : posts}
+        data={displayData}
         renderItem={renderPost}
         keyExtractor={(item) => item.id}
         ListHeaderComponent={renderHeader}
@@ -480,7 +517,7 @@ export default function CommunityFeed({ customHeader, onRefresh, ListFooterCompo
             tintColor={theme.colors.secondary}
           />
         }
-        onEndReached={loadMorePosts}
+        onEndReached={previewMode ? undefined : loadMorePosts}
         onEndReachedThreshold={0.5}
         contentContainerStyle={styles.listContent}
         onViewableItemsChanged={handleViewableItemsChanged}
