@@ -370,29 +370,25 @@ export default function CommunityFeed({ customHeader, onRefresh, ListFooterCompo
 
       {/* Filter Bar */}
       <View style={[styles.filterBar, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}>
-        {isInitializingFilters ? (
-          <ActivityIndicator size="small" color={theme.colors.primary} />
-        ) : (
-          <>
-            {/* Country Filter */}
-            <TouchableOpacity
-              style={[styles.filterControl, { backgroundColor: theme.colors.background, borderColor: theme.colors.border }]}
-              onPress={handleCountryPress}
+        {/* Country Filter */}
+        <TouchableOpacity
+          style={[styles.filterControl, { backgroundColor: theme.colors.background, borderColor: theme.colors.border }]}
+          onPress={handleCountryPress}
+        >
+          <Globe size={14} color={theme.colors.textSecondary} />
+          <View style={styles.filterLabelContainer}>
+            <Text style={[styles.filterLabel, { color: theme.colors.textSecondary }]}>{t('community.country')}</Text>
+            <Text 
+              style={selectedCountry ? [styles.filterValueSelected, { color: theme.colors.text }] : [styles.filterValuePlaceholder, { color: theme.colors.textSecondary }]}
+              numberOfLines={1}
+              ellipsizeMode="tail"
             >
-              <Globe size={14} color={theme.colors.textSecondary} />
-              <View style={styles.filterLabelContainer}>
-                <Text style={[styles.filterLabel, { color: theme.colors.textSecondary }]}>{t('community.country')}</Text>
-                <Text 
-                  style={selectedCountry ? [styles.filterValueSelected, { color: theme.colors.text }] : [styles.filterValuePlaceholder, { color: theme.colors.textSecondary }]}
-                  numberOfLines={1}
-                  ellipsizeMode="tail"
-                >
-                  {selectedCountry?.name || t('community.select_country')}
-                </Text>
-              </View>
-              {selectedCountry && (
-                <TouchableOpacity
-                  style={styles.clearButton}
+              {selectedCountry?.name || t('community.select_country')}
+            </Text>
+          </View>
+          {selectedCountry && (
+            <TouchableOpacity
+              style={styles.clearButton}
                   onPress={handleClearCountry}
                   hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                 >
@@ -430,8 +426,6 @@ export default function CommunityFeed({ customHeader, onRefresh, ListFooterCompo
                 </TouchableOpacity>
               )}
             </TouchableOpacity>
-          </>
-        )}
       </View>
 
       {/* Error Message */}
