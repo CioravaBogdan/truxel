@@ -229,8 +229,6 @@ export default function HomeScreen() {
             )}
           </>
         )}
-      </View>
-      
       <View style={{ marginBottom: 16 }}>
         <Text style={[styles.sectionTitle, { color: theme.colors.text, marginBottom: 8 }]}>{t('home.community_updates')}</Text>
       </View>
