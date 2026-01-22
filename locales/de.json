@@ -72,6 +72,8 @@
     "check_email": "Überprüfen Sie Ihre E-Mails",
     "check_spam": "Bitte prüfen Sie Ihren Spam-Ordner, falls Sie die E-Mail nicht sehen.",
     "verify_email_message": "Bitte bestätigen Sie Ihre E-Mail-Adresse, um die Registrierung abzuschließen.",
+    "go_to_login": "Zur Anmeldung",
+    "open_email_app": "E-Mail-App öffnen",
     "email_placeholder": "your@email.com",
     "auth_failed": "Die Authentifizierung ist fehlgeschlagen",
     "sign_in_cancelled": "Anmeldung abgebrochen",

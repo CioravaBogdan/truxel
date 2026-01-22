@@ -1,4 +1,4 @@
-# Truxel Mobile Application
+/# Truxel Mobile Application
 
 A mobile application for truck drivers to discover and manage logistics leads in their area. Built with Expo (React Native) and Supabase.
 
@@ -30,6 +30,7 @@ A mobile application for truck drivers to discover and manage logistics leads in
 
 ```bash
 npm install
+
 ```
 
 ### 2. Configure Environment Variables

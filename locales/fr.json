@@ -72,6 +72,8 @@
     "check_email": "Vérifiez votre courrier électronique",
     "check_spam": "Vérifiez le dossier spam si vous ne voyez pas l'e-mail.",
     "verify_email_message": "Veuillez vérifier votre adresse e-mail pour finaliser votre inscription.",
+    "go_to_login": "Aller à la connexion",
+    "open_email_app": "Ouvrir l'app Email",
     "email_placeholder": "votre@email.com",
     "auth_failed": "L'authentification a échoué",
     "sign_in_cancelled": "Connexion annulée",

@@ -72,6 +72,8 @@
     "check_email": "Controlla la tua email",
     "check_spam": "Controlla la cartella spam se non vedi l'email.",
     "verify_email_message": "Verifica la tua email per completare la registrazione.",
+    "go_to_login": "Vai al Login",
+    "open_email_app": "Apri App Email",
     "email_placeholder": "tuo@email.com",
     "auth_failed": "Autenticazione non riuscita",
     "sign_in_cancelled": "Accesso annullato",

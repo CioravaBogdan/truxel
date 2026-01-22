@@ -496,14 +496,28 @@ export default function RegisterScreen() {
             <Text style={[styles.modalText, { color: theme.colors.textSecondary }]}>
               {t('auth.verify_email_message')}
             </Text>
+            <Text style={[styles.modalSubtext, { color: theme.colors.textSecondary }]}>
+              {t('auth.check_spam')}
+            </Text>
             <Button
-              title={t('auth.go_to_login')}
+              title={t('auth.open_email_app')}
+              onPress={() => {
+                // Try to open the default email app
+                RNLinking.openURL('mailto:');
+              }}
+              style={styles.modalButton}
+            />
+            <TouchableOpacity
               onPress={() => {
                 setShowEmailModal(false);
                 router.replace('/(auth)/login');
               }}
-              style={styles.modalButton}
-            />
+              style={styles.modalSecondaryButton}
+            >
+              <Text style={[styles.modalSecondaryButtonText, { color: theme.colors.primary }]}>
+                {t('auth.go_to_login')}
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
       </Modal>
@@ -666,12 +680,28 @@ const styles = StyleSheet.create({
   modalText: {
     fontSize: 16,
     textAlign: 'center',
-    marginBottom: 32,
+    marginBottom: 12,
     lineHeight: 24,
+  },
+  modalSubtext: {
+    fontSize: 14,
+    textAlign: 'center',
+    marginBottom: 24,
+    lineHeight: 20,
+    fontStyle: 'italic',
   },
   modalButton: {
     width: '100%',
     backgroundColor: '#FF5722',
+  },
+  modalSecondaryButton: {
+    marginTop: 16,
+    paddingVertical: 12,
+  },
+  modalSecondaryButtonText: {
+    fontSize: 16,
+    fontWeight: '600',
+    textAlign: 'center',
   },
   storeButtonsContainer: {
     marginTop: 32,

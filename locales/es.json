@@ -72,6 +72,8 @@
     "check_email": "Revisa tu correo electrónico",
     "check_spam": "Revisa la carpeta de spam si no ves el correo.",
     "verify_email_message": "Por favor verifique su correo electrónico para completar el registro.",
+    "go_to_login": "Ir a Iniciar Sesión",
+    "open_email_app": "Abrir App de Correo",
     "email_placeholder": "tu@correo electrónico.com",
     "auth_failed": "Error de autenticación",
     "sign_in_cancelled": "Iniciar sesión cancelado",

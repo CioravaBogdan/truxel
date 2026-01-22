@@ -72,6 +72,8 @@
     "check_email": "Sprawdź swój e-mail",
     "check_spam": "Sprawdź folder spam, jeśli nie widzisz e-maila.",
     "verify_email_message": "Aby dokończyć rejestrację, zweryfikuj swój adres e-mail.",
+    "go_to_login": "Przejdź do logowania",
+    "open_email_app": "Otwórz aplikację e-mail",
     "email_placeholder": "twój@email.com",
     "auth_failed": "Uwierzytelnienie nie powiodło się",
     "sign_in_cancelled": "Logowanie anulowane",

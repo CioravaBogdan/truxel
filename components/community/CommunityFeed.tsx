@@ -63,17 +63,25 @@ export default function CommunityFeed({ customHeader, onRefresh, ListFooterCompo
 
   // Initialize filters with user location on mount (ONE-SHOT)
   useEffect(() => {
-    if (!user?.id) return;
+    // Only run if user is logged in AND no country is currently selected
+    // This prevents overwriting user's manual selection when navigating between tabs
+    if (!user?.id || useCommunityStore.getState().selectedCountry) return;
     
     let isMounted = true;
 
     async function initFilters() {
+      // Double check inside async function
+      if (useCommunityStore.getState().selectedCountry) return;
+
       try {
         setIsInitializingFilters(true);
         
         const locationInfo = await cityService.getCurrentLocationCity();
         
         if (!isMounted) return;
+        
+        // Final check before applying
+        if (useCommunityStore.getState().selectedCountry) return;
 
         // Use detectedCity (exact location) if available, otherwise fallback to nearestMajorCity
         const targetCity = locationInfo?.detectedCity || locationInfo?.nearestMajorCity;

@@ -34,6 +34,10 @@ export default function HomeScreen() {
   const { activeSurvey, fetchActiveSurvey } = useSurveyStore();
   const [searchesRemaining, setSearchesRemaining] = useState(0);
   const [surveyModalVisible, setSurveyModalVisible] = useState(false);
+  
+  // Refresh state
+  const [refreshing, setRefreshing] = useState(false);
+  const [lastRefreshTime, setLastRefreshTime] = useState(Date.now());
 
   const loadData = useCallback(async () => {
     if (!user || !profile) return;
@@ -48,10 +52,18 @@ export default function HomeScreen() {
 
       setLeads(leadsData);
       setSearchesRemaining(remaining);
+      setLastRefreshTime(Date.now());
     } catch (error) {
       console.error('Error loading home data:', error);
     }
   }, [profile, setLeads, user, fetchNotifications, fetchActiveSurvey]);
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await loadData();
+    setRefreshing(false);
+  }, [loadData]);
+
 
   useFocusEffect(
     useCallback(() => {
@@ -62,8 +74,7 @@ export default function HomeScreen() {
   const recentLeads = leads.slice(0, 5);
   const contactedCount = leads.filter((l) => l.status === 'contacted').length;
 
-  // Render stats header for CommunityFeed
-  const renderStatsHeader = () => (
+  const renderHeader = () => (
     <View style={styles.headerContent}>
       <View style={styles.header}>
         <View style={styles.headerTopRow}>
@@ -219,28 +230,25 @@ export default function HomeScreen() {
           </>
         )}
       </View>
-
-      <View style={styles.communityHeader}>
-        <View style={styles.sectionHeaderRow}>
-          <Users size={24} color={theme.colors.secondary} />
-          <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>{t('home.community_title')}</Text>
-        </View>
-        <Text style={[styles.communitySubtitle, { color: theme.colors.textSecondary }]}>
-          {t('home.community_subtitle')}
-        </Text>
-      </View>
       
-
+      <View style={{ marginBottom: 16 }}>
+        <Text style={[styles.sectionTitle, { color: theme.colors.text, marginBottom: 8 }]}>{t('home.community_updates')}</Text>
+      </View>
     </View>
   );
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]} edges={['top']}>
       <CommunityFeed 
-        customHeader={renderStatsHeader()}
+        customHeader={renderHeader()}
+        ListFooterComponent={
+          <View style={{ padding: 16 }}>
+             <HomeFeedbackForm />
+          </View>
+        }
         onRefresh={loadData}
-        ListFooterComponent={<HomeFeedbackForm />}
       />
+
       <SurveyModal 
         visible={surveyModalVisible}
         survey={activeSurvey}

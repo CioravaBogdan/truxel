@@ -72,6 +72,8 @@
     "check_email": "Verifică-ți e-mailul",
     "check_spam": "Verifică folderul de spam dacă nu vezi emailul.",
     "verify_email_message": "Vă rugăm să vă verificați adresa de e-mail pentru a finaliza înregistrarea.",
+    "go_to_login": "Mergi la Autentificare",
+    "open_email_app": "Deschide Email",
     "email_placeholder": "your@email.com",
     "auth_failed": "Autentificarea eșuată",
     "sign_in_cancelled": "Conectarea a fost anulată",

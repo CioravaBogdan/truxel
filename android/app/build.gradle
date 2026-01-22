@@ -2,6 +2,10 @@ apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
 
+project.ext.set("react-native-google-mobile-ads", [
+    "android_app_id": "ca-app-pub-3940256099942544~3347511713"
+])
+
 def projectRoot = rootDir.getAbsoluteFile().getParentFile().getAbsolutePath()
 
 /**
@@ -123,8 +127,7 @@ android {
     }
     packagingOptions {
         jniLibs {
-            def enableLegacyPackaging = findProperty('expo.useLegacyPackaging') ?: 'false'
-            useLegacyPackaging enableLegacyPackaging.toBoolean()
+            useLegacyPackaging false
         }
     }
     androidResources {

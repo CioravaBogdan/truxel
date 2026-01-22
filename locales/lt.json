@@ -72,6 +72,8 @@
     "check_email": "Patikrinkite savo el",
     "check_spam": "Patikrinkite šlamšto aplanką, jei nematote el. laiško.",
     "verify_email_message": "Patvirtinkite savo el. pašto adresą, kad užbaigtumėte registraciją.",
+    "go_to_login": "Eiti į prisijungimą",
+    "open_email_app": "Atidaryti el. paštą",
     "email_placeholder": "tavo@el.paštas.com",
     "auth_failed": "Autentifikuoti nepavyko",
     "sign_in_cancelled": "Prisijungimas atšauktas",

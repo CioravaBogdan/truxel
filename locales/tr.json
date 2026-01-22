@@ -72,6 +72,8 @@
     "check_email": "E-postanızı kontrol edin",
     "check_spam": "E-postayı göremiyorsanız spam klasörünü kontrol edin.",
     "verify_email_message": "Kaydı tamamlamak için lütfen e-posta adresinizi doğrulayın.",
+    "go_to_login": "Girişe Git",
+    "open_email_app": "E-posta Uygulamasını Aç",
     "email_placeholder": "sizin@e-postanız.com",
     "auth_failed": "Kimlik doğrulama başarısız oldu",
     "sign_in_cancelled": "Oturum açma işlemi iptal edildi",

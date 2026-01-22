@@ -79,6 +79,8 @@
     "check_email": "Check your email",
     "check_spam": "Please check your spam folder if you don't see the email.",
     "verify_email_message": "Please verify your email to complete registration.",
+    "go_to_login": "Go to Login",
+    "open_email_app": "Open Email App",
     "email_placeholder": "your@email.com",
     "auth_failed": "Authentication failed",
     "sign_in_cancelled": "Sign in cancelled",
