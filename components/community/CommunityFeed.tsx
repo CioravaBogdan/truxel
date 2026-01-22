@@ -306,32 +306,7 @@ export default function CommunityFeed({ customHeader, onRefresh, ListFooterCompo
       {/* Quick Post Bar */}
       <QuickPostBar />
 
-      {/* Community Stats */}
-      {useCommunityStore.getState().communityStats && (
-        <View style={[styles.statsBar, { backgroundColor: theme.colors.card }]}>
-          <Text style={[styles.statsTitle, { color: theme.colors.textSecondary }]}>{t('community.title')}</Text>
-          <View style={styles.statsRow}>
-            <View style={styles.stat}>
-              <Text style={[styles.statValue, { color: theme.colors.text }]}>
-                {useCommunityStore.getState().communityStats?.activePosts || 0}
-              </Text>
-              <Text style={[styles.statLabel, { color: theme.colors.textSecondary }]}>{t('community.active')}</Text>
-            </View>
-            <View style={styles.stat}>
-              <Text style={[styles.statValue, { color: theme.colors.text }]}>
-                {useCommunityStore.getState().communityStats?.contacts || 0}
-              </Text>
-              <Text style={[styles.statLabel, { color: theme.colors.textSecondary }]}>{t('community.contacts')}</Text>
-            </View>
-            <View style={styles.stat}>
-              <Text style={[styles.statValue, { color: theme.colors.text }]}>
-                {useCommunityStore.getState().communityStats?.conversions || 0}
-              </Text>
-              <Text style={[styles.statLabel, { color: theme.colors.textSecondary }]}>{t('community.leads')}</Text>
-            </View>
-          </View>
-        </View>
-      )}
+      {/* Community Stats removed as requested to avoid duplication */}
 
       {/* Tabs - 2 side-by-side + 1 full-width below */}
       <View style={[styles.tabsContainer, { backgroundColor: theme.colors.card, shadowColor: theme.shadows.small.shadowColor }]}>
