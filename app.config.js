@@ -63,7 +63,9 @@ export default {
           ],        LSApplicationQueriesSchemes: [
           "whatsapp",
           "whatsapp-business",
-          "whatsapp-messenger"
+          "whatsapp-messenger",
+          "googlegmail",
+          "ms-outlook"
         ]
       },
       // Maps disabled - not using MapView in app (Location via Expo Location only)

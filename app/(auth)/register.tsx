@@ -496,16 +496,72 @@ export default function RegisterScreen() {
             <Text style={[styles.modalText, { color: theme.colors.textSecondary }]}>
               {t('auth.verify_email_message')}
             </Text>
-            <Text style={[styles.modalSubtext, { color: theme.colors.textSecondary }]}>
+            <Text style={[styles.modalSubtext, { color: theme.colors.textSecondary, fontWeight: 'bold' }]}>
               {t('auth.check_spam')}
             </Text>
+
+            <TouchableOpacity
+              onPress={async () => {
+                const gmailUrl = 'googlegmail://';
+                try {
+                  // iOS: Check for Gmail app
+                  if (Platform.OS === 'ios') {
+                    const canOpen = await RNLinking.canOpenURL(gmailUrl);
+                    if (canOpen) {
+                      RNLinking.openURL(gmailUrl);
+                    } else {
+                       RNLinking.openURL('https://mail.google.com');
+                    }
+                  } else {
+                    // Android: Try to open Gmail via Intent (mailto often prompts)
+                    // or fallback to mailto which is better than browser
+                     RNLinking.openURL('mailto:');
+                  }
+                } catch (e) {
+                   RNLinking.openURL('mailto:');
+                }
+              }}
+              style={[
+                styles.button, 
+                { 
+                  backgroundColor: '#DB4437', // Gmail Red
+                  marginBottom: 16,
+                  marginTop: 0,
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  gap: 12,
+                  height: 56, // Match standard button height
+                  borderRadius: 8, // Match theme.borderRadius.md default
+                  ...theme.shadows.small
+                }
+              ]}
+              activeOpacity={0.7}
+            >
+              <FontAwesome name="google" size={20} color="white" />
+              <Text style={{ color: 'white', fontSize: 18, fontWeight: '700', letterSpacing: 0.5 }}>
+                Open Gmail
+              </Text>
+            </TouchableOpacity>
+
             <Button
               title={t('auth.open_email_app')}
-              onPress={() => {
-                // Try to open the default email app
-                RNLinking.openURL('mailto:');
+              onPress={async () => {
+                if (Platform.OS === 'ios') {
+                  // iOS: 'message://' opens the Mail app directly to Inbox
+                  const canOpen = await RNLinking.canOpenURL('message://');
+                  if (canOpen) {
+                    RNLinking.openURL('message://');
+                  } else {
+                    RNLinking.openURL('mailto:');
+                  }
+                } else {
+                  // Android: mailto is the standard intent
+                  RNLinking.openURL('mailto:');
+                }
               }}
-              style={styles.modalButton}
+              style={[styles.modalButton, { backgroundColor: theme.colors.primary }]}
+              textStyle={{ color: '#FFFFFF' }}
             />
             <TouchableOpacity
               onPress={() => {
